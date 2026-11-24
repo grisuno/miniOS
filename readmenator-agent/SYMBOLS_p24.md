@@ -1,8 +1,149 @@
-# Symbols (page 24 of 27)
+# Symbols (page 24 of 28)
 Previous: [SYMBOLS_p23.md](SYMBOLS_p23.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `mthread_create` | function | `progs/src/mthreads.h:117` | `static int mthread_create(mthread_t *t, void *(*fn)(void *), void *arg)` |
+| `mthread_entry` | function | `progs/src/mthreads.h:98` | `static void mthread_entry(void *p)` |
+| `mthread_join` | function | `progs/src/mthreads.h:144` | `static int mthread_join(mthread_t t, void **retval)` |
+| `mthread_slot_t` | struct | `progs/src/mthreads.h:42` | `` |
+| `mthread_t` | type_alias | `progs/src/mthreads.h:35` | `typedef int mthread_t;` |
+| `myield` | function | `progs/src/mthreads.h:59` | `static inline void myield(void)` |
+| `MTOP_DISK_BUF` | macro | `progs/src/mtop.c:47` | `#define MTOP_DISK_BUF` |
+| `MTOP_DISK_MAX` | macro | `progs/src/mtop.c:48` | `#define MTOP_DISK_MAX` |
+| `MTOP_HIST` | macro | `progs/src/mtop.c:46` | `#define MTOP_HIST` |
+| `MTOP_MINFO` | macro | `progs/src/mtop.c:49` | `#define MTOP_MINFO` |
+| `close` | function | `progs/src/mtop.c:43` | `int close();` |
+| `emit` | function | `progs/src/mtop.c:90` | `static void emit(char *s)` |
+| `fclose` | function | `progs/src/mtop.c:39` | `int fclose();` |
+| `fopen` | function | `progs/src/mtop.c:38` | `void *fopen();` |
+| `fread` | function | `progs/src/mtop.c:40` | `int fread();` |
+| `main` | function | `progs/src/mtop.c:531` | `int main(int argc, char **argv)` |
+| `mtop_atoi` | function | `progs/src/mtop.c:117` | `static int mtop_atoi(char *s)` |
+| `mtop_bar` | function | `progs/src/mtop.c:179` | `static void mtop_bar(long v, long max, int w)` |
+| `mtop_clear` | function | `progs/src/mtop.c:113` | `static void mtop_clear(void)` |
+| `mtop_clear_ansi` | function | `progs/src/mtop.c:103` | `static void mtop_clear_ansi(void)` |
+| `mtop_cpu` | function | `progs/src/mtop.c:253` | `static long mtop_cpu(long *count, long *busy)` |
+| `mtop_disk_open` | function | `progs/src/mtop.c:289` | `static void mtop_disk_open(void)` |
+| `mtop_disk_read` | function | `progs/src/mtop.c:313` | `static long mtop_disk_read(long *bytes)` |
+| `mtop_frame` | function | `progs/src/mtop.c:355` | `static void mtop_frame(int n)` |
+| `mtop_hist_max` | function | `progs/src/mtop.c:194` | `static long mtop_hist_max(long *h, int n)` |
+| `mtop_hist_push` | function | `progs/src/mtop.c:204` | `static void mtop_hist_push(long *h, long v)` |
+| `mtop_key` | function | `progs/src/mtop.c:80` | `static long mtop_key(void)` |
+| `mtop_mem` | function | `progs/src/mtop.c:242` | `static long mtop_mem(long *used, long *freeb, long *total)` |
+| `mtop_minfo` | function | `progs/src/mtop.c:84` | `static long mtop_minfo(long sel, long *o1, long *o2)` |
+| `mtop_net_probe` | function | `progs/src/mtop.c:337` | `static long mtop_net_probe(long *dns_ms, long *sock_ok)` |
+| `mtop_put2` | function | `progs/src/mtop.c:158` | `static void mtop_put2(int v)` |
+| `mtop_put_kb` | function | `progs/src/mtop.c:163` | `static void mtop_put_kb(long kb)` |
+| `mtop_putu` | function | `progs/src/mtop.c:136` | `static void mtop_putu(long v)` |
+| `mtop_quit_key` | function | `progs/src/mtop.c:94` | `static int mtop_quit_key(long k)` |
+| `mtop_rtc` | function | `progs/src/mtop.c:76` | `static long mtop_rtc(int *h, int *m, int *s)` |
+| `mtop_spark` | function | `progs/src/mtop.c:214` | `static void mtop_spark(long *h, int n)` |
+| `mtop_time` | function | `progs/src/mtop.c:72` | `static long mtop_time(void)` |
+| `net_dns_resolve` | function | `progs/src/mtop.c:44` | `int net_dns_resolve();` |
+| `putchar` | function | `progs/src/mtop.c:35` | `int putchar();` |
+| `rewind` | function | `progs/src/mtop.c:41` | `void rewind();` |
+| `sc3` | function | `progs/src/mtop.c:63` | `static long sc3(long n, long a1, long a2, long a3)` |
+| `socket` | function | `progs/src/mtop.c:42` | `int socket();` |
+| `strcmp` | function | `progs/src/mtop.c:37` | `int strcmp();` |
+| `strlen` | function | `progs/src/mtop.c:36` | `int strlen();` |
+| `syscall` | function | `progs/src/mtop.c:12` | `* * All system figures come from the MINFO syscall (251): heap used / * free, ramdisk used / cap, MiniFS free /...` |
+| `lmain` | function | `progs/src/mvrn.c:32` | `int lmain(void)` |
+| `mvrn_exit` | function | `progs/src/mvrn.c:20` | `static void mvrn_exit(long code)` |
+| `mvrn_fail` | function | `progs/src/mvrn.c:24` | `static void mvrn_fail(int step)` |
+| `mvrn_sc3` | function | `progs/src/mvrn.c:9` | `static long mvrn_sc3(long n, long a1, long a2, long a3)` |
+| `mvrn_write` | function | `progs/src/mvrn.c:16` | `static void mvrn_write(const char *s, unsigned long len)` |
+| `_start` | function | `progs/src/nx.c:23` | `void _start(void)` |
+| `exit_now` | function | `progs/src/nx.c:19` | `static void exit_now(long code)` |
+| `write_str` | function | `progs/src/nx.c:11` | `static long write_str(const char *s, long n)` |
+| `BUF_MS` | macro | `progs/src/opl3.c:32` | `#define BUF_MS` |
+| `F_NUM_FACTOR` | macro | `progs/src/opl3.c:34` | `#define F_NUM_FACTOR` |
+| `MONO_BYTES` | macro | `progs/src/opl3.c:30` | `#define MONO_BYTES` |
+| `SAMPLE_RATE` | macro | `progs/src/opl3.c:28` | `#define SAMPLE_RATE` |
+| `STEREO_FRAMES` | macro | `progs/src/opl3.c:29` | `#define STEREO_FRAMES` |
+| `SYS_SB16_OPEN` | macro | `progs/src/opl3.c:22` | `#define SYS_SB16_OPEN` |
+| `SYS_SB16_SUBMIT` | macro | `progs/src/opl3.c:23` | `#define SYS_SB16_SUBMIT` |
+| `SYS_TIME` | macro | `progs/src/opl3.c:21` | `#define SYS_TIME` |
+| `SYS_WRITE` | macro | `progs/src/opl3.c:24` | `#define SYS_WRITE` |
+| `busy_ms` | function | `progs/src/opl3.c:46` | `static void busy_ms(long ms)` |
+| `main` | function | `progs/src/opl3.c:107` | `int main(void)` |
+| `note_t` | struct | `progs/src/opl3.c:102` | `` |
+| `opl3_note` | function | `progs/src/opl3.c:69` | `static void opl3_note(opl3_chip *chip, unsigned block, unsigned fnum, int on)` |
+| `opl3_set_instrument` | function | `progs/src/opl3.c:52` | `static void opl3_set_instrument(opl3_chip *chip)` |
+| `render` | function | `progs/src/opl3.c:77` | `static void render(opl3_chip *chip, long ms, long *fail)` |
+| `sys_open` | function | `progs/src/opl3.c:39` | `static long sys_open(long on)` |
+| `sys_submit` | function | `progs/src/opl3.c:42` | `static long sys_submit(const void *buf, long len)` |
+| `sys_time` | function | `progs/src/opl3.c:36` | `static long sys_time(void)` |
+| `_start` | function | `progs/src/pcmap.c:75` | `void _start(void)` |
+| `sc_exit` | function | `progs/src/pcmap.c:42` | `static void sc_exit(long code)` |
+| `sc_fnv` | function | `progs/src/pcmap.c:46` | `static unsigned long sc_fnv(const char *p, long n)` |
+| `sc_hex8` | function | `progs/src/pcmap.c:56` | `static void sc_hex8(unsigned long v, char *out)` |
+| `sc_mmap` | function | `progs/src/pcmap.c:21` | `static long sc_mmap(long len, long prot, long flags, long fd, long off)` |
+| `sc_munmap` | function | `progs/src/pcmap.c:65` | `static long sc_munmap(long addr, long len)` |
+| `sc_open` | function | `progs/src/pcmap.c:12` | `static long sc_open(const char *p)` |
+| `sc_write` | function | `progs/src/pcmap.c:34` | `static long sc_write(long fd, const char *s, long n)` |
+| `PIP_EXEC_FAILED` | macro | `progs/src/pip.c:26` | `#define PIP_EXEC_FAILED` |
+| `PIP_MODULE_FLAG` | macro | `progs/src/pip.c:21` | `#define PIP_MODULE_FLAG` |
+| `PIP_MODULE_NAME` | macro | `progs/src/pip.c:22` | `#define PIP_MODULE_NAME` |
+| `PIP_PREFIX_WORDS` | macro | `progs/src/pip.c:24` | `#define PIP_PREFIX_WORDS` |
+| `PIP_PYTHON_PATH` | macro | `progs/src/pip.c:19` | `#define PIP_PYTHON_PATH` |
+| `main` | function | `progs/src/pip.c:45` | `int main(int argc, char **argv)` |
+| `pip_note` | struct | `progs/src/pip.c:30` | `` |
+| `lmain` | function | `progs/src/pollready.c:63` | `int lmain(long argc, char **argv)` |
+| `p_atoi` | function | `progs/src/pollready.c:40` | `static int p_atoi(const char *s)` |
+| `p_parse_ip` | function | `progs/src/pollready.c:46` | `static int p_parse_ip(const char *s, unsigned char out[4])` |
+| `p_puts` | function | `progs/src/pollready.c:36` | `static void p_puts(long fd, const char *s)` |
+| `p_strlen` | function | `progs/src/pollready.c:30` | `static unsigned long p_strlen(const char *s)` |
+| `p_write` | function | `progs/src/pollready.c:26` | `static long p_write(long fd, const char *s, long n)` |
+| `BUF` | macro | `progs/src/sbtone.c:26` | `#define BUF` |
+| `RATE` | macro | `progs/src/sbtone.c:25` | `#define RATE` |
+| `SYS_SB16_OPEN` | macro | `progs/src/sbtone.c:21` | `#define SYS_SB16_OPEN` |
+| `SYS_SB16_SUBMIT` | macro | `progs/src/sbtone.c:22` | `#define SYS_SB16_SUBMIT` |
+| `SYS_TIME` | macro | `progs/src/sbtone.c:23` | `#define SYS_TIME` |
+| `WINDOW_MS` | macro | `progs/src/sbtone.c:27` | `#define WINDOW_MS` |
+| `buffers` | function | `progs/src/sbtone.c:14` | `*  * Exit code is the number of submitted buffers (0 on failure to open).  */  #include <stdio.h>...` |
+| `main` | function | `progs/src/sbtone.c:36` | `int main(void)` |
+| `SC_ARENA` | macro | `progs/src/scfuzz.c:16` | `#define SC_ARENA` |
+| `SC_OPS` | macro | `progs/src/scfuzz.c:15` | `#define SC_OPS` |
+| `SC_PAGE` | macro | `progs/src/scfuzz.c:17` | `#define SC_PAGE` |
+| `SC_PAGES` | macro | `progs/src/scfuzz.c:18` | `#define SC_PAGES` |
+| `SC_T0_BASE` | macro | `progs/src/scfuzz.c:19` | `#define SC_T0_BASE` |
+| `SC_T0_N` | macro | `progs/src/scfuzz.c:20` | `#define SC_T0_N` |
+| `SC_T1_BASE` | macro | `progs/src/scfuzz.c:21` | `#define SC_T1_BASE` |
+| `SC_T1_N` | macro | `progs/src/scfuzz.c:22` | `#define SC_T1_N` |
+| `_start` | function | `progs/src/scfuzz.c:167` | `void _start(void)` |
+| `guest` | function | `progs/src/scfuzz.c:7` | `* the guest (the BDD timeout then talks). All fuzz maps stay inside  * one private 4 MB arena (pa...` |
+| `sc_exit` | function | `progs/src/scfuzz.c:61` | `static void sc_exit(long code)` |
+| `sc_fold` | function | `progs/src/scfuzz.c:76` | `static unsigned long sc_fold(unsigned long h, unsigned long v)` |
+| `sc_hex8` | function | `progs/src/scfuzz.c:88` | `static void sc_hex8(unsigned long v, char *out)` |
+| `sc_mprotect` | function | `progs/src/scfuzz.c:38` | `static long sc_mprotect(long addr, long len, long prot)` |
+| `sc_munmap` | function | `progs/src/scfuzz.c:49` | `static long sc_munmap(long addr, long len)` |
+| `sc_rng` | function | `progs/src/scfuzz.c:67` | `static unsigned long sc_rng(unsigned long *s)` |
+| `sc_thread1` | function | `progs/src/scfuzz.c:161` | `static void *sc_thread1(void *arg)` |
+| `sc_worker` | function | `progs/src/scfuzz.c:97` | `static unsigned long sc_worker(int me, unsigned long seed)` |
+| `sc_write` | function | `progs/src/scfuzz.c:53` | `static long sc_write(long fd, const char *s, long n)` |
+| `expand` | function | `progs/src/shell.py:30` | `def expand(line, env)` |
+| `main` | function | `progs/src/shell.py:36` | `def main()` |
+| `run_capture` | function | `progs/src/shell.py:20` | `def run_capture(cmd, args)` |
+| `SIGN_DESC_BYTES` | macro | `progs/src/sign.c:52` | `#define SIGN_DESC_BYTES` |
+| `SIGN_EHDR_SIZE` | macro | `progs/src/sign.c:48` | `#define SIGN_EHDR_SIZE` |
+| `SIGN_EM_X86_64` | macro | `progs/src/sign.c:44` | `#define SIGN_EM_X86_64` |
+| `SIGN_ET_DYN` | macro | `progs/src/sign.c:43` | `#define SIGN_ET_DYN` |
+| `SIGN_ET_EXEC` | macro | `progs/src/sign.c:42` | `#define SIGN_ET_EXEC` |
+| `SIGN_EXIT_FAIL` | macro | `progs/src/sign.c:40` | `#define SIGN_EXIT_FAIL` |
+| `SIGN_KEY_ID` | macro | `progs/src/sign.c:39` | `#define SIGN_KEY_ID` |
+| `SIGN_MAX_FILE` | macro | `progs/src/sign.c:56` | `#define SIGN_MAX_FILE` |
+| `SIGN_NOTE_HDR` | macro | `progs/src/sign.c:51` | `#define SIGN_NOTE_HDR` |
+| `SIGN_NOTE_TOTAL` | macro | `progs/src/sign.c:54` | `#define SIGN_NOTE_TOTAL` |
+| `SIGN_NOTE_TYPE` | macro | `progs/src/sign.c:55` | `#define SIGN_NOTE_TYPE` |
+| `SIGN_PHDR_SIZE` | macro | `progs/src/sign.c:49` | `#define SIGN_PHDR_SIZE` |
+| `SIGN_PT_LOAD` | macro | `progs/src/sign.c:45` | `#define SIGN_PT_LOAD` |
+| `SIGN_PT_NOTE` | macro | `progs/src/sign.c:46` | `#define SIGN_PT_NOTE` |
+| `SIGN_SEEK_END` | macro | `progs/src/sign.c:57` | `#define SIGN_SEEK_END` |
+| `SIGN_SHDR_SIZE` | macro | `progs/src/sign.c:50` | `#define SIGN_SHDR_SIZE` |
+| `SIGN_SHT_NOTE` | macro | `progs/src/sign.c:47` | `#define SIGN_SHT_NOTE` |
+| `SIGN_SIG_BYTES` | macro | `progs/src/sign.c:53` | `#define SIGN_SIG_BYTES` |
+| `below` | function | `progs/src/sign.c:195` | `* every other op below (`\|`, `<<`) is low-32 exact. */ static void sign_rotr(unsigned int *lo, un...` |
 | `bits` | function | `progs/src/sign.c:672` | `* values here always fit 32 bits (limbs below 2^16, carries and  * products below 2^32), so the s...` |
 | `fclose` | function | `progs/src/sign.c:31` | `int fclose();` |
 | `fe_add` | function | `progs/src/sign.c:617` | `static void fe_add(unsigned int *r, unsigned int *a, unsigned int *b)` |
@@ -355,146 +496,5 @@ Previous: [SYMBOLS_p23.md](SYMBOLS_p23.md)
 | `VEDIT_MAX_LINES` | macro | `progs/vedit/vedit.c:114` | `#define VEDIT_MAX_LINES` |
 | `VEDIT_MSG_MAX` | macro | `progs/vedit/vedit.c:120` | `#define VEDIT_MSG_MAX` |
 | `VEDIT_NBUF` | macro | `progs/vedit/vedit.c:251` | `#define VEDIT_NBUF` |
-| `VEDIT_PATH_MAX` | macro | `progs/vedit/vedit.c:144` | `#define VEDIT_PATH_MAX` |
-| `VEDIT_PROMPT_BINDCMD` | macro | `progs/vedit/vedit.c:328` | `#define VEDIT_PROMPT_BINDCMD` |
-| `VEDIT_PROMPT_BINDKEY` | macro | `progs/vedit/vedit.c:327` | `#define VEDIT_PROMPT_BINDKEY` |
-| `VEDIT_PROMPT_CMD` | macro | `progs/vedit/vedit.c:317` | `#define VEDIT_PROMPT_CMD` |
-| `VEDIT_PROMPT_FILTER` | macro | `progs/vedit/vedit.c:324` | `#define VEDIT_PROMPT_FILTER` |
-| `VEDIT_PROMPT_FIND` | macro | `progs/vedit/vedit.c:313` | `#define VEDIT_PROMPT_FIND` |
-| `VEDIT_PROMPT_GOTO` | macro | `progs/vedit/vedit.c:314` | `#define VEDIT_PROMPT_GOTO` |
-| `VEDIT_PROMPT_GREP` | macro | `progs/vedit/vedit.c:326` | `#define VEDIT_PROMPT_GREP` |
-| `VEDIT_PROMPT_ISEARCH_F` | macro | `progs/vedit/vedit.c:318` | `#define VEDIT_PROMPT_ISEARCH_F` |
-| `VEDIT_PROMPT_ISEARCH_R` | macro | `progs/vedit/vedit.c:319` | `#define VEDIT_PROMPT_ISEARCH_R` |
-| `VEDIT_PROMPT_LINK` | macro | `progs/vedit/vedit.c:316` | `#define VEDIT_PROMPT_LINK` |
-| `VEDIT_PROMPT_NAME` | macro | `progs/vedit/vedit.c:315` | `#define VEDIT_PROMPT_NAME` |
-| `VEDIT_PROMPT_QREP` | macro | `progs/vedit/vedit.c:322` | `#define VEDIT_PROMPT_QREP` |
-| `VEDIT_PROMPT_REP_NEW` | macro | `progs/vedit/vedit.c:321` | `#define VEDIT_PROMPT_REP_NEW` |
-| `VEDIT_PROMPT_REP_OLD` | macro | `progs/vedit/vedit.c:320` | `#define VEDIT_PROMPT_REP_OLD` |
-| `VEDIT_PROMPT_SELECT` | macro | `progs/vedit/vedit.c:325` | `#define VEDIT_PROMPT_SELECT` |
-| `VEDIT_PROMPT_SHELLCMD` | macro | `progs/vedit/vedit.c:323` | `#define VEDIT_PROMPT_SHELLCMD` |
-| `VEDIT_SH_ARGS` | macro | `progs/vedit/vedit.c:3276` | `#define VEDIT_SH_ARGS` |
-| `VEDIT_SH_LINE` | macro | `progs/vedit/vedit.c:3277` | `#define VEDIT_SH_LINE` |
-| `VEDIT_STATUS_MAX` | macro | `progs/vedit/vedit.c:142` | `#define VEDIT_STATUS_MAX` |
-| `VEDIT_ST_BLOCK` | macro | `progs/vedit/vedit.c:164` | `#define VEDIT_ST_BLOCK` |
-| `VEDIT_ST_LUABLK` | macro | `progs/vedit/vedit.c:167` | `#define VEDIT_ST_LUABLK` |
-| `VEDIT_ST_LUASTR` | macro | `progs/vedit/vedit.c:168` | `#define VEDIT_ST_LUASTR` |
-| `VEDIT_ST_PY3D` | macro | `progs/vedit/vedit.c:166` | `#define VEDIT_ST_PY3D` |
-| `VEDIT_ST_PY3S` | macro | `progs/vedit/vedit.c:165` | `#define VEDIT_ST_PY3S` |
-| `VEDIT_TAB_W` | macro | `progs/vedit/vedit.c:122` | `#define VEDIT_TAB_W` |
-| `VEDIT_TMP_F` | macro | `progs/vedit/vedit.c:3275` | `#define VEDIT_TMP_F` |
-| `VEDIT_TMP_IN` | macro | `progs/vedit/vedit.c:3274` | `#define VEDIT_TMP_IN` |
-| `VEDIT_TMP_OUT` | macro | `progs/vedit/vedit.c:3273` | `#define VEDIT_TMP_OUT` |
-| `VEDIT_TOOL_CVM` | macro | `progs/vedit/vedit.c:132` | `#define VEDIT_TOOL_CVM` |
-| `VEDIT_TOOL_LD` | macro | `progs/vedit/vedit.c:130` | `#define VEDIT_TOOL_LD` |
-| `VEDIT_TOOL_LISP` | macro | `progs/vedit/vedit.c:135` | `#define VEDIT_TOOL_LISP` |
-| `VEDIT_TOOL_LUA` | macro | `progs/vedit/vedit.c:133` | `#define VEDIT_TOOL_LUA` |
-| `VEDIT_TOOL_MINIGCC` | macro | `progs/vedit/vedit.c:129` | `#define VEDIT_TOOL_MINIGCC` |
-| `VEDIT_TOOL_PY` | macro | `progs/vedit/vedit.c:134` | `#define VEDIT_TOOL_PY` |
-| `VEDIT_TOOL_SIGN` | macro | `progs/vedit/vedit.c:131` | `#define VEDIT_TOOL_SIGN` |
-| `VEDIT_UI_MEMORY` | macro | `progs/vedit/vedit.c:125` | `#define VEDIT_UI_MEMORY` |
-| `VEDIT_WORD_MAX` | macro | `progs/vedit/vedit.c:121` | `#define VEDIT_WORD_MAX` |
-| `definitions` | function | `progs/vedit/vedit.c:268` | `* definitions (C99, one file, no headers). */ static void vedit_str_case(char *s, int mode);` |
-| `main` | function | `progs/vedit/vedit.c:4839` | `int main(int argc, char **argv)` |
-| `separators` | function | `progs/vedit/vedit.c:403` | `* allow_quote exists because C digit separators (1'000'000) are not  * valid in Python/Lua number...` |
-| `strcmp` | function | `progs/vedit/vedit.c:3196` | `strcmp(name, "describe-bindings") == 0)` |
-| `vedit_ansi_for` | function | `progs/vedit/vedit.c:3746` | `static void vedit_ansi_for(int col)` |
-| `vedit_backspace` | function | `progs/vedit/vedit.c:847` | `static void vedit_backspace(void)` |
-| `vedit_base_of` | function | `progs/vedit/vedit.c:2269` | `static int vedit_base_of(const char *fname, char *dst, size_t cap)` |
-| `vedit_buf_alloc` | function | `progs/vedit/vedit.c:1179` | `static int vedit_buf_alloc(int idx)` |
-| `vedit_c_bg` | function | `progs/vedit/vedit.c:183` | `static struct nk_color vedit_c_bg(void)` |
-| `vedit_c_comment` | function | `progs/vedit/vedit.c:188` | `static struct nk_color vedit_c_comment(void)` |
-| `vedit_c_cursor` | function | `progs/vedit/vedit.c:194` | `static struct nk_color vedit_c_cursor(void)` |
-| `vedit_c_default` | function | `progs/vedit/vedit.c:185` | `static struct nk_color vedit_c_default(void)` |
-| `vedit_c_gutter` | function | `progs/vedit/vedit.c:184` | `static struct nk_color vedit_c_gutter(void)` |
-| `vedit_c_header` | function | `progs/vedit/vedit.c:191` | `static struct nk_color vedit_c_header(void)` |
-| `vedit_c_headtxt` | function | `progs/vedit/vedit.c:192` | `static struct nk_color vedit_c_headtxt(void)` |
-| `vedit_c_keyword` | function | `progs/vedit/vedit.c:186` | `static struct nk_color vedit_c_keyword(void)` |
-| `vedit_c_number` | function | `progs/vedit/vedit.c:189` | `static struct nk_color vedit_c_number(void)` |
-| `vedit_c_preproc` | function | `progs/vedit/vedit.c:190` | `static struct nk_color vedit_c_preproc(void)` |
-| `vedit_c_status` | function | `progs/vedit/vedit.c:193` | `static struct nk_color vedit_c_status(void)` |
-| `vedit_c_string` | function | `progs/vedit/vedit.c:187` | `static struct nk_color vedit_c_string(void)` |
-| `vedit_case_word` | function | `progs/vedit/vedit.c:1451` | `static int vedit_case_word(int mode)` |
-| `vedit_clamp` | function | `progs/vedit/vedit.c:773` | `static void vedit_clamp(void)` |
-| `vedit_clip_get` | function | `progs/vedit/vedit.c:105` | `static long vedit_clip_get(char *out, long cap)` |
-| `vedit_clip_paste` | function | `progs/vedit/vedit.c:3353` | `static int vedit_clip_paste(void)` |
-| `vedit_clip_set` | function | `progs/vedit/vedit.c:97` | `static long vedit_clip_set(const char *s, long len)` |
-| `vedit_cmd_bind` | function | `progs/vedit/vedit.c:2941` | `static int vedit_cmd_bind(int key, int cmd)` |
-| `vedit_cmd_bound` | function | `progs/vedit/vedit.c:2957` | `static int vedit_cmd_bound(int key)` |
-| `vedit_cmd_exec` | function | `progs/vedit/vedit.c:2377` | `static void vedit_cmd_exec(const char *out, int kind)` |
-| `vedit_cmd_exec_id` | function | `progs/vedit/vedit.c:3008` | `static void vedit_cmd_exec_id(int id, const char *arg, int *quit,                               i...` |
-| `vedit_cmd_link` | function | `progs/vedit/vedit.c:2478` | `static void vedit_cmd_link(const char *fmt)` |
-| `vedit_cmd_lookup` | function | `progs/vedit/vedit.c:2873` | `static int vedit_cmd_lookup(const char *name)` |
-| `vedit_cmd_run` | function | `progs/vedit/vedit.c:2400` | `static void vedit_cmd_run(void)` |
-| `vedit_console_dump` | function | `progs/vedit/vedit.c:3754` | `static void vedit_console_dump(void)` |
-| `vedit_copy_region` | function | `progs/vedit/vedit.c:1269` | `static int vedit_copy_region(void)` |
-| `vedit_count` | macro | `progs/vedit/vedit.c:295` | `#define vedit_count` |
-| `vedit_count_open` | function | `progs/vedit/vedit.c:2813` | `static int vedit_count_open(void)` |
-| `vedit_count_words` | function | `progs/vedit/vedit.c:1579` | `static void vedit_count_words(void)` |
-| `vedit_cx` | macro | `progs/vedit/vedit.c:296` | `#define vedit_cx` |
-| `vedit_cy` | macro | `progs/vedit/vedit.c:297` | `#define vedit_cy` |
-| `vedit_delete_char` | function | `progs/vedit/vedit.c:883` | `static void vedit_delete_char(void)` |
-| `vedit_delete_line_at` | function | `progs/vedit/vedit.c:836` | `static void vedit_delete_line_at(int idx)` |
-| `vedit_dirty` | macro | `progs/vedit/vedit.c:300` | `#define vedit_dirty` |
-| `vedit_draw_row` | function | `progs/vedit/vedit.c:3870` | `static void vedit_draw_row(struct nk_command_buffer *canvas,                            struct nk...` |
-| `vedit_draw_ui` | function | `progs/vedit/vedit.c:3968` | `static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,                     ...` |
-| `vedit_fill_paragraph` | function | `progs/vedit/vedit.c:1814` | `static int vedit_fill_paragraph(void)` |
-| `vedit_filter_buffer` | function | `progs/vedit/vedit.c:3521` | `static void vedit_filter_buffer(const char *prog)` |
-| `vedit_find` | function | `progs/vedit/vedit.c:1898` | `static void vedit_find(const char *needle)` |
-| `vedit_first_open` | function | `progs/vedit/vedit.c:2793` | `static int vedit_first_open(void)` |
-| `vedit_fname` | macro | `progs/vedit/vedit.c:303` | `#define vedit_fname` |
-| `vedit_follow` | function | `progs/vedit/vedit.c:785` | `static void vedit_follow(void)` |
-| `vedit_getc_raw` | function | `progs/vedit/vedit.c:38` | `static long vedit_getc_raw(long blocking)` |
-| `vedit_goto_fence` | function | `progs/vedit/vedit.c:1513` | `static int vedit_goto_fence(void)` |
-| `vedit_grep` | function | `progs/vedit/vedit.c:3581` | `static void vedit_grep(const char *pat)` |
-| `vedit_gui_run` | function | `progs/vedit/vedit.c:4672` | `static void vedit_gui_run(void)` |
-| `vedit_has_ext` | function | `progs/vedit/vedit.c:2257` | `static int vedit_has_ext(const char *fname, const char *ext)` |
-| `vedit_help_text` | function | `progs/vedit/vedit.c:2992` | `static void vedit_help_text(void)` |
-| `vedit_hist_push` | function | `progs/vedit/vedit.c:1221` | `static void vedit_hist_push(const char *fname)` |
-| `vedit_hist_show` | function | `progs/vedit/vedit.c:2984` | `static void vedit_hist_show(void)` |
-| `vedit_hoff` | macro | `progs/vedit/vedit.c:299` | `#define vedit_hoff` |
-| `vedit_ink` | function | `progs/vedit/vedit.c:196` | `static struct nk_color vedit_ink(int col)` |
-| `vedit_insert_buf` | function | `progs/vedit/vedit.c:2183` | `static char *vedit_insert_buf(long size)` |
-| `vedit_insert_char` | function | `progs/vedit/vedit.c:798` | `static void vedit_insert_char(int c)` |
-| `vedit_insert_file` | function | `progs/vedit/vedit.c:2196` | `static int vedit_insert_file(const char *fname)` |
-| `vedit_is_alpha` | function | `progs/vedit/vedit.c:368` | `static int vedit_is_alpha(int c)` |
-| `vedit_is_digit` | function | `progs/vedit/vedit.c:372` | `static int vedit_is_digit(int c)` |
-| `vedit_is_kw` | function | `progs/vedit/vedit.c:380` | `static int vedit_is_kw(const char *table, const char *word, int wlen)` |
-| `vedit_is_wordc` | function | `progs/vedit/vedit.c:376` | `static int vedit_is_wordc(int c)` |
-| `vedit_isearch_step` | function | `progs/vedit/vedit.c:1714` | `static void vedit_isearch_step(void)` |
-| `vedit_join` | function | `progs/vedit/vedit.c:2290` | `static int vedit_join(const char *dir, const char *base, const char *ext,                       c...` |
-| `vedit_kbd_raw` | function | `progs/vedit/vedit.c:80` | `static long vedit_kbd_raw(int on)` |
-| `vedit_key` | function | `progs/vedit/vedit.c:4422` | `static void vedit_key(int key, int *quit, int *save_and_quit)` |
-| `vedit_kill_line` | function | `progs/vedit/vedit.c:1345` | `static int vedit_kill_line(void)` |
-| `vedit_kill_region` | function | `progs/vedit/vedit.c:1299` | `static int vedit_kill_region(void)` |
-| `vedit_lang` | macro | `progs/vedit/vedit.c:302` | `#define vedit_lang` |
-| `vedit_lang_name` | function | `progs/vedit/vedit.c:479` | `static const char *vedit_lang_name(int lang)` |
-| `vedit_lang_of` | function | `progs/vedit/vedit.c:458` | `static int vedit_lang_of(const char *fname)` |
-| `vedit_link_fmt` | function | `progs/vedit/vedit.c:2307` | `static int vedit_link_fmt(const char *s)` |
-| `vedit_list_buffers` | function | `progs/vedit/vedit.c:2965` | `static void vedit_list_buffers(void)` |
-| `vedit_load` | function | `progs/vedit/vedit.c:2051` | `static int vedit_load(void)` |
-| `vedit_magic_atom` | function | `progs/vedit/vedit.c:1066` | `static int vedit_magic_atom(const char *pat, int c, int *atom_len)` |
-| `vedit_magic_class` | function | `progs/vedit/vedit.c:1044` | `static int vedit_magic_class(int c, const char *cls)` |
-| `vedit_magic_here` | function | `progs/vedit/vedit.c:1089` | `static int vedit_magic_here(const char *text, const char *pat, int *mlen)` |
-| `vedit_magic_match` | function | `progs/vedit/vedit.c:1150` | `static int vedit_magic_match(const char *text, const char *pat, int *mlen)` |
-| `vedit_match_at` | function | `progs/vedit/vedit.c:1622` | `static int vedit_match_at(int row, int col, const char *needle, int magic,                       ...` |
-| `vedit_msg` | macro | `progs/vedit/vedit.c:304` | `#define vedit_msg` |
-| `vedit_next_buffer` | function | `progs/vedit/vedit.c:1207` | `static int vedit_next_buffer(void)` |
-| `vedit_next_error` | function | `progs/vedit/vedit.c:3644` | `static void vedit_next_error(void)` |
-| `vedit_next_pane` | function | `progs/vedit/vedit.c:2841` | `static void vedit_next_pane(void)` |
-| `vedit_open_in_buffer` | function | `progs/vedit/vedit.c:2122` | `static int vedit_open_in_buffer(const char *fname, int ro)` |
-| `vedit_pane_load` | function | `progs/vedit/vedit.c:2801` | `static void vedit_pane_load(int p)` |
-| `vedit_pane_save` | function | `progs/vedit/vedit.c:2785` | `static void vedit_pane_save(int p)` |
-| `vedit_parse_key` | function | `progs/vedit/vedit.c:2889` | `static int vedit_parse_key(const char *s)` |
-| `vedit_parse_keyword` | function | `progs/vedit/vedit.c:441` | `static int vedit_parse_keyword(const char *t, int len, int i,                                cons...` |
-| `vedit_parse_number` | function | `progs/vedit/vedit.c:426` | `static int vedit_parse_number(const char *t, int len, int i, int allow_quote)` |
-| `vedit_pool` | macro | `progs/vedit/vedit.c:293` | `#define vedit_pool` |
-| `vedit_print_log` | function | `progs/vedit/vedit.c:2320` | `static void vedit_print_log(const char *path)` |
-| `vedit_prompt_find` | function | `progs/vedit/vedit.c:3795` | `static void vedit_prompt_find(void)` |
-| `vedit_prompt_isearch` | function | `progs/vedit/vedit.c:3799` | `static void vedit_prompt_isearch(int dir)` |
-| `vedit_prompt_key` | function | `progs/vedit/vedit.c:4248` | `static void vedit_prompt_key(int key)` |
-| `vedit_prompt_open` | function | `progs/vedit/vedit.c:3784` | `static void vedit_prompt_open(const char *label, int mode)` |
-| `vedit_prompt_saveas` | function | `progs/vedit/vedit.c:3860` | `static void vedit_prompt_saveas(void)` |
-| `vedit_qrep_answer` | function | `progs/vedit/vedit.c:3821` | `static void vedit_qrep_answer(int key)` |
-| `vedit_qrep_next` | function | `progs/vedit/vedit.c:3809` | `static void vedit_qrep_next(int r, int c)` |
 
 Next: [SYMBOLS_p25.md](SYMBOLS_p25.md)

@@ -16,7 +16,7 @@ Log each answered question here so the wiki compounds. Format: question, answer,
 
 - Status: unanswered
 
-### Q: How are the 137 files in 'headers: kernel' related to each other?
+### Q: How are the 146 files in 'headers: kernel' related to each other?
 
 - Status: unanswered
 

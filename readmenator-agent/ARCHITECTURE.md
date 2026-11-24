@@ -7,8 +7,13 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `arch/x86/boot/stage1.S` -> `headers/arch/x86/boot/bootdefs.h`
 - `arch/x86/boot/stage2.S` -> `headers/arch/x86/boot/bootdefs.h`
 - `arch/x86/syscall_entry.S` -> `headers/syscall_asm.h`
+- `drivers/ahci.c` -> `headers/arch/x86/hal_io.h`
+- `drivers/ahci.c` -> `headers/driver.h`
+- `drivers/ahci.c` -> `headers/drivers/ahci.h`
+- `drivers/ahci.c` -> `headers/drivers/pci.h`
 - `drivers/block.c` -> `headers/block.h`
 - `drivers/block.c` -> `headers/driver.h`
+- `drivers/block.c` -> `headers/drivers/ahci.h`
 - `drivers/block.c` -> `headers/drivers/nvme.h`
 - `drivers/block.c` -> `headers/drivers/usbblk.h`
 - `drivers/block.c` -> `headers/drivers/virtio_blk.h`
@@ -120,6 +125,7 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `kernel.c` -> `headers/arch/x86/cpu_setup.h`
 - `kernel.c` -> `headers/arch/x86/msr.h`
 - `kernel.c` -> `headers/block.h`
+- `kernel.c` -> `headers/drivers/ahci.h`
 - `kernel.c` -> `headers/drivers/usbblk.h`
 - `kernel.c` -> `headers/drivers/usbhid.h`
 - `kernel.c` -> `headers/drivers/virtio_blk.h`
@@ -218,6 +224,7 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `kernel/sched.c` -> `headers/vga_fb.h`
 - `kernel/seccomp_bpf.c` -> `headers/seccomp_bpf.h`
 - `kernel/serial.c` -> `headers/sched.h`
+- `kernel/shell.c` -> `headers/drivers/ahci.h`
 - `kernel/shell.c` -> `headers/drivers/kbd.h`
 - `kernel/shell.c` -> `headers/drivers/nvme.h`
 - `kernel/shell.c` -> `headers/drivers/usbblk.h`
@@ -489,12 +496,5 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `progs/doomgeneric/doomgeneric_sdl.c` -> `progs/pokemon/minios_stubs/SDL.h`
 - `progs/doomgeneric/doomgeneric_soso.c` -> `kernel/string.c`
 - `progs/doomgeneric/doomgeneric_soso.c` -> `progs/doomgeneric/doomgeneric.h`
-- `progs/doomgeneric/doomgeneric_soso.c` -> `progs/doomgeneric/doomkeys.h`
-- `progs/doomgeneric/doomgeneric_soso.c` -> `progs/doomgeneric/m_argv.h`
-- `progs/doomgeneric/doomgeneric_sosox.c` -> `kernel/string.c`
-- `progs/doomgeneric/doomgeneric_sosox.c` -> `progs/doomgeneric/doomgeneric.h`
-- `progs/doomgeneric/doomgeneric_sosox.c` -> `progs/doomgeneric/doomkeys.h`
-- `progs/doomgeneric/doomgeneric_sosox.c` -> `progs/doomgeneric/m_argv.h`
-- `progs/doomgeneric/doomgeneric_win.c` -> `progs/doomgeneric/doomgeneric.h`
 
 Next: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)

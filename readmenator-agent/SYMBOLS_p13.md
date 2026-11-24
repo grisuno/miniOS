@@ -1,8 +1,149 @@
-# Symbols (page 13 of 27)
+# Symbols (page 13 of 28)
 Previous: [SYMBOLS_p12.md](SYMBOLS_p12.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `DMAP_HISTORY` | macro | `progs/doomedit/doomedit.c:111` | `#define DMAP_HISTORY` |
+| `DMAP_LEVEL_COUNT` | macro | `progs/doomedit/doomedit.c:70` | `#define DMAP_LEVEL_COUNT` |
+| `DMAP_LIGHT` | macro | `progs/doomedit/doomedit.c:102` | `#define DMAP_LIGHT` |
+| `DMAP_MAX_H` | macro | `progs/doomedit/doomedit.c:56` | `#define DMAP_MAX_H` |
+| `DMAP_MAX_LINES` | macro | `progs/doomedit/doomedit.c:79` | `#define DMAP_MAX_LINES` |
+| `DMAP_MAX_SECTORS` | macro | `progs/doomedit/doomedit.c:72` | `#define DMAP_MAX_SECTORS` |
+| `DMAP_MAX_THINGS` | macro | `progs/doomedit/doomedit.c:81` | `#define DMAP_MAX_THINGS` |
+| `DMAP_MAX_VERTS` | macro | `progs/doomedit/doomedit.c:80` | `#define DMAP_MAX_VERTS` |
+| `DMAP_MAX_W` | macro | `progs/doomedit/doomedit.c:55` | `#define DMAP_MAX_W` |
+| `DMAP_MOVE_STEP` | macro | `progs/doomedit/doomedit.c:77` | `#define DMAP_MOVE_STEP` |
+| `DMAP_NODE_LEAF` | macro | `progs/doomedit/doomedit.c:106` | `#define DMAP_NODE_LEAF` |
+| `DMAP_NO_SIDE` | macro | `progs/doomedit/doomedit.c:88` | `#define DMAP_NO_SIDE` |
+| `DMAP_NUKE_FLAT` | macro | `progs/doomedit/doomedit.c:96` | `#define DMAP_NUKE_FLAT` |
+| `DMAP_NUKE_FLOOR` | macro | `progs/doomedit/doomedit.c:99` | `#define DMAP_NUKE_FLOOR` |
+| `DMAP_NUKE_MID` | macro | `progs/doomedit/doomedit.c:93` | `#define DMAP_NUKE_MID` |
+| `DMAP_NUKE_SPECIAL` | macro | `progs/doomedit/doomedit.c:105` | `#define DMAP_NUKE_SPECIAL` |
+| `DMAP_PANEL_MIN_H` | macro | `progs/doomedit/doomedit.c:62` | `#define DMAP_PANEL_MIN_H` |
+| `DMAP_PLAYER_TYPE` | macro | `progs/doomedit/doomedit.c:82` | `#define DMAP_PLAYER_TYPE` |
+| `DMAP_PREV_H` | macro | `progs/doomedit/doomedit.c:64` | `#define DMAP_PREV_H` |
+| `DMAP_PREV_W` | macro | `progs/doomedit/doomedit.c:63` | `#define DMAP_PREV_W` |
+| `DMAP_RANDOM_ATTEMPTS` | macro | `progs/doomedit/doomedit.c:71` | `#define DMAP_RANDOM_ATTEMPTS` |
+| `DMAP_ROOM_MAX` | macro | `progs/doomedit/doomedit.c:73` | `#define DMAP_ROOM_MAX` |
+| `DMAP_ROOM_TRIES` | macro | `progs/doomedit/doomedit.c:74` | `#define DMAP_ROOM_TRIES` |
+| `DMAP_SAVE_TXT` | macro | `progs/doomedit/doomedit.c:108` | `#define DMAP_SAVE_TXT` |
+| `DMAP_SAVE_WAD` | macro | `progs/doomedit/doomedit.c:109` | `#define DMAP_SAVE_WAD` |
+| `DMAP_SLOTS` | macro | `progs/doomedit/doomedit.c:69` | `#define DMAP_SLOTS` |
+| `DMAP_STATUS_MAX` | macro | `progs/doomedit/doomedit.c:68` | `#define DMAP_STATUS_MAX` |
+| `DMAP_THING_OPT` | macro | `progs/doomedit/doomedit.c:83` | `#define DMAP_THING_OPT` |
+| `DMAP_TILE` | macro | `progs/doomedit/doomedit.c:59` | `#define DMAP_TILE` |
+| `DMAP_TITLE` | macro | `progs/doomedit/doomedit.c:110` | `#define DMAP_TITLE` |
+| `DMAP_TOOL_DOOM` | macro | `progs/doomedit/doomedit.c:107` | `#define DMAP_TOOL_DOOM` |
+| `DMAP_TOOL_FILL` | macro | `progs/doomedit/doomedit.c:115` | `#define DMAP_TOOL_FILL` |
+| `DMAP_TOOL_LINE` | macro | `progs/doomedit/doomedit.c:113` | `#define DMAP_TOOL_LINE` |
+| `DMAP_TOOL_PAINT` | macro | `progs/doomedit/doomedit.c:112` | `#define DMAP_TOOL_PAINT` |
+| `DMAP_TOOL_RECT` | macro | `progs/doomedit/doomedit.c:114` | `#define DMAP_TOOL_RECT` |
+| `DMAP_TURN_STEP` | macro | `progs/doomedit/doomedit.c:76` | `#define DMAP_TURN_STEP` |
+| `DMAP_UI_MEMORY` | macro | `progs/doomedit/doomedit.c:65` | `#define DMAP_UI_MEMORY` |
+| `DMAP_UNUSED_TEX` | macro | `progs/doomedit/doomedit.c:94` | `#define DMAP_UNUSED_TEX` |
+| `DMAP_WAD_MAX` | macro | `progs/doomedit/doomedit.c:66` | `#define DMAP_WAD_MAX` |
+| `DMAP_WALL_MID` | macro | `progs/doomedit/doomedit.c:89` | `#define DMAP_WALL_MID` |
+| `areas` | function | `progs/doomedit/doomedit.c:1150` | `* floor areas (doors stand alone, dark and nukage never merge);` |
+| `dmap_apply_cell` | function | `progs/doomedit/doomedit.c:326` | `static void dmap_apply_cell(int r, int c, int brush)` |
+| `dmap_brush_combo` | function | `progs/doomedit/doomedit.c:1760` | `static void dmap_brush_combo(struct nk_context *ctx)` |
+| `dmap_build_wad` | function | `progs/doomedit/doomedit.c:1343` | `static int dmap_build_wad(int *size_out)` |
+| `dmap_canvas` | function | `progs/doomedit/doomedit.c:1773` | `static void dmap_canvas(struct nk_context *ctx)` |
+| `dmap_cell_class` | function | `progs/doomedit/doomedit.c:583` | `static int dmap_cell_class(int cell)` |
+| `dmap_cell_color` | function | `progs/doomedit/doomedit.c:594` | `static struct nk_color dmap_cell_color(int cell)` |
+| `dmap_check_wad` | function | `progs/doomedit/doomedit.c:1675` | `static int dmap_check_wad(const char *path)` |
+| `dmap_demo_room` | function | `progs/doomedit/doomedit.c:2110` | `static void dmap_demo_room(void)` |
+| `dmap_draw_line` | function | `progs/doomedit/doomedit.c:383` | `static void dmap_draw_line(int r0, int c0, int r1, int c1, int cell)` |
+| `dmap_draw_rect` | function | `progs/doomedit/doomedit.c:411` | `static void dmap_draw_rect(int r0, int c0, int r1, int c1, int cell)` |
+| `dmap_export_wad` | function | `progs/doomedit/doomedit.c:1660` | `static int dmap_export_wad(const char *path)` |
+| `dmap_flood_fill` | function | `progs/doomedit/doomedit.c:344` | `static void dmap_flood_fill(int sr, int sc, int new_cell)` |
+| `dmap_free_cell` | function | `progs/doomedit/doomedit.c:857` | `static int dmap_free_cell(int *r, int *c)` |
+| `dmap_gui_run` | function | `progs/doomedit/doomedit.c:2056` | `static void dmap_gui_run(void)` |
+| `dmap_is_wall` | function | `progs/doomedit/doomedit.c:570` | `static int dmap_is_wall(int row, int col)` |
+| `dmap_label_regions` | function | `progs/doomedit/doomedit.c:1163` | `static int dmap_label_regions(void)` |
+| `dmap_load` | function | `progs/doomedit/doomedit.c:1077` | `static int dmap_load(const char *path)` |
+| `dmap_load_preset` | function | `progs/doomedit/doomedit.c:816` | `static int dmap_load_preset(int idx)` |
+| `dmap_new` | function | `progs/doomedit/doomedit.c:639` | `static void dmap_new(void)` |
+| `dmap_path_len` | function | `progs/doomedit/doomedit.c:480` | `static int dmap_path_len(void)` |
+| `dmap_preview` | function | `progs/doomedit/doomedit.c:1693` | `static void dmap_preview(struct nk_command_buffer *canvas, struct nk_rect area)` |
+| `dmap_preview_row` | function | `progs/doomedit/doomedit.c:1863` | `static void dmap_preview_row(struct nk_context *ctx)` |
+| `dmap_push_history` | function | `progs/doomedit/doomedit.c:272` | `static void dmap_push_history(void)` |
+| `dmap_rand` | function | `progs/doomedit/doomedit.c:849` | `static unsigned dmap_rand(void)` |
+| `dmap_random_map` | function | `progs/doomedit/doomedit.c:871` | `static void dmap_random_map(unsigned seed)` |
+| `dmap_reach_map` | function | `progs/doomedit/doomedit.c:440` | `static void dmap_reach_map(int seen[DMAP_MAX_H][DMAP_MAX_W])` |
+| `dmap_recenter` | function | `progs/doomedit/doomedit.c:804` | `static void dmap_recenter(void)` |
+| `dmap_redo` | function | `progs/doomedit/doomedit.c:307` | `static int dmap_redo(void)` |
+| `dmap_run_map` | function | `progs/doomedit/doomedit.c:1898` | `static void dmap_run_map(void)` |
+| `dmap_save_txt` | function | `progs/doomedit/doomedit.c:1129` | `static int dmap_save_txt(const char *path)` |
+| `dmap_scancode` | function | `progs/doomedit/doomedit.c:2037` | `static void dmap_scancode(int code, int make, int e0, void *ud)` |
+| `dmap_seg_angle` | function | `progs/doomedit/doomedit.c:1333` | `static int dmap_seg_angle(int dx, int dy)` |
+| `dmap_selftest` | function | `progs/doomedit/doomedit.c:2122` | `static int dmap_selftest(void)` |
+| `dmap_spawn` | function | `progs/doomedit/doomedit.c:550` | `static long dmap_spawn(const char *path, int argc, const char **argv)` |
+| `dmap_stats` | function | `progs/doomedit/doomedit.c:522` | `static void dmap_stats(char *out, int max)` |
+| `dmap_thing_type` | function | `progs/doomedit/doomedit.c:165` | `static int dmap_thing_type(int cell)` |
+| `dmap_undo` | function | `progs/doomedit/doomedit.c:289` | `static int dmap_undo(void)` |
+| `dmap_validate` | function | `progs/doomedit/doomedit.c:1244` | `static int dmap_validate(char *msg, int max)` |
+| `dmap_vga` | function | `progs/doomedit/doomedit.c:561` | `static long dmap_vga(int on)` |
+| `dmap_w16` | function | `progs/doomedit/doomedit.c:1318` | `static void dmap_w16(int v)` |
+| `dmap_w32` | function | `progs/doomedit/doomedit.c:1322` | `static void dmap_w32(int v)` |
+| `dmap_w8` | function | `progs/doomedit/doomedit.c:1317` | `static void dmap_w8(unsigned v)` |
+| `dmap_walkable` | function | `progs/doomedit/doomedit.c:577` | `static int dmap_walkable(int cell)` |
+| `dmap_wtex` | function | `progs/doomedit/doomedit.c:1326` | `static void dmap_wtex(const char *name)` |
+| `main` | function | `progs/doomedit/doomedit.c:2246` | `int main(int argc, char **argv)` |
+| `AM_Drawer` | function | `progs/doomgeneric/am_map.c:1338` | `void AM_Drawer (void)` |
+| `AM_LevelInit` | function | `progs/doomgeneric/am_map.c:518` | `void AM_LevelInit(void)` |
+| `AM_NUMMARKPOINTS` | macro | `progs/doomgeneric/am_map.c:87` | `#define AM_NUMMARKPOINTS` |
+| `AM_Responder` | function | `progs/doomgeneric/am_map.c:595` | `boolean AM_Responder ( event_t*	ev )` |
+| `AM_Start` | function | `progs/doomgeneric/am_map.c:554` | `void AM_Start (void)` |
+| `AM_Stop` | function | `progs/doomgeneric/am_map.c:541` | `void AM_Stop (void)` |
+| `AM_Ticker` | function | `progs/doomgeneric/am_map.c:806` | `void AM_Ticker (void)` |
+| `AM_activateNewScale` | function | `progs/doomgeneric/am_map.c:293` | `void AM_activateNewScale(void)` |
+| `AM_addMark` | function | `progs/doomgeneric/am_map.c:343` | `void AM_addMark(void)` |
+| `AM_changeWindowLoc` | function | `progs/doomgeneric/am_map.c:395` | `void AM_changeWindowLoc(void)` |
+| `AM_changeWindowScale` | function | `progs/doomgeneric/am_map.c:742` | `void AM_changeWindowScale(void)` |
+| `AM_clearFB` | function | `progs/doomgeneric/am_map.c:834` | `void AM_clearFB(int color)` |
+| `AM_clearMarks` | function | `progs/doomgeneric/am_map.c:505` | `void AM_clearMarks(void)` |
+| `AM_clipMline` | function | `progs/doomgeneric/am_map.c:848` | `boolean AM_clipMline ( mline_t*	ml,   fline_t*	fl )` |
+| `AM_doFollowPlayer` | function | `progs/doomgeneric/am_map.c:761` | `void AM_doFollowPlayer(void)` |
+| `AM_drawCrosshair` | function | `progs/doomgeneric/am_map.c:1332` | `void AM_drawCrosshair(int color)` |
+| `AM_drawFline` | function | `progs/doomgeneric/am_map.c:984` | `void AM_drawFline ( fline_t*	fl,   int		color )` |
+| `AM_drawGrid` | function | `progs/doomgeneric/am_map.c:1077` | `void AM_drawGrid(int color)` |
+| `AM_drawLineCharacter` | function | `progs/doomgeneric/am_map.c:1198` | `void AM_drawLineCharacter ( mline_t*	lineguy,   int		lineguylines,   fixed_t	scale,   angle_t	ang...` |
+| `AM_drawMarks` | function | `progs/doomgeneric/am_map.c:1311` | `void AM_drawMarks(void)` |
+| `AM_drawMline` | function | `progs/doomgeneric/am_map.c:1062` | `void AM_drawMline ( mline_t*	ml,   int		color )` |
+| `AM_drawPlayers` | function | `progs/doomgeneric/am_map.c:1246` | `void AM_drawPlayers(void)` |
+| `AM_drawThings` | function | `progs/doomgeneric/am_map.c:1291` | `void AM_drawThings ( int	colors,   int 	colorrange)` |
+| `AM_drawWalls` | function | `progs/doomgeneric/am_map.c:1123` | `void AM_drawWalls(void)` |
+| `AM_findMinMaxBoundaries` | function | `progs/doomgeneric/am_map.c:355` | `void AM_findMinMaxBoundaries(void)` |
+| `AM_getIslope` | function | `progs/doomgeneric/am_map.c:275` | `void AM_getIslope ( mline_t*	ml,   islope_t*	is )` |
+| `AM_initVariables` | function | `progs/doomgeneric/am_map.c:424` | `void AM_initVariables(void)` |
+| `AM_loadPics` | function | `progs/doomgeneric/am_map.c:480` | `void AM_loadPics(void)` |
+| `AM_maxOutWindowScale` | function | `progs/doomgeneric/am_map.c:583` | `void AM_maxOutWindowScale(void)` |
+| `AM_minOutWindowScale` | function | `progs/doomgeneric/am_map.c:573` | `void AM_minOutWindowScale(void)` |
+| `AM_restoreScaleAndLoc` | function | `progs/doomgeneric/am_map.c:319` | `void AM_restoreScaleAndLoc(void)` |
+| `AM_rotate` | function | `progs/doomgeneric/am_map.c:1179` | `void AM_rotate ( fixed_t*	x,   fixed_t*	y,   angle_t	a )` |
+| `AM_saveScaleAndLoc` | function | `progs/doomgeneric/am_map.c:308` | `void AM_saveScaleAndLoc(void)` |
+| `AM_unloadPics` | function | `progs/doomgeneric/am_map.c:493` | `void AM_unloadPics(void)` |
+| `AM_updateLightLev` | function | `progs/doomgeneric/am_map.c:785` | `void AM_updateLightLev(void)` |
+| `BACKGROUND` | macro | `progs/doomgeneric/am_map.c:66` | `#define BACKGROUND` |
+| `BLACK` | macro | `progs/doomgeneric/am_map.c:62` | `#define BLACK` |
+| `BLUERANGE` | macro | `progs/doomgeneric/am_map.c:53` | `#define BLUERANGE` |
+| `BLUES` | macro | `progs/doomgeneric/am_map.c:52` | `#define BLUES` |
+| `BROWNRANGE` | macro | `progs/doomgeneric/am_map.c:59` | `#define BROWNRANGE` |
+| `BROWNS` | macro | `progs/doomgeneric/am_map.c:58` | `#define BROWNS` |
+| `CDWALLCOLORS` | macro | `progs/doomgeneric/am_map.c:75` | `#define CDWALLCOLORS` |
+| `CDWALLRANGE` | macro | `progs/doomgeneric/am_map.c:76` | `#define CDWALLRANGE` |
+| `CXMTOF` | macro | `progs/doomgeneric/am_map.c:105` | `#define CXMTOF(x)` |
+| `CYMTOF` | macro | `progs/doomgeneric/am_map.c:106` | `#define CYMTOF(y)` |
+| `DOOUTCODE` | macro | `progs/doomgeneric/am_map.c:869` | `#define DOOUTCODE(oc, mx, my)` |
+| `FDWALLCOLORS` | macro | `progs/doomgeneric/am_map.c:73` | `#define FDWALLCOLORS` |
+| `FDWALLRANGE` | macro | `progs/doomgeneric/am_map.c:74` | `#define FDWALLRANGE` |
+| `FTOM` | macro | `progs/doomgeneric/am_map.c:102` | `#define FTOM(x)` |
+| `F_PANINC` | macro | `progs/doomgeneric/am_map.c:93` | `#define F_PANINC` |
+| `GRAYS` | macro | `progs/doomgeneric/am_map.c:56` | `#define GRAYS` |
+| `GRAYSRANGE` | macro | `progs/doomgeneric/am_map.c:57` | `#define GRAYSRANGE` |
+| `GREENRANGE` | macro | `progs/doomgeneric/am_map.c:55` | `#define GREENRANGE` |
+| `GREENS` | macro | `progs/doomgeneric/am_map.c:54` | `#define GREENS` |
+| `GRIDCOLORS` | macro | `progs/doomgeneric/am_map.c:81` | `#define GRIDCOLORS` |
 | `GRIDRANGE` | macro | `progs/doomgeneric/am_map.c:82` | `#define GRIDRANGE` |
 | `INITSCALEMTOF` | macro | `progs/doomgeneric/am_map.c:90` | `#define INITSCALEMTOF` |
 | `LINE_NEVERSEE` | macro | `progs/doomgeneric/am_map.c:109` | `#define LINE_NEVERSEE` |
@@ -355,146 +496,5 @@ Previous: [SYMBOLS_p12.md](SYMBOLS_p12.md)
 | `__D_ITEMS__` | macro | `progs/doomgeneric/d_items.h:21` | `#define __D_ITEMS__` |
 | `weaponinfo` | variable | `progs/doomgeneric/d_items.h:39` | `extern weaponinfo_t weaponinfo[NUMWEAPONS];` |
 | `weaponinfo_t` | struct | `progs/doomgeneric/d_items.h:28` | `` |
-| `AddDoomWadPath` | function | `progs/doomgeneric/d_iwad.c:518` | `static void AddDoomWadPath(void)` |
-| `AddIWADDir` | function | `progs/doomgeneric/d_iwad.c:64` | `static void AddIWADDir(char *dir)` |
-| `BuildIWADDirList` | function | `progs/doomgeneric/d_iwad.c:569` | `static void BuildIWADDirList(void)` |
-| `CheckCollectorsEdition` | function | `progs/doomgeneric/d_iwad.c:270` | `static void CheckCollectorsEdition(void)` |
-| `CheckDOSDefaults` | function | `progs/doomgeneric/d_iwad.c:364` | `static void CheckDOSDefaults(void)` |
-| `CheckDirectoryHasIWAD` | function | `progs/doomgeneric/d_iwad.c:408` | `static char *CheckDirectoryHasIWAD(char *dir, char *iwadname)` |
-| `CheckSteamEdition` | function | `progs/doomgeneric/d_iwad.c:297` | `static void CheckSteamEdition(void)` |
-| `CheckSteamGUSPatches` | function | `progs/doomgeneric/d_iwad.c:324` | `static void CheckSteamGUSPatches(void)` |
-| `CheckUninstallStrings` | function | `progs/doomgeneric/d_iwad.c:236` | `static void CheckUninstallStrings(void)` |
-| `D_FindAllIWADs` | function | `progs/doomgeneric/d_iwad.c:757` | `const iwad_t **D_FindAllIWADs(int mask)` |
-| `D_FindIWAD` | function | `progs/doomgeneric/d_iwad.c:704` | `char *D_FindIWAD(int mask, GameMission_t *mission)` |
-| `D_FindWADByName` | function | `progs/doomgeneric/d_iwad.c:630` | `char *D_FindWADByName(char *name)` |
-| `D_SaveGameIWADName` | function | `progs/doomgeneric/d_iwad.c:796` | `char *D_SaveGameIWADName(GameMission_t gamemission)` |
-| `D_SuggestGameName` | function | `progs/doomgeneric/d_iwad.c:835` | `char *D_SuggestGameName(GameMission_t mission, GameMode_t mode)` |
-| `D_SuggestIWADName` | function | `progs/doomgeneric/d_iwad.c:820` | `char *D_SuggestIWADName(GameMission_t mission, GameMode_t mode)` |
-| `D_TryFindWADByName` | function | `progs/doomgeneric/d_iwad.c:681` | `char *D_TryFindWADByName(char *filename)` |
-| `DirIsFile` | function | `progs/doomgeneric/d_iwad.c:391` | `static boolean DirIsFile(char *path, char *filename)` |
-| `GetRegistryString` | function | `progs/doomgeneric/d_iwad.c:192` | `static char *GetRegistryString(registry_value_t *reg_val)` |
-| `IdentifyIWADByName` | function | `progs/doomgeneric/d_iwad.c:477` | `static GameMission_t IdentifyIWADByName(char *name, int mask)` |
-| `MAX_IWAD_DIRS` | macro | `progs/doomgeneric/d_iwad.c:58` | `#define MAX_IWAD_DIRS` |
-| `SOFTWARE_KEY` | macro | `progs/doomgeneric/d_iwad.c:102` | `#define SOFTWARE_KEY` |
-| `SOFTWARE_KEY` | macro | `progs/doomgeneric/d_iwad.c:104` | `#define SOFTWARE_KEY` |
-| `STEAM_BFG_GUS_PATCHES` | macro | `progs/doomgeneric/d_iwad.c:189` | `#define STEAM_BFG_GUS_PATCHES` |
-| `SearchDirectoryForIWAD` | function | `progs/doomgeneric/d_iwad.c:449` | `static char *SearchDirectoryForIWAD(char *dir, int mask, GameMission_t *mission)` |
-| `UNINSTALLER_STRING` | macro | `progs/doomgeneric/d_iwad.c:90` | `#define UNINSTALLER_STRING` |
-| `WIN32_LEAN_AND_MEAN` | macro | `progs/doomgeneric/d_iwad.c:80` | `#define WIN32_LEAN_AND_MEAN` |
-| `registry_value_t` | struct | `progs/doomgeneric/d_iwad.c:83` | `` |
-| `D_CheckCorrectIWAD` | function | `progs/doomgeneric/d_iwad.h:49` | `void D_CheckCorrectIWAD(GameMission_t mission);` |
-| `D_FindAllIWADs` | function | `progs/doomgeneric/d_iwad.h:45` | `const iwad_t **D_FindAllIWADs(int mask);` |
-| `D_FindIWAD` | function | `progs/doomgeneric/d_iwad.h:44` | `char *D_FindIWAD(int mask, GameMission_t *mission);` |
-| `D_FindWADByName` | function | `progs/doomgeneric/d_iwad.h:42` | `char *D_FindWADByName(char *filename);` |
-| `D_SaveGameIWADName` | function | `progs/doomgeneric/d_iwad.h:46` | `char *D_SaveGameIWADName(GameMission_t gamemission);` |
-| `D_SuggestGameName` | function | `progs/doomgeneric/d_iwad.h:48` | `char *D_SuggestGameName(GameMission_t mission, GameMode_t mode);` |
-| `D_SuggestIWADName` | function | `progs/doomgeneric/d_iwad.h:47` | `char *D_SuggestIWADName(GameMission_t mission, GameMode_t mode);` |
-| `D_TryFindWADByName` | function | `progs/doomgeneric/d_iwad.h:43` | `char *D_TryFindWADByName(char *filename);` |
-| `IWAD_MASK_DOOM` | macro | `progs/doomgeneric/d_iwad.h:24` | `#define IWAD_MASK_DOOM` |
-| `IWAD_MASK_HERETIC` | macro | `progs/doomgeneric/d_iwad.h:30` | `#define IWAD_MASK_HERETIC` |
-| `IWAD_MASK_HEXEN` | macro | `progs/doomgeneric/d_iwad.h:31` | `#define IWAD_MASK_HEXEN` |
-| `IWAD_MASK_STRIFE` | macro | `progs/doomgeneric/d_iwad.h:32` | `#define IWAD_MASK_STRIFE` |
-| `__D_IWAD__` | macro | `progs/doomgeneric/d_iwad.h:20` | `#define __D_IWAD__` |
-| `iwad_t` | struct | `progs/doomgeneric/d_iwad.h:34` | `` |
-| `BlockUntilStart` | function | `progs/doomgeneric/d_loop.c:315` | `static void BlockUntilStart(net_gamesettings_t *settings,                             netgame_sta...` |
-| `BuildNewTic` | function | `progs/doomgeneric/d_loop.c:136` | `static boolean BuildNewTic(void)` |
-| `D_Disconnected` | function | `progs/doomgeneric/d_loop.c:252` | `static void D_Disconnected(void)` |
-| `D_InitNetGame` | function | `progs/doomgeneric/d_loop.c:452` | `boolean D_InitNetGame(net_connect_data_t *connect_data)` |
-| `D_QuitNetGame` | function | `progs/doomgeneric/d_loop.c:560` | `void D_QuitNetGame (void)` |
-| `D_ReceiveTic` | function | `progs/doomgeneric/d_loop.c:271` | `void D_ReceiveTic(ticcmd_t *ticcmds, boolean *players_mask)` |
-| `D_RegisterLoopCallbacks` | function | `progs/doomgeneric/d_loop.c:822` | `void D_RegisterLoopCallbacks(loop_interface_t *i)` |
-| `D_StartGameLoop` | function | `progs/doomgeneric/d_loop.c:305` | `void D_StartGameLoop(void)` |
-| `D_StartNetGame` | function | `progs/doomgeneric/d_loop.c:340` | `void D_StartNetGame(net_gamesettings_t *settings,                     netgame_startup_callback_t ...` |
-| `GetAdjustedTime` | function | `progs/doomgeneric/d_loop.c:119` | `static int GetAdjustedTime(void)` |
-| `GetLowTic` | function | `progs/doomgeneric/d_loop.c:568` | `static int GetLowTic(void)` |
-| `NetUpdate` | function | `progs/doomgeneric/d_loop.c:203` | `void NetUpdate (void)` |
-| `OldNetSync` | function | `progs/doomgeneric/d_loop.c:591` | `static void OldNetSync(void)` |
-| `PlayersInGame` | function | `progs/doomgeneric/d_loop.c:642` | `static boolean PlayersInGame(void)` |
-| `SinglePlayerClear` | function | `progs/doomgeneric/d_loop.c:689` | `static void SinglePlayerClear(ticcmd_set_t *set)` |
-| `TicdupSquash` | function | `progs/doomgeneric/d_loop.c:672` | `static void TicdupSquash(ticcmd_set_t *set)` |
-| `TryRunTics` | function | `progs/doomgeneric/d_loop.c:706` | `void TryRunTics (void)` |
-| `ticcmd_set_t` | struct | `progs/doomgeneric/d_loop.c:45` | `` |
-| `D_QuitNetGame` | function | `progs/doomgeneric/d_loop.h:59` | `void D_QuitNetGame (void);` |
-| `D_RegisterLoopCallbacks` | function | `progs/doomgeneric/d_loop.h:52` | `void D_RegisterLoopCallbacks(loop_interface_t *i);` |
-| `D_StartGameLoop` | function | `progs/doomgeneric/d_loop.h:65` | `void D_StartGameLoop(void);` |
-| `D_StartNetGame` | function | `progs/doomgeneric/d_loop.h:74` | `void D_StartNetGame(net_gamesettings_t *settings, netgame_startup_callback_t callback);` |
-| `NetUpdate` | function | `progs/doomgeneric/d_loop.h:55` | `void NetUpdate (void);` |
-| `TryRunTics` | function | `progs/doomgeneric/d_loop.h:62` | `void TryRunTics (void);` |
-| `__D_LOOP__` | macro | `progs/doomgeneric/d_loop.h:20` | `#define __D_LOOP__` |
-| `loop_interface_t` | struct | `progs/doomgeneric/d_loop.h:31` | `` |
-| `singletics` | variable | `progs/doomgeneric/d_loop.h:77` | `extern boolean singletics;` |
-| `ticdup` | variable | `progs/doomgeneric/d_loop.h:78` | `extern int gametic, ticdup;` |
-| `D_AddFile` | function | `progs/doomgeneric/d_main.c:883` | `static boolean D_AddFile(char *filename)` |
-| `D_AdvanceDemo` | function | `progs/doomgeneric/d_main.c:511` | `void D_AdvanceDemo (void)` |
-| `D_BindVariables` | function | `progs/doomgeneric/d_main.c:335` | `void D_BindVariables(void)` |
-| `D_CheckNetGame` | function | `progs/doomgeneric/d_main.c:132` | `void D_CheckNetGame(void);` |
-| `D_ConnectNetGame` | function | `progs/doomgeneric/d_main.c:131` | `void D_ConnectNetGame(void);` |
-| `D_Display` | function | `progs/doomgeneric/d_main.c:169` | `void D_Display (void)` |
-| `D_DoAdvanceDemo` | function | `progs/doomgeneric/d_main.c:521` | `void D_DoAdvanceDemo (void)` |
-| `D_DoomLoop` | function | `progs/doomgeneric/d_main.c:408` | `void D_DoomLoop (void)` |
-| `D_DoomMain` | function | `progs/doomgeneric/d_main.c:1178` | `void D_DoomMain (void)` |
-| `D_Endoom` | function | `progs/doomgeneric/d_main.c:1082` | `static void D_Endoom(void)` |
-| `D_GrabMouseCallback` | function | `progs/doomgeneric/d_main.c:388` | `boolean D_GrabMouseCallback(void)` |
-| `D_IdentifyVersion` | function | `progs/doomgeneric/d_main.c:737` | `void D_IdentifyVersion(void)` |
-| `D_PageDrawer` | function | `progs/doomgeneric/d_main.c:501` | `void D_PageDrawer (void)` |
-| `D_PageTicker` | function | `progs/doomgeneric/d_main.c:490` | `void D_PageTicker (void)` |
-| `D_ProcessEvents` | function | `progs/doomgeneric/d_main.c:139` | `void D_ProcessEvents (void)` |
-| `D_SetGameDescription` | function | `progs/doomgeneric/d_main.c:820` | `void D_SetGameDescription(void)` |
-| `D_StartTitle` | function | `progs/doomgeneric/d_main.c:609` | `void D_StartTitle (void)` |
-| `GetGameName` | function | `progs/doomgeneric/d_main.c:658` | `static char *GetGameName(char *gamename)` |
-| `InitGameVersion` | function | `progs/doomgeneric/d_main.c:963` | `static void InitGameVersion(void)` |
-| `LoadIwadDeh` | function | `progs/doomgeneric/d_main.c:1105` | `static void LoadIwadDeh(void)` |
-| `PrintDehackedBanners` | function | `progs/doomgeneric/d_main.c:918` | `void PrintDehackedBanners(void)` |
-| `PrintGameVersion` | function | `progs/doomgeneric/d_main.c:1065` | `void PrintGameVersion(void)` |
-| `R_ExecuteSetViewSize` | function | `progs/doomgeneric/d_main.c:167` | `void R_ExecuteSetViewSize (void);` |
-| `SetMissionForPackName` | function | `progs/doomgeneric/d_main.c:701` | `static void SetMissionForPackName(char *pack_name)` |
-| `forwardmove` | variable | `progs/doomgeneric/d_main.c:1351` | `extern int forwardmove[2];` |
-| `inhelpscreens` | variable | `progs/doomgeneric/d_main.c:106` | `extern boolean inhelpscreens;` |
-| `setsizeneeded` | variable | `progs/doomgeneric/d_main.c:165` | `extern boolean setsizeneeded;` |
-| `showMessages` | variable | `progs/doomgeneric/d_main.c:166` | `extern int showMessages;` |
-| `sidemove` | variable | `progs/doomgeneric/d_main.c:1352` | `extern int sidemove[2];` |
-| `D_AdvanceDemo` | function | `progs/doomgeneric/d_main.h:38` | `void D_AdvanceDemo (void);` |
-| `D_DoAdvanceDemo` | function | `progs/doomgeneric/d_main.h:39` | `void D_DoAdvanceDemo (void);` |
-| `D_PageDrawer` | function | `progs/doomgeneric/d_main.h:37` | `void D_PageDrawer (void);` |
-| `D_PageTicker` | function | `progs/doomgeneric/d_main.h:36` | `void D_PageTicker (void);` |
-| `D_ProcessEvents` | function | `progs/doomgeneric/d_main.h:30` | `void D_ProcessEvents (void);` |
-| `D_StartTitle` | function | `progs/doomgeneric/d_main.h:40` | `void D_StartTitle (void);` |
-| `__D_MAIN__` | macro | `progs/doomgeneric/d_main.h:21` | `#define __D_MAIN__` |
-| `gameaction` | variable | `progs/doomgeneric/d_main.h:46` | `extern gameaction_t gameaction;` |
-| `D_GameMissionString` | function | `progs/doomgeneric/d_mode.c:182` | `char *D_GameMissionString(GameMission_t mission)` |
-| `D_GetNumEpisodes` | function | `progs/doomgeneric/d_mode.c:103` | `int D_GetNumEpisodes(GameMission_t mission, GameMode_t mode)` |
-| `D_IsEpisodeMap` | function | `progs/doomgeneric/d_mode.c:161` | `boolean D_IsEpisodeMap(GameMission_t mission)` |
-| `D_ValidEpisodeMap` | function | `progs/doomgeneric/d_mode.c:65` | `boolean D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode,                           int e...` |
-| `D_ValidGameMode` | function | `progs/doomgeneric/d_mode.c:50` | `boolean D_ValidGameMode(GameMission_t mission, GameMode_t mode)` |
-| `D_ValidGameVersion` | function | `progs/doomgeneric/d_mode.c:135` | `boolean D_ValidGameVersion(GameMission_t mission, GameVersion_t version)` |
-| `D_GameMissionString` | function | `progs/doomgeneric/d_mode.h:95` | `char *D_GameMissionString(GameMission_t mission);` |
-| `D_GetNumEpisodes` | function | `progs/doomgeneric/d_mode.h:93` | `int D_GetNumEpisodes(GameMission_t mission, GameMode_t mode);` |
-| `__D_MODE__` | macro | `progs/doomgeneric/d_mode.h:21` | `#define __D_MODE__` |
-| `D_CheckNetGame` | function | `progs/doomgeneric/d_net.c:240` | `void D_CheckNetGame (void)` |
-| `D_ConnectNetGame` | function | `progs/doomgeneric/d_net.c:215` | `void D_ConnectNetGame(void)` |
-| `InitConnectData` | function | `progs/doomgeneric/d_net.c:159` | `static void InitConnectData(net_connect_data_t *connect_data)` |
-| `LoadGameSettings` | function | `progs/doomgeneric/d_net.c:108` | `static void LoadGameSettings(net_gamesettings_t *settings)` |
-| `PlayerQuitGame` | function | `progs/doomgeneric/d_net.c:45` | `static void PlayerQuitGame(player_t *player)` |
-| `RunTic` | function | `progs/doomgeneric/d_net.c:71` | `static void RunTic(ticcmd_t *cmds, boolean *ingame)` |
-| `SaveGameSettings` | function | `progs/doomgeneric/d_net.c:139` | `static void SaveGameSettings(net_gamesettings_t *settings)` |
-| `advancedemo` | variable | `progs/doomgeneric/d_net.c:73` | `extern boolean advancedemo;` |
-| `__D_PLAYER__` | macro | `progs/doomgeneric/d_player.h:21` | `#define __D_PLAYER__` |
-| `mo` | type_alias | `progs/doomgeneric/d_player.h:78` | `typedef struct player_s { mobj_t* mo;` |
-| `player_s` | struct | `progs/doomgeneric/d_player.h:78` | `` |
-| `wbplayerstruct_t` | struct | `progs/doomgeneric/d_player.h:168` | `` |
-| `wbstartstruct_t` | struct | `progs/doomgeneric/d_player.h:182` | `` |
-| `__D_TEXTUR__` | macro | `progs/doomgeneric/d_textur.h:22` | `#define __D_TEXTUR__` |
-| `pic_t` | struct | `progs/doomgeneric/d_textur.h:33` | `` |
-| `__D_THINK__` | macro | `progs/doomgeneric/d_think.h:23` | `#define __D_THINK__` |
-| `prev` | type_alias | `progs/doomgeneric/d_think.h:58` | `typedef struct thinker_s { struct thinker_s* prev;` |
-| `think_t` | type_alias | `progs/doomgeneric/d_think.h:54` | `typedef actionf_t think_t;` |
-| `thinker_s` | struct | `progs/doomgeneric/d_think.h:58` | `` |
-| `__D_TICCMD__` | macro | `progs/doomgeneric/d_ticcmd.h:22` | `#define __D_TICCMD__` |
-| `ticcmd_t` | struct | `progs/doomgeneric/d_ticcmd.h:32` | `` |
-| `DEH_Checksum` | function | `progs/doomgeneric/deh_main.h:40` | `void DEH_Checksum(sha1_digest_t digest);` |
-| `DEH_LoadFile` | function | `progs/doomgeneric/deh_main.h:34` | `int DEH_LoadFile(char *filename);` |
-| `DEH_LoadLump` | function | `progs/doomgeneric/deh_main.h:35` | `int DEH_LoadLump(int lumpnum, boolean allow_long, boolean allow_error);` |
-| `DEH_LoadLumpByName` | function | `progs/doomgeneric/deh_main.h:36` | `int DEH_LoadLumpByName(char *name, boolean allow_long, boolean allow_error);` |
-| `DEH_MAIN_H` | macro | `progs/doomgeneric/deh_main.h:19` | `#define DEH_MAIN_H` |
 
 Next: [SYMBOLS_p14.md](SYMBOLS_p14.md)

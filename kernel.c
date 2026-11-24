@@ -19,6 +19,7 @@
 #include "drivers/xhci.h"
 #include "drivers/usbhid.h"
 #include "drivers/usbblk.h"
+#include "drivers/ahci.h"
 #include "sched.h"
 #include "vga_fb.h"
 #include "sb16.h"
@@ -298,7 +299,7 @@ void kmain(void) {
     pcache_init();
     minifs_init();
     bootlog_mark("block+minifs");
-    if (ide_present() || vblk_present() || ubk_present()) {
+    if (ide_present() || vblk_present() || ubk_present() || ahci_present()) {
         if (minifs_mount() < 0) {
             kprintf("minifs: no filesystem found on disk\n");
         }

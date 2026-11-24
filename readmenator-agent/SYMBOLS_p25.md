@@ -1,8 +1,149 @@
-# Symbols (page 25 of 27)
+# Symbols (page 25 of 28)
 Previous: [SYMBOLS_p24.md](SYMBOLS_p24.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `VEDIT_PATH_MAX` | macro | `progs/vedit/vedit.c:144` | `#define VEDIT_PATH_MAX` |
+| `VEDIT_PROMPT_BINDCMD` | macro | `progs/vedit/vedit.c:328` | `#define VEDIT_PROMPT_BINDCMD` |
+| `VEDIT_PROMPT_BINDKEY` | macro | `progs/vedit/vedit.c:327` | `#define VEDIT_PROMPT_BINDKEY` |
+| `VEDIT_PROMPT_CMD` | macro | `progs/vedit/vedit.c:317` | `#define VEDIT_PROMPT_CMD` |
+| `VEDIT_PROMPT_FILTER` | macro | `progs/vedit/vedit.c:324` | `#define VEDIT_PROMPT_FILTER` |
+| `VEDIT_PROMPT_FIND` | macro | `progs/vedit/vedit.c:313` | `#define VEDIT_PROMPT_FIND` |
+| `VEDIT_PROMPT_GOTO` | macro | `progs/vedit/vedit.c:314` | `#define VEDIT_PROMPT_GOTO` |
+| `VEDIT_PROMPT_GREP` | macro | `progs/vedit/vedit.c:326` | `#define VEDIT_PROMPT_GREP` |
+| `VEDIT_PROMPT_ISEARCH_F` | macro | `progs/vedit/vedit.c:318` | `#define VEDIT_PROMPT_ISEARCH_F` |
+| `VEDIT_PROMPT_ISEARCH_R` | macro | `progs/vedit/vedit.c:319` | `#define VEDIT_PROMPT_ISEARCH_R` |
+| `VEDIT_PROMPT_LINK` | macro | `progs/vedit/vedit.c:316` | `#define VEDIT_PROMPT_LINK` |
+| `VEDIT_PROMPT_NAME` | macro | `progs/vedit/vedit.c:315` | `#define VEDIT_PROMPT_NAME` |
+| `VEDIT_PROMPT_QREP` | macro | `progs/vedit/vedit.c:322` | `#define VEDIT_PROMPT_QREP` |
+| `VEDIT_PROMPT_REP_NEW` | macro | `progs/vedit/vedit.c:321` | `#define VEDIT_PROMPT_REP_NEW` |
+| `VEDIT_PROMPT_REP_OLD` | macro | `progs/vedit/vedit.c:320` | `#define VEDIT_PROMPT_REP_OLD` |
+| `VEDIT_PROMPT_SELECT` | macro | `progs/vedit/vedit.c:325` | `#define VEDIT_PROMPT_SELECT` |
+| `VEDIT_PROMPT_SHELLCMD` | macro | `progs/vedit/vedit.c:323` | `#define VEDIT_PROMPT_SHELLCMD` |
+| `VEDIT_SH_ARGS` | macro | `progs/vedit/vedit.c:3276` | `#define VEDIT_SH_ARGS` |
+| `VEDIT_SH_LINE` | macro | `progs/vedit/vedit.c:3277` | `#define VEDIT_SH_LINE` |
+| `VEDIT_STATUS_MAX` | macro | `progs/vedit/vedit.c:142` | `#define VEDIT_STATUS_MAX` |
+| `VEDIT_ST_BLOCK` | macro | `progs/vedit/vedit.c:164` | `#define VEDIT_ST_BLOCK` |
+| `VEDIT_ST_LUABLK` | macro | `progs/vedit/vedit.c:167` | `#define VEDIT_ST_LUABLK` |
+| `VEDIT_ST_LUASTR` | macro | `progs/vedit/vedit.c:168` | `#define VEDIT_ST_LUASTR` |
+| `VEDIT_ST_PY3D` | macro | `progs/vedit/vedit.c:166` | `#define VEDIT_ST_PY3D` |
+| `VEDIT_ST_PY3S` | macro | `progs/vedit/vedit.c:165` | `#define VEDIT_ST_PY3S` |
+| `VEDIT_TAB_W` | macro | `progs/vedit/vedit.c:122` | `#define VEDIT_TAB_W` |
+| `VEDIT_TMP_F` | macro | `progs/vedit/vedit.c:3275` | `#define VEDIT_TMP_F` |
+| `VEDIT_TMP_IN` | macro | `progs/vedit/vedit.c:3274` | `#define VEDIT_TMP_IN` |
+| `VEDIT_TMP_OUT` | macro | `progs/vedit/vedit.c:3273` | `#define VEDIT_TMP_OUT` |
+| `VEDIT_TOOL_CVM` | macro | `progs/vedit/vedit.c:132` | `#define VEDIT_TOOL_CVM` |
+| `VEDIT_TOOL_LD` | macro | `progs/vedit/vedit.c:130` | `#define VEDIT_TOOL_LD` |
+| `VEDIT_TOOL_LISP` | macro | `progs/vedit/vedit.c:135` | `#define VEDIT_TOOL_LISP` |
+| `VEDIT_TOOL_LUA` | macro | `progs/vedit/vedit.c:133` | `#define VEDIT_TOOL_LUA` |
+| `VEDIT_TOOL_MINIGCC` | macro | `progs/vedit/vedit.c:129` | `#define VEDIT_TOOL_MINIGCC` |
+| `VEDIT_TOOL_PY` | macro | `progs/vedit/vedit.c:134` | `#define VEDIT_TOOL_PY` |
+| `VEDIT_TOOL_SIGN` | macro | `progs/vedit/vedit.c:131` | `#define VEDIT_TOOL_SIGN` |
+| `VEDIT_UI_MEMORY` | macro | `progs/vedit/vedit.c:125` | `#define VEDIT_UI_MEMORY` |
+| `VEDIT_WORD_MAX` | macro | `progs/vedit/vedit.c:121` | `#define VEDIT_WORD_MAX` |
+| `definitions` | function | `progs/vedit/vedit.c:268` | `* definitions (C99, one file, no headers). */ static void vedit_str_case(char *s, int mode);` |
+| `main` | function | `progs/vedit/vedit.c:4839` | `int main(int argc, char **argv)` |
+| `separators` | function | `progs/vedit/vedit.c:403` | `* allow_quote exists because C digit separators (1'000'000) are not  * valid in Python/Lua number...` |
+| `strcmp` | function | `progs/vedit/vedit.c:3196` | `strcmp(name, "describe-bindings") == 0)` |
+| `vedit_ansi_for` | function | `progs/vedit/vedit.c:3746` | `static void vedit_ansi_for(int col)` |
+| `vedit_backspace` | function | `progs/vedit/vedit.c:847` | `static void vedit_backspace(void)` |
+| `vedit_base_of` | function | `progs/vedit/vedit.c:2269` | `static int vedit_base_of(const char *fname, char *dst, size_t cap)` |
+| `vedit_buf_alloc` | function | `progs/vedit/vedit.c:1179` | `static int vedit_buf_alloc(int idx)` |
+| `vedit_c_bg` | function | `progs/vedit/vedit.c:183` | `static struct nk_color vedit_c_bg(void)` |
+| `vedit_c_comment` | function | `progs/vedit/vedit.c:188` | `static struct nk_color vedit_c_comment(void)` |
+| `vedit_c_cursor` | function | `progs/vedit/vedit.c:194` | `static struct nk_color vedit_c_cursor(void)` |
+| `vedit_c_default` | function | `progs/vedit/vedit.c:185` | `static struct nk_color vedit_c_default(void)` |
+| `vedit_c_gutter` | function | `progs/vedit/vedit.c:184` | `static struct nk_color vedit_c_gutter(void)` |
+| `vedit_c_header` | function | `progs/vedit/vedit.c:191` | `static struct nk_color vedit_c_header(void)` |
+| `vedit_c_headtxt` | function | `progs/vedit/vedit.c:192` | `static struct nk_color vedit_c_headtxt(void)` |
+| `vedit_c_keyword` | function | `progs/vedit/vedit.c:186` | `static struct nk_color vedit_c_keyword(void)` |
+| `vedit_c_number` | function | `progs/vedit/vedit.c:189` | `static struct nk_color vedit_c_number(void)` |
+| `vedit_c_preproc` | function | `progs/vedit/vedit.c:190` | `static struct nk_color vedit_c_preproc(void)` |
+| `vedit_c_status` | function | `progs/vedit/vedit.c:193` | `static struct nk_color vedit_c_status(void)` |
+| `vedit_c_string` | function | `progs/vedit/vedit.c:187` | `static struct nk_color vedit_c_string(void)` |
+| `vedit_case_word` | function | `progs/vedit/vedit.c:1451` | `static int vedit_case_word(int mode)` |
+| `vedit_clamp` | function | `progs/vedit/vedit.c:773` | `static void vedit_clamp(void)` |
+| `vedit_clip_get` | function | `progs/vedit/vedit.c:105` | `static long vedit_clip_get(char *out, long cap)` |
+| `vedit_clip_paste` | function | `progs/vedit/vedit.c:3353` | `static int vedit_clip_paste(void)` |
+| `vedit_clip_set` | function | `progs/vedit/vedit.c:97` | `static long vedit_clip_set(const char *s, long len)` |
+| `vedit_cmd_bind` | function | `progs/vedit/vedit.c:2941` | `static int vedit_cmd_bind(int key, int cmd)` |
+| `vedit_cmd_bound` | function | `progs/vedit/vedit.c:2957` | `static int vedit_cmd_bound(int key)` |
+| `vedit_cmd_exec` | function | `progs/vedit/vedit.c:2377` | `static void vedit_cmd_exec(const char *out, int kind)` |
+| `vedit_cmd_exec_id` | function | `progs/vedit/vedit.c:3008` | `static void vedit_cmd_exec_id(int id, const char *arg, int *quit,                               i...` |
+| `vedit_cmd_link` | function | `progs/vedit/vedit.c:2478` | `static void vedit_cmd_link(const char *fmt)` |
+| `vedit_cmd_lookup` | function | `progs/vedit/vedit.c:2873` | `static int vedit_cmd_lookup(const char *name)` |
+| `vedit_cmd_run` | function | `progs/vedit/vedit.c:2400` | `static void vedit_cmd_run(void)` |
+| `vedit_console_dump` | function | `progs/vedit/vedit.c:3754` | `static void vedit_console_dump(void)` |
+| `vedit_copy_region` | function | `progs/vedit/vedit.c:1269` | `static int vedit_copy_region(void)` |
+| `vedit_count` | macro | `progs/vedit/vedit.c:295` | `#define vedit_count` |
+| `vedit_count_open` | function | `progs/vedit/vedit.c:2813` | `static int vedit_count_open(void)` |
+| `vedit_count_words` | function | `progs/vedit/vedit.c:1579` | `static void vedit_count_words(void)` |
+| `vedit_cx` | macro | `progs/vedit/vedit.c:296` | `#define vedit_cx` |
+| `vedit_cy` | macro | `progs/vedit/vedit.c:297` | `#define vedit_cy` |
+| `vedit_delete_char` | function | `progs/vedit/vedit.c:883` | `static void vedit_delete_char(void)` |
+| `vedit_delete_line_at` | function | `progs/vedit/vedit.c:836` | `static void vedit_delete_line_at(int idx)` |
+| `vedit_dirty` | macro | `progs/vedit/vedit.c:300` | `#define vedit_dirty` |
+| `vedit_draw_row` | function | `progs/vedit/vedit.c:3870` | `static void vedit_draw_row(struct nk_command_buffer *canvas,                            struct nk...` |
+| `vedit_draw_ui` | function | `progs/vedit/vedit.c:3968` | `static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,                     ...` |
+| `vedit_fill_paragraph` | function | `progs/vedit/vedit.c:1814` | `static int vedit_fill_paragraph(void)` |
+| `vedit_filter_buffer` | function | `progs/vedit/vedit.c:3521` | `static void vedit_filter_buffer(const char *prog)` |
+| `vedit_find` | function | `progs/vedit/vedit.c:1898` | `static void vedit_find(const char *needle)` |
+| `vedit_first_open` | function | `progs/vedit/vedit.c:2793` | `static int vedit_first_open(void)` |
+| `vedit_fname` | macro | `progs/vedit/vedit.c:303` | `#define vedit_fname` |
+| `vedit_follow` | function | `progs/vedit/vedit.c:785` | `static void vedit_follow(void)` |
+| `vedit_getc_raw` | function | `progs/vedit/vedit.c:38` | `static long vedit_getc_raw(long blocking)` |
+| `vedit_goto_fence` | function | `progs/vedit/vedit.c:1513` | `static int vedit_goto_fence(void)` |
+| `vedit_grep` | function | `progs/vedit/vedit.c:3581` | `static void vedit_grep(const char *pat)` |
+| `vedit_gui_run` | function | `progs/vedit/vedit.c:4672` | `static void vedit_gui_run(void)` |
+| `vedit_has_ext` | function | `progs/vedit/vedit.c:2257` | `static int vedit_has_ext(const char *fname, const char *ext)` |
+| `vedit_help_text` | function | `progs/vedit/vedit.c:2992` | `static void vedit_help_text(void)` |
+| `vedit_hist_push` | function | `progs/vedit/vedit.c:1221` | `static void vedit_hist_push(const char *fname)` |
+| `vedit_hist_show` | function | `progs/vedit/vedit.c:2984` | `static void vedit_hist_show(void)` |
+| `vedit_hoff` | macro | `progs/vedit/vedit.c:299` | `#define vedit_hoff` |
+| `vedit_ink` | function | `progs/vedit/vedit.c:196` | `static struct nk_color vedit_ink(int col)` |
+| `vedit_insert_buf` | function | `progs/vedit/vedit.c:2183` | `static char *vedit_insert_buf(long size)` |
+| `vedit_insert_char` | function | `progs/vedit/vedit.c:798` | `static void vedit_insert_char(int c)` |
+| `vedit_insert_file` | function | `progs/vedit/vedit.c:2196` | `static int vedit_insert_file(const char *fname)` |
+| `vedit_is_alpha` | function | `progs/vedit/vedit.c:368` | `static int vedit_is_alpha(int c)` |
+| `vedit_is_digit` | function | `progs/vedit/vedit.c:372` | `static int vedit_is_digit(int c)` |
+| `vedit_is_kw` | function | `progs/vedit/vedit.c:380` | `static int vedit_is_kw(const char *table, const char *word, int wlen)` |
+| `vedit_is_wordc` | function | `progs/vedit/vedit.c:376` | `static int vedit_is_wordc(int c)` |
+| `vedit_isearch_step` | function | `progs/vedit/vedit.c:1714` | `static void vedit_isearch_step(void)` |
+| `vedit_join` | function | `progs/vedit/vedit.c:2290` | `static int vedit_join(const char *dir, const char *base, const char *ext,                       c...` |
+| `vedit_kbd_raw` | function | `progs/vedit/vedit.c:80` | `static long vedit_kbd_raw(int on)` |
+| `vedit_key` | function | `progs/vedit/vedit.c:4422` | `static void vedit_key(int key, int *quit, int *save_and_quit)` |
+| `vedit_kill_line` | function | `progs/vedit/vedit.c:1345` | `static int vedit_kill_line(void)` |
+| `vedit_kill_region` | function | `progs/vedit/vedit.c:1299` | `static int vedit_kill_region(void)` |
+| `vedit_lang` | macro | `progs/vedit/vedit.c:302` | `#define vedit_lang` |
+| `vedit_lang_name` | function | `progs/vedit/vedit.c:479` | `static const char *vedit_lang_name(int lang)` |
+| `vedit_lang_of` | function | `progs/vedit/vedit.c:458` | `static int vedit_lang_of(const char *fname)` |
+| `vedit_link_fmt` | function | `progs/vedit/vedit.c:2307` | `static int vedit_link_fmt(const char *s)` |
+| `vedit_list_buffers` | function | `progs/vedit/vedit.c:2965` | `static void vedit_list_buffers(void)` |
+| `vedit_load` | function | `progs/vedit/vedit.c:2051` | `static int vedit_load(void)` |
+| `vedit_magic_atom` | function | `progs/vedit/vedit.c:1066` | `static int vedit_magic_atom(const char *pat, int c, int *atom_len)` |
+| `vedit_magic_class` | function | `progs/vedit/vedit.c:1044` | `static int vedit_magic_class(int c, const char *cls)` |
+| `vedit_magic_here` | function | `progs/vedit/vedit.c:1089` | `static int vedit_magic_here(const char *text, const char *pat, int *mlen)` |
+| `vedit_magic_match` | function | `progs/vedit/vedit.c:1150` | `static int vedit_magic_match(const char *text, const char *pat, int *mlen)` |
+| `vedit_match_at` | function | `progs/vedit/vedit.c:1622` | `static int vedit_match_at(int row, int col, const char *needle, int magic,                       ...` |
+| `vedit_msg` | macro | `progs/vedit/vedit.c:304` | `#define vedit_msg` |
+| `vedit_next_buffer` | function | `progs/vedit/vedit.c:1207` | `static int vedit_next_buffer(void)` |
+| `vedit_next_error` | function | `progs/vedit/vedit.c:3644` | `static void vedit_next_error(void)` |
+| `vedit_next_pane` | function | `progs/vedit/vedit.c:2841` | `static void vedit_next_pane(void)` |
+| `vedit_open_in_buffer` | function | `progs/vedit/vedit.c:2122` | `static int vedit_open_in_buffer(const char *fname, int ro)` |
+| `vedit_pane_load` | function | `progs/vedit/vedit.c:2801` | `static void vedit_pane_load(int p)` |
+| `vedit_pane_save` | function | `progs/vedit/vedit.c:2785` | `static void vedit_pane_save(int p)` |
+| `vedit_parse_key` | function | `progs/vedit/vedit.c:2889` | `static int vedit_parse_key(const char *s)` |
+| `vedit_parse_keyword` | function | `progs/vedit/vedit.c:441` | `static int vedit_parse_keyword(const char *t, int len, int i,                                cons...` |
+| `vedit_parse_number` | function | `progs/vedit/vedit.c:426` | `static int vedit_parse_number(const char *t, int len, int i, int allow_quote)` |
+| `vedit_pool` | macro | `progs/vedit/vedit.c:293` | `#define vedit_pool` |
+| `vedit_print_log` | function | `progs/vedit/vedit.c:2320` | `static void vedit_print_log(const char *path)` |
+| `vedit_prompt_find` | function | `progs/vedit/vedit.c:3795` | `static void vedit_prompt_find(void)` |
+| `vedit_prompt_isearch` | function | `progs/vedit/vedit.c:3799` | `static void vedit_prompt_isearch(int dir)` |
+| `vedit_prompt_key` | function | `progs/vedit/vedit.c:4248` | `static void vedit_prompt_key(int key)` |
+| `vedit_prompt_open` | function | `progs/vedit/vedit.c:3784` | `static void vedit_prompt_open(const char *label, int mode)` |
+| `vedit_prompt_saveas` | function | `progs/vedit/vedit.c:3860` | `static void vedit_prompt_saveas(void)` |
+| `vedit_qrep_answer` | function | `progs/vedit/vedit.c:3821` | `static void vedit_qrep_answer(int key)` |
+| `vedit_qrep_next` | function | `progs/vedit/vedit.c:3809` | `static void vedit_qrep_next(int r, int c)` |
 | `vedit_read_key_poll` | function | `progs/vedit/vedit.c:3692` | `static int vedit_read_key_poll(void)` |
 | `vedit_region` | function | `progs/vedit/vedit.c:1248` | `static int vedit_region(int *y0, int *x0, int *y1, int *x1)` |
 | `vedit_region_to_clip` | function | `progs/vedit/vedit.c:3383` | `static int vedit_region_to_clip(void)` |
@@ -355,146 +496,5 @@ Previous: [SYMBOLS_p24.md](SYMBOLS_p24.md)
 | `CHECK` | macro | `tests/test_blur.c:19` | `#define CHECK(cond, msg)` |
 | `GRID_H` | macro | `tests/test_blur.c:27` | `#define GRID_H` |
 | `GRID_W` | macro | `tests/test_blur.c:26` | `#define GRID_W` |
-| `main` | function | `tests/test_blur.c:29` | `int main(void)` |
-| `CHECK` | macro | `tests/test_chrome.c:16` | `#define CHECK(cond, msg)` |
-| `main` | function | `tests/test_chrome.c:23` | `int main(void)` |
-| `CHECK` | macro | `tests/test_dock.c:17` | `#define CHECK(cond, msg)` |
-| `main` | function | `tests/test_dock.c:24` | `int main(void)` |
-| `ExtendedLegendTests` | class | `tests/test_doom_pwad.py:255` | `class ExtendedLegendTests(TestCase)` |
-| `GridValidationTests` | class | `tests/test_doom_pwad.py:29` | `class GridValidationTests(TestCase)` |
-| `MultiSectorMutationTests` | class | `tests/test_doom_pwad.py:388` | `class MultiSectorMutationTests(TestCase)` |
-| `MultiSectorTests` | class | `tests/test_doom_pwad.py:317` | `class MultiSectorTests(TestCase)` |
-| `PwadLayoutTests` | class | `tests/test_doom_pwad.py:82` | `class PwadLayoutTests(TestCase)` |
-| `PwadMutationTests` | class | `tests/test_doom_pwad.py:181` | `class PwadMutationTests(TestCase)` |
-| `door_line` | method | `tests/test_doom_pwad.py:406` | `def door_line(self)` |
-| `lump_blob` | function | `tests/test_doom_pwad.py:310` | `def lump_blob(blob, idx)` |
-| `mutate_line` | method | `tests/test_doom_pwad.py:395` | `def mutate_line(self, idx, field, value)` |
-| `setUp` | method | `tests/test_doom_pwad.py:184` | `def setUp(self)` |
-| `setUp` | method | `tests/test_doom_pwad.py:391` | `def setUp(self)` |
-| `test_bad_magic_dies` | method | `tests/test_doom_pwad.py:188` | `def test_bad_magic_dies(self)` |
-| `test_dark_and_nukage_sector_props` | method | `tests/test_doom_pwad.py:355` | `def test_dark_and_nukage_sector_props(self)` |
-| `test_door_lines_are_tagged_openers` | method | `tests/test_doom_pwad.py:327` | `def test_door_lines_are_tagged_openers(self)` |
-| `test_door_room_builds_two_sectors` | method | `tests/test_doom_pwad.py:320` | `def test_door_room_builds_two_sectors(self)` |
-| `test_door_tag_zero_dies` | method | `tests/test_doom_pwad.py:418` | `def test_door_tag_zero_dies(self)` |
-| `test_every_legend_char_builds` | method | `tests/test_doom_pwad.py:273` | `def test_every_legend_char_builds(self)` |
-| `test_every_thing_id_matches_engine` | method | `tests/test_doom_pwad.py:278` | `def test_every_thing_id_matches_engine(self)` |
-| `test_exit_needs_wall` | method | `tests/test_doom_pwad.py:66` | `def test_exit_needs_wall(self)` |
-| `test_exit_on_every_side` | method | `tests/test_doom_pwad.py:141` | `def test_exit_on_every_side(self)` |
-| `test_exit_switch_pin` | method | `tests/test_doom_pwad.py:129` | `def test_exit_switch_pin(self)` |
-| `test_exit_tagged_dies` | method | `tests/test_doom_pwad.py:433` | `def test_exit_tagged_dies(self)` |
-| `test_header_pin` | method | `tests/test_doom_pwad.py:96` | `def test_header_pin(self)` |
-| `test_illegal_char_refused` | method | `tests/test_doom_pwad.py:51` | `def test_illegal_char_refused(self)` |
-| `test_lump_order_pin` | method | `tests/test_doom_pwad.py:103` | `def test_lump_order_pin(self)` |
-| `test_missing_exit_dies` | method | `tests/test_doom_pwad.py:230` | `def test_missing_exit_dies(self)` |
-| `test_missing_exit_refused` | method | `tests/test_doom_pwad.py:46` | `def test_missing_exit_refused(self)` |
-| `test_missing_player_refused` | method | `tests/test_doom_pwad.py:41` | `def test_missing_player_refused(self)` |
-| `test_new_legend_chars_build` | method | `tests/test_doom_pwad.py:382` | `def test_new_legend_chars_build(self)` |
-| `test_onesided_with_back_dies` | method | `tests/test_doom_pwad.py:428` | `def test_onesided_with_back_dies(self)` |
-| `test_open_boundary_dies` | method | `tests/test_doom_pwad.py:168` | `def test_open_boundary_dies(self)` |
-| `test_partial_record_dies` | method | `tests/test_doom_pwad.py:212` | `def test_partial_record_dies(self)` |
-| `test_pillar_room_stays_closed` | method | `tests/test_doom_pwad.py:154` | `def test_pillar_room_stays_closed(self)` |
-| `test_ragged_rows_refused` | method | `tests/test_doom_pwad.py:36` | `def test_ragged_rows_refused(self)` |
-| `test_reject_scales_with_sector_count` | method | `tests/test_doom_pwad.py:374` | `def test_reject_scales_with_sector_count(self)` |
-| `test_roundtrip_check` | method | `tests/test_doom_pwad.py:85` | `def test_roundtrip_check(self)` |
-| `test_swapped_lumps_die` | method | `tests/test_doom_pwad.py:198` | `def test_swapped_lumps_die(self)` |
-| `test_things_pin` | method | `tests/test_doom_pwad.py:115` | `def test_things_pin(self)` |
-| `test_truncated_file_dies` | method | `tests/test_doom_pwad.py:193` | `def test_truncated_file_dies(self)` |
-| `test_unknown_special_dies` | method | `tests/test_doom_pwad.py:423` | `def test_unknown_special_dies(self)` |
-| `test_unreachable_exit_refused` | method | `tests/test_doom_pwad.py:56` | `def test_unreachable_exit_refused(self)` |
-| `test_unterminated_blockmap_dies` | method | `tests/test_doom_pwad.py:243` | `def test_unterminated_blockmap_dies(self)` |
-| `test_valid_room_parses` | method | `tests/test_doom_pwad.py:32` | `def test_valid_room_parses(self)` |
-| `test_wild_vertex_dies` | method | `tests/test_doom_pwad.py:221` | `def test_wild_vertex_dies(self)` |
-| `main` | function | `tests/test_driver.c:65` | `int main(void)` |
-| `test_pcm_open` | function | `tests/test_driver.c:28` | `static void test_pcm_open(device_t *d)` |
-| `test_pcm_submit` | function | `tests/test_driver.c:33` | `static int test_pcm_submit(device_t *d, const unsigned char *pcm, unsigned len)` |
-| `test_read` | function | `tests/test_driver.c:15` | `static int test_read(device_t *d, unsigned lba, unsigned count, void *buf)` |
-| `test_tone` | function | `tests/test_driver.c:39` | `static void test_tone(device_t *d, unsigned freq)` |
-| `CHECK` | macro | `tests/test_ext4.c:135` | `#define CHECK(cond)` |
-| `EXT_FIX_BLOCKS` | macro | `tests/test_ext4.c:62` | `#define EXT_FIX_BLOCKS` |
-| `EXT_FIX_SIZE` | macro | `tests/test_ext4.c:63` | `#define EXT_FIX_SIZE` |
-| `block_disk_sectors` | function | `tests/test_ext4.c:119` | `unsigned long block_disk_sectors(void)` |
-| `block_read_sectors` | function | `tests/test_ext4.c:123` | `int block_read_sectors(unsigned lba, unsigned count, void *buf)` |
-| `e16` | function | `tests/test_ext4.c:143` | `static void e16(unsigned char *p, unsigned v)` |
-| `e32` | function | `tests/test_ext4.c:148` | `static void e32(unsigned char *p, unsigned long v)` |
-| `ext_fix_build` | function | `tests/test_ext4.c:192` | `static void ext_fix_build(void)` |
-| `ext_fix_de` | function | `tests/test_ext4.c:156` | `static unsigned ext_fix_de(unsigned char *d, unsigned off, const char *nm,                       ...` |
-| `ext_fix_inode` | function | `tests/test_ext4.c:168` | `static void ext_fix_inode(unsigned ino, unsigned mode, unsigned long size,                       ...` |
-| `ext_fix_x1` | function | `tests/test_ext4.c:180` | `static void ext_fix_x1(unsigned char *iblk, unsigned l0, unsigned p0,                        unsi...` |
-| `fs_resolve` | function | `tests/test_ext4.c:55` | `int fs_resolve(const char *path, char *out, unsigned cap)` |
-| `ide_present` | function | `tests/test_ext4.c:104` | `int ide_present(void)` |
-| `ide_read_sectors` | function | `tests/test_ext4.c:112` | `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf)` |
-| `ide_total_sectors` | function | `tests/test_ext4.c:108` | `unsigned int ide_total_sectors(void)` |
-| `kfree` | function | `tests/test_ext4.c:28` | `void kfree(void *ptr)` |
-| `kmalloc` | function | `tests/test_ext4.c:24` | `void *kmalloc(unsigned long size)` |
-| `kmemcpy` | function | `tests/test_ext4.c:47` | `void *kmemcpy(void *dst, const void *src, unsigned long n)` |
-| `kstrchr` | function | `tests/test_ext4.c:51` | `char *kstrchr(const char *s, int c)` |
-| `kstrlen` | function | `tests/test_ext4.c:32` | `unsigned long kstrlen(const char *s)` |
-| `kstrncmp` | function | `tests/test_ext4.c:36` | `int kstrncmp(const char *a, const char *b, unsigned long n)` |
-| `kstrncpy` | function | `tests/test_ext4.c:40` | `char *kstrncpy(char *dst, const char *src, unsigned long n)` |
-| `main` | function | `tests/test_ext4.c:421` | `int main(void)` |
-| `minifs_is_mounted` | function | `tests/test_ext4.c:81` | `int minifs_is_mounted(void)` |
-| `minifs_read` | function | `tests/test_ext4.c:96` | `int minifs_read(int ino, void *buf, unsigned off, unsigned len)` |
-| `minifs_resolve_path` | function | `tests/test_ext4.c:85` | `int minifs_resolve_path(const char *path)` |
-| `minifs_stat` | function | `tests/test_ext4.c:90` | `int minifs_stat(int ino, MiniFSInode *out)` |
-| `ramdisk_open` | function | `tests/test_ext4.c:68` | `RDFile *ramdisk_open(const char *name)` |
-| `ramdisk_read` | function | `tests/test_ext4.c:73` | `int ramdisk_read(RDFile *f, void *buf, unsigned offset, unsigned len)` |
-| `test_bad_magic` | function | `tests/test_ext4.c:412` | `static void test_bad_magic(void)` |
-| `test_image` | function | `tests/test_ext4.c:305` | `static void test_image(void)` |
-| `CHECK` | macro | `tests/test_fat32.c:137` | `#define CHECK(cond)` |
-| `FAT_FIX_SECTORS` | macro | `tests/test_fat32.c:58` | `#define FAT_FIX_SECTORS` |
-| `FAT_FIX_SIZE` | macro | `tests/test_fat32.c:59` | `#define FAT_FIX_SIZE` |
-| `block_disk_sectors` | function | `tests/test_fat32.c:121` | `unsigned long block_disk_sectors(void)` |
-| `block_read_sectors` | function | `tests/test_fat32.c:125` | `int block_read_sectors(unsigned lba, unsigned count, void *buf)` |
-| `fat_fix_build` | function | `tests/test_fat32.c:157` | `static void fat_fix_build(void)` |
-| `fs_resolve` | function | `tests/test_fat32.c:51` | `int fs_resolve(const char *path, char *out, unsigned cap)` |
-| `ide_present` | function | `tests/test_fat32.c:102` | `int ide_present(void)` |
-| `ide_read_sectors` | function | `tests/test_fat32.c:110` | `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf)` |
-| `ide_total_sectors` | function | `tests/test_fat32.c:106` | `unsigned int ide_total_sectors(void)` |
-| `kfree` | function | `tests/test_fat32.c:28` | `void kfree(void *ptr)` |
-| `kmalloc` | function | `tests/test_fat32.c:24` | `void *kmalloc(unsigned long size)` |
-| `kmemcpy` | function | `tests/test_fat32.c:47` | `void *kmemcpy(void *dst, const void *src, unsigned long n)` |
-| `kstrcmp` | function | `tests/test_fat32.c:117` | `int kstrcmp(const char *a, const char *b)` |
-| `kstrlen` | function | `tests/test_fat32.c:32` | `unsigned long kstrlen(const char *s)` |
-| `kstrncmp` | function | `tests/test_fat32.c:36` | `int kstrncmp(const char *a, const char *b, unsigned long n)` |
-| `kstrncpy` | function | `tests/test_fat32.c:40` | `char *kstrncpy(char *dst, const char *src, unsigned long n)` |
-| `main` | function | `tests/test_fat32.c:329` | `int main(void)` |
-| `minifs_is_mounted` | function | `tests/test_fat32.c:79` | `int minifs_is_mounted(void)` |
-| `minifs_read` | function | `tests/test_fat32.c:94` | `int minifs_read(int ino, void *buf, unsigned off, unsigned len)` |
-| `minifs_resolve_path` | function | `tests/test_fat32.c:83` | `int minifs_resolve_path(const char *path)` |
-| `minifs_stat` | function | `tests/test_fat32.c:88` | `int minifs_stat(int ino, MiniFSInode *out)` |
-| `ramdisk_open` | function | `tests/test_fat32.c:66` | `RDFile *ramdisk_open(const char *name)` |
-| `ramdisk_read` | function | `tests/test_fat32.c:71` | `int ramdisk_read(RDFile *f, void *buf, unsigned offset, unsigned len)` |
-| `st16` | function | `tests/test_fat32.c:145` | `static void st16(unsigned char *p, unsigned v)` |
-| `st32` | function | `tests/test_fat32.c:150` | `static void st32(unsigned char *p, unsigned long v)` |
-| `test_bad_magic` | function | `tests/test_fat32.c:320` | `static void test_bad_magic(void)` |
-| `test_image` | function | `tests/test_fat32.c:258` | `static void test_image(void)` |
-| `test_units` | function | `tests/test_fat32.c:236` | `static void test_units(void)` |
-| `CHECK` | macro | `tests/test_fault.c:28` | `#define CHECK(c, m)` |
-| `TRUSTED_DIR` | macro | `tests/test_fault.c:81` | `#define TRUSTED_DIR` |
-| `TRUSTED_LEN` | macro | `tests/test_fault.c:82` | `#define TRUSTED_LEN` |
-| `U_BASE` | macro | `tests/test_fault.c:31` | `#define U_BASE` |
-| `U_END` | macro | `tests/test_fault.c:32` | `#define U_END` |
-| `against` | function | `tests/test_fault.c:10` | `* after bounding against (END-BASE)/elemsz, so the product cannot * wrap past the range check);` |
-| `main` | function | `tests/test_fault.c:94` | `int main(void)` |
-| `normalize` | function | `tests/test_fault.c:52` | `static void normalize(const char *path, char *out, unsigned cap)` |
-| `path_trusted` | function | `tests/test_fault.c:83` | `static int path_trusted(const char *full)` |
-| `range_ok` | function | `tests/test_fault.c:35` | `static int range_ok(unsigned long p, unsigned long len)` |
-| `str_ok` | function | `tests/test_fault.c:41` | `static int str_ok(const unsigned char *mem, unsigned long p,                   unsigned long maxlen)` |
-| `CHECK` | macro | `tests/test_file_assoc.c:16` | `#define CHECK(cond, msg)` |
-| `T_EXT_MAX` | macro | `tests/test_file_assoc.c:23` | `#define T_EXT_MAX` |
-| `T_ICON_BIG` | macro | `tests/test_file_assoc.c:93` | `#define T_ICON_BIG` |
-| `T_ICON_SMALL` | macro | `tests/test_file_assoc.c:92` | `#define T_ICON_SMALL` |
-| `T_PROG_MAX` | macro | `tests/test_file_assoc.c:24` | `#define T_PROG_MAX` |
-| `main` | function | `tests/test_file_assoc.c:99` | `int main(void)` |
-| `t_assoc_line` | function | `tests/test_file_assoc.c:46` | `static int t_assoc_line(const char *line, char *ext, char *prog)` |
-| `t_ext_of` | function | `tests/test_file_assoc.c:26` | `static void t_ext_of(const char *fname, char *dst, unsigned cap)` |
-| `t_icon_kind` | function | `tests/test_file_assoc.c:80` | `static int t_icon_kind(const char *fname, int isdir)` |
-| `t_icon_sz` | function | `tests/test_file_assoc.c:95` | `static int t_icon_sz(void)` |
-| `FREEDOM_WL_HOST_TEST` | macro | `tests/test_freedom_wl.c:8` | `#define FREEDOM_WL_HOST_TEST` |
-| `check_host` | function | `tests/test_freedom_wl.c:12` | `static int check_host(int cond, const char *name)` |
-| `main` | function | `tests/test_freedom_wl.c:22` | `int main(void)` |
-| `FREEDOMUI_HOST_TEST` | macro | `tests/test_freedomui.c:10` | `#define FREEDOMUI_HOST_TEST` |
-| `main` | function | `tests/test_freedomui.c:24` | `int main(void)` |
-| `CHECK` | macro | `tests/test_futex.c:32` | `#define CHECK(cond, msg)` |
 
 Next: [SYMBOLS_p26.md](SYMBOLS_p26.md)

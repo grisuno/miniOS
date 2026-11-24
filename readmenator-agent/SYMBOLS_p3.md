@@ -1,8 +1,138 @@
-# Symbols (page 3 of 27)
+# Symbols (page 3 of 28)
 Previous: [SYMBOLS_p2.md](SYMBOLS_p2.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `fat_entry` | function | `fs/fat32.c:231` | `static int fat_entry(const fsimg_t *img, const fat_geo_t *g,                      unsigned clus, ...` |
+| `fat_eoc` | function | `fs/fat32.c:248` | `static int fat_eoc(unsigned v)` |
+| `fat_geo_t` | struct | `fs/fat32.c:51` | `` |
+| `fat_img_open` | function | `fs/fat32.c:29` | `static int fat_img_open(const char *resolved, fsimg_t *img)` |
+| `fat_ld16` | function | `fs/fat32.c:18` | `static unsigned fat_ld16(const unsigned char *p)` |
+| `fat_ld32` | function | `fs/fat32.c:22` | `static unsigned fat_ld32(const unsigned char *p)` |
+| `fat_match` | function | `fs/fat32.c:305` | `static int fat_match(const unsigned char *de, const char name8[8],                      const cha...` |
+| `fat_mbr_is_fat` | function | `fs/fat32.c:120` | `static int fat_mbr_is_fat(unsigned char t)` |
+| `fat_parse_bpb` | function | `fs/fat32.c:62` | `static int fat_parse_bpb(const fsimg_t *img, fat_geo_t *g)` |
+| `fat_qword` | function | `fs/fat32.c:274` | `static int fat_qword(const char *q, unsigned qlen, char name8[8],                      char ext3[3])` |
+| `fat_resolve` | function | `fs/fat32.c:321` | `static int fat_resolve(const fsimg_t *img, const fat_geo_t *g,                        const char ...` |
+| `fat_seek` | function | `fs/fat32.c:556` | `static int fat_seek(const fat32_handle_t *h, unsigned long pos,                     unsigned *clu...` |
+| `fat_views` | function | `fs/fat32.c:537` | `static void fat_views(const fat32_handle_t *h, fsimg_t *img,                       fat_geo_t *g)` |
+| `fsimg_dev_read` | function | `fs/fsimg.c:72` | `static int fsimg_dev_read(const fsimg_t *img, unsigned long off,                           void *...` |
+| `fsimg_open_dev` | function | `fs/fsimg.c:51` | `int fsimg_open_dev(unsigned long base_lba, unsigned long nsec,                    fsimg_t *img)` |
+| `fsimg_open_file` | function | `fs/fsimg.c:15` | `int fsimg_open_file(const char *resolved, fsimg_t *img)` |
+| `fsimg_read` | function | `fs/fsimg.c:96` | `int fsimg_read(const fsimg_t *img, unsigned long off, void *buf,                unsigned long len)` |
+| `fsimg_split` | function | `fs/fsimg.c:112` | `int fsimg_split(const char *path, char *left, unsigned llen,                 char *right, unsigne...` |
+| `directory` | function | `fs/kfile.c:379` | `* empty directory by a directory (-20/-21 for a kind mismatch, -39 for a  * non-empty directory)....` |
+| `fs_drop` | function | `fs/kfile.c:70` | `static inline void fs_drop(irqflags_t flags)` |
+| `fs_rename_on_minifs` | function | `fs/kfile.c:361` | `static int fs_rename_on_minifs(const char *dst)` |
+| `fs_take` | function | `fs/kfile.c:66` | `static inline void fs_take(irqflags_t *flags)` |
+| `kevent_create` | function | `fs/kfile.c:148` | `KFILE *kevent_create(unsigned long long initval, int semaphore)` |
+| `kevent_read` | function | `fs/kfile.c:163` | `long kevent_read(KFILE *f, unsigned long long *out)` |
+| `kevent_readable` | function | `fs/kfile.c:199` | `int kevent_readable(KFILE *f)` |
+| `kevent_writable` | function | `fs/kfile.c:204` | `int kevent_writable(KFILE *f)` |
+| `kfclose` | function | `fs/kfile.c:432` | `int kfclose(KFILE *f)` |
+| `kfflush` | function | `fs/kfile.c:676` | `int kfflush(KFILE *f)` |
+| `kfgetc` | function | `fs/kfile.c:477` | `int kfgetc(KFILE *f)` |
+| `kfgets` | function | `fs/kfile.c:518` | `char *kfgets(char *buf, int size, KFILE *f)` |
+| `kfile_corrupt` | function | `fs/kfile.c:33` | `static int kfile_corrupt(const KFILE *f)` |
+| `kfile_stderr` | function | `fs/kfile.c:17` | `KFILE *kfile_stderr(void)` |
+| `kfile_stdin` | function | `fs/kfile.c:15` | `KFILE *kfile_stdin(void)` |
+| `kfile_stdout` | function | `fs/kfile.c:16` | `KFILE *kfile_stdout(void)` |
+| `kfopen` | function | `fs/kfile.c:264` | `KFILE *kfopen(const char *path, const char *mode)` |
+| `kfopen_dir` | function | `fs/kfile.c:243` | `KFILE *kfopen_dir(const char *resolved)` |
+| `kfputc` | function | `fs/kfile.c:708` | `int kfputc(int c, KFILE *f)` |
+| `kfputs` | function | `fs/kfile.c:702` | `int kfputs(const char *s, KFILE *f)` |
+| `kfread` | function | `fs/kfile.c:539` | `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)` |
+| `kfseek` | function | `fs/kfile.c:651` | `int kfseek(KFILE *f, long offset, int whence)` |
+| `kftell` | function | `fs/kfile.c:672` | `long kftell(KFILE *f)` |
+| `kfungetc` | function | `fs/kfile.c:532` | `int kfungetc(int c, KFILE *f)` |
+| `kfwrite` | function | `fs/kfile.c:585` | `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)` |
+| `kpipe_grow` | function | `fs/kfile.c:216` | `static int kpipe_grow(pipe_ring_t *ring)` |
+| `kpipe_is_write_end` | function | `fs/kfile.c:209` | `int kpipe_is_write_end(KFILE *f)` |
+| `kpipe_pair` | function | `fs/kfile.c:78` | `int kpipe_pair(KFILE **rend_out, KFILE **wend_out)` |
+| `kpipe_state` | function | `fs/kfile.c:130` | `int kpipe_state(KFILE *f, unsigned *avail, unsigned *space, int *wopen, int *ropen)` |
+| `krewind` | function | `fs/kfile.c:713` | `void krewind(KFILE *f)` |
+| `recovery` | function | `fs/kfile.c:28` | `* halts the machine with no recovery (the DOOM ABI-drift black screen),  * so every public KFILE ...` |
+| `DE_NAME` | macro | `fs/minifs.c:13` | `#define DE_NAME(de)` |
+| `DE_NAME_W` | macro | `fs/minifs.c:14` | `#define DE_NAME_W(de)` |
+| `MINIFS_INODE_CRC_OFF` | macro | `fs/minifs.c:130` | `#define MINIFS_INODE_CRC_OFF` |
+| `blk_free` | function | `fs/minifs.c:100` | `static void blk_free(unsigned char *b)` |
+| `blk_new` | function | `fs/minifs.c:22` | `static unsigned char *blk_new(void);` |
+| `blocks` | function | `fs/minifs.c:555` | `* blocks (self-protection);` |
+| `bm_clear` | function | `fs/minifs.c:209` | `static void bm_clear(unsigned char *bm, unsigned int bit)` |
+| `bm_set` | function | `fs/minifs.c:205` | `static void bm_set(unsigned char *bm, unsigned int bit)` |
+| `bm_test` | function | `fs/minifs.c:201` | `static int bm_test(unsigned char *bm, unsigned int bit)` |
+| `div_round_up` | function | `fs/minifs.c:83` | `static unsigned int div_round_up(unsigned int n, unsigned int d)` |
+| `first` | function | `fs/minifs.c:556` | `* keep the first (oldest) snapshot. */ void minifs_journal_touch(unsigned int phys)` |
+| `fs_inode_check` | function | `fs/minifs.c:142` | `static int fs_inode_check(const MiniFSInode *in)` |
+| `fs_inode_free_all_blocks` | function | `fs/minifs.c:364` | `static void fs_inode_free_all_blocks(MiniFSInode *inode)` |
+| `fs_inode_set_block` | function | `fs/minifs.c:289` | `static int fs_inode_set_block(MiniFSInode *inode, unsigned int logblk,                           ...` |
+| `fs_namecmp` | function | `fs/minifs.c:683` | `static int fs_namecmp(const char *a, unsigned char alen, const char *b)` |
+| `fs_read_inode` | function | `fs/minifs.c:167` | `static int fs_read_inode(unsigned int num, MiniFSInode *out)` |
+| `fs_write_inode` | function | `fs/minifs.c:179` | `static int fs_write_inode(unsigned int num, const MiniFSInode *in)` |
+| `fs_write_super` | function | `fs/minifs.c:107` | `static int fs_write_super(void)` |
+| `instead` | function | `fs/minifs.c:127` | `* kernel stored the same crc at offset 76 instead (byte order the old  * write path used), so a r...` |
+| `journal_load_super` | function | `fs/minifs.c:446` | `static void journal_load_super(void)` |
+| `journal_save_entries` | function | `fs/minifs.c:478` | `static void journal_save_entries(void)` |
+| `journal_save_super` | function | `fs/minifs.c:464` | `static void journal_save_super(unsigned int state)` |
+| `minifs_access` | function | `fs/minifs.c:1445` | `int minifs_access(const char *path)` |
+| `minifs_alloc_block` | function | `fs/minifs.c:215` | `int minifs_alloc_block(void)` |
+| `minifs_alloc_inode` | function | `fs/minifs.c:240` | `int minifs_alloc_inode(void)` |
+| `minifs_compress` | function | `fs/minifs.c:35` | `unsigned int minifs_compress(const void *src, unsigned int src_len,                              ...` |
+| `minifs_crc16` | function | `fs/minifs.c:57` | `static unsigned short minifs_crc16(const void *data, unsigned int len)` |
+| `minifs_crc32` | function | `fs/minifs.c:69` | `static unsigned int minifs_crc32(const void *data, unsigned int len)` |
+| `minifs_create` | function | `fs/minifs.c:974` | `int minifs_create(const char *path, unsigned short mode)` |
+| `minifs_decompress` | function | `fs/minifs.c:46` | `unsigned int minifs_decompress(const void *src, unsigned int src_len,                            ...` |
+| `minifs_dir_add_entry` | function | `fs/minifs.c:722` | `int minifs_dir_add_entry(int dir_ino, const char *name, int child_ino,                           ...` |
+| `minifs_dir_is_empty` | function | `fs/minifs.c:1148` | `static int minifs_dir_is_empty(int dir_ino)` |
+| `minifs_dir_lookup` | function | `fs/minifs.c:692` | `int minifs_dir_lookup(int dir_ino, const char *name)` |
+| `minifs_dir_read` | function | `fs/minifs.c:891` | `int minifs_dir_read(int dir_ino, int index, MiniFSDirEntry *out, char *name_out)` |
+| `minifs_dir_remove_entry` | function | `fs/minifs.c:860` | `int minifs_dir_remove_entry(int dir_ino, const char *name)` |
+| `minifs_file_close` | function | `fs/minifs.c:1647` | `int minifs_file_close(MiniFSFile *f)` |
+| `minifs_file_open` | function | `fs/minifs.c:1633` | `MiniFSFile *minifs_file_open(int inode_num, int flags)` |
+| `minifs_free_block` | function | `fs/minifs.c:232` | `void minifs_free_block(unsigned int block)` |
+| `minifs_free_inode` | function | `fs/minifs.c:252` | `void minifs_free_inode(int num)` |
+| `minifs_get_lba_start` | function | `fs/minifs.c:1459` | `unsigned int minifs_get_lba_start(void)` |
+| `minifs_get_total_blocks` | function | `fs/minifs.c:1654` | `unsigned int minifs_get_total_blocks(void)` |
+| `minifs_init` | function | `fs/minifs.c:1451` | `void minifs_init(void)` |
+| `minifs_inode_alloc_block` | function | `fs/minifs.c:343` | `int minifs_inode_alloc_block(MiniFSInode *inode, unsigned int logblk)` |
+| `minifs_inode_get_block` | function | `fs/minifs.c:260` | `int minifs_inode_get_block(MiniFSInode *inode, unsigned int logblk,                            un...` |
+| `minifs_is_mounted` | function | `fs/minifs.c:1460` | `int minifs_is_mounted(void)` |
+| `minifs_journal_abort` | function | `fs/minifs.c:531` | `void minifs_journal_abort(void)` |
+| `minifs_journal_add_block` | function | `fs/minifs.c:504` | `void minifs_journal_add_block(unsigned int block)` |
+| `minifs_journal_begin` | function | `fs/minifs.c:495` | `void minifs_journal_begin(unsigned int txn_id)` |
+| `minifs_journal_clear` | function | `fs/minifs.c:521` | `void minifs_journal_clear(void)` |
+| `minifs_journal_commit` | function | `fs/minifs.c:511` | `int minifs_journal_commit(unsigned int txn_id)` |
+| `minifs_journal_recover` | function | `fs/minifs.c:597` | `void minifs_journal_recover(void)` |
+| `minifs_journal_touch` | function | `fs/minifs.c:16` | `void minifs_journal_touch(unsigned int phys);` |
+| `minifs_mkdir` | function | `fs/minifs.c:1027` | `int minifs_mkdir(const char *path, unsigned short mode)` |
+| `minifs_mount` | function | `fs/minifs.c:1468` | `int minifs_mount(void)` |
+| `minifs_read` | function | `fs/minifs.c:1266` | `int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len)` |
+| `minifs_rename` | function | `fs/minifs.c:1175` | `int minifs_rename(const char *oldpath, const char *newpath)` |
+| `minifs_resolve_path` | function | `fs/minifs.c:941` | `int minifs_resolve_path(const char *path)` |
+| `minifs_rmdir` | function | `fs/minifs.c:1225` | `int minifs_rmdir(const char *path)` |
+| `minifs_split_parent` | function | `fs/minifs.c:1119` | `static int minifs_split_parent(const char *path, char *parent_out,                               ...` |
+| `minifs_stat` | function | `fs/minifs.c:1441` | `int minifs_stat(int inode_num, MiniFSInode *out)` |
+| `minifs_sync` | function | `fs/minifs.c:1618` | `int minifs_sync(void)` |
+| `minifs_truncate` | function | `fs/minifs.c:1424` | `int minifs_truncate(int inode_num, unsigned int new_size)` |
+| `minifs_unlink` | function | `fs/minifs.c:1076` | `int minifs_unlink(const char *path)` |
+| `minifs_usage` | function | `fs/minifs.c:1659` | `void minifs_usage(unsigned int *free_b, unsigned int *total_b,                   unsigned int *fr...` |
+| `minifs_write` | function | `fs/minifs.c:1337` | `int minifs_write(int inode_num, const void *buf, unsigned int offset,                  unsigned i...` |
+| `returns` | function | `fs/minifs.c:92` | `* overflowed the slot and smashed returns (measured ring-0 #UD on  * lua->lua->cp). Every scratch...` |
+| `roundup4` | function | `fs/minifs.c:81` | `static unsigned int roundup4(unsigned int v)` |
+| `match` | function | `fs/pcache.c:230` | `* a phys match (owned, ref dropped unless already zero), 0  * otherwise. */ int pcache_put_if(int...` |
+| `pcache_data` | function | `fs/pcache.c:285` | `unsigned char *pcache_data(int slot)` |
+| `pcache_get` | function | `fs/pcache.c:71` | `int pcache_get(int ino, unsigned index, int *is_new)` |
+| `pcache_init` | function | `fs/pcache.c:42` | `void pcache_init(void)` |
+| `pcache_invalidate_ino` | function | `fs/pcache.c:299` | `void pcache_invalidate_ino(int ino)` |
+| `pcache_lookup` | function | `fs/pcache.c:54` | `int pcache_lookup(int ino, unsigned index)` |
+| `pcache_mark_dirty` | function | `fs/pcache.c:291` | `void pcache_mark_dirty(int slot)` |
+| `pcache_owns_phys` | function | `fs/pcache.c:277` | `int pcache_owns_phys(unsigned long phys)` |
+| `pcache_publish` | function | `fs/pcache.c:128` | `int pcache_publish(int ino, unsigned index, const unsigned char *data)` |
+| `pcache_put` | function | `fs/pcache.c:179` | `void pcache_put(int slot)` |
+| `pcache_ref` | function | `fs/pcache.c:192` | `int pcache_ref(int ino, unsigned index)` |
+| `pcache_ref_if` | function | `fs/pcache.c:255` | `int pcache_ref_if(int ino, unsigned index, unsigned long phys)` |
+| `pcache_slot_phys` | function | `fs/pcache.c:222` | `static unsigned long pcache_slot_phys(int slot)` |
+| `pcache_slot_t` | struct | `fs/pcache.c:17` | `` |
 | `pcache_stats` | function | `fs/pcache.c:314` | `void pcache_stats(unsigned long *pages_out, unsigned long *hits_out,         unsigned long *miss_...` |
 | `pcache_unmap` | function | `fs/pcache.c:216` | `void pcache_unmap(int ino, unsigned index)` |
 | `RDSuper` | struct | `fs/ramdisk.c:26` | `` |
@@ -366,135 +496,5 @@ Previous: [SYMBOLS_p2.md](SYMBOLS_p2.md)
 | `audio_tone` | function | `headers/audio.h:24` | `void audio_tone(unsigned freq);` |
 | `AVATAR_DATA_H` | macro | `headers/avatar_data.h:6` | `#define AVATAR_DATA_H` |
 | `AVATAR_SIZE` | macro | `headers/avatar_data.h:8` | `#define AVATAR_SIZE` |
-| `BATCH_ERR_COUNT` | macro | `headers/batch.h:49` | `#define BATCH_ERR_COUNT` |
-| `BATCH_ERR_OPCODE` | macro | `headers/batch.h:51` | `#define BATCH_ERR_OPCODE` |
-| `BATCH_ERR_PTR` | macro | `headers/batch.h:50` | `#define BATCH_ERR_PTR` |
-| `BATCH_H` | macro | `headers/batch.h:2` | `#define BATCH_H` |
-| `BATCH_MAX_OPS` | macro | `headers/batch.h:41` | `#define BATCH_MAX_OPS` |
-| `BATCH_OK` | macro | `headers/batch.h:48` | `#define BATCH_OK` |
-| `BATCH_OP_GETPID` | macro | `headers/batch.h:46` | `#define BATCH_OP_GETPID` |
-| `BATCH_OP_NOP` | macro | `headers/batch.h:43` | `#define BATCH_OP_NOP` |
-| `BATCH_OP_TIME` | macro | `headers/batch.h:45` | `#define BATCH_OP_TIME` |
-| `BATCH_OP_YIELD` | macro | `headers/batch.h:44` | `#define BATCH_OP_YIELD` |
-| `batch_exec` | function | `headers/batch.h:62` | `long batch_exec(const batch_op_t *ops, long *results, int count, int *completed, batch_handler_t dispatch);` |
-| `batch_op_t` | struct | `headers/batch.h:53` | `` |
-| `BLOCK_H` | macro | `headers/block.h:2` | `#define BLOCK_H` |
-| `BLOCK_SHIFT` | macro | `headers/block.h:8` | `#define BLOCK_SHIFT` |
-| `BLOCK_SIZE` | macro | `headers/block.h:7` | `#define BLOCK_SIZE` |
-| `SECTORS_PER_BLOCK` | macro | `headers/block.h:9` | `#define SECTORS_PER_BLOCK` |
-| `block_disk_sectors` | function | `headers/block.h:40` | `unsigned long block_disk_sectors(void);` |
-| `block_flush` | function | `headers/block.h:27` | `void block_flush(void);` |
-| `block_init` | function | `headers/block.h:12` | `void block_init(void);` |
-| `block_read` | function | `headers/block.h:18` | `int block_read(unsigned int block_num, void *buf);` |
-| `block_read_multi` | function | `headers/block.h:23` | `int block_read_multi(unsigned int block_num, unsigned int count, void *buf);` |
-| `block_read_sectors` | function | `headers/block.h:37` | `int block_read_sectors(unsigned lba, unsigned count, void *buf);` |
-| `block_set_base` | function | `headers/block.h:15` | `void block_set_base(unsigned int lba_base);` |
-| `block_total` | function | `headers/block.h:30` | `unsigned int block_total(void);` |
-| `block_write` | function | `headers/block.h:19` | `int block_write(unsigned int block_num, const void *buf);` |
-| `block_write_multi` | function | `headers/block.h:24` | `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf);` |
-| `DESKTOP_ICONS_H` | macro | `headers/desktop_icons.h:8` | `#define DESKTOP_ICONS_H` |
-| `ICON_EMBEDDED_H` | macro | `headers/desktop_icons.h:13` | `#define ICON_EMBEDDED_H` |
-| `ICON_EMBEDDED_W` | macro | `headers/desktop_icons.h:12` | `#define ICON_EMBEDDED_W` |
-| `DESKTOP_SHORTCUTS_H` | macro | `headers/desktop_shortcuts.h:13` | `#define DESKTOP_SHORTCUTS_H` |
-| `DOCK_BOUNCE_H` | macro | `headers/desktop_shortcuts.h:58` | `#define DOCK_BOUNCE_H` |
-| `DOCK_BOUNCE_TICKS` | macro | `headers/desktop_shortcuts.h:59` | `#define DOCK_BOUNCE_TICKS` |
-| `DOCK_CRYSTAL_STEP` | macro | `headers/desktop_shortcuts.h:41` | `#define DOCK_CRYSTAL_STEP` |
-| `DOCK_GAP` | macro | `headers/desktop_shortcuts.h:35` | `#define DOCK_GAP` |
-| `DOCK_LABEL_GAP` | macro | `headers/desktop_shortcuts.h:36` | `#define DOCK_LABEL_GAP` |
-| `DOCK_MAG_H` | macro | `headers/desktop_shortcuts.h:50` | `#define DOCK_MAG_H` |
-| `DOCK_MAG_REACH_CELLS` | macro | `headers/desktop_shortcuts.h:51` | `#define DOCK_MAG_REACH_CELLS` |
-| `DOCK_MAG_TICKS` | macro | `headers/desktop_shortcuts.h:52` | `#define DOCK_MAG_TICKS` |
-| `DOCK_MAG_W` | macro | `headers/desktop_shortcuts.h:49` | `#define DOCK_MAG_W` |
-| `DOCK_PAD_X` | macro | `headers/desktop_shortcuts.h:33` | `#define DOCK_PAD_X` |
-| `DOCK_PAD_Y` | macro | `headers/desktop_shortcuts.h:34` | `#define DOCK_PAD_Y` |
-| `ICON_H` | macro | `headers/desktop_shortcuts.h:25` | `#define ICON_H` |
-| `ICON_LABEL_H` | macro | `headers/desktop_shortcuts.h:28` | `#define ICON_LABEL_H` |
-| `ICON_PAD_X` | macro | `headers/desktop_shortcuts.h:26` | `#define ICON_PAD_X` |
-| `ICON_PAD_Y` | macro | `headers/desktop_shortcuts.h:27` | `#define ICON_PAD_Y` |
-| `ICON_PAL_BASE` | macro | `headers/desktop_shortcuts.h:66` | `#define ICON_PAL_BASE` |
-| `ICON_PAL_SIZE` | macro | `headers/desktop_shortcuts.h:67` | `#define ICON_PAL_SIZE` |
-| `ICON_W` | macro | `headers/desktop_shortcuts.h:24` | `#define ICON_W` |
-| `MAX_SHORTCUTS` | macro | `headers/desktop_shortcuts.h:18` | `#define MAX_SHORTCUTS` |
-| `SHORTCUT_CMD_LEN` | macro | `headers/desktop_shortcuts.h:20` | `#define SHORTCUT_CMD_LEN` |
-| `SHORTCUT_NAME_LEN` | macro | `headers/desktop_shortcuts.h:19` | `#define SHORTCUT_NAME_LEN` |
-| `SHORTCUT_PATH_LEN` | macro | `headers/desktop_shortcuts.h:21` | `#define SHORTCUT_PATH_LEN` |
-| `desktop_shortcut` | struct | `headers/desktop_shortcuts.h:73` | `` |
-| `desktop_shortcuts_draw` | function | `headers/desktop_shortcuts.h:86` | `void desktop_shortcuts_draw(void);` |
-| `desktop_shortcuts_hit_test` | function | `headers/desktop_shortcuts.h:90` | `const char *desktop_shortcuts_hit_test(int mx, int my);` |
-| `desktop_shortcuts_load` | function | `headers/desktop_shortcuts.h:83` | `void desktop_shortcuts_load(void);` |
-| `DEV_MAX` | macro | `headers/driver.h:19` | `#define DEV_MAX` |
-| `DEV_NAME_LEN` | macro | `headers/driver.h:18` | `#define DEV_NAME_LEN` |
-| `DEV_TYPE_AUDIO` | macro | `headers/driver.h:22` | `#define DEV_TYPE_AUDIO` |
-| `DEV_TYPE_BLOCK` | macro | `headers/driver.h:21` | `#define DEV_TYPE_BLOCK` |
-| `DEV_TYPE_CHAR` | macro | `headers/driver.h:24` | `#define DEV_TYPE_CHAR` |
-| `DEV_TYPE_NET` | macro | `headers/driver.h:23` | `#define DEV_TYPE_NET` |
-| `DRIVER_H` | macro | `headers/driver.h:2` | `#define DRIVER_H` |
-| `audio_ops_t` | struct | `headers/driver.h:37` | `` |
-| `block_ops_t` | struct | `headers/driver.h:28` | `` |
-| `device` | struct | `headers/driver.h:48` | `` |
-| `device_count` | function | `headers/driver.h:59` | `int device_count(void);` |
-| `device_find` | function | `headers/driver.h:57` | `device_t *device_find(const char *name);` |
-| `device_find_by_type` | function | `headers/driver.h:58` | `device_t *device_find_by_type(int type);` |
-| `device_register` | function | `headers/driver.h:56` | `int device_register(device_t *dev);` |
-| `device_reset` | function | `headers/driver.h:60` | `void device_reset(void);` |
-| `device_t` | type_alias | `headers/driver.h:25` | `typedef struct device device_t;` |
-| `KBD_H` | macro | `headers/drivers/kbd.h:2` | `#define KBD_H` |
-| `KBD_LAYOUT_EN` | macro | `headers/drivers/kbd.h:6` | `#define KBD_LAYOUT_EN` |
-| `KBD_LAYOUT_ES` | macro | `headers/drivers/kbd.h:7` | `#define KBD_LAYOUT_ES` |
-| `kbd_available` | function | `headers/drivers/kbd.h:9` | `int kbd_available(void);` |
-| `kbd_drop_counts` | function | `headers/drivers/kbd.h:32` | `void kbd_drop_counts(unsigned long *cooked, unsigned long *raw);` |
-| `kbd_e0_get` | function | `headers/drivers/kbd.h:40` | `int kbd_e0_get(void);` |
-| `kbd_e0_set` | function | `headers/drivers/kbd.h:41` | `void kbd_e0_set(int v);` |
-| `kbd_feed_scancode` | function | `headers/drivers/kbd.h:11` | `int kbd_feed_scancode(unsigned char sc);` |
-| `kbd_flush_all` | function | `headers/drivers/kbd.h:42` | `void kbd_flush_all(void);` |
-| `kbd_get_layout` | function | `headers/drivers/kbd.h:15` | `int kbd_get_layout(void);` |
-| `kbd_q_empty` | function | `headers/drivers/kbd.h:27` | `int kbd_q_empty(void);` |
-| `kbd_q_pop` | function | `headers/drivers/kbd.h:28` | `int kbd_q_pop(void);` |
-| `kbd_q_push` | function | `headers/drivers/kbd.h:29` | `void kbd_q_push(unsigned char c);` |
-| `kbd_raw_empty` | function | `headers/drivers/kbd.h:37` | `int kbd_raw_empty(void);` |
-| `kbd_raw_flush` | function | `headers/drivers/kbd.h:43` | `void kbd_raw_flush(void);` |
-| `kbd_raw_mode_get` | function | `headers/drivers/kbd.h:35` | `int kbd_raw_mode_get(void);` |
-| `kbd_raw_mode_set` | function | `headers/drivers/kbd.h:36` | `void kbd_raw_mode_set(int on);` |
-| `kbd_raw_pop` | function | `headers/drivers/kbd.h:38` | `int kbd_raw_pop(void);` |
-| `kbd_raw_push_byte` | function | `headers/drivers/kbd.h:39` | `void kbd_raw_push_byte(unsigned char c);` |
-| `kbd_read` | function | `headers/drivers/kbd.h:10` | `int kbd_read(void);` |
-| `kbd_reset_for_shell` | function | `headers/drivers/kbd.h:12` | `void kbd_reset_for_shell(void);` |
-| `kbd_set_layout` | function | `headers/drivers/kbd.h:16` | `void kbd_set_layout(int layout);` |
-| `kbd_sys_raw_filter` | function | `headers/drivers/kbd.h:50` | `int kbd_sys_raw_filter(unsigned char sc);` |
-| `kbd_toggle_layout` | function | `headers/drivers/kbd.h:17` | `void kbd_toggle_layout(void);` |
-| `MODIFIERS_H` | macro | `headers/drivers/modifiers.h:2` | `#define MODIFIERS_H` |
-| `MOD_ALT` | macro | `headers/drivers/modifiers.h:32` | `#define MOD_ALT` |
-| `MOD_ALTGR` | macro | `headers/drivers/modifiers.h:33` | `#define MOD_ALTGR` |
-| `MOD_CTRL` | macro | `headers/drivers/modifiers.h:31` | `#define MOD_CTRL` |
-| `MOD_SHIFT` | macro | `headers/drivers/modifiers.h:30` | `#define MOD_SHIFT` |
-| `MOD_SUPER` | macro | `headers/drivers/modifiers.h:34` | `#define MOD_SUPER` |
-| `modifier_keys_t` | struct | `headers/drivers/modifiers.h:19` | `` |
-| `modifier_state_t` | struct | `headers/drivers/modifiers.h:5` | `` |
-| `modifiers_init` | function | `headers/drivers/modifiers.h:37` | `static inline void modifiers_init(modifier_state_t *st)` |
-| `modifiers_match` | function | `headers/drivers/modifiers.h:92` | `static inline int modifiers_match(const modifier_state_t *st, int mask)` |
-| `modifiers_update` | function | `headers/drivers/modifiers.h:54` | `static inline int modifiers_update(const modifier_keys_t *keys,                                  ...` |
-| `MOUSE_H` | macro | `headers/drivers/mouse.h:2` | `#define MOUSE_H` |
-| `mouse_disable` | function | `headers/drivers/mouse.h:14` | `void mouse_disable(void);` |
-| `mouse_enable` | function | `headers/drivers/mouse.h:17` | `void mouse_enable(void);` |
-| `mouse_hw_init` | function | `headers/drivers/mouse.h:11` | `void mouse_hw_init(void);` |
-| `DRIVERS_NVME_H` | macro | `headers/drivers/nvme.h:2` | `#define DRIVERS_NVME_H` |
-| `nvme_init` | function | `headers/drivers/nvme.h:4` | `int nvme_init(void);` |
-| `nvme_note` | function | `headers/drivers/nvme.h:7` | `const char *nvme_note(void);` |
-| `nvme_present` | function | `headers/drivers/nvme.h:5` | `int nvme_present(void);` |
-| `nvme_read_sectors` | function | `headers/drivers/nvme.h:9` | `int nvme_read_sectors(unsigned lba, unsigned count, void *buf);` |
-| `nvme_sectors` | function | `headers/drivers/nvme.h:8` | `unsigned long nvme_sectors(void);` |
-| `nvme_version` | function | `headers/drivers/nvme.h:6` | `unsigned nvme_version(void);` |
-| `DRIVERS_PCI_H` | macro | `headers/drivers/pci.h:11` | `#define DRIVERS_PCI_H` |
-| `PCI_ABSENT_ID` | macro | `headers/drivers/pci.h:44` | `#define PCI_ABSENT_ID` |
-| `PCI_BAR_64BIT` | macro | `headers/drivers/pci.h:39` | `#define PCI_BAR_64BIT` |
-| `PCI_BAR_ADDR_MASK` | macro | `headers/drivers/pci.h:41` | `#define PCI_BAR_ADDR_MASK` |
-| `PCI_BAR_IO` | macro | `headers/drivers/pci.h:38` | `#define PCI_BAR_IO` |
-| `PCI_BAR_PREFETCH` | macro | `headers/drivers/pci.h:40` | `#define PCI_BAR_PREFETCH` |
-| `PCI_BAR_TYPE_MASK` | macro | `headers/drivers/pci.h:37` | `#define PCI_BAR_TYPE_MASK` |
-| `PCI_CFG_ADDR` | macro | `headers/drivers/pci.h:13` | `#define PCI_CFG_ADDR` |
-| `PCI_CFG_DATA` | macro | `headers/drivers/pci.h:14` | `#define PCI_CFG_DATA` |
-| `PCI_CLASS_ANY` | macro | `headers/drivers/pci.h:62` | `#define PCI_CLASS_ANY` |
-| `PCI_CLASS_BRIDGE` | macro | `headers/drivers/pci.h:55` | `#define PCI_CLASS_BRIDGE` |
-| `PCI_CLASS_MAX_PASSES` | macro | `headers/drivers/pci.h:68` | `#define PCI_CLASS_MAX_PASSES` |
 
 Next: [SYMBOLS_p4.md](SYMBOLS_p4.md)

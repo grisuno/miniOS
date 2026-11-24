@@ -101,7 +101,7 @@ int main(void) {
     set_dev(0, 5, 0, 0x813910ECu, 0x02000000u);
     cfg[0][5][0][1] = 0x00000007u;
     cfg[0][5][0][4] = 0xC0010001u;
-    cfg[0][5][0][PCI_REG_HEADER_TYPE >> 2] = 0x00000000u;
+    cfg[0][5][0][PCI_REG_HEADER_TYPE >> 2] = 0x00000080u;
     set_dev(0, 9, 0, 0x10011AF4u, 0x01000000u);
     cfg[0][9][0][PCI_REG_HEADER_TYPE >> 2] = 0x00000000u;
     set_dev(0, 20, 0, 0x12348086u, 0x06040000u);
@@ -110,10 +110,29 @@ int main(void) {
     cfg[0][20][0][PCI_REG_BRIDGE_SECONDARY >> 2] = 0x00010100u;
 
     set_dev(1, 3, 0, 0x10001B36u, 0x0C033000u);
-    cfg[1][3][0][PCI_REG_HEADER_TYPE >> 2] = 0x00000080u;
+    cfg[1][3][0][PCI_REG_HEADER_TYPE >> 2] = 0x00800000u;
     set_dev(1, 3, 1, 0x10021B36u, 0x0C033000u);
     set_dev(2, 1, 0, 0x55555555u, 0x0A000000u);
     cfg[2][1][0][PCI_REG_HEADER_TYPE >> 2] = 0x00000000u;
+
+    /* Chipset shape of every Intel PCH: a multifunction device 31 whose
+     * function 0 is the LPC/ISA bridge and function 2 the AHCI SATA HBA,
+     * and a multifunction root-port device 28 whose function 4 bridges to
+     * bus 2, where an NVMe drive sits. The header type is byte 0x0E, bits
+     * 23:16 of the 0x0C dword; cache line size (byte 0x0C) is set to 0x10
+     * so a check of the wrong byte cannot pass by accident. */
+    set_dev(0, 31, 0, 0x29188086u, 0x06010000u);
+    cfg[0][31][0][PCI_REG_HEADER_TYPE >> 2] = 0x00800010u;
+    set_dev(0, 31, 2, 0x29228086u, 0x01060100u);
+    cfg[0][31][2][PCI_REG_HEADER_TYPE >> 2] = 0x00000010u;
+    set_dev(0, 28, 0, 0xA1108086u, 0x06040000u);
+    cfg[0][28][0][PCI_REG_HEADER_TYPE >> 2] = 0x00810010u;
+    cfg[0][28][0][PCI_REG_BRIDGE_SECONDARY >> 2] = 0x00030300u;
+    set_dev(0, 28, 4, 0xA1148086u, 0x06040000u);
+    cfg[0][28][4][PCI_REG_HEADER_TYPE >> 2] = 0x00010010u;
+    cfg[0][28][4][PCI_REG_BRIDGE_SECONDARY >> 2] = 0x00020200u;
+    set_dev(2, 0, 0, 0x0A54144Du, 0x01080200u);
+    cfg[2][0][0][PCI_REG_HEADER_TYPE >> 2] = 0x00000000u;
 
     CHECK(pci_find(0x10ECu, 0x8139u, fake_inl, fake_outl) == 5, "find rtl8139");
     CHECK(pci_find(0x1AF4u, 0x1001u, fake_inl, fake_outl) == 9, "find virtio-blk");
@@ -130,6 +149,18 @@ int main(void) {
 
     CHECK(pci_is_multifunction(1, 3, fake_outl, fake_inl), "multifunc bit read");
     CHECK(!pci_is_multifunction(0, 5, fake_outl, fake_inl), "single func bit clear");
+    CHECK(!pci_is_multifunction(0, 5, fake_outl, fake_inl),
+          "cache line size 0x80 is not the multifunction bit");
+    CHECK(pci_is_multifunction(0, 31, fake_outl, fake_inl),
+          "multifunction bit is bit 7 of header type byte 0x0E");
+    CHECK(pci_find_class(&bdf, 0x01u, 0x06u, 0x01u, fake_outl, fake_inl),
+          "walk finds AHCI on function 2 of a multifunction device");
+    CHECK(bdf.bus == 0 && bdf.dev == 31 && bdf.func == 2,
+          "AHCI is bus 0 dev 31 func 2");
+    CHECK(pci_find_class(&bdf, 0x01u, 0x08u, 0x02u, fake_outl, fake_inl),
+          "walk follows a bridge on a non-zero function");
+    CHECK(bdf.bus == 2 && bdf.dev == 0 && bdf.func == 0,
+          "NVMe is bus 2 dev 0 behind root port 28.4");
     CHECK(pci_cfg_read8(0, 20, 0, PCI_REG_BRIDGE_SECONDARY, fake_outl, fake_inl)
           == 1u, "read secondary bus byte");
 

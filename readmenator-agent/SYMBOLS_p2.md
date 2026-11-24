@@ -1,8 +1,138 @@
-# Symbols (page 2 of 27)
+# Symbols (page 2 of 28)
 Previous: [SYMBOLS.md](SYMBOLS.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `RTC_REG_YEAR` | macro | `drivers/rtc.c:17` | `#define RTC_REG_YEAR` |
+| `RTC_SEC_MAX` | macro | `drivers/rtc.c:29` | `#define RTC_SEC_MAX` |
+| `RTC_SEC_MIN` | macro | `drivers/rtc.c:28` | `#define RTC_SEC_MIN` |
+| `RTC_UPDATE_IN_PROGRESS` | macro | `drivers/rtc.c:21` | `#define RTC_UPDATE_IN_PROGRESS` |
+| `RTC_UPDATE_WAIT` | macro | `drivers/rtc.c:33` | `#define RTC_UPDATE_WAIT` |
+| `rtc_cmos_read` | function | `drivers/rtc.c:35` | `static inline unsigned char rtc_cmos_read(unsigned char reg)` |
+| `rtc_from_bcd` | function | `drivers/rtc.c:40` | `static int rtc_from_bcd(unsigned char v)` |
+| `rtc_month_len` | function | `drivers/rtc.c:68` | `static int rtc_month_len(long full_year, long mon)` |
+| `rtc_read_date` | function | `drivers/rtc.c:78` | `int rtc_read_date(int *year, int *mon, int *day)` |
+| `rtc_read_tod` | function | `drivers/rtc.c:44` | `int rtc_read_tod(int *hour, int *min, int *sec)` |
+| `rtc_wall_seconds` | function | `drivers/rtc.c:102` | `int rtc_wall_seconds(unsigned long *out)` |
+| `DMA_CH1_ADDR` | macro | `drivers/sb16.c:75` | `#define DMA_CH1_ADDR` |
+| `DMA_CH1_CNT` | macro | `drivers/sb16.c:76` | `#define DMA_CH1_CNT` |
+| `DMA_CH1_MASK` | macro | `drivers/sb16.c:81` | `#define DMA_CH1_MASK` |
+| `DMA_CH1_PAGE` | macro | `drivers/sb16.c:77` | `#define DMA_CH1_PAGE` |
+| `DMA_CH1_SINGLE_READ` | macro | `drivers/sb16.c:68` | `#define DMA_CH1_SINGLE_READ` |
+| `DMA_CH1_UNMASK` | macro | `drivers/sb16.c:80` | `#define DMA_CH1_UNMASK` |
+| `DMA_FF_CLR` | macro | `drivers/sb16.c:79` | `#define DMA_FF_CLR` |
+| `DMA_MASK` | macro | `drivers/sb16.c:78` | `#define DMA_MASK` |
+| `DMA_MODE_PORT` | macro | `drivers/sb16.c:67` | `#define DMA_MODE_PORT` |
+| `IRQ` | function | `drivers/sb16.c:22` | `* QEMU audio backends never raise the completion IRQ (they only consume once * their engine buffer drains, which a...` |
+| `SB16_BASE_PORT` | macro | `drivers/sb16.c:48` | `#define SB16_BASE_PORT` |
+| `SB16_BUF` | macro | `drivers/sb16.c:85` | `#define SB16_BUF` |
+| `SB16_CMD_PLAY8` | macro | `drivers/sb16.c:57` | `#define SB16_CMD_PLAY8` |
+| `SB16_CMD_READ_VER` | macro | `drivers/sb16.c:55` | `#define SB16_CMD_READ_VER` |
+| `SB16_CMD_SET_FREQ` | macro | `drivers/sb16.c:56` | `#define SB16_CMD_SET_FREQ` |
+| `SB16_CMD_SPK_OFF` | macro | `drivers/sb16.c:59` | `#define SB16_CMD_SPK_OFF` |
+| `SB16_CMD_SPK_ON` | macro | `drivers/sb16.c:58` | `#define SB16_CMD_SPK_ON` |
+| `SB16_DMA_BUF0` | macro | `drivers/sb16.c:83` | `#define SB16_DMA_BUF0` |
+| `SB16_DSP_RDSTATUS` | macro | `drivers/sb16.c:61` | `#define SB16_DSP_RDSTATUS` |
+| `SB16_DSP_READY_MASK` | macro | `drivers/sb16.c:73` | `#define SB16_DSP_READY_MASK` |
+| `SB16_DSP_READ_DATA` | macro | `drivers/sb16.c:50` | `#define SB16_DSP_READ_DATA` |
+| `SB16_DSP_RESET` | macro | `drivers/sb16.c:49` | `#define SB16_DSP_RESET` |
+| `SB16_DSP_STATUS` | macro | `drivers/sb16.c:52` | `#define SB16_DSP_STATUS` |
+| `SB16_DSP_WRITE_DATA` | macro | `drivers/sb16.c:51` | `#define SB16_DSP_WRITE_DATA` |
+| `SB16_FREQ_HI` | macro | `drivers/sb16.c:71` | `#define SB16_FREQ_HI` |
+| `SB16_FREQ_LO` | macro | `drivers/sb16.c:70` | `#define SB16_FREQ_LO` |
+| `SB16_IRQ_ACK` | macro | `drivers/sb16.c:53` | `#define SB16_IRQ_ACK` |
+| `SB16_MODE_PCM` | macro | `drivers/sb16.c:89` | `#define SB16_MODE_PCM` |
+| `SB16_MODE_TONE` | macro | `drivers/sb16.c:88` | `#define SB16_MODE_TONE` |
+| `SB16_SILENCE_SLOT` | macro | `drivers/sb16.c:84` | `#define SB16_SILENCE_SLOT` |
+| `SB16_SQ_CYCLE` | macro | `drivers/sb16.c:91` | `#define SB16_SQ_CYCLE` |
+| `pending` | function | `drivers/sb16.c:535` | `* reading without it eats whatever byte happens to be pending (or * times out), so the probe used to fail or misread...` |
+| `sb16_arm` | function | `drivers/sb16.c:355` | `static void sb16_arm(int from_irq)` |
+| `sb16_cmd` | function | `drivers/sb16.c:282` | `static void sb16_cmd(unsigned char c)` |
+| `sb16_counters` | function | `drivers/sb16.c:479` | `void sb16_counters(sb16_counters_t *out)` |
+| `sb16_dma_play` | function | `drivers/sb16.c:323` | `static void sb16_dma_play(unsigned addr, unsigned len)` |
+| `sb16_init` | function | `drivers/sb16.c:530` | `int sb16_init(void)` |
+| `sb16_irq` | function | `drivers/sb16.c:449` | `void sb16_irq(void)` |
+| `sb16_kring_reset` | function | `drivers/sb16.c:118` | `static void sb16_kring_reset(void)` |
+| `sb16_legacy_busy` | function | `drivers/sb16.c:472` | `int sb16_legacy_busy(void)` |
+| `sb16_mix_all` | function | `drivers/sb16.c:194` | `static void sb16_mix_all(void)` |
+| `sb16_mode_active` | function | `drivers/sb16.c:467` | `int sb16_mode_active(void)` |
+| `sb16_ops_pcm_close` | function | `drivers/sb16.c:498` | `static void sb16_ops_pcm_close(device_t *dev)` |
+| `sb16_ops_pcm_open` | function | `drivers/sb16.c:491` | `static void sb16_ops_pcm_open(device_t *dev)` |
+| `sb16_ops_pcm_submit` | function | `drivers/sb16.c:505` | `static int sb16_ops_pcm_submit(device_t *dev, const unsigned char *pcm, unsigned len)` |
+| `sb16_ops_present` | function | `drivers/sb16.c:484` | `static int sb16_ops_present(device_t *dev)` |
+| `sb16_pcm_close` | function | `drivers/sb16.c:422` | `void sb16_pcm_close(void)` |
+| `sb16_pcm_open` | function | `drivers/sb16.c:398` | `void sb16_pcm_open(void)` |
+| `sb16_pcm_submit` | function | `drivers/sb16.c:431` | `int sb16_pcm_submit(const unsigned char *pcm, unsigned len)` |
+| `sb16_poll` | function | `drivers/sb16.c:457` | `void sb16_poll(void)` |
+| `sb16_present` | function | `drivers/sb16.c:380` | `int sb16_present(void)` |
+| `sb16_pump` | function | `drivers/sb16.c:236` | `void sb16_pump(void)` |
+| `sb16_read_data` | function | `drivers/sb16.c:287` | `static int sb16_read_data(unsigned char *out)` |
+| `sb16_refill` | function | `drivers/sb16.c:339` | `static void sb16_refill(int slot_index)` |
+| `sb16_reset_dsp` | function | `drivers/sb16.c:297` | `static int sb16_reset_dsp(void)` |
+| `sb16_ring_free` | function | `drivers/sb16.c:466` | `unsigned sb16_ring_free(void)` |
+| `sb16_slot` | function | `drivers/sb16.c:130` | `static unsigned char *sb16_slot(unsigned i)` |
+| `sb16_stream_close` | function | `drivers/sb16.c:154` | `void sb16_stream_close(int id)` |
+| `sb16_stream_count` | function | `drivers/sb16.c:183` | `int sb16_stream_count(void)` |
+| `sb16_stream_open` | function | `drivers/sb16.c:138` | `int sb16_stream_open(void)` |
+| `sb16_stream_submit` | function | `drivers/sb16.c:162` | `int sb16_stream_submit(int id, const unsigned char *pcm, unsigned len)` |
+| `sb16_stream_volume` | function | `drivers/sb16.c:177` | `void sb16_stream_volume(int id, unsigned char vol)` |
+| `sb16_tone` | function | `drivers/sb16.c:382` | `void sb16_tone(unsigned freq)` |
+| `sb16_wait_write` | function | `drivers/sb16.c:278` | `static int sb16_wait_write(void)` |
+| `UBK_BULK_BURST` | macro | `drivers/usbblk.c:64` | `#define UBK_BULK_BURST` |
+| `UBK_BULK_INTERVAL` | macro | `drivers/usbblk.c:63` | `#define UBK_BULK_INTERVAL` |
+| `UBK_CBW_FLAG_IN` | macro | `drivers/usbblk.c:24` | `#define UBK_CBW_FLAG_IN` |
+| `UBK_CBW_LEN` | macro | `drivers/usbblk.c:22` | `#define UBK_CBW_LEN` |
+| `UBK_CBW_SIG` | macro | `drivers/usbblk.c:23` | `#define UBK_CBW_SIG` |
+| `UBK_CDB6_LEN` | macro | `drivers/usbblk.c:181` | `#define UBK_CDB6_LEN` |
+| `UBK_CDB_LEN` | macro | `drivers/usbblk.c:79` | `#define UBK_CDB_LEN` |
+| `UBK_CLEAR_FEATURE` | macro | `drivers/usbblk.c:149` | `#define UBK_CLEAR_FEATURE` |
+| `UBK_CSW_LEN` | macro | `drivers/usbblk.c:27` | `#define UBK_CSW_LEN` |
+| `UBK_CSW_SIG` | macro | `drivers/usbblk.c:28` | `#define UBK_CSW_SIG` |
+| `UBK_CSW_STATUS_FAILED` | macro | `drivers/usbblk.c:30` | `#define UBK_CSW_STATUS_FAILED` |
+| `UBK_CSW_STATUS_PASSED` | macro | `drivers/usbblk.c:29` | `#define UBK_CSW_STATUS_PASSED` |
+| `UBK_ENDP_HALT` | macro | `drivers/usbblk.c:150` | `#define UBK_ENDP_HALT` |
+| `UBK_MAX_XFER_BLOCKS` | macro | `drivers/usbblk.c:70` | `#define UBK_MAX_XFER_BLOCKS` |
+| `UBK_MS_RESET` | macro | `drivers/usbblk.c:148` | `#define UBK_MS_RESET` |
+| `UBK_READY_TRIES` | macro | `drivers/usbblk.c:293` | `#define UBK_READY_TRIES` |
+| `UBK_SCSI_INQUIRY` | macro | `drivers/usbblk.c:35` | `#define UBK_SCSI_INQUIRY` |
+| `UBK_SCSI_READ10` | macro | `drivers/usbblk.c:37` | `#define UBK_SCSI_READ10` |
+| `UBK_SCSI_READ_CAPACITY` | macro | `drivers/usbblk.c:36` | `#define UBK_SCSI_READ_CAPACITY` |
+| `UBK_SCSI_REQUEST_SENSE` | macro | `drivers/usbblk.c:34` | `#define UBK_SCSI_REQUEST_SENSE` |
+| `UBK_SCSI_TEST_UNIT_READY` | macro | `drivers/usbblk.c:33` | `#define UBK_SCSI_TEST_UNIT_READY` |
+| `UBK_SCSI_WRITE10` | macro | `drivers/usbblk.c:38` | `#define UBK_SCSI_WRITE10` |
+| `UBK_SENSE_LEN` | macro | `drivers/usbblk.c:261` | `#define UBK_SENSE_LEN` |
+| `ubk_blk_present` | function | `drivers/usbblk.c:438` | `static int ubk_blk_present(device_t *dev)` |
+| `ubk_blk_read` | function | `drivers/usbblk.c:421` | `static int ubk_blk_read(device_t *dev, unsigned lba, unsigned count,                         void...` |
+| `ubk_blk_sectors` | function | `drivers/usbblk.c:433` | `static unsigned ubk_blk_sectors(device_t *dev)` |
+| `ubk_blk_write` | function | `drivers/usbblk.c:427` | `static int ubk_blk_write(device_t *dev, unsigned lba, unsigned count,                          co...` |
+| `ubk_build_cbw` | function | `drivers/usbblk.c:92` | `void ubk_build_cbw(unsigned char *out, unsigned tag, unsigned long lba,                    unsign...` |
+| `ubk_cdb10` | function | `drivers/usbblk.c:80` | `static void ubk_cdb10(unsigned char *cdb, unsigned char opcode,                       unsigned lo...` |
+| `ubk_check_csw` | function | `drivers/usbblk.c:121` | `int ubk_check_csw(const unsigned char *csw, unsigned tag, unsigned expect_len)` |
+| `ubk_claim_eps` | function | `drivers/usbblk.c:377` | `static int ubk_claim_eps(int device, const xhc_iface_t *iface)` |
+| `ubk_command` | function | `drivers/usbblk.c:279` | `static int ubk_command(unsigned char *cdb, unsigned cdb_len,                        unsigned char...` |
+| `ubk_command_raw` | function | `drivers/usbblk.c:187` | `static int ubk_command_raw(unsigned char *cdb, unsigned cdb_len,                            unsig...` |
+| `ubk_counters` | function | `drivers/usbblk.c:72` | `void ubk_counters(ubk_counters_t *out)` |
+| `ubk_disk_t` | struct | `drivers/usbblk.c:44` | `` |
+| `ubk_init` | function | `drivers/usbblk.c:457` | `int ubk_init(void)` |
+| `ubk_present` | function | `drivers/usbblk.c:336` | `int ubk_present(void)` |
+| `ubk_read_capacity` | function | `drivers/usbblk.c:311` | `static int ubk_read_capacity(unsigned long *sectors)` |
+| `ubk_read_sectors` | function | `drivers/usbblk.c:365` | `int ubk_read_sectors(unsigned long lba, unsigned count, void *buf)` |
+| `ubk_sectors` | function | `drivers/usbblk.c:340` | `unsigned long ubk_sectors(void)` |
+| `ubk_sense` | function | `drivers/usbblk.c:262` | `static void ubk_sense(void)` |
+| `ubk_unit_ready` | function | `drivers/usbblk.c:294` | `static int ubk_unit_ready(void)` |
+| `ubk_write_sectors` | function | `drivers/usbblk.c:370` | `int ubk_write_sectors(unsigned long lba, unsigned count, const void *buf)` |
+| `ubk_xfer` | function | `drivers/usbblk.c:347` | `static int ubk_xfer(unsigned long lba, unsigned count, void *buf, int read)` |
+| `USBHID_INTERVAL` | macro | `drivers/usbhid.c:55` | `#define USBHID_INTERVAL` |
+| `USBHID_MAX_DEVS` | macro | `drivers/usbhid.c:35` | `#define USBHID_MAX_DEVS` |
+| `USBHID_MAX_SCANCODES` | macro | `drivers/usbhid.c:204` | `#define USBHID_MAX_SCANCODES` |
+| `usbhid_claim` | function | `drivers/usbhid.c:353` | `static int usbhid_claim(int device, const xhc_iface_t *iface, int is_mouse)` |
+| `usbhid_counters` | function | `drivers/usbhid.c:270` | `void usbhid_counters(usbhid_counters_t *out)` |
+| `usbhid_dev_t` | struct | `drivers/usbhid.c:40` | `` |
+| `usbhid_emit_mod` | function | `drivers/usbhid.c:165` | `static int usbhid_emit_mod(unsigned char *out, int max, int n, unsigned bit,                     ...` |
+| `usbhid_emit_usage` | function | `drivers/usbhid.c:183` | `static int usbhid_emit_usage(unsigned char *out, int max, int n,                              uns...` |
+| `usbhid_ep_taken` | function | `drivers/usbhid.c:312` | `static int usbhid_ep_taken(int ep_index)` |
+| `usbhid_init` | function | `drivers/usbhid.c:384` | `int usbhid_init(void)` |
+| `usbhid_is_mouse_maxp` | function | `drivers/usbhid.c:380` | `static int usbhid_is_mouse_maxp(int maxp)` |
 | `usbhid_kbd_scancodes` | function | `drivers/usbhid.c:206` | `int usbhid_kbd_scancodes(const unsigned char prev[HID_KBD_REPORT_LEN],                          c...` |
 | `usbhid_keyboard_present` | function | `drivers/usbhid.c:256` | `int usbhid_keyboard_present(void)` |
 | `usbhid_mouse_decode` | function | `drivers/usbhid.c:241` | `void usbhid_mouse_decode(const unsigned char prev[HID_MOUSE_REPORT_LEN],                         ...` |
@@ -366,135 +496,5 @@ Previous: [SYMBOLS.md](SYMBOLS.md)
 | `fat_badch` | function | `fs/fat32.c:262` | `static int fat_badch(char c)` |
 | `fat_clus_ok` | function | `fs/fat32.c:224` | `static int fat_clus_ok(const fat_geo_t *g, unsigned c)` |
 | `fat_dev_base` | function | `fs/fat32.c:192` | `long fat_dev_base(void)` |
-| `fat_entry` | function | `fs/fat32.c:231` | `static int fat_entry(const fsimg_t *img, const fat_geo_t *g,                      unsigned clus, ...` |
-| `fat_eoc` | function | `fs/fat32.c:248` | `static int fat_eoc(unsigned v)` |
-| `fat_geo_t` | struct | `fs/fat32.c:51` | `` |
-| `fat_img_open` | function | `fs/fat32.c:29` | `static int fat_img_open(const char *resolved, fsimg_t *img)` |
-| `fat_ld16` | function | `fs/fat32.c:18` | `static unsigned fat_ld16(const unsigned char *p)` |
-| `fat_ld32` | function | `fs/fat32.c:22` | `static unsigned fat_ld32(const unsigned char *p)` |
-| `fat_match` | function | `fs/fat32.c:305` | `static int fat_match(const unsigned char *de, const char name8[8],                      const cha...` |
-| `fat_mbr_is_fat` | function | `fs/fat32.c:120` | `static int fat_mbr_is_fat(unsigned char t)` |
-| `fat_parse_bpb` | function | `fs/fat32.c:62` | `static int fat_parse_bpb(const fsimg_t *img, fat_geo_t *g)` |
-| `fat_qword` | function | `fs/fat32.c:274` | `static int fat_qword(const char *q, unsigned qlen, char name8[8],                      char ext3[3])` |
-| `fat_resolve` | function | `fs/fat32.c:321` | `static int fat_resolve(const fsimg_t *img, const fat_geo_t *g,                        const char ...` |
-| `fat_seek` | function | `fs/fat32.c:556` | `static int fat_seek(const fat32_handle_t *h, unsigned long pos,                     unsigned *clu...` |
-| `fat_views` | function | `fs/fat32.c:537` | `static void fat_views(const fat32_handle_t *h, fsimg_t *img,                       fat_geo_t *g)` |
-| `fsimg_dev_read` | function | `fs/fsimg.c:72` | `static int fsimg_dev_read(const fsimg_t *img, unsigned long off,                           void *...` |
-| `fsimg_open_dev` | function | `fs/fsimg.c:51` | `int fsimg_open_dev(unsigned long base_lba, unsigned long nsec,                    fsimg_t *img)` |
-| `fsimg_open_file` | function | `fs/fsimg.c:15` | `int fsimg_open_file(const char *resolved, fsimg_t *img)` |
-| `fsimg_read` | function | `fs/fsimg.c:96` | `int fsimg_read(const fsimg_t *img, unsigned long off, void *buf,                unsigned long len)` |
-| `fsimg_split` | function | `fs/fsimg.c:112` | `int fsimg_split(const char *path, char *left, unsigned llen,                 char *right, unsigne...` |
-| `directory` | function | `fs/kfile.c:379` | `* empty directory by a directory (-20/-21 for a kind mismatch, -39 for a  * non-empty directory)....` |
-| `fs_drop` | function | `fs/kfile.c:70` | `static inline void fs_drop(irqflags_t flags)` |
-| `fs_rename_on_minifs` | function | `fs/kfile.c:361` | `static int fs_rename_on_minifs(const char *dst)` |
-| `fs_take` | function | `fs/kfile.c:66` | `static inline void fs_take(irqflags_t *flags)` |
-| `kevent_create` | function | `fs/kfile.c:148` | `KFILE *kevent_create(unsigned long long initval, int semaphore)` |
-| `kevent_read` | function | `fs/kfile.c:163` | `long kevent_read(KFILE *f, unsigned long long *out)` |
-| `kevent_readable` | function | `fs/kfile.c:199` | `int kevent_readable(KFILE *f)` |
-| `kevent_writable` | function | `fs/kfile.c:204` | `int kevent_writable(KFILE *f)` |
-| `kfclose` | function | `fs/kfile.c:432` | `int kfclose(KFILE *f)` |
-| `kfflush` | function | `fs/kfile.c:676` | `int kfflush(KFILE *f)` |
-| `kfgetc` | function | `fs/kfile.c:477` | `int kfgetc(KFILE *f)` |
-| `kfgets` | function | `fs/kfile.c:518` | `char *kfgets(char *buf, int size, KFILE *f)` |
-| `kfile_corrupt` | function | `fs/kfile.c:33` | `static int kfile_corrupt(const KFILE *f)` |
-| `kfile_stderr` | function | `fs/kfile.c:17` | `KFILE *kfile_stderr(void)` |
-| `kfile_stdin` | function | `fs/kfile.c:15` | `KFILE *kfile_stdin(void)` |
-| `kfile_stdout` | function | `fs/kfile.c:16` | `KFILE *kfile_stdout(void)` |
-| `kfopen` | function | `fs/kfile.c:264` | `KFILE *kfopen(const char *path, const char *mode)` |
-| `kfopen_dir` | function | `fs/kfile.c:243` | `KFILE *kfopen_dir(const char *resolved)` |
-| `kfputc` | function | `fs/kfile.c:708` | `int kfputc(int c, KFILE *f)` |
-| `kfputs` | function | `fs/kfile.c:702` | `int kfputs(const char *s, KFILE *f)` |
-| `kfread` | function | `fs/kfile.c:539` | `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)` |
-| `kfseek` | function | `fs/kfile.c:651` | `int kfseek(KFILE *f, long offset, int whence)` |
-| `kftell` | function | `fs/kfile.c:672` | `long kftell(KFILE *f)` |
-| `kfungetc` | function | `fs/kfile.c:532` | `int kfungetc(int c, KFILE *f)` |
-| `kfwrite` | function | `fs/kfile.c:585` | `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)` |
-| `kpipe_grow` | function | `fs/kfile.c:216` | `static int kpipe_grow(pipe_ring_t *ring)` |
-| `kpipe_is_write_end` | function | `fs/kfile.c:209` | `int kpipe_is_write_end(KFILE *f)` |
-| `kpipe_pair` | function | `fs/kfile.c:78` | `int kpipe_pair(KFILE **rend_out, KFILE **wend_out)` |
-| `kpipe_state` | function | `fs/kfile.c:130` | `int kpipe_state(KFILE *f, unsigned *avail, unsigned *space, int *wopen, int *ropen)` |
-| `krewind` | function | `fs/kfile.c:713` | `void krewind(KFILE *f)` |
-| `recovery` | function | `fs/kfile.c:28` | `* halts the machine with no recovery (the DOOM ABI-drift black screen),  * so every public KFILE ...` |
-| `DE_NAME` | macro | `fs/minifs.c:13` | `#define DE_NAME(de)` |
-| `DE_NAME_W` | macro | `fs/minifs.c:14` | `#define DE_NAME_W(de)` |
-| `MINIFS_INODE_CRC_OFF` | macro | `fs/minifs.c:130` | `#define MINIFS_INODE_CRC_OFF` |
-| `blk_free` | function | `fs/minifs.c:100` | `static void blk_free(unsigned char *b)` |
-| `blk_new` | function | `fs/minifs.c:22` | `static unsigned char *blk_new(void);` |
-| `blocks` | function | `fs/minifs.c:555` | `* blocks (self-protection);` |
-| `bm_clear` | function | `fs/minifs.c:209` | `static void bm_clear(unsigned char *bm, unsigned int bit)` |
-| `bm_set` | function | `fs/minifs.c:205` | `static void bm_set(unsigned char *bm, unsigned int bit)` |
-| `bm_test` | function | `fs/minifs.c:201` | `static int bm_test(unsigned char *bm, unsigned int bit)` |
-| `div_round_up` | function | `fs/minifs.c:83` | `static unsigned int div_round_up(unsigned int n, unsigned int d)` |
-| `first` | function | `fs/minifs.c:556` | `* keep the first (oldest) snapshot. */ void minifs_journal_touch(unsigned int phys)` |
-| `fs_inode_check` | function | `fs/minifs.c:142` | `static int fs_inode_check(const MiniFSInode *in)` |
-| `fs_inode_free_all_blocks` | function | `fs/minifs.c:364` | `static void fs_inode_free_all_blocks(MiniFSInode *inode)` |
-| `fs_inode_set_block` | function | `fs/minifs.c:289` | `static int fs_inode_set_block(MiniFSInode *inode, unsigned int logblk,                           ...` |
-| `fs_namecmp` | function | `fs/minifs.c:683` | `static int fs_namecmp(const char *a, unsigned char alen, const char *b)` |
-| `fs_read_inode` | function | `fs/minifs.c:167` | `static int fs_read_inode(unsigned int num, MiniFSInode *out)` |
-| `fs_write_inode` | function | `fs/minifs.c:179` | `static int fs_write_inode(unsigned int num, const MiniFSInode *in)` |
-| `fs_write_super` | function | `fs/minifs.c:107` | `static int fs_write_super(void)` |
-| `instead` | function | `fs/minifs.c:127` | `* kernel stored the same crc at offset 76 instead (byte order the old  * write path used), so a r...` |
-| `journal_load_super` | function | `fs/minifs.c:446` | `static void journal_load_super(void)` |
-| `journal_save_entries` | function | `fs/minifs.c:478` | `static void journal_save_entries(void)` |
-| `journal_save_super` | function | `fs/minifs.c:464` | `static void journal_save_super(unsigned int state)` |
-| `minifs_access` | function | `fs/minifs.c:1445` | `int minifs_access(const char *path)` |
-| `minifs_alloc_block` | function | `fs/minifs.c:215` | `int minifs_alloc_block(void)` |
-| `minifs_alloc_inode` | function | `fs/minifs.c:240` | `int minifs_alloc_inode(void)` |
-| `minifs_compress` | function | `fs/minifs.c:35` | `unsigned int minifs_compress(const void *src, unsigned int src_len,                              ...` |
-| `minifs_crc16` | function | `fs/minifs.c:57` | `static unsigned short minifs_crc16(const void *data, unsigned int len)` |
-| `minifs_crc32` | function | `fs/minifs.c:69` | `static unsigned int minifs_crc32(const void *data, unsigned int len)` |
-| `minifs_create` | function | `fs/minifs.c:974` | `int minifs_create(const char *path, unsigned short mode)` |
-| `minifs_decompress` | function | `fs/minifs.c:46` | `unsigned int minifs_decompress(const void *src, unsigned int src_len,                            ...` |
-| `minifs_dir_add_entry` | function | `fs/minifs.c:722` | `int minifs_dir_add_entry(int dir_ino, const char *name, int child_ino,                           ...` |
-| `minifs_dir_is_empty` | function | `fs/minifs.c:1148` | `static int minifs_dir_is_empty(int dir_ino)` |
-| `minifs_dir_lookup` | function | `fs/minifs.c:692` | `int minifs_dir_lookup(int dir_ino, const char *name)` |
-| `minifs_dir_read` | function | `fs/minifs.c:891` | `int minifs_dir_read(int dir_ino, int index, MiniFSDirEntry *out, char *name_out)` |
-| `minifs_dir_remove_entry` | function | `fs/minifs.c:860` | `int minifs_dir_remove_entry(int dir_ino, const char *name)` |
-| `minifs_file_close` | function | `fs/minifs.c:1647` | `int minifs_file_close(MiniFSFile *f)` |
-| `minifs_file_open` | function | `fs/minifs.c:1633` | `MiniFSFile *minifs_file_open(int inode_num, int flags)` |
-| `minifs_free_block` | function | `fs/minifs.c:232` | `void minifs_free_block(unsigned int block)` |
-| `minifs_free_inode` | function | `fs/minifs.c:252` | `void minifs_free_inode(int num)` |
-| `minifs_get_lba_start` | function | `fs/minifs.c:1459` | `unsigned int minifs_get_lba_start(void)` |
-| `minifs_get_total_blocks` | function | `fs/minifs.c:1654` | `unsigned int minifs_get_total_blocks(void)` |
-| `minifs_init` | function | `fs/minifs.c:1451` | `void minifs_init(void)` |
-| `minifs_inode_alloc_block` | function | `fs/minifs.c:343` | `int minifs_inode_alloc_block(MiniFSInode *inode, unsigned int logblk)` |
-| `minifs_inode_get_block` | function | `fs/minifs.c:260` | `int minifs_inode_get_block(MiniFSInode *inode, unsigned int logblk,                            un...` |
-| `minifs_is_mounted` | function | `fs/minifs.c:1460` | `int minifs_is_mounted(void)` |
-| `minifs_journal_abort` | function | `fs/minifs.c:531` | `void minifs_journal_abort(void)` |
-| `minifs_journal_add_block` | function | `fs/minifs.c:504` | `void minifs_journal_add_block(unsigned int block)` |
-| `minifs_journal_begin` | function | `fs/minifs.c:495` | `void minifs_journal_begin(unsigned int txn_id)` |
-| `minifs_journal_clear` | function | `fs/minifs.c:521` | `void minifs_journal_clear(void)` |
-| `minifs_journal_commit` | function | `fs/minifs.c:511` | `int minifs_journal_commit(unsigned int txn_id)` |
-| `minifs_journal_recover` | function | `fs/minifs.c:597` | `void minifs_journal_recover(void)` |
-| `minifs_journal_touch` | function | `fs/minifs.c:16` | `void minifs_journal_touch(unsigned int phys);` |
-| `minifs_mkdir` | function | `fs/minifs.c:1027` | `int minifs_mkdir(const char *path, unsigned short mode)` |
-| `minifs_mount` | function | `fs/minifs.c:1468` | `int minifs_mount(void)` |
-| `minifs_read` | function | `fs/minifs.c:1266` | `int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len)` |
-| `minifs_rename` | function | `fs/minifs.c:1175` | `int minifs_rename(const char *oldpath, const char *newpath)` |
-| `minifs_resolve_path` | function | `fs/minifs.c:941` | `int minifs_resolve_path(const char *path)` |
-| `minifs_rmdir` | function | `fs/minifs.c:1225` | `int minifs_rmdir(const char *path)` |
-| `minifs_split_parent` | function | `fs/minifs.c:1119` | `static int minifs_split_parent(const char *path, char *parent_out,                               ...` |
-| `minifs_stat` | function | `fs/minifs.c:1441` | `int minifs_stat(int inode_num, MiniFSInode *out)` |
-| `minifs_sync` | function | `fs/minifs.c:1618` | `int minifs_sync(void)` |
-| `minifs_truncate` | function | `fs/minifs.c:1424` | `int minifs_truncate(int inode_num, unsigned int new_size)` |
-| `minifs_unlink` | function | `fs/minifs.c:1076` | `int minifs_unlink(const char *path)` |
-| `minifs_usage` | function | `fs/minifs.c:1659` | `void minifs_usage(unsigned int *free_b, unsigned int *total_b,                   unsigned int *fr...` |
-| `minifs_write` | function | `fs/minifs.c:1337` | `int minifs_write(int inode_num, const void *buf, unsigned int offset,                  unsigned i...` |
-| `returns` | function | `fs/minifs.c:92` | `* overflowed the slot and smashed returns (measured ring-0 #UD on  * lua->lua->cp). Every scratch...` |
-| `roundup4` | function | `fs/minifs.c:81` | `static unsigned int roundup4(unsigned int v)` |
-| `match` | function | `fs/pcache.c:230` | `* a phys match (owned, ref dropped unless already zero), 0  * otherwise. */ int pcache_put_if(int...` |
-| `pcache_data` | function | `fs/pcache.c:285` | `unsigned char *pcache_data(int slot)` |
-| `pcache_get` | function | `fs/pcache.c:71` | `int pcache_get(int ino, unsigned index, int *is_new)` |
-| `pcache_init` | function | `fs/pcache.c:42` | `void pcache_init(void)` |
-| `pcache_invalidate_ino` | function | `fs/pcache.c:299` | `void pcache_invalidate_ino(int ino)` |
-| `pcache_lookup` | function | `fs/pcache.c:54` | `int pcache_lookup(int ino, unsigned index)` |
-| `pcache_mark_dirty` | function | `fs/pcache.c:291` | `void pcache_mark_dirty(int slot)` |
-| `pcache_owns_phys` | function | `fs/pcache.c:277` | `int pcache_owns_phys(unsigned long phys)` |
-| `pcache_publish` | function | `fs/pcache.c:128` | `int pcache_publish(int ino, unsigned index, const unsigned char *data)` |
-| `pcache_put` | function | `fs/pcache.c:179` | `void pcache_put(int slot)` |
-| `pcache_ref` | function | `fs/pcache.c:192` | `int pcache_ref(int ino, unsigned index)` |
-| `pcache_ref_if` | function | `fs/pcache.c:255` | `int pcache_ref_if(int ino, unsigned index, unsigned long phys)` |
-| `pcache_slot_phys` | function | `fs/pcache.c:222` | `static unsigned long pcache_slot_phys(int slot)` |
-| `pcache_slot_t` | struct | `fs/pcache.c:17` | `` |
 
 Next: [SYMBOLS_p3.md](SYMBOLS_p3.md)

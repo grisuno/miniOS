@@ -2,20 +2,20 @@
 
 > Cross-session context for agents. Sections 1-6 are regenerated from the source tree with zero LLM tokens: declared rules are quoted verbatim with `file:line`, measured baselines come from the scan. Section 7 is written by agents and humans and is preserved across rebuilds.
 
-Generated from 600 files at commit `ddac74ffcf59`. Read this first, then `readmenator-wiki/index.md`, then `readmenator . ask "<question>"` for anything specific.
+Generated from 602 files at commit `a9f8c5e4f9e0`. Read this first, then `readmenator-wiki/index.md`, then `readmenator . ask "<question>"` for anything specific.
 
 ## 1. Purpose and domain
 
 - What it is: I had some things programmed, a [kernel](https://github.com/grisuno/miniOS), [a C to ASM transpiler](https://github.com/grisuno/miniGCC), [compiler/linker](https://github.com/grisuno/ld), [a browser](https://github.com/grisuno/FreeDom), I had a [beacon](https://github.com/grisuno/blacksandbeacon) with an ELF loader which was basically the first prototype of [CVM](https://github.com/grisuno/cvm). (`README.md:10`)
-- Domain vocabulary (term, files): `progs` (319), `free` (241), `any` (241), `without` (233), `program` (221), `can` (221), `under` (217), `see` (192), `doomgeneric` (188), `version` (186), `but` (186), `later` (184), `either` (184), `more` (183), `public` (179)
-- Subsystem `headers: kernel`: 137 files, core `headers/kernel.h`: The user-window memory layout (load base, stack, brk cap, graphics
+- Domain vocabulary (term, files): `progs` (319), `any` (242), `free` (241), `without` (234), `can` (222), `program` (221), `under` (217), `see` (192), `version` (188), `doomgeneric` (188), `but` (186), `later` (184), `either` (184), `more` (183), `public` (179)
+- Subsystem `headers: kernel`: 146 files, core `headers/kernel.h`: The user-window memory layout (load base, stack, brk cap, graphics
 - Subsystem `progs/doomgeneric: d_englsh`: 99 files, core `progs/doomgeneric/d_englsh.h`: Copyright(C) 1993-1996 Id Software, Inc.
-- Subsystem `progs/src`: 86 files, core `progs/vedit/vedit.c`: vedit IDE build and run contract.
+- Subsystem `progs/src`: 77 files, core `progs/vedit/vedit.c`: vedit IDE build and run contract.
 - Subsystem `progs/doomgeneric: p_spec`: 69 files, core `progs/doomgeneric/p_spec.h`: Copyright(C) 1993-1996 Id Software, Inc.
-- Subsystem `tools: tls_crypto`: 44 files, core `net/tls_crypto.c`: the crypto behind the kernel TLS 1.2 client.
-- Subsystem `headers: vga_fb`: 26 files, core `kernel/vga_fb.c`: chrome_tint_t: Docstring: Translucent terminal backdrop: the desktop behind a window's content...
+- Subsystem `tools: lxabi`: 37 files, core `progs/src/lxabi.c`: Linux process, thread and descriptor ABI probe (FreeDom
+- Subsystem `headers: vga_fb`: 27 files, core `kernel/vga_fb.c`: chrome_tint_t: Docstring: Translucent terminal backdrop: the desktop behind a window's content...
+- Subsystem `net`: 14 files, core `net/net.c`: MiniOS network stack: virtio-net preferred, rtl8139 fallback, under
 - Subsystem `progs/doomgeneric: net_defs`: 13 files, core `progs/doomgeneric/net_defs.h`: Copyright(C) 2005-2014 Simon Howard  This program is free software; you can redistribute it...
-- Subsystem `headers: batch`: 3 files, core `headers/batch.h`: Docstring: batch.h -- Batched synchronous syscall submission.
 - Business rules that the code cannot show live in section 7: record them there.
 
 ## 2. Workflow
@@ -53,13 +53,14 @@ Declared:
 - **Build**: per-object header deps live in the Makefile; a new `#include` (`CLAUDE.md:66`)
 - **Graphics apps**: present through `GFX_PRESENT`; mouse via the origin the (`CLAUDE.md:68`)
 - **USB**: PCI MMIO is mapped only through `kmm_map_uncached()` (write-back (`CLAUDE.md:71`)
-- **Foreground processes**: the shell's pid-0 exec frame has no fork/execve; (`CLAUDE.md:79`)
-- **Heavy ring-3 overlap** (two big glibc processes) is known-red until (`CLAUDE.md:84`)
-- Every loader input is validated before use: ELF headers, section and (`CLAUDE.md:163`)
-- Size arithmetic is overflow checked before allocation (`size * n` included). (`CLAUDE.md:165`)
-- Failure paths report and release; no silent partial state. (`CLAUDE.md:166`)
-- No function symbol is ever resolved to a null address. (`CLAUDE.md:167`)
-- User stack setup validates that argv writes stay within bounds. (`CLAUDE.md:168`)
+- **PCI/MMIO**: the multifunction flag is bit 7 of header-type byte 0x0E (`CLAUDE.md:79`)
+- **Foreground processes**: the shell's pid-0 exec frame has no fork/execve; (`CLAUDE.md:83`)
+- **Heavy ring-3 overlap** (two big glibc processes) is known-red until (`CLAUDE.md:88`)
+- Every loader input is validated before use: ELF headers, section and (`CLAUDE.md:167`)
+- Size arithmetic is overflow checked before allocation (`size * n` included). (`CLAUDE.md:169`)
+- Failure paths report and release; no silent partial state. (`CLAUDE.md:170`)
+- No function symbol is ever resolved to a null address. (`CLAUDE.md:171`)
+- User stack setup validates that argv writes stay within bounds. (`CLAUDE.md:172`)
 
 Measured baseline:
 - Security findings at medium or above: 0 (see `readmenator-agent/SECURITY.md`); do not add new ones.
@@ -71,10 +72,10 @@ Declared:
 - none declared in instruction files (add them to AGENTS.md or record them in section 7)
 
 Measured baseline:
-- c: 292 files, 7173 symbols; docstrings on 22% of symbols; functions snake_case (76%); types PascalCase (18%); median file 257 lines, max 5697.
-- h: 201 files, 4696 symbols; docstrings on 18% of symbols; functions snake_case (71%); types PascalCase (7%); median file 70 lines, max 1331.
+- c: 293 files, 7303 symbols; docstrings on 22% of symbols; functions snake_case (76%); types PascalCase (18%); median file 259 lines, max 5697.
+- h: 202 files, 4707 symbols; docstrings on 18% of symbols; functions snake_case (71%); types PascalCase (7%); median file 70 lines, max 1331.
 - py: 69 files, 848 symbols; docstrings on 40% of symbols; functions snake_case (97%); types PascalCase (99%); median file 143 lines, max 957.
-- sh: 17 files, 47 symbols; docstrings on 21% of symbols; functions snake_case (100%); median file 80 lines, max 2433.
+- sh: 17 files, 47 symbols; docstrings on 21% of symbols; functions snake_case (100%); median file 80 lines, max 2468.
 - Tests: 75 files under mcp, progs/src, tests; follow the existing naming (e.g. `test_minios_mcp.py`).
 
 ## 5. Minimum deliverables

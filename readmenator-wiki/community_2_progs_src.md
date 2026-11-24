@@ -1,18 +1,12 @@
 # progs/src
 
-*Community 2 | 86 files | cohesion 0.71*
+*Community 2 | 77 files | cohesion 0.70*
 
 ## Definition
 
-This community groups 86 file(s) rooted at `tests` with dominant language c (cohesion 0.71). Central symbols: `ABI_BAD_FORMAT`, `ABI_CHECKSUM_MISMATCH`, `ABI_H`, `ABI_MANIFEST_MAX`, `ABI_MANIFEST_NAME`, `ABI_NO_MANIFEST`, `ABI_OK`, `ABI_VERSION_MISMATCH`. Core file: `progs/vedit/vedit.c` (245 symbols). Documented purpose: Docstring: abi.h -- Boot-time ABI manifest gate contract..
+This community groups 77 file(s) rooted at `progs/src` with dominant language c (cohesion 0.70). Central symbols: `ABI_BAD_FORMAT`, `ABI_CHECKSUM_MISMATCH`, `ABI_H`, `ABI_MANIFEST_MAX`, `ABI_MANIFEST_NAME`, `ABI_NO_MANIFEST`, `ABI_OK`, `ABI_VERSION_MISMATCH`. Core file: `progs/vedit/vedit.c` (245 symbols). Documented purpose: Docstring: abi.h -- Boot-time ABI manifest gate contract..
 
 ## Files
-
-### `tests` (18 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `tests/test_abi.c` | c | testing | 2 | yes |
 
 ### `progs/src` (16 files)
 
@@ -20,17 +14,23 @@ This community groups 86 file(s) rooted at `tests` with dominant language c (coh
 |------|----------|-------|---------|-----|
 | `progs/src/apsse.c` | c | utility | 15 | yes |
 
-### `headers` (9 files)
+### `tests` (14 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `headers/abi.h` | h | utility | 10 | yes |
+| `tests/test_abi.c` | c | testing | 2 | yes |
 
 ### `progs/nuklear` (8 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `progs/nuklear/cvm_emit.c` | c | utility | 56 | yes |
+
+### `headers` (6 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `headers/abi.h` | h | utility | 10 | yes |
 
 ### `progs/freedomui` (5 files)
 
@@ -44,12 +44,6 @@ This community groups 86 file(s) rooted at `tests` with dominant language c (coh
 |------|----------|-------|---------|-----|
 | `progs/wl/wl_client.h` | h | infrastructure | 5 | yes |
 
-### `kernel` (4 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `kernel/abi.c` | c | utility | 3 | yes |
-
 ### `progs` (3 files)
 
 | File | Language | Layer | Symbols | Doc |
@@ -61,6 +55,12 @@ This community groups 86 file(s) rooted at `tests` with dominant language c (coh
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `progs/doomgeneric/doomgeneric_minios.c` | c | utility | 29 | yes |
+
+### `kernel` (2 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `kernel/abi.c` | c | utility | 3 | yes |
 
 ### `progs/file` (2 files)
 
@@ -128,7 +128,7 @@ This community groups 86 file(s) rooted at `tests` with dominant language c (coh
 |------|----------|-------|---------|-----|
 | `progs/topogpt3/topogpt3.c` | c | utility | 128 | no |
 
-*... and 66 more files in this community.*
+*... and 57 more files in this community.*
 
 
 ## Key Symbols
@@ -166,21 +166,21 @@ This community groups 86 file(s) rooted at `tests` with dominant language c (coh
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 143
+- Internal resolved imports (EXTRACTED): 134
 - Cross-boundary resolved imports (EXTRACTED): 58
 
 ## Connections
 
 - [EXTRACTED] depends_on community 0 <-> 2 (strength 0.9): Extracted import edge crosses communities: drivers/pcm2.c imports headers/pcm_ring.h.
-- [EXTRACTED] depends_on community 4 <-> 2 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/string.c.
+- [EXTRACTED] depends_on community 6 <-> 2 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/string.c.
 - [EXTRACTED] depends_on community 1 <-> 2 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/d_iwad.c imports kernel/string.c.
-- [EXTRACTED] depends_on community 6 <-> 2 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/d_loop.c imports kernel/string.c.
+- [EXTRACTED] depends_on community 7 <-> 2 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/d_loop.c imports kernel/string.c.
 - [EXTRACTED] depends_on community 3 <-> 2 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomdef.h imports kernel/string.c.
+- [EXTRACTED] depends_on community 4 <-> 2 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomgeneric_xlib.c imports kernel/string.c.
 - [EXTRACTED] depends_on community 5 <-> 2 (strength 0.9): Extracted import edge crosses communities: tests/test_blur.c imports kernel/string.c.
 
 ## Risks
 
-- [layer strict] `tests/test_httpd.c` (testing) -> `headers/httpd.h` (presentation)
 - [dataflow DEAD_STORE] `progs/doomedit/doomedit.c:1556` `dmap_build_wad` `side`: `side` assigned at line 1556 but never read afterwards.
 - [dataflow DEAD_STORE] `progs/doomedit/doomedit.c:1633` `dmap_build_wad` `dir`: `dir` assigned at line 1633 but never read afterwards.
 - [dataflow DEAD_STORE] `progs/doomedit/doomedit.c:2145` `dmap_selftest` `mrgb`: `mrgb` assigned at line 2145 but never read afterwards.
@@ -192,22 +192,17 @@ This community groups 86 file(s) rooted at `tests` with dominant language c (coh
 
 - Why do 7 file(s) lack file-level docs (e.g. `progs/lisp/lisp.c`)? What purpose do they serve?
 - What would break if the most connected file in progs/src changed?
-- Should progs/src be split, given cohesion 0.71?
+- Should progs/src be split, given cohesion 0.70?
 
 ## Sources
 
 - `headers/abi.h`
 - `headers/arena.h`
 - `headers/audio.h`
-- `headers/httpd.h`
 - `headers/leakcheck.h`
 - `headers/pcm_ring.h`
-- `headers/seccomp_bpf.h`
 - `headers/select_map.h`
-- `headers/sign.h`
 - `kernel/abi.c`
-- `kernel/ed25519.c`
-- `kernel/seccomp_bpf.c`
 - `kernel/string.c`
 - `progs/doomedit/doomedit.c`
 - `progs/doomgeneric/doomgeneric_minios.c`
@@ -216,4 +211,9 @@ This community groups 86 file(s) rooted at `tests` with dominant language c (coh
 - `progs/file/file.c`
 - `progs/file/file_assoc.h`
 - `progs/freedomui/freedomui_minios.c`
-- *... and 66 more*
+- `progs/freedomui/media_unavailable.c`
+- `progs/freedomui/platform_minios.c`
+- `progs/freedomui/ps2_keymap.c`
+- `progs/freedomui/ps2_keymap.h`
+- `progs/lisp/lisp.c`
+- *... and 57 more*

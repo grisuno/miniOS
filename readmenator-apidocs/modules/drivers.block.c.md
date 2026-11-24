@@ -18,6 +18,12 @@ flowchart LR
     n_drivers_block_c__block_read(["block_read"])
     n_drivers_block_c__BC_LINE(["BC_LINE"])
     n_drivers_block_c__block_init(["block_init"])
+    n_headers_drivers_ahci_h__ahci_init["ahci.ahci_init"]
+    n_headers_drivers_ahci_h__ahci_note["ahci.ahci_note"]
+    n_headers_drivers_ahci_h__ahci_port["ahci.ahci_port"]
+    n_headers_drivers_ahci_h__ahci_register_device["ahci.ahci_register_device"]
+    n_headers_drivers_ahci_h__ahci_sectors["ahci.ahci_sectors"]
+    n_headers_drivers_ahci_h__ahci_version["ahci.ahci_version"]
     n_headers_drivers_nvme_h__nvme_init["nvme.nvme_init"]
     n_headers_drivers_nvme_h__nvme_note["nvme.nvme_note"]
     n_headers_drivers_nvme_h__nvme_sectors["nvme.nvme_sectors"]
@@ -36,6 +42,12 @@ flowchart LR
     n_headers_spinlock_h__spin_unlock_irqrestore["spinlock.spin_unlock_irqrestore"]
     n_drivers_block_c__block_write_multi(["block_write_multi"])
     n_drivers_block_c__block_read --> n_drivers_block_c__BC_LINE
+    n_drivers_block_c__block_init -.-> n_headers_drivers_ahci_h__ahci_init
+    n_drivers_block_c__block_init -.-> n_headers_drivers_ahci_h__ahci_note
+    n_drivers_block_c__block_init -.-> n_headers_drivers_ahci_h__ahci_port
+    n_drivers_block_c__block_init -.-> n_headers_drivers_ahci_h__ahci_register_device
+    n_drivers_block_c__block_init -.-> n_headers_drivers_ahci_h__ahci_sectors
+    n_drivers_block_c__block_init -.-> n_headers_drivers_ahci_h__ahci_version
     n_drivers_block_c__block_init -.-> n_headers_drivers_nvme_h__nvme_init
     n_drivers_block_c__block_init -.-> n_headers_drivers_nvme_h__nvme_note
     n_drivers_block_c__block_init -.-> n_headers_drivers_nvme_h__nvme_sectors
@@ -61,7 +73,7 @@ flowchart LR
 
 ### `block_init`
 
-`function` | [drivers/block.c:80](../../drivers/block.c#L80)
+`function` | [drivers/block.c:86](../../drivers/block.c#L86)
 
 ```c
 void block_init(void)
@@ -73,7 +85,7 @@ Calls ide_init() internally.
 
 > **Inherited:** Documentation from [`block_init`](#block_init) (headers/block.h:12).
 
-*Calls:* [`nvme_init`](headers.drivers.nvme.h.md#nvme_init), [`nvme_note`](headers.drivers.nvme.h.md#nvme_note), [`nvme_sectors`](headers.drivers.nvme.h.md#nvme_sectors), [`nvme_version`](headers.drivers.nvme.h.md#nvme_version), [`ubk_init`](headers.drivers.usbblk.h.md#ubk_init), [`ubk_sectors`](headers.drivers.usbblk.h.md#ubk_sectors), [`vblk_init`](headers.drivers.virtio_blk.h.md#vblk_init), [`vblk_register_device`](headers.drivers.virtio_blk.h.md#vblk_register_device), [`vblk_sectors`](headers.drivers.virtio_blk.h.md#vblk_sectors), [`ide_init`](headers.ide.h.md#ide_init), [`ide_total_sectors`](headers.ide.h.md#ide_total_sectors)
+*Calls:* [`ahci_init`](headers.drivers.ahci.h.md#ahci_init), [`ahci_note`](headers.drivers.ahci.h.md#ahci_note), [`ahci_port`](headers.drivers.ahci.h.md#ahci_port), [`ahci_register_device`](headers.drivers.ahci.h.md#ahci_register_device), [`ahci_sectors`](headers.drivers.ahci.h.md#ahci_sectors), [`ahci_version`](headers.drivers.ahci.h.md#ahci_version), [`nvme_init`](headers.drivers.nvme.h.md#nvme_init), [`nvme_note`](headers.drivers.nvme.h.md#nvme_note), [`nvme_sectors`](headers.drivers.nvme.h.md#nvme_sectors), [`nvme_version`](headers.drivers.nvme.h.md#nvme_version), [`ubk_init`](headers.drivers.usbblk.h.md#ubk_init), [`ubk_sectors`](headers.drivers.usbblk.h.md#ubk_sectors) and 5 more
 
 ---
 
@@ -81,7 +93,7 @@ Calls ide_init() internally.
 
 ### `block_set_base`
 
-`function` | [drivers/block.c:113](../../drivers/block.c#L113)
+`function` | [drivers/block.c:132](../../drivers/block.c#L132)
 
 ```c
 void block_set_base(unsigned int lba_base)
@@ -103,7 +115,7 @@ Set the base LBA offset for all block I/O.
 
 ### `table`
 
-`function` | [drivers/block.c:122](../../drivers/block.c#L122)
+`function` | [drivers/block.c:141](../../drivers/block.c#L141)
 
 ```c
 * ops table (dev->ops->read/write), never straight at the hardware. The * virtio queue wins when block_init preferred it (same image as IDE, or * IDE absent on virtio-only hardware);
@@ -125,7 +137,7 @@ Set the base LBA offset for all block I/O.
 
 ### `block_read`
 
-`function` | [drivers/block.c:164](../../drivers/block.c#L164)
+`function` | [drivers/block.c:193](../../drivers/block.c#L193)
 
 ```c
 int block_read(unsigned int block_num, void *buf)
@@ -154,7 +166,7 @@ Returns 0 on success.
 
 ### `block_write`
 
-`function` | [drivers/block.c:205](../../drivers/block.c#L205)
+`function` | [drivers/block.c:234](../../drivers/block.c#L234)
 
 ```c
 int block_write(unsigned int block_num, const void *buf)
@@ -175,7 +187,7 @@ int block_write(unsigned int block_num, const void *buf)
 
 ### `block_read_multi`
 
-`function` | [drivers/block.c:214](../../drivers/block.c#L214)
+`function` | [drivers/block.c:243](../../drivers/block.c#L243)
 
 ```c
 int block_read_multi(unsigned int block_num, unsigned int count, void *buf)
@@ -203,7 +215,7 @@ Returns 0 on success.
 
 ### `block_write_multi`
 
-`function` | [drivers/block.c:219](../../drivers/block.c#L219)
+`function` | [drivers/block.c:248](../../drivers/block.c#L248)
 
 ```c
 int block_write_multi(unsigned int block_num, unsigned int count, const void *buf)
@@ -227,7 +239,7 @@ int block_write_multi(unsigned int block_num, unsigned int count, const void *bu
 
 ### `block_flush`
 
-`function` | [drivers/block.c:234](../../drivers/block.c#L234)
+`function` | [drivers/block.c:263](../../drivers/block.c#L263)
 
 ```c
 void block_flush(void)
@@ -243,7 +255,7 @@ Flush any cached writes (currently a no-op, IDE is synchronous).
 
 ### `block_total`
 
-`function` | [drivers/block.c:236](../../drivers/block.c#L236)
+`function` | [drivers/block.c:265](../../drivers/block.c#L265)
 
 ```c
 unsigned int block_total(void)
@@ -261,7 +273,7 @@ Total blocks available, 0 if no disk.
 
 ### `block_read_sectors`
 
-`function` | [drivers/block.c:244](../../drivers/block.c#L244)
+`function` | [drivers/block.c:273](../../drivers/block.c#L273)
 
 ```c
 int block_read_sectors(unsigned lba, unsigned count, void *buf)
@@ -285,7 +297,7 @@ Docstring: Absolute sector read on the active backend, with no cache and no base
 
 ### `block_disk_sectors`
 
-`function` | [drivers/block.c:255](../../drivers/block.c#L255)
+`function` | [drivers/block.c:284](../../drivers/block.c#L284)
 
 ```c
 unsigned long block_disk_sectors(void)
@@ -303,7 +315,7 @@ Docstring: Size of the active backend in sectors, so scanners fence to the USB s
 
 ### `BC_WAYS`
 
-`macro` | [drivers/block.c:53](../../drivers/block.c#L53)
+`macro` | [drivers/block.c:59](../../drivers/block.c#L59)
 
 ```c
 #define BC_WAYS
@@ -315,7 +327,7 @@ Docstring: Size of the active backend in sectors, so scanners fence to the USB s
 
 ### `BC_MASK`
 
-`macro` | [drivers/block.c:54](../../drivers/block.c#L54)
+`macro` | [drivers/block.c:60](../../drivers/block.c#L60)
 
 ```c
 #define BC_MASK
@@ -327,7 +339,7 @@ Docstring: Size of the active backend in sectors, so scanners fence to the USB s
 
 ### `BC_LINE`
 
-`macro` | [drivers/block.c:62](../../drivers/block.c#L62)
+`macro` | [drivers/block.c:68](../../drivers/block.c#L68)
 
 ```c
 #define BC_LINE(idx)

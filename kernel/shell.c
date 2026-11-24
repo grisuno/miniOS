@@ -7,6 +7,7 @@
 #include "drivers/virtio_blk.h"
 #include "drivers/virtio_net.h"
 #include "drivers/nvme.h"
+#include "drivers/ahci.h"
 #include "pcache.h"
 #include "sched.h"
 #include "smp.h"
@@ -227,7 +228,7 @@ static const char *shell_builtin_names[] = {
     "nice", "panic", "perf", "poweroff", "ps", "pwd", "rlimit", "rm", "rmdir", "run",
     "schedtop", "sclog", "seccomp", "sh", "sleep", "smp", "strace", "trace", "unmount", "unzip",
     "usb",
-    "vfstest", "vmmap", "vol", "wait", "wm", "zip", "vblk", "vnet", "nvme",
+    "vfstest", "vmmap", "vol", "wait", "wm", "zip", "vblk", "vnet", "nvme", "ahci",
 };
 #define SHELL_BUILTIN_COUNT (sizeof(shell_builtin_names) / sizeof(shell_builtin_names[0]))
 
@@ -3502,6 +3503,69 @@ void shell_exec_builtin(int argc, char **argv) {
         }
         vga_puts("nvme: superblock ok\n");
         kfree(sec);
+    }
+    /* `ahci`: SATA probe and sector proof. Initializes the HBA (absent
+     * hardware reports `absent` with the reason, never hangs), prints the
+     * claimed port, capacity and VS, then reads LBA 0 (boot signature) and
+     * LBA 2048 (the MiniFS superblock) through READ DMA EXT, and finally
+     * rewrites LBA 2048 with its own bytes and reads it back, proving the
+     * WRITE DMA EXT + FLUSH path without changing the disk. */
+    else if (kstrcmp(argv[0], "ahci") == 0) {
+        unsigned char *sec;
+        unsigned char *chk;
+        unsigned long magic;
+        unsigned i;
+        if (!ahci_init() || !ahci_present()) {
+            kprintf("ahci: absent (%s)\n", ahci_note());
+            return;
+        }
+        sec = kmalloc(512u);
+        chk = kmalloc(512u);
+        if (!sec || !chk) {
+            vga_puts("ahci: out of memory\n");
+            if (sec) kfree(sec);
+            if (chk) kfree(chk);
+            return;
+        }
+        kprintf("ahci: present=%d port=%d PI 0x%x VS 0x%x sectors=%lu (%s)\n",
+                ahci_present(), ahci_port(), ahci_ports_implemented(),
+                ahci_version(), ahci_sectors(), ahci_note());
+        if (ahci_read_sectors(0, 1, sec) != 0 ||
+                sec[510] != 0x55 || sec[511] != 0xAA) {
+            vga_puts("ahci: LBA0 boot signature mismatch\n");
+            kfree(sec);
+            kfree(chk);
+            return;
+        }
+        vga_puts("ahci: LBA0 ok\n");
+        if (ahci_read_sectors(2048, 1, sec) != 0) {
+            vga_puts("ahci: superblock unreadable\n");
+            kfree(sec);
+            kfree(chk);
+            return;
+        }
+        magic = (unsigned long)sec[0] | ((unsigned long)sec[1] << 8) |
+                ((unsigned long)sec[2] << 16) | ((unsigned long)sec[3] << 24);
+        if (magic != MINIFS_MAGIC) {
+            vga_puts("ahci: superblock magic mismatch\n");
+            kfree(sec);
+            kfree(chk);
+            return;
+        }
+        vga_puts("ahci: superblock ok\n");
+        if (ahci_write_sectors(2048, 1, sec) != 0 ||
+                ahci_read_sectors(2048, 1, chk) != 0) {
+            vga_puts("ahci: write path failed\n");
+            kfree(sec);
+            kfree(chk);
+            return;
+        }
+        for (i = 0; i < 512u; i++)
+            if (sec[i] != chk[i]) break;
+        vga_puts(i == 512u ? "ahci: write+flush ok\n" :
+                 "ahci: write readback mismatch\n");
+        kfree(sec);
+        kfree(chk);
     }
     /* `vnet`: virtio-net probe and queue proof. Initializes the
      * device (absent hardware reports `absent`, never hangs), prints

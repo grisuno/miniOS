@@ -210,20 +210,6 @@ void mm_setup_protections(void) {
  * them a ring-3 program could reach a device register. */
 #define KMM_DEVICE_FLAGS (PT_FLAGS_PRESENT_RW | PT_FLAGS_UNCACHED)
 
-/** Docstring: Map a physical device region uncached at the kernel's own
- * virtual window, and return that virtual address, which is not the
- * physical one. Refuses a second mapping, so a caller cannot quietly
- * remap a live controller's registers.
- *
- * Refused requests, all fail-closed: a zero length or address, a length
- * above KMM_DEVICE_MAX, a physical address that is not page aligned (a
- * BAR is always page aligned, and an unaligned one would alias two pages
- * onto the same window), a range whose end overflows, an allocation
- * failure, or a window already in use.
- *
- * The page tables this allocates are permanent: unmapping a BAR would
- * leave a driver holding a window the hardware can still raise an
- * interrupt for, so nothing here has an unmap. */
 /** Docstring: Return the 4 KB page table backing a 2 MB identity slot,
  * splitting the boot leaf if needed.
  *
@@ -293,12 +279,50 @@ int kmm_make_uncached(unsigned long phys, unsigned long len) {
     return 1;
 }
 
+/** Docstring: Number of 2 MB device windows inside the device PDPT slot.
+ * One page directory covers the slot, and each controller gets its own
+ * directory entry, so xHCI, AHCI and NVMe on one real machine each map
+ * their BAR instead of the second one being refused. */
+#define KMM_DEVICE_WINDOWS PT_PD_ENTRIES
+
+/** Docstring: Page directory that backs the device PDPT slot, created on
+ * the first mapping and permanent afterwards. */
+static volatile unsigned long *kmm_dev_pd;
+
+/** Docstring: Next free window index in kmm_dev_pd. Windows are handed out
+ * once and never reused, so a live controller's registers are never
+ * remapped under its driver. */
+static unsigned kmm_dev_next;
+
+/** Docstring: Serializes window allocation. Drivers map at boot, but the
+ * shell probes (`nvme`, `ahci`) may run later on any CPU. */
+static spinlock_t kmm_dev_lock = SPINLOCK_INIT;
+
+/** Docstring: Map a physical device region uncached at a kernel-owned
+ * virtual window, and return that virtual address, which is not the
+ * physical one.
+ *
+ * Every call takes a fresh 2 MB window (its own page table under one page
+ * directory in the KMM_DEVICE_PDPT_SLOT gigabyte), so several controllers
+ * map side by side. Refused requests, all fail-closed: a zero length or
+ * address, a length above KMM_DEVICE_MAX, a physical address that is not
+ * page aligned (a BAR is always page aligned, and an unaligned one would
+ * alias two pages onto the same window), a range whose end overflows, an
+ * allocation failure, a slot that something else already owns, or all
+ * KMM_DEVICE_WINDOWS windows in use.
+ *
+ * The page tables this allocates are permanent: unmapping a BAR would
+ * leave a driver holding a window the hardware can still raise an
+ * interrupt for, so nothing here has an unmap. */
 unsigned long kmm_map_device(unsigned long phys, unsigned long len) {
     volatile unsigned long *pdpt = (volatile unsigned long *)PT_PDPT_ADDR;
     volatile unsigned long *pd;
     volatile unsigned long *pt;
+    unsigned long vbase;
     unsigned pages;
+    unsigned slot;
     unsigned i;
+    irqflags_t flags;
 
     if (phys == 0 || len == 0) return 0;
     if (len > KMM_DEVICE_MAX) return 0;
@@ -306,31 +330,47 @@ unsigned long kmm_map_device(unsigned long phys, unsigned long len) {
     if (phys > (unsigned long)-1 - len) return 0;
     pages = (unsigned)((len + 0xFFFUL) >> 12);
     if (pages > PT_PD_ENTRIES) return 0;
-    if (pdpt[KMM_DEVICE_PDPT_SLOT] != 0) return 0;
 
-    pd = (volatile unsigned long *)pt_page_alloc();
-    if (!pd) return 0;
     pt = (volatile unsigned long *)pt_page_alloc();
-    if (!pt) {
-        pt_page_free((void *)pd);
-        return 0;
-    }
-    for (i = 0; i < PT_PD_ENTRIES; i++)
-        pd[i] = 0;
+    if (!pt) return 0;
     for (i = 0; i < pages; i++)
         pt[i] = (phys + i * 0x1000UL) | KMM_DEVICE_FLAGS;
-    /* The rest of the table stays zero, so an address past the device's
-     * own window faults instead of reading whatever is there. */
-    pd[0] = ((unsigned long)pt & PT_ADDR_MASK) | PT_FLAGS_PRESENT_RW;
+
+    spin_lock_irqsave(&kmm_dev_lock, &flags);
+    if (!kmm_dev_pd) {
+        if (pdpt[KMM_DEVICE_PDPT_SLOT] != 0) {
+            spin_unlock_irqrestore(&kmm_dev_lock, flags);
+            pt_page_free((void *)pt);
+            return 0;
+        }
+        pd = (volatile unsigned long *)pt_page_alloc();
+        if (!pd) {
+            spin_unlock_irqrestore(&kmm_dev_lock, flags);
+            pt_page_free((void *)pt);
+            return 0;
+        }
+        __asm__ volatile("mfence" ::: "memory");
+        pdpt[KMM_DEVICE_PDPT_SLOT] =
+            ((unsigned long)pd & PT_ADDR_MASK) | PT_FLAGS_PRESENT_RW;
+        kmm_dev_pd = pd;
+    }
+    if (kmm_dev_next >= KMM_DEVICE_WINDOWS) {
+        spin_unlock_irqrestore(&kmm_dev_lock, flags);
+        pt_page_free((void *)pt);
+        return 0;
+    }
+    slot = kmm_dev_next++;
     __asm__ volatile("mfence" ::: "memory");
-    pdpt[KMM_DEVICE_PDPT_SLOT] =
-        ((unsigned long)pd & PT_ADDR_MASK) | PT_FLAGS_PRESENT_RW;
+    kmm_dev_pd[slot] = ((unsigned long)pt & PT_ADDR_MASK) | PT_FLAGS_PRESENT_RW;
     __asm__ volatile("mfence" ::: "memory");
+    spin_unlock_irqrestore(&kmm_dev_lock, flags);
+
+    vbase = DEV_MMIO_VBASE + (unsigned long)slot * PT_PD_PAGE_BYTES;
     for (i = 0; i < pages; i++)
-        __asm__ volatile("invlpg (%0)" :: "r"(DEV_MMIO_VBASE +
+        __asm__ volatile("invlpg (%0)" :: "r"(vbase +
                                               (unsigned long)i * 0x1000UL)
                          : "memory");
-    return DEV_MMIO_VBASE;
+    return vbase;
 }
 
 void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3) {    unsigned long pd_phys;

@@ -19,6 +19,7 @@
 #include "ide.h"
 #include "drivers/virtio_blk.h"
 #include "drivers/nvme.h"
+#include "drivers/ahci.h"
 #include "drivers/usbblk.h"
 #include "block.h"
 #include "driver.h"
@@ -30,6 +31,11 @@ static unsigned int block_lba_base;
  * hijack MiniFS mid-run. */
 static int block_use_virtio;
 static int block_use_usb;
+/** Docstring: True once block_init preferred the AHCI disk: the SATA port
+ * of real hardware, chosen when no virtio or USB backend won and either no
+ * legacy IDE disk answered or the IDE disk is the same size (the same
+ * drive seen through a compatibility window). */
+static int block_use_ahci;
 
 /* Direct-mapped cache: 16 x 4096 = 64 KB of recently-read blocks.
  * Every shared line mutates only under bc_lock, which is irqsave (a
@@ -99,13 +105,26 @@ void block_init(void) {
         if (ubk_sectors() <= 0xFFFFFFFFu)
             block_total_sectors = (unsigned int)ubk_sectors();
     }
+    if (!block_use_virtio && !block_use_usb && ahci_init()) {
+        unsigned long asec = ahci_sectors();
+        ahci_register_device();
+        if (ide_total == 0 || asec == (unsigned long)ide_total) {
+            block_use_ahci = 1;
+            block_total_sectors = asec > 0xFFFFFFFFUL ?
+                0xFFFFFFFFu : (unsigned int)asec;
+        }
+        kprintf("ahci: port %d sectors=%lu VS 0x%x\n", ahci_port(), asec,
+                ahci_version());
+    } else if (!block_use_virtio && !block_use_usb) {
+        kprintf("ahci: %s\n", ahci_note());
+    }
     if (nvme_init())
         kprintf("nvme: present VS 0x%x sectors=%lu\n", nvme_version(),
                 nvme_sectors());
     else
         kprintf("nvme: %s\n", nvme_note());
     kprintf("block: backend=%s\n", block_use_virtio ? "virtio" :
-            block_use_usb ? "usb" : "ide");
+            block_use_usb ? "usb" : block_use_ahci ? "ahci" : "ide");
     bc_data = (unsigned char *)kmalloc(BC_WAYS * BLOCK_SIZE);
     if (!bc_data) kprintf("block: no cache (out of memory)\n");
 }
@@ -137,6 +156,11 @@ static int block_dev_read(unsigned lba, unsigned count, void *buf) {
         if (d && d->block && d->block->read_sectors)
             return d->block->read_sectors(d, lba, count, buf);
     }
+    if (block_use_ahci) {
+        d = device_find("ahci0");
+        if (d && d->block && d->block->read_sectors)
+            return d->block->read_sectors(d, lba, count, buf);
+    }
     d = device_find("ide0");
     if (d && d->block && d->block->read_sectors)
         return d->block->read_sectors(d, lba, count, buf);
@@ -152,6 +176,11 @@ static int block_dev_write(unsigned lba, unsigned count, const void *buf) {
     }
     if (block_use_usb) {
         d = device_find("usb");
+        if (d && d->block && d->block->write_sectors)
+            return d->block->write_sectors(d, lba, count, buf);
+    }
+    if (block_use_ahci) {
+        d = device_find("ahci0");
         if (d && d->block && d->block->write_sectors)
             return d->block->write_sectors(d, lba, count, buf);
     }

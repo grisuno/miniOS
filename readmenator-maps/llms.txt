@@ -1,6 +1,6 @@
 # miniOS
 
-> Static analysis knowledge base for miniOS: 10 communities, 600 files, 2276 imports, 7 languages, 13210 symbols.
+> Static analysis knowledge base for miniOS: 9 communities, 602 files, 2284 imports, 7 languages, 13351 symbols.
 
 Generated offline by readmenator (zero LLM tokens). Start with the wiki index for the big picture, then the agent INDEX for file lookup.
 
@@ -22,7 +22,7 @@ Generated offline by readmenator (zero LLM tokens). Start with the wiki index fo
 - [readmenator-agent/API_p2.md](md/readmenator-agent/API_p2.md): Depends on: headers/arch/x86/halio.h, headers/drivers/pci.h, headers/drivers/xhci.h
 - [readmenator-agent/API_p20.md](md/readmenator-agent/API_p20.md): Depends on: kernel/string.c
 - [readmenator-agent/API_p21.md](md/readmenator-agent/API_p21.md): loadcpg (function) tools/checkcohesion.py:23 def loadcpg(path) -- Load and parse the CPG JSON-LD file.
-- [readmenator-agent/API_p3.md](md/readmenator-agent/API_p3.md): Imported by: drivers/block.c, drivers/driver.c, drivers/ide.c, drivers/pcspk.c, drivers/sb16.c, drivers/usbblk.c, drivers/virtioblk.c, kernel/syscalls.c...
+- [readmenator-agent/API_p3.md](md/readmenator-agent/API_p3.md): Imported by: drivers/ahci.c, drivers/block.c, drivers/driver.c, drivers/ide.c, drivers/pcspk.c, drivers/sb16.c, drivers/usbblk.c, drivers/virtioblk.c...
 - [readmenator-agent/API_p4.md](md/readmenator-agent/API_p4.md): Depends on: headers/ldso.h, headers/pipe.h, headers/spinlock.h, headers/vma.h, progs/miniosabi.h
 - [readmenator-agent/API_p5.md](md/readmenator-agent/API_p5.md): Imported by: drivers/pcspk.c, kernel/shell.c, kernel/syscalls.c
 - [readmenator-agent/API_p6.md](md/readmenator-agent/API_p6.md): Imported by: kernel/vgafb.c, tests/testchrome.c
@@ -30,9 +30,9 @@ Generated offline by readmenator (zero LLM tokens). Start with the wiki index fo
 - [readmenator-agent/API_p8.md](md/readmenator-agent/API_p8.md): Depends on: headers/arch/x86/boot/bootdefs.h, headers/arch/x86/halio.h, headers/arch/x86/msr.h, headers/batch.h, headers/block.h, headers/driver.h...
 - [readmenator-agent/API_p9.md](md/readmenator-agent/API_p9.md): Depends on: headers/arch/x86/boot/bootdefs.h, headers/avatardata.h, headers/desktopicons.h, headers/desktopshortcuts.h, headers/drivers/kbd.h...
 - [readmenator-agent/ARCHITECTURE.md](md/readmenator-agent/ARCHITECTURE.md): arch/x86/apentry.S -> headers/arch/x86/boot/bootdefs.h
-- [readmenator-agent/ARCHITECTURE_p2.md](md/readmenator-agent/ARCHITECTURE_p2.md): progs/doomgeneric/doomgenericwin.c -> progs/doomgeneric/doomkeys.h
-- [readmenator-agent/ARCHITECTURE_p3.md](md/readmenator-agent/ARCHITECTURE_p3.md): progs/doomgeneric/rmain.h -> progs/doomgeneric/rdata.h
-- [readmenator-agent/ARCHITECTURE_p4.md](md/readmenator-agent/ARCHITECTURE_p4.md): drivers/block.c -> kernel.h
+- [readmenator-agent/ARCHITECTURE_p2.md](md/readmenator-agent/ARCHITECTURE_p2.md): progs/doomgeneric/doomgenericsoso.c -> progs/doomgeneric/doomkeys.h
+- [readmenator-agent/ARCHITECTURE_p3.md](md/readmenator-agent/ARCHITECTURE_p3.md): progs/doomgeneric/rmain.c -> progs/doomgeneric/dloop.h
+- [readmenator-agent/ARCHITECTURE_p4.md](md/readmenator-agent/ARCHITECTURE_p4.md): drivers/ahci.c -> kernel.h
 - [readmenator-agent/CONCEPTS.md](md/readmenator-agent/CONCEPTS.md): Nouns map atomically to file sets (EXTRACTED); verbs aggregate structural edges (INFERRED).
 - [readmenator-agent/INDEX_p2.md](md/readmenator-agent/INDEX_p2.md)
 - [readmenator-agent/KB_asm.md](md/readmenator-agent/KB_asm.md): aesrk (function, line 3)
@@ -49,20 +49,20 @@ Generated offline by readmenator (zero LLM tokens). Start with the wiki index fo
 - [readmenator-agent/KB_doomgeneric_p7.md](md/readmenator-agent/KB_doomgeneric_p7.md): Doc: Copyright(C) 2005-2014 Simon Howard This program is free software; you can redistribute it...
 - [readmenator-agent/KB_doomgeneric_p8.md](md/readmenator-agent/KB_doomgeneric_p8.md): Doc: Copyright(C) 1993-1996 Id Software, Inc.
 - [readmenator-agent/KB_doomgeneric_p9.md](md/readmenator-agent/KB_doomgeneric_p9.md): Doc: Copyright(C) 1993-1996 Id Software, Inc.
-- [readmenator-agent/KB_drivers.md](md/readmenator-agent/KB_drivers.md): Doc: Block device layer for MiniFS.
-- [readmenator-agent/KB_drivers_p2.md](md/readmenator-agent/KB_drivers_p2.md): Doc: Docstring: drivers/virtioblk.c -- Polled legacy virtio-blk driver.
+- [readmenator-agent/KB_drivers.md](md/readmenator-agent/KB_drivers.md): Doc: Docstring: drivers/ahci.c -- Polled AHCI (SATA) disk driver.
+- [readmenator-agent/KB_drivers_p2.md](md/readmenator-agent/KB_drivers_p2.md): Doc: Sound Blaster 16 DMA audio driver.
+- [readmenator-agent/KB_drivers_p3.md](md/readmenator-agent/KB_drivers_p3.md): Doc: xHCI host controller driver, polled event ring.
 - [readmenator-agent/KB_file.md](md/readmenator-agent/KB_file.md): Doc: Docstring: MiniOS file browser (Nuklear ring-3 app, MiniFS: file/file.elf).
 - [readmenator-agent/KB_freedomui.md](md/readmenator-agent/KB_freedomui.md): Doc: freedomuiminios - Real FreeDom browser on MiniOS, DOOM/Q2G pattern.
 - [readmenator-agent/KB_fs.md](md/readmenator-agent/KB_fs.md): Doc: extgeot: Filesystem geometry from the superblock.
 - [readmenator-agent/KB_headers.md](md/readmenator-agent/KB_headers.md): Doc: Docstring: abi.h -- Boot-time ABI manifest gate contract.
 - [readmenator-agent/KB_headers_arch_x86.md](md/readmenator-agent/KB_headers_arch_x86.md): Doc: per-CPU control-register setup shared by the BSP (kmain)
-- [readmenator-agent/KB_headers_drivers.md](md/readmenator-agent/KB_headers_drivers.md): Doc: Keyboard layout: US qwerty (default) or Spanish (Spain) qwerty.
+- [readmenator-agent/KB_headers_drivers.md](md/readmenator-agent/KB_headers_drivers.md): Doc: Docstring: drivers/ahci.h -- AHCI (SATA) host controller, polled.
 - [readmenator-agent/KB_headers_kernel.md](md/readmenator-agent/KB_headers_kernel.md): Doc: Docstring: consolein.h -- boundary of the console input device
 - [readmenator-agent/KB_headers_p2.md](md/readmenator-agent/KB_headers_p2.md): Doc: The user-window memory layout (load base, stack, brk cap, graphics
 - [readmenator-agent/KB_headers_p3.md](md/readmenator-agent/KB_headers_p3.md): Doc: Docstring: allocation tracker for MiniOS, STB leakcheck lineage.
 - [readmenator-agent/KB_headers_p4.md](md/readmenator-agent/KB_headers_p4.md): Doc: Docstring: sanitize.h -- Single choke point for syscall argument checks.
 - [readmenator-agent/KB_headers_p5.md](md/readmenator-agent/KB_headers_p5.md): Doc: process-management syscall handlers shared with the
-- [readmenator-agent/KB_headers_p6.md](md/readmenator-agent/KB_headers_p6.md): Doc: Docstring: Dock magnification math for the MiniOS desktop.
 
 ## Project Docs
 

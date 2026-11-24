@@ -4,9 +4,9 @@
 
 ## Architecture Overview
 
-17 components stacked in 4 dependency tiers (weighted Eades-Lin-Smyth ordering: arrows point from dependent to dependency, top to bottom). Labels are import counts, thick arrows the top quartile; 4 transitively implied edges are omitted. Dashed red arrows are upward dependencies: the smallest set of imports that closes every cycle and breaks the layering. Cyan components hold entry points. Interactive version: `readmenator-apidocs/index.html#/flows`.
+16 components stacked in 5 dependency tiers (weighted Eades-Lin-Smyth ordering: arrows point from dependent to dependency, top to bottom). Labels are import counts, thick arrows the top quartile; 6 transitively implied edges are omitted. Dashed red arrows are upward dependencies: the smallest set of imports that closes every cycle and breaks the layering. Cyan components hold entry points. Interactive version: `readmenator-apidocs/index.html#/flows`.
 
-Upward dependencies to fix first: `progs/doomgeneric: p_spec` -> `progs/doomgeneric: d_englsh` (63 imports); `progs/doomgeneric: net_defs` -> `progs/doomgeneric: d_englsh` (12 imports); `progs/src` -> `progs/doomgeneric: d_englsh` (3 imports); `headers: kernel` -> `tools: tls_crypto` (2 imports); `headers: kernel` -> `headers: vga_fb` (2 imports); `tools: tls_crypto` -> `progs/doomgeneric: d_englsh` (2 imports); `progs/doomgeneric: net_defs` -> `progs/doomgeneric: p_spec` (2 imports); `progs/src` -> `headers: kernel` (1 imports); `progs/src` -> `progs/doomgeneric: p_spec` (1 imports)
+Upward dependencies to fix first: `progs/doomgeneric: p_spec` -> `progs/doomgeneric: d_englsh` (63 imports); `progs/doomgeneric: net_defs` -> `progs/doomgeneric: d_englsh` (12 imports); `net` -> `headers: kernel` (5 imports); `headers: kernel` -> `headers: vga_fb` (3 imports); `progs/src` -> `progs/doomgeneric: d_englsh` (3 imports); `tools: lxabi` -> `progs/doomgeneric: d_englsh` (2 imports); `progs/doomgeneric: net_defs` -> `progs/doomgeneric: p_spec` (2 imports); `progs/src` -> `headers: kernel` (1 imports); `progs/src` -> `progs/doomgeneric: p_spec` (1 imports); `tools: lxabi` -> `headers: kernel` (1 imports)
 
 ```mermaid
 flowchart TB
@@ -15,8 +15,7 @@ flowchart TB
     subgraph lane_0["Tier 1 - entry / orchestration"]
         direction LR
         n_c1["progs/doomgeneric: d_englsh<br/>98 files, 2045 symbols<br/>Core / utility"]:::cycle
-        n_c4["tools: tls_crypto<br/>30 files, 583 symbols<br/>Core / utility"]:::cycle
-        n_c5["headers: vga_fb<br/>20 files, 516 symbols<br/>Core / utility"]:::cycle
+        n_c5["headers: vga_fb<br/>20 files, 486 symbols<br/>Core / utility"]:::cycle
         n_d_tools["tools<br/>36 files, 254 symbols<br/>Core / utility"]:::default
         n_d_progs["progs<br/>50 files, 813 symbols<br/>Core / utility"]:::default
         n_d_mcp["mcp<br/>2 files, 1 symbols<br/>Core / utility"]:::default
@@ -24,44 +23,48 @@ flowchart TB
         n_d_fs["fs<br/>2 files, 35 symbols<br/>Core / utility"]:::default
         n_d_arch["arch<br/>2 files, 10 symbols<br/>Core / utility"]:::default
         n_d__root_["(root)<br/>1 files, 2 symbols<br/>Core / utility"]:::default
-        n_c9["tools: doom_pwad<br/>1 files, 25 symbols<br/>Core / utility"]:::default
+        n_c8["tools: doom_pwad<br/>1 files, 25 symbols<br/>Core / utility"]:::default
     end
     subgraph lane_1["Tier 2"]
         direction LR
-        n_c0["headers: kernel<br/>113 files, 4068 symbols<br/>Core / utility"]:::cycle
         n_c3["progs/doomgeneric: p_spec<br/>67 files, 1027 symbols<br/>Core / utility"]:::cycle
+        n_c0["headers: kernel<br/>118 files, 4059 symbols<br/>Core / utility"]:::cycle
     end
     subgraph lane_2["Tier 3"]
         direction LR
-        n_c6["progs/doomgeneric: net_defs<br/>13 files, 140 symbols<br/>Core / utility"]:::cycle
-        n_c8["headers: tick<br/>2 files, 27 symbols<br/>Core / utility"]:::default
-        n_c7["headers: batch<br/>2 files, 13 symbols<br/>Core / utility"]:::default
+        n_c7["progs/doomgeneric: net_defs<br/>13 files, 140 symbols<br/>Core / utility"]:::cycle
+        n_c6["net<br/>13 files, 605 symbols<br/>Core / utility"]:::cycle
     end
-    subgraph lane_3["Tier 4 - foundation"]
+    subgraph lane_3["Tier 4"]
         direction LR
-        n_c2["progs/src<br/>67 files, 2555 symbols<br/>Core / utility"]:::cycle
+        n_c4["tools: lxabi<br/>23 files, 328 symbols<br/>Core / utility"]:::cycle
     end
-    n_c0 ==>|"9"| n_c2
-    n_c0 -->|"1"| n_c7
-    n_c0 -->|"1"| n_c8
+    subgraph lane_4["Tier 5 - foundation"]
+        direction LR
+        n_c2["progs/src<br/>62 files, 2425 symbols<br/>Core / utility"]:::cycle
+    end
+    n_c0 ==>|"5"| n_c6
     n_c1 ==>|"77"| n_c3
-    n_c3 -->|"4"| n_c6
-    n_c4 -->|"3"| n_c0
-    n_c5 ==>|"8"| n_c0
-    n_c6 -->|"2"| n_c2
-    n_c4 <-.-|"2 upward"| n_c0
-    n_c5 <-.-|"2 upward"| n_c0
+    n_c3 -->|"4"| n_c7
+    n_c4 -->|"4"| n_c2
+    n_c5 ==>|"7"| n_c0
+    n_c6 -->|"1"| n_c4
+    n_c7 -->|"2"| n_c2
+    n_c5 <-.-|"3 upward"| n_c0
     n_c0 <-.-|"1 upward"| n_c2
     n_c1 <-.-|"3 upward"| n_c2
     n_c3 <-.-|"1 upward"| n_c2
     n_c1 <-.-|"63 upward"| n_c3
+    n_c0 <-.-|"1 upward"| n_c4
     n_c1 <-.-|"2 upward"| n_c4
-    n_c1 <-.-|"12 upward"| n_c6
-    n_c3 <-.-|"2 upward"| n_c6
-    linkStyle 8,9,10,11,12,13,14,15,16 stroke:#f87171,stroke-width:2px;
-    n_c1 ~~~ n_c0
-    n_c0 ~~~ n_c6
-    n_c6 ~~~ n_c2
+    n_c0 <-.-|"5 upward"| n_c6
+    n_c1 <-.-|"12 upward"| n_c7
+    n_c3 <-.-|"2 upward"| n_c7
+    linkStyle 7,8,9,10,11,12,13,14,15,16 stroke:#f87171,stroke-width:2px;
+    n_c1 ~~~ n_c3
+    n_c3 ~~~ n_c7
+    n_c7 ~~~ n_c4
+    n_c4 ~~~ n_c2
 ```
 
 ---

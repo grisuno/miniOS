@@ -1,10 +1,10 @@
-# tools: tls_crypto
+# tools: lxabi
 
-*Community 4 | 44 files | cohesion 0.78*
+*Community 4 | 37 files | cohesion 0.80*
 
 ## Definition
 
-This community groups 44 file(s) rooted at `tools` with dominant language py (cohesion 0.78). Central symbols: `AddonError`, `AddonState`, `CHECK`, `Client`, `Config`, `DG_DrawFrame`, `DG_GetKey`, `DG_GetTicksMs`. Core file: `net/tls_crypto.c` (78 symbols). Documented purpose: pure time-conversion helpers shared by the kernel clock.
+This community groups 37 file(s) rooted at `tools` with dominant language py (cohesion 0.80). Central symbols: `AddonError`, `AddonState`, `CHECK`, `Client`, `Config`, `DG_DrawFrame`, `DG_GetKey`, `DG_GetTicksMs`. Core file: `progs/src/lxabi.c` (61 symbols). Documented purpose: pure time-conversion helpers shared by the kernel clock.
 
 ## Files
 
@@ -15,6 +15,7 @@ This community groups 44 file(s) rooted at `tools` with dominant language py (co
 | `tools/boot_wl.py` | py | utility | 15 | yes |
 | `tools/gdb_repro.py` | py | utility | 4 | yes |
 | `tools/minios_cli.py` | py | utility | 6 | yes |
+| `tools/minios_gui.py` | py | utility | 9 | yes |
 
 ### `progs/src` (5 files)
 
@@ -22,13 +23,8 @@ This community groups 44 file(s) rooted at `tools` with dominant language py (co
 |------|----------|-------|---------|-----|
 | `progs/src/lxabi.c` | c | utility | 61 | yes |
 | `progs/src/lxsel.c` | c | utility | 11 | yes |
-
-### `headers` (4 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `headers/ktime.h` | h | utility | 3 | yes |
-| `headers/tls.h` | h | utility | 73 | yes |
+| `progs/src/shell.py` | py | utility | 3 | yes |
+| `progs/src/test.py` | py | testing | 20 | yes |
 
 ### `mcp` (4 files)
 
@@ -36,13 +32,7 @@ This community groups 44 file(s) rooted at `tools` with dominant language py (co
 |------|----------|-------|---------|-----|
 | `mcp/mcp_dbg_driver.py` | py | infrastructure | 6 | yes |
 | `mcp/mcp_dogfood.py` | py | utility | 6 | yes |
-
-### `net` (3 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `net/tls.c` | c | utility | 27 | yes |
-| `net/tls_crypto.c` | c | utility | 78 | yes |
+| `mcp/minios_addons.py` | py | utility | 16 | yes |
 
 ### `progs/micropython/variants/minios/lib` (2 files)
 
@@ -51,18 +41,18 @@ This community groups 44 file(s) rooted at `tools` with dominant language py (co
 | `progs/micropython/variants/minios/lib/hello.py` | py | utility | 0 | yes |
 | `progs/micropython/variants/minios/lib/mip.py` | py | utility | 15 | yes |
 
-### `progs/tls_u` (2 files)
+### `tests` (2 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `progs/tls_u/tls_u_main.c` | c | utility | 5 | yes |
-| `progs/tls_u/tls_u_port.c` | c | utility | 15 | yes |
+| `tests/test_ktime.c` | c | testing | 2 | yes |
+| `tests/test_vma_bench.c` | c | testing | 6 | yes |
 
-### `.` (1 files)
+### `headers` (1 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `tls_test.c` | c | testing | 23 | yes |
+| `headers/ktime.h` | h | utility | 3 | yes |
 
 ### `kernel` (1 files)
 
@@ -82,13 +72,13 @@ This community groups 44 file(s) rooted at `tools` with dominant language py (co
 |------|----------|-------|---------|-----|
 | `progs/lua/minios.c` | c | utility | 17 | no |
 
-### `tests` (1 files)
+### `progs/tls_u` (1 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `tests/test_ktime.c` | c | testing | 2 | yes |
+| `progs/tls_u/tls_u_port.c` | c | utility | 15 | yes |
 
-*... and 24 more files in this community.*
+*... and 17 more files in this community.*
 
 
 ## Key Symbols
@@ -96,44 +86,45 @@ This community groups 44 file(s) rooted at `tools` with dominant language py (co
 - `KTIME_H` (macro, `headers/ktime.h:2`) `#define KTIME_H`
 - `ktime_us_from_delta` (function, `headers/ktime.h:19`) `static inline unsigned long ktime_us_from_delta(unsigned long delta_ticks,`
 - `wall_us_from_parts` (function, `headers/ktime.h:30`) `static inline unsigned long wall_us_from_parts(unsigned long base_sec,` - wall_us_from_parts: wall-clock microseconds from an RTC-anchored base. base_sec is the last seen RTC
-- `TLS_H` (macro, `headers/tls.h:2`) `#define TLS_H`
-- `TLS_CT_CCS` (macro, `headers/tls.h:7`) `#define TLS_CT_CCS`
-- `TLS_CT_ALERT` (macro, `headers/tls.h:8`) `#define TLS_CT_ALERT`
-- `TLS_CT_HANDSHAKE` (macro, `headers/tls.h:9`) `#define TLS_CT_HANDSHAKE`
-- `TLS_CT_APPDATA` (macro, `headers/tls.h:10`) `#define TLS_CT_APPDATA`
-- `TLS_REC_HEADER` (macro, `headers/tls.h:11`) `#define TLS_REC_HEADER`
-- `TLS_REC_MAX` (macro, `headers/tls.h:12`) `#define TLS_REC_MAX`
-- `TLS_MSG_MAX` (macro, `headers/tls.h:13`) `#define TLS_MSG_MAX`
-- `TLS_PLAIN_MAX` (macro, `headers/tls.h:14`) `#define TLS_PLAIN_MAX`
-- `TLS_VERSION_TLS12` (macro, `headers/tls.h:15`) `#define TLS_VERSION_TLS12`
-- `TLS_VERSION_TLS10` (macro, `headers/tls.h:16`) `#define TLS_VERSION_TLS10`
-- `TLS_HS_CLIENT_HELLO` (macro, `headers/tls.h:19`) `#define TLS_HS_CLIENT_HELLO`
-- `TLS_HS_SERVER_HELLO` (macro, `headers/tls.h:20`) `#define TLS_HS_SERVER_HELLO`
-- `TLS_HS_CERTIFICATE` (macro, `headers/tls.h:21`) `#define TLS_HS_CERTIFICATE`
-- `TLS_HS_SERVER_KEY_EXCHANGE` (macro, `headers/tls.h:22`) `#define TLS_HS_SERVER_KEY_EXCHANGE`
-- `TLS_HS_SERVER_HELLO_DONE` (macro, `headers/tls.h:23`) `#define TLS_HS_SERVER_HELLO_DONE`
-- `TLS_HS_CLIENT_KEY_EXCHANGE` (macro, `headers/tls.h:24`) `#define TLS_HS_CLIENT_KEY_EXCHANGE`
-- `TLS_HS_FINISHED` (macro, `headers/tls.h:25`) `#define TLS_HS_FINISHED`
-- `TLS_CSUITE_ECDHE_RSA_AES128GCM` (macro, `headers/tls.h:28`) `#define TLS_CSUITE_ECDHE_RSA_AES128GCM`
-- `TLS_CSUITE_ECDHE_ECDSA_AES128GCM` (macro, `headers/tls.h:29`) `#define TLS_CSUITE_ECDHE_ECDSA_AES128GCM`
-- `TLS_SIG_RSA_PKCS1_SHA256` (macro, `headers/tls.h:32`) `#define TLS_SIG_RSA_PKCS1_SHA256`
-- `TLS_SIG_ECDSA_P256_SHA256` (macro, `headers/tls.h:33`) `#define TLS_SIG_ECDSA_P256_SHA256`
-- `TLS_SIG_ECDSA_P384_SHA384` (macro, `headers/tls.h:34`) `#define TLS_SIG_ECDSA_P384_SHA384`
-- `TLS_GROUP_SECP256R1` (macro, `headers/tls.h:37`) `#define TLS_GROUP_SECP256R1`
-- `TLS_EXT_SERVER_NAME` (macro, `headers/tls.h:40`) `#define TLS_EXT_SERVER_NAME`
-- `TLS_EXT_SUPPORTED_GROUPS` (macro, `headers/tls.h:41`) `#define TLS_EXT_SUPPORTED_GROUPS`
-- `TLS_EXT_EC_POINT_FORMATS` (macro, `headers/tls.h:42`) `#define TLS_EXT_EC_POINT_FORMATS`
+- `ktime_rdtsc` (function, `kernel/time.c:13`) `static unsigned long ktime_rdtsc(void)`
+- `ktime_init` (function, `kernel/time.c:19`) `static void ktime_init(void)`
+- `ktime_ms` (function, `kernel/time.c:33`) `unsigned long ktime_ms(void)`
+- `ktime_us` (function, `kernel/time.c:41`) `unsigned long ktime_us(void)` - Microsecond resolution over the same calibrated ratio (Phase 0.2/0.3: clock_gettime nsec and gettime
+- `Client` (class, `mcp/mcp_dbg_driver.py:15`) `class Client`
+- `__init__` (method, `mcp/mcp_dbg_driver.py:16`) `def __init__(self)`
+- `request` (method, `mcp/mcp_dbg_driver.py:28`) `def request(self, method, params)`
+- `tool` (method, `mcp/mcp_dbg_driver.py:46`) `def tool(self, name, params)`
+- `close` (method, `mcp/mcp_dbg_driver.py:54`) `def close(self)`
+- `main` (function, `mcp/mcp_dbg_driver.py:64`) `def main()`
+- `Client` (class, `mcp/mcp_dogfood.py:19`) `class Client`
+- `__init__` (method, `mcp/mcp_dogfood.py:20`) `def __init__(self, addons_dir)`
+- `request` (method, `mcp/mcp_dogfood.py:40`) `def request(self, method, params)`
+- `tool` (method, `mcp/mcp_dogfood.py:58`) `def tool(self, name, params)`
+- `close` (method, `mcp/mcp_dogfood.py:68`) `def close(self)`
+- `main` (function, `mcp/mcp_dogfood.py:78`) `def main()`
+- `AddonError` (class, `mcp/minios_addons.py:56`) `class AddonError(Exception)` - Expected marketplace failure, reported to the client as isError.
+- `_clean` (function, `mcp/minios_addons.py:62`) `def _clean(s)`
+- `_unquote` (function, `mcp/minios_addons.py:66`) `def _unquote(v)`
+- `parse_addon_yaml` (function, `mcp/minios_addons.py:73`) `def parse_addon_yaml(text)` - Parse the strict YAML subset. Returns the addon dict.
+- `fail` (function, `mcp/minios_addons.py:85`) `def fail(lineno, why)`
+- `validate_addon` (function, `mcp/minios_addons.py:205`) `def validate_addon(addon, source)` - Check bounds and character sets. Raises AddonError.
+- `validate_addon_path` (function, `mcp/minios_addons.py:295`) `def validate_addon_path(path)` - dst paths live on the ramdisk: relative, no '..', bounded charset.
+- `validate_shell_line` (function, `mcp/minios_addons.py:309`) `def validate_shell_line(line)` - Build/verify lines are single printable-ASCII shell commands.
+- `load_addons_dir` (function, `mcp/minios_addons.py:323`) `def load_addons_dir(addons_dir)` - Load every addon yaml; each entry is a dict or an error string.
+- `split_for_editor` (function, `mcp/minios_addons.py:347`) `def split_for_editor(text)` - Split a source into editor-sized chunks. Raises AddonError.
+- `exit_code_of` (function, `mcp/minios_addons.py:372`) `def exit_code_of(text)`
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 55
-- Cross-boundary resolved imports (EXTRACTED): 15
+- Internal resolved imports (EXTRACTED): 44
+- Cross-boundary resolved imports (EXTRACTED): 10
 
 ## Connections
 
-- [EXTRACTED] depends_on community 4 <-> 2 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/string.c.
-- [EXTRACTED] depends_on community 4 <-> 0 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports headers/kernel.h.
+- [EXTRACTED] depends_on community 6 <-> 4 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/time.c.
+- [EXTRACTED] depends_on community 0 <-> 4 (strength 0.9): Extracted import edge crosses communities: kernel/syscalls.c imports headers/ktime.h.
 - [EXTRACTED] depends_on community 4 <-> 1 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomgeneric_xlib.c imports progs/doomgeneric/doomkeys.h.
+- [EXTRACTED] depends_on community 4 <-> 2 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomgeneric_xlib.c imports kernel/string.c.
 
 ## Risks
 
@@ -157,23 +148,17 @@ This community groups 44 file(s) rooted at `tools` with dominant language py (co
 
 - Why do 2 file(s) lack file-level docs (e.g. `progs/doomgeneric/doomgeneric_xlib.c`)? What purpose do they serve?
 - Is the dangerous import `subprocess` in `mcp/mcp_dbg_driver.py` still required, or can it be isolated?
-- What would break if the most connected file in tools: tls_crypto changed?
-- Should tools: tls_crypto be split, given cohesion 0.78?
+- What would break if the most connected file in tools: lxabi changed?
+- Should tools: lxabi be split, given cohesion 0.80?
 
 ## Sources
 
 - `headers/ktime.h`
-- `headers/tls.h`
-- `headers/tls_port.h`
-- `headers/tls_roots.h`
 - `kernel/time.c`
 - `mcp/mcp_dbg_driver.py`
 - `mcp/mcp_dogfood.py`
 - `mcp/minios_addons.py`
 - `mcp/minios_mcp.py`
-- `net/tls.c`
-- `net/tls_crypto.c`
-- `net/tls_x509.c`
 - `progs/doomgeneric/doomgeneric_xlib.c`
 - `progs/lua/minios.c`
 - `progs/micropython/variants/minios/lib/hello.py`
@@ -182,4 +167,10 @@ This community groups 44 file(s) rooted at `tools` with dominant language py (co
 - `progs/src/lxsel.c`
 - `progs/src/shell.py`
 - `progs/src/test.py`
-- *... and 24 more*
+- `progs/src/test_py.py`
+- `progs/tls_u/tls_u_port.c`
+- `tests/test_ktime.c`
+- `tests/test_vma_bench.c`
+- `tools/boot_wl.py`
+- `tools/gdb_repro.py`
+- *... and 17 more*

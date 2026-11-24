@@ -15,6 +15,7 @@
 {"confidence": "INFERRED", "description": "concept any appears in minifs.c", "relation": "documents", "source": "concept:any", "target": "file:fs/minifs.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept any appears in pcache.c", "relation": "documents", "source": "concept:any", "target": "file:fs/pcache.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept any appears in block.h", "relation": "documents", "source": "concept:any", "target": "file:headers/block.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept any appears in ahci.h", "relation": "documents", "source": "concept:any", "target": "file:headers/drivers/ahci.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept any appears in pci.h", "relation": "documents", "source": "concept:any", "target": "file:headers/drivers/pci.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept any appears in xhci.h", "relation": "documents", "source": "concept:any", "target": "file:headers/drivers/xhci.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept any appears in fsimg.h", "relation": "documents", "source": "concept:any", "target": "file:headers/fsimg.h", "weight": 0.45}
@@ -252,6 +253,7 @@
 {"confidence": "INFERRED", "description": "but depends_on program", "relation": "depends_on", "source": "concept:but", "target": "concept:program", "weight": 0.6}
 {"confidence": "INFERRED", "description": "but depends_on progs", "relation": "depends_on", "source": "concept:but", "target": "concept:progs", "weight": 0.6}
 {"confidence": "INFERRED", "description": "but depends_on under", "relation": "depends_on", "source": "concept:but", "target": "concept:under", "weight": 0.6}
+{"confidence": "INFERRED", "description": "but depends_on version", "relation": "depends_on", "source": "concept:but", "target": "concept:version", "weight": 0.6}
 {"confidence": "INFERRED", "description": "concept but appears in usbhid.c", "relation": "documents", "source": "concept:but", "target": "file:drivers/usbhid.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept but appears in ext4.c", "relation": "documents", "source": "concept:but", "target": "file:fs/ext4.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept but appears in net.h", "relation": "documents", "source": "concept:but", "target": "file:headers/net.h", "weight": 0.45}
@@ -447,6 +449,7 @@
 {"confidence": "INFERRED", "description": "can depends_on version", "relation": "depends_on", "source": "concept:can", "target": "concept:version", "weight": 0.6}
 {"confidence": "INFERRED", "description": "can depends_on without", "relation": "depends_on", "source": "concept:can", "target": "concept:without", "weight": 0.6}
 {"confidence": "INFERRED", "description": "concept can appears in stage2.S", "relation": "documents", "source": "concept:can", "target": "file:arch/x86/boot/stage2.S", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept can appears in ahci.c", "relation": "documents", "source": "concept:can", "target": "file:drivers/ahci.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept can appears in sb16.c", "relation": "documents", "source": "concept:can", "target": "file:drivers/sb16.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept can appears in usbhid.c", "relation": "documents", "source": "concept:can", "target": "file:drivers/usbhid.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept can appears in xhci.c", "relation": "documents", "source": "concept:can", "target": "file:drivers/xhci.c", "weight": 0.45}
@@ -1337,6 +1340,7 @@
 {"confidence": "INFERRED", "description": "concept distributed appears in z_zone.c", "relation": "documents", "source": "concept:distributed", "target": "file:progs/doomgeneric/z_zone.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept distributed appears in z_zone.h", "relation": "documents", "source": "concept:distributed", "target": "file:progs/doomgeneric/z_zone.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept docstring appears in uefi_stub.c", "relation": "documents", "source": "concept:docstring", "target": "file:boot/uefi_stub.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept docstring appears in ahci.c", "relation": "documents", "source": "concept:docstring", "target": "file:drivers/ahci.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept docstring appears in block.c", "relation": "documents", "source": "concept:docstring", "target": "file:drivers/block.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept docstring appears in kbd.c", "relation": "documents", "source": "concept:docstring", "target": "file:drivers/kbd.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept docstring appears in mouse.c", "relation": "documents", "source": "concept:docstring", "target": "file:drivers/mouse.c", "weight": 0.45}
@@ -1359,6 +1363,7 @@
 {"confidence": "INFERRED", "description": "concept docstring appears in avatar_data.h", "relation": "documents", "source": "concept:docstring", "target": "file:headers/avatar_data.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept docstring appears in batch.h", "relation": "documents", "source": "concept:docstring", "target": "file:headers/batch.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept docstring appears in block.h", "relation": "documents", "source": "concept:docstring", "target": "file:headers/block.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept docstring appears in ahci.h", "relation": "documents", "source": "concept:docstring", "target": "file:headers/drivers/ahci.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept docstring appears in kbd.h", "relation": "documents", "source": "concept:docstring", "target": "file:headers/drivers/kbd.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept docstring appears in modifiers.h", "relation": "documents", "source": "concept:docstring", "target": "file:headers/drivers/modifiers.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept docstring appears in mouse.h", "relation": "documents", "source": "concept:docstring", "target": "file:headers/drivers/mouse.h", "weight": 0.45}
@@ -2180,137 +2185,6 @@
 {"confidence": "INFERRED", "description": "concept every appears in test_readme_shot.py", "relation": "documents", "source": "concept:every", "target": "file:tools/test_readme_shot.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept every appears in test_sb16.sh", "relation": "documents", "source": "concept:every", "target": "file:tools/test_sb16.sh", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept every appears in update_sources.py", "relation": "documents", "source": "concept:every", "target": "file:tools/update_sources.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in uefi_stub.c", "relation": "documents", "source": "concept:file", "target": "file:boot/uefi_stub.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in ext4.c", "relation": "documents", "source": "concept:file", "target": "file:fs/ext4.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in fat32.c", "relation": "documents", "source": "concept:file", "target": "file:fs/fat32.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in fsimg.c", "relation": "documents", "source": "concept:file", "target": "file:fs/fsimg.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in kfile.c", "relation": "documents", "source": "concept:file", "target": "file:fs/kfile.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in minifs.c", "relation": "documents", "source": "concept:file", "target": "file:fs/minifs.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in pcache.c", "relation": "documents", "source": "concept:file", "target": "file:fs/pcache.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in ramdisk.c", "relation": "documents", "source": "concept:file", "target": "file:fs/ramdisk.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in vfs.c", "relation": "documents", "source": "concept:file", "target": "file:fs/vfs.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in zip.c", "relation": "documents", "source": "concept:file", "target": "file:fs/zip.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in ext4.h", "relation": "documents", "source": "concept:file", "target": "file:headers/ext4.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in fat32.h", "relation": "documents", "source": "concept:file", "target": "file:headers/fat32.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in fsimg.h", "relation": "documents", "source": "concept:file", "target": "file:headers/fsimg.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in httpd.h", "relation": "documents", "source": "concept:file", "target": "file:headers/httpd.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in kernel.h", "relation": "documents", "source": "concept:file", "target": "file:headers/kernel.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in ldso.h", "relation": "documents", "source": "concept:file", "target": "file:headers/ldso.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in leakcheck.h", "relation": "documents", "source": "concept:file", "target": "file:headers/leakcheck.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in minifs.h", "relation": "documents", "source": "concept:file", "target": "file:headers/minifs.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in pcache.h", "relation": "documents", "source": "concept:file", "target": "file:headers/pcache.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in qga.h", "relation": "documents", "source": "concept:file", "target": "file:headers/qga.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in shell.h", "relation": "documents", "source": "concept:file", "target": "file:headers/shell.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in spawn.h", "relation": "documents", "source": "concept:file", "target": "file:headers/spawn.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in vga_fx.h", "relation": "documents", "source": "concept:file", "target": "file:headers/vga_fx.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in wm_focus.h", "relation": "documents", "source": "concept:file", "target": "file:headers/wm_focus.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in wm_geom.h", "relation": "documents", "source": "concept:file", "target": "file:headers/wm_geom.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in wm_tiling.h", "relation": "documents", "source": "concept:file", "target": "file:headers/wm_tiling.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in abi.c", "relation": "documents", "source": "concept:file", "target": "file:kernel/abi.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in cvm_host.c", "relation": "documents", "source": "concept:file", "target": "file:kernel/cvm_host.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in editor.c", "relation": "documents", "source": "concept:file", "target": "file:kernel/editor.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in loader.c", "relation": "documents", "source": "concept:file", "target": "file:kernel/loader.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in paging.c", "relation": "documents", "source": "concept:file", "target": "file:kernel/mm/paging.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in printf.c", "relation": "documents", "source": "concept:file", "target": "file:kernel/printf.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in sched.c", "relation": "documents", "source": "concept:file", "target": "file:kernel/sched.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in shell.c", "relation": "documents", "source": "concept:file", "target": "file:kernel/shell.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in syscalls.c", "relation": "documents", "source": "concept:file", "target": "file:kernel/syscalls.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in vga_fb.c", "relation": "documents", "source": "concept:file", "target": "file:kernel/vga_fb.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in minios_mcp.py", "relation": "documents", "source": "concept:file", "target": "file:mcp/minios_mcp.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in mutate_mcp.sh", "relation": "documents", "source": "concept:file", "target": "file:mcp/mutate_mcp.sh", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in lz4.s", "relation": "documents", "source": "concept:file", "target": "file:progs/asm/lz4.s", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in sign.s", "relation": "documents", "source": "concept:file", "target": "file:progs/asm/sign.s", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in doomedit.c", "relation": "documents", "source": "concept:file", "target": "file:progs/doomedit/doomedit.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in d_iwad.c", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/d_iwad.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in d_main.c", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/d_main.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in deh_main.h", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/deh_main.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in doomstat.h", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/doomstat.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in gusconf.c", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/gusconf.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in i_joystick.h", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/i_joystick.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in i_main.c", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/i_main.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in m_argv.c", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/m_argv.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in m_argv.h", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/m_argv.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in m_bbox.c", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/m_bbox.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in m_config.c", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/m_config.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in m_config.h", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/m_config.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in m_menu.h", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/m_menu.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in m_misc.c", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/m_misc.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in m_misc.h", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/m_misc.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in p_saveg.c", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/p_saveg.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in p_saveg.h", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/p_saveg.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in w_checksum.c", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/w_checksum.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in w_file.c", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/w_file.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in w_file.h", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/w_file.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in w_file_stdc.c", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/w_file_stdc.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in w_main.c", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/w_main.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in w_merge.h", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/w_merge.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in w_wad.c", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/w_wad.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in w_wad.h", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/w_wad.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in z_zone.c", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/z_zone.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in z_zone.h", "relation": "documents", "source": "concept:file", "target": "file:progs/doomgeneric/z_zone.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in file.c", "relation": "documents", "source": "concept:file", "target": "file:progs/file/file.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in file_assoc.h", "relation": "documents", "source": "concept:file", "target": "file:progs/file/file_assoc.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in lisp.c", "relation": "documents", "source": "concept:file", "target": "file:progs/lisp/lisp.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in minios.c", "relation": "documents", "source": "concept:file", "target": "file:progs/lua/minios.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in mip.py", "relation": "documents", "source": "concept:file", "target": "file:progs/micropython/variants/minios/lib/mip.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in minicraft.c", "relation": "documents", "source": "concept:file", "target": "file:progs/minicraft/minicraft.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in minios_png.h", "relation": "documents", "source": "concept:file", "target": "file:progs/minios_png.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in node_editor.c", "relation": "documents", "source": "concept:file", "target": "file:progs/nuklear/node_editor.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in nuklear_theme.h", "relation": "documents", "source": "concept:file", "target": "file:progs/nuklear/nuklear_theme.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in paint.c", "relation": "documents", "source": "concept:file", "target": "file:progs/paint/paint.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in platform_minios.c", "relation": "documents", "source": "concept:file", "target": "file:progs/pokemon/platform_minios.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in freedom.c", "relation": "documents", "source": "concept:file", "target": "file:progs/src/freedom.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in lxabi.c", "relation": "documents", "source": "concept:file", "target": "file:progs/src/lxabi.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in lz4.c", "relation": "documents", "source": "concept:file", "target": "file:progs/src/lz4.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in mvrn.c", "relation": "documents", "source": "concept:file", "target": "file:progs/src/mvrn.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in pcmap.c", "relation": "documents", "source": "concept:file", "target": "file:progs/src/pcmap.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in shell.py", "relation": "documents", "source": "concept:file", "target": "file:progs/src/shell.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in sign.c", "relation": "documents", "source": "concept:file", "target": "file:progs/src/sign.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in spin.c", "relation": "documents", "source": "concept:file", "target": "file:progs/src/spin.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in test.lua", "relation": "documents", "source": "concept:file", "target": "file:progs/src/test.lua", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in topogpt3.c", "relation": "documents", "source": "concept:file", "target": "file:progs/topogpt3/topogpt3.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in vedit.c", "relation": "documents", "source": "concept:file", "target": "file:progs/vedit/vedit.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in wl_client.h", "relation": "documents", "source": "concept:file", "target": "file:progs/wl/wl_client.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in wl_mbox.h", "relation": "documents", "source": "concept:file", "target": "file:progs/wl/wl_mbox.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in wl_pixbuf.h", "relation": "documents", "source": "concept:file", "target": "file:progs/wl/wl_pixbuf.h", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in wlcomp.c", "relation": "documents", "source": "concept:file", "target": "file:progs/wl/wlcomp.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in qga.c", "relation": "documents", "source": "concept:file", "target": "file:qga.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in host_codecs.sh", "relation": "documents", "source": "concept:file", "target": "file:tests/host_codecs.sh", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in test_doom_pwad.py", "relation": "documents", "source": "concept:file", "target": "file:tests/test_doom_pwad.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in test_fault.c", "relation": "documents", "source": "concept:file", "target": "file:tests/test_fault.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in test_file_assoc.c", "relation": "documents", "source": "concept:file", "target": "file:tests/test_file_assoc.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in test_minifs_tools.py", "relation": "documents", "source": "concept:file", "target": "file:tests/test_minifs_tools.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in test_minios_png.c", "relation": "documents", "source": "concept:file", "target": "file:tests/test_minios_png.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in test_theme.c", "relation": "documents", "source": "concept:file", "target": "file:tests/test_theme.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in test_vma.c", "relation": "documents", "source": "concept:file", "target": "file:tests/test_vma.c", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in boot_run.sh", "relation": "documents", "source": "concept:file", "target": "file:tools/boot_run.sh", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in check_addons.py", "relation": "documents", "source": "concept:file", "target": "file:tools/check_addons.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in check_cohesion.py", "relation": "documents", "source": "concept:file", "target": "file:tools/check_cohesion.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in check_mutant_anchors.py", "relation": "documents", "source": "concept:file", "target": "file:tools/check_mutant_anchors.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in check_spin_discipline.py", "relation": "documents", "source": "concept:file", "target": "file:tools/check_spin_discipline.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in check_surprising.py", "relation": "documents", "source": "concept:file", "target": "file:tools/check_surprising.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in check_syscall_sanitize.py", "relation": "documents", "source": "concept:file", "target": "file:tools/check_syscall_sanitize.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in clip_bridge.py", "relation": "documents", "source": "concept:file", "target": "file:tools/clip_bridge.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in doom_pwad.py", "relation": "documents", "source": "concept:file", "target": "file:tools/doom_pwad.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in gen_avatar.py", "relation": "documents", "source": "concept:file", "target": "file:tools/gen_avatar.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in gen_desktop_pngs.py", "relation": "documents", "source": "concept:file", "target": "file:tools/gen_desktop_pngs.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in gen_zip_fixtures.py", "relation": "documents", "source": "concept:file", "target": "file:tools/gen_zip_fixtures.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in kernel_feature_survey.py", "relation": "documents", "source": "concept:file", "target": "file:tools/kernel_feature_survey.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in minifs_saves.py", "relation": "documents", "source": "concept:file", "target": "file:tools/minifs_saves.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in minios_cli.py", "relation": "documents", "source": "concept:file", "target": "file:tools/minios_cli.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in mkcpyzip.py", "relation": "documents", "source": "concept:file", "target": "file:tools/mkcpyzip.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in mkfs.minifs.py", "relation": "documents", "source": "concept:file", "target": "file:tools/mkfs.minifs.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in mkpak1.py", "relation": "documents", "source": "concept:file", "target": "file:tools/mkpak1.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in mkramdisk.py", "relation": "documents", "source": "concept:file", "target": "file:tools/mkramdisk.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in mkvocab.py", "relation": "documents", "source": "concept:file", "target": "file:tools/mkvocab.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in mutate.sh", "relation": "documents", "source": "concept:file", "target": "file:tools/mutate.sh", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in qga_client.py", "relation": "documents", "source": "concept:file", "target": "file:tools/qga_client.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in sign_elf.py", "relation": "documents", "source": "concept:file", "target": "file:tools/sign_elf.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in test_bdd.sh", "relation": "documents", "source": "concept:file", "target": "file:tools/test_bdd.sh", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in test_gui_fashion.py", "relation": "documents", "source": "concept:file", "target": "file:tools/test_gui_fashion.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in test_lisp.py", "relation": "documents", "source": "concept:file", "target": "file:tools/test_lisp.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in test_readme_shot.py", "relation": "documents", "source": "concept:file", "target": "file:tools/test_readme_shot.py", "weight": 0.45}
-{"confidence": "INFERRED", "description": "concept file appears in wm_layout_sync.py", "relation": "documents", "source": "concept:file", "target": "file:tools/wm_layout_sync.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept fitness appears in am_map.c", "relation": "documents", "source": "concept:fitness", "target": "file:progs/doomgeneric/am_map.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept fitness appears in am_map.h", "relation": "documents", "source": "concept:fitness", "target": "file:progs/doomgeneric/am_map.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept fitness appears in d_englsh.h", "relation": "documents", "source": "concept:fitness", "target": "file:progs/doomgeneric/d_englsh.h", "weight": 0.45}
@@ -3913,6 +3787,137 @@
 {"confidence": "INFERRED", "description": "concept inc appears in wi_stuff.h", "relation": "documents", "source": "concept:inc", "target": "file:progs/doomgeneric/wi_stuff.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept inc appears in z_zone.c", "relation": "documents", "source": "concept:inc", "target": "file:progs/doomgeneric/z_zone.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept inc appears in z_zone.h", "relation": "documents", "source": "concept:inc", "target": "file:progs/doomgeneric/z_zone.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in uefi_stub.c", "relation": "documents", "source": "concept:int", "target": "file:boot/uefi_stub.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in ahci.c", "relation": "documents", "source": "concept:int", "target": "file:drivers/ahci.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in kbd.c", "relation": "documents", "source": "concept:int", "target": "file:drivers/kbd.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in sb16.c", "relation": "documents", "source": "concept:int", "target": "file:drivers/sb16.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in virtio_blk.c", "relation": "documents", "source": "concept:int", "target": "file:drivers/virtio_blk.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in virtio_net.c", "relation": "documents", "source": "concept:int", "target": "file:drivers/virtio_net.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in xhci.c", "relation": "documents", "source": "concept:int", "target": "file:drivers/xhci.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in kfile.c", "relation": "documents", "source": "concept:int", "target": "file:fs/kfile.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in minifs.c", "relation": "documents", "source": "concept:int", "target": "file:fs/minifs.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in pcache.c", "relation": "documents", "source": "concept:int", "target": "file:fs/pcache.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in ramdisk.c", "relation": "documents", "source": "concept:int", "target": "file:fs/ramdisk.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in bootdefs.h", "relation": "documents", "source": "concept:int", "target": "file:headers/arch/x86/boot/bootdefs.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in hal_io.h", "relation": "documents", "source": "concept:int", "target": "file:headers/arch/x86/hal_io.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in arena.h", "relation": "documents", "source": "concept:int", "target": "file:headers/arena.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in audio.h", "relation": "documents", "source": "concept:int", "target": "file:headers/audio.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in block.h", "relation": "documents", "source": "concept:int", "target": "file:headers/block.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in ahci.h", "relation": "documents", "source": "concept:int", "target": "file:headers/drivers/ahci.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in kbd.h", "relation": "documents", "source": "concept:int", "target": "file:headers/drivers/kbd.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in modifiers.h", "relation": "documents", "source": "concept:int", "target": "file:headers/drivers/modifiers.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in pci.h", "relation": "documents", "source": "concept:int", "target": "file:headers/drivers/pci.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in usbblk.h", "relation": "documents", "source": "concept:int", "target": "file:headers/drivers/usbblk.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in usbhid.h", "relation": "documents", "source": "concept:int", "target": "file:headers/drivers/usbhid.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in virtio_blk.h", "relation": "documents", "source": "concept:int", "target": "file:headers/drivers/virtio_blk.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in virtio_net.h", "relation": "documents", "source": "concept:int", "target": "file:headers/drivers/virtio_net.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in xhci.h", "relation": "documents", "source": "concept:int", "target": "file:headers/drivers/xhci.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in ide.h", "relation": "documents", "source": "concept:int", "target": "file:headers/ide.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in kernel.h", "relation": "documents", "source": "concept:int", "target": "file:headers/kernel.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in console_in.h", "relation": "documents", "source": "concept:int", "target": "file:headers/kernel/console_in.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in vga_cursor.h", "relation": "documents", "source": "concept:int", "target": "file:headers/kernel/vga_cursor.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in leakcheck.h", "relation": "documents", "source": "concept:int", "target": "file:headers/leakcheck.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in minifs.h", "relation": "documents", "source": "concept:int", "target": "file:headers/minifs.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in net.h", "relation": "documents", "source": "concept:int", "target": "file:headers/net.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in rtl8139.h", "relation": "documents", "source": "concept:int", "target": "file:headers/net/rtl8139.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in pipe.h", "relation": "documents", "source": "concept:int", "target": "file:headers/pipe.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in proc_sec.h", "relation": "documents", "source": "concept:int", "target": "file:headers/proc_sec.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in sb16.h", "relation": "documents", "source": "concept:int", "target": "file:headers/sb16.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in sched.h", "relation": "documents", "source": "concept:int", "target": "file:headers/sched.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in seccomp_bpf.h", "relation": "documents", "source": "concept:int", "target": "file:headers/seccomp_bpf.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in select_map.h", "relation": "documents", "source": "concept:int", "target": "file:headers/select_map.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in shell.h", "relation": "documents", "source": "concept:int", "target": "file:headers/shell.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in smp.h", "relation": "documents", "source": "concept:int", "target": "file:headers/smp.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in spawn.h", "relation": "documents", "source": "concept:int", "target": "file:headers/spawn.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in spinlock.h", "relation": "documents", "source": "concept:int", "target": "file:headers/spinlock.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in sync.h", "relation": "documents", "source": "concept:int", "target": "file:headers/sync.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in syscalls_proc.h", "relation": "documents", "source": "concept:int", "target": "file:headers/syscalls_proc.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in tick.h", "relation": "documents", "source": "concept:int", "target": "file:headers/tick.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in tls.h", "relation": "documents", "source": "concept:int", "target": "file:headers/tls.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in vga_fb.h", "relation": "documents", "source": "concept:int", "target": "file:headers/vga_fb.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in vga_fx.h", "relation": "documents", "source": "concept:int", "target": "file:headers/vga_fx.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in wm_blur.h", "relation": "documents", "source": "concept:int", "target": "file:headers/wm_blur.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in wm_chrome.h", "relation": "documents", "source": "concept:int", "target": "file:headers/wm_chrome.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in wm_dock.h", "relation": "documents", "source": "concept:int", "target": "file:headers/wm_dock.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in wm_events.h", "relation": "documents", "source": "concept:int", "target": "file:headers/wm_events.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in wm_focus.h", "relation": "documents", "source": "concept:int", "target": "file:headers/wm_focus.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in wm_geom.h", "relation": "documents", "source": "concept:int", "target": "file:headers/wm_geom.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in wm_gfxview.h", "relation": "documents", "source": "concept:int", "target": "file:headers/wm_gfxview.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in wm_jelly.h", "relation": "documents", "source": "concept:int", "target": "file:headers/wm_jelly.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in wm_layout.h", "relation": "documents", "source": "concept:int", "target": "file:headers/wm_layout.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in wm_notify.h", "relation": "documents", "source": "concept:int", "target": "file:headers/wm_notify.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in wm_render.h", "relation": "documents", "source": "concept:int", "target": "file:headers/wm_render.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in wm_tiling.h", "relation": "documents", "source": "concept:int", "target": "file:headers/wm_tiling.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in wm_window.h", "relation": "documents", "source": "concept:int", "target": "file:headers/wm_window.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in clip.c", "relation": "documents", "source": "concept:int", "target": "file:kernel/clip.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in console.c", "relation": "documents", "source": "concept:int", "target": "file:kernel/console.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in console_in.c", "relation": "documents", "source": "concept:int", "target": "file:kernel/console_in.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in cvm_host.c", "relation": "documents", "source": "concept:int", "target": "file:kernel/cvm_host.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in exec.c", "relation": "documents", "source": "concept:int", "target": "file:kernel/exec.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in futex.c", "relation": "documents", "source": "concept:int", "target": "file:kernel/futex.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in minifetch.c", "relation": "documents", "source": "concept:int", "target": "file:kernel/minifetch.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in cow.c", "relation": "documents", "source": "concept:int", "target": "file:kernel/mm/cow.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in paging.c", "relation": "documents", "source": "concept:int", "target": "file:kernel/mm/paging.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in percpu_rq.c", "relation": "documents", "source": "concept:int", "target": "file:kernel/percpu_rq.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in proc_sec.c", "relation": "documents", "source": "concept:int", "target": "file:kernel/proc_sec.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in rcu.c", "relation": "documents", "source": "concept:int", "target": "file:kernel/rcu.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in sched.c", "relation": "documents", "source": "concept:int", "target": "file:kernel/sched.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in shell.c", "relation": "documents", "source": "concept:int", "target": "file:kernel/shell.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in syscalls.c", "relation": "documents", "source": "concept:int", "target": "file:kernel/syscalls.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in syscalls_proc.c", "relation": "documents", "source": "concept:int", "target": "file:kernel/syscalls_proc.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in tick.c", "relation": "documents", "source": "concept:int", "target": "file:kernel/tick.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in vga_cursor.c", "relation": "documents", "source": "concept:int", "target": "file:kernel/vga_cursor.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in vga_fb.c", "relation": "documents", "source": "concept:int", "target": "file:kernel/vga_fb.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in net.c", "relation": "documents", "source": "concept:int", "target": "file:net/net.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in tls.c", "relation": "documents", "source": "concept:int", "target": "file:net/tls.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in tls_crypto.c", "relation": "documents", "source": "concept:int", "target": "file:net/tls_crypto.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in tls_x509.c", "relation": "documents", "source": "concept:int", "target": "file:net/tls_x509.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in doomedit.c", "relation": "documents", "source": "concept:int", "target": "file:progs/doomedit/doomedit.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in m_config.c", "relation": "documents", "source": "concept:int", "target": "file:progs/doomgeneric/m_config.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in m_config.h", "relation": "documents", "source": "concept:int", "target": "file:progs/doomgeneric/m_config.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in m_misc.c", "relation": "documents", "source": "concept:int", "target": "file:progs/doomgeneric/m_misc.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in tables.c", "relation": "documents", "source": "concept:int", "target": "file:progs/doomgeneric/tables.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in tables.h", "relation": "documents", "source": "concept:int", "target": "file:progs/doomgeneric/tables.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in file.c", "relation": "documents", "source": "concept:int", "target": "file:progs/file/file.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in file_assoc.h", "relation": "documents", "source": "concept:int", "target": "file:progs/file/file_assoc.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in freedomui_minios.c", "relation": "documents", "source": "concept:int", "target": "file:progs/freedomui/freedomui_minios.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in media_unavailable.c", "relation": "documents", "source": "concept:int", "target": "file:progs/freedomui/media_unavailable.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in ps2_keymap.c", "relation": "documents", "source": "concept:int", "target": "file:progs/freedomui/ps2_keymap.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in ps2_keymap.h", "relation": "documents", "source": "concept:int", "target": "file:progs/freedomui/ps2_keymap.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in minios.c", "relation": "documents", "source": "concept:int", "target": "file:progs/lua/minios.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in minicraft.c", "relation": "documents", "source": "concept:int", "target": "file:progs/minicraft/minicraft.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in minios_png.h", "relation": "documents", "source": "concept:int", "target": "file:progs/minios_png.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in cvm_emit.c", "relation": "documents", "source": "concept:int", "target": "file:progs/nuklear/cvm_emit.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in node_editor.c", "relation": "documents", "source": "concept:int", "target": "file:progs/nuklear/node_editor.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in nuklear_minios.c", "relation": "documents", "source": "concept:int", "target": "file:progs/nuklear/nuklear_minios.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in nuklear_minios.h", "relation": "documents", "source": "concept:int", "target": "file:progs/nuklear/nuklear_minios.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in nuklear_theme.h", "relation": "documents", "source": "concept:int", "target": "file:progs/nuklear/nuklear_theme.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in paint.c", "relation": "documents", "source": "concept:int", "target": "file:progs/paint/paint.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in piano.c", "relation": "documents", "source": "concept:int", "target": "file:progs/piano/piano.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in aes.c", "relation": "documents", "source": "concept:int", "target": "file:progs/src/aes.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in freedom.c", "relation": "documents", "source": "concept:int", "target": "file:progs/src/freedom.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in freedom_wl.c", "relation": "documents", "source": "concept:int", "target": "file:progs/src/freedom_wl.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in http.c", "relation": "documents", "source": "concept:int", "target": "file:progs/src/http.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in lxhello.c", "relation": "documents", "source": "concept:int", "target": "file:progs/src/lxhello.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in lxnet.c", "relation": "documents", "source": "concept:int", "target": "file:progs/src/lxnet.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in lxtls.c", "relation": "documents", "source": "concept:int", "target": "file:progs/src/lxtls.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in pollready.c", "relation": "documents", "source": "concept:int", "target": "file:progs/src/pollready.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in sign.c", "relation": "documents", "source": "concept:int", "target": "file:progs/src/sign.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in spin.c", "relation": "documents", "source": "concept:int", "target": "file:progs/src/spin.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in tls_u_port.c", "relation": "documents", "source": "concept:int", "target": "file:progs/tls_u/tls_u_port.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in topogpt3.c", "relation": "documents", "source": "concept:int", "target": "file:progs/topogpt3/topogpt3.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in vedit.c", "relation": "documents", "source": "concept:int", "target": "file:progs/vedit/vedit.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in wl_mini.h", "relation": "documents", "source": "concept:int", "target": "file:progs/wl/wl_mini.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in wl_pixbuf.h", "relation": "documents", "source": "concept:int", "target": "file:progs/wl/wl_pixbuf.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in wlcomp.c", "relation": "documents", "source": "concept:int", "target": "file:progs/wl/wlcomp.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in qga.c", "relation": "documents", "source": "concept:int", "target": "file:qga.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in test_fault.c", "relation": "documents", "source": "concept:int", "target": "file:tests/test_fault.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in test_freedom_wl.c", "relation": "documents", "source": "concept:int", "target": "file:tests/test_freedom_wl.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in test_freedomui.c", "relation": "documents", "source": "concept:int", "target": "file:tests/test_freedomui.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in test_minios_png.c", "relation": "documents", "source": "concept:int", "target": "file:tests/test_minios_png.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in test_ps2_keymap.c", "relation": "documents", "source": "concept:int", "target": "file:tests/test_ps2_keymap.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in test_vedit_build.c", "relation": "documents", "source": "concept:int", "target": "file:tests/test_vedit_build.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept int appears in tls_test.c", "relation": "documents", "source": "concept:int", "target": "file:tls_test.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept kernel appears in stage2.S", "relation": "documents", "source": "concept:kernel", "target": "file:arch/x86/boot/stage2.S", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept kernel appears in uefi_stub.c", "relation": "documents", "source": "concept:kernel", "target": "file:boot/uefi_stub.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept kernel appears in sb16.c", "relation": "documents", "source": "concept:kernel", "target": "file:drivers/sb16.c", "weight": 0.45}
@@ -4426,6 +4431,7 @@
 {"confidence": "INFERRED", "description": "concept license appears in z_zone.c", "relation": "documents", "source": "concept:license", "target": "file:progs/doomgeneric/z_zone.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept license appears in z_zone.h", "relation": "documents", "source": "concept:license", "target": "file:progs/doomgeneric/z_zone.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept max appears in uefi_stub.c", "relation": "documents", "source": "concept:max", "target": "file:boot/uefi_stub.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept max appears in ahci.c", "relation": "documents", "source": "concept:max", "target": "file:drivers/ahci.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept max appears in nvme.c", "relation": "documents", "source": "concept:max", "target": "file:drivers/nvme.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept max appears in pcspk.c", "relation": "documents", "source": "concept:max", "target": "file:drivers/pcspk.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept max appears in rtc.c", "relation": "documents", "source": "concept:max", "target": "file:drivers/rtc.c", "weight": 0.45}
@@ -4440,6 +4446,7 @@
 {"confidence": "INFERRED", "description": "concept max appears in batch.h", "relation": "documents", "source": "concept:max", "target": "file:headers/batch.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept max appears in desktop_shortcuts.h", "relation": "documents", "source": "concept:max", "target": "file:headers/desktop_shortcuts.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept max appears in driver.h", "relation": "documents", "source": "concept:max", "target": "file:headers/driver.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept max appears in ahci.h", "relation": "documents", "source": "concept:max", "target": "file:headers/drivers/ahci.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept max appears in pci.h", "relation": "documents", "source": "concept:max", "target": "file:headers/drivers/pci.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept max appears in usbblk.h", "relation": "documents", "source": "concept:max", "target": "file:headers/drivers/usbblk.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept max appears in usbhid.h", "relation": "documents", "source": "concept:max", "target": "file:headers/drivers/usbhid.h", "weight": 0.45}
@@ -5232,6 +5239,7 @@
 {"confidence": "INFERRED", "description": "concept more appears in update_sources.py", "relation": "documents", "source": "concept:more", "target": "file:tools/update_sources.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept one appears in stage2.S", "relation": "documents", "source": "concept:one", "target": "file:arch/x86/boot/stage2.S", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept one appears in uefi_stub.c", "relation": "documents", "source": "concept:one", "target": "file:boot/uefi_stub.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept one appears in ahci.c", "relation": "documents", "source": "concept:one", "target": "file:drivers/ahci.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept one appears in kbd.c", "relation": "documents", "source": "concept:one", "target": "file:drivers/kbd.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept one appears in pcm2.c", "relation": "documents", "source": "concept:one", "target": "file:drivers/pcm2.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept one appears in usbblk.c", "relation": "documents", "source": "concept:one", "target": "file:drivers/usbblk.c", "weight": 0.45}
@@ -5982,7 +5990,6 @@
 {"confidence": "INFERRED", "description": "progs depends_on implied", "relation": "depends_on", "source": "concept:progs", "target": "concept:implied", "weight": 0.6}
 {"confidence": "INFERRED", "description": "progs depends_on later", "relation": "depends_on", "source": "concept:progs", "target": "concept:later", "weight": 0.6}
 {"confidence": "INFERRED", "description": "progs depends_on license", "relation": "depends_on", "source": "concept:progs", "target": "concept:license", "weight": 0.6}
-{"confidence": "INFERRED", "description": "progs depends_on merchantability", "relation": "depends_on", "source": "concept:progs", "target": "concept:merchantability", "weight": 0.6}
 {"confidence": "INFERRED", "description": "progs depends_on program", "relation": "depends_on", "source": "concept:progs", "target": "concept:program", "weight": 0.6}
 {"confidence": "INFERRED", "description": "progs depends_on under", "relation": "depends_on", "source": "concept:progs", "target": "concept:under", "weight": 0.6}
 {"confidence": "INFERRED", "description": "progs depends_on version", "relation": "depends_on", "source": "concept:progs", "target": "concept:version", "weight": 0.6}
@@ -6840,6 +6847,7 @@
 {"confidence": "INFERRED", "description": "concept read appears in stage1.S", "relation": "documents", "source": "concept:read", "target": "file:arch/x86/boot/stage1.S", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept read appears in stage2.S", "relation": "documents", "source": "concept:read", "target": "file:arch/x86/boot/stage2.S", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept read appears in uefi_stub.c", "relation": "documents", "source": "concept:read", "target": "file:boot/uefi_stub.c", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept read appears in ahci.c", "relation": "documents", "source": "concept:read", "target": "file:drivers/ahci.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept read appears in block.c", "relation": "documents", "source": "concept:read", "target": "file:drivers/block.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept read appears in ide.c", "relation": "documents", "source": "concept:read", "target": "file:drivers/ide.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept read appears in kbd.c", "relation": "documents", "source": "concept:read", "target": "file:drivers/kbd.c", "weight": 0.45}
@@ -6862,6 +6870,7 @@
 {"confidence": "INFERRED", "description": "concept read appears in bootdefs.h", "relation": "documents", "source": "concept:read", "target": "file:headers/arch/x86/boot/bootdefs.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept read appears in hal_io.h", "relation": "documents", "source": "concept:read", "target": "file:headers/arch/x86/hal_io.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept read appears in block.h", "relation": "documents", "source": "concept:read", "target": "file:headers/block.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept read appears in ahci.h", "relation": "documents", "source": "concept:read", "target": "file:headers/drivers/ahci.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept read appears in kbd.h", "relation": "documents", "source": "concept:read", "target": "file:headers/drivers/kbd.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept read appears in nvme.h", "relation": "documents", "source": "concept:read", "target": "file:headers/drivers/nvme.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept read appears in pci.h", "relation": "documents", "source": "concept:read", "target": "file:headers/drivers/pci.h", "weight": 0.45}
@@ -8253,8 +8262,10 @@
 {"confidence": "INFERRED", "description": "concept useful appears in wi_stuff.h", "relation": "documents", "source": "concept:useful", "target": "file:progs/doomgeneric/wi_stuff.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept useful appears in z_zone.c", "relation": "documents", "source": "concept:useful", "target": "file:progs/doomgeneric/z_zone.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept useful appears in z_zone.h", "relation": "documents", "source": "concept:useful", "target": "file:progs/doomgeneric/z_zone.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept version appears in ahci.c", "relation": "documents", "source": "concept:version", "target": "file:drivers/ahci.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept version appears in nvme.c", "relation": "documents", "source": "concept:version", "target": "file:drivers/nvme.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept version appears in abi.h", "relation": "documents", "source": "concept:version", "target": "file:headers/abi.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept version appears in ahci.h", "relation": "documents", "source": "concept:version", "target": "file:headers/drivers/ahci.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept version appears in nvme.h", "relation": "documents", "source": "concept:version", "target": "file:headers/drivers/nvme.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept version appears in xhci.h", "relation": "documents", "source": "concept:version", "target": "file:headers/drivers/xhci.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept version appears in httpd.h", "relation": "documents", "source": "concept:version", "target": "file:headers/httpd.h", "weight": 0.45}
@@ -8609,6 +8620,7 @@
 {"confidence": "INFERRED", "description": "concept warranty appears in wi_stuff.h", "relation": "documents", "source": "concept:warranty", "target": "file:progs/doomgeneric/wi_stuff.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept warranty appears in z_zone.c", "relation": "documents", "source": "concept:warranty", "target": "file:progs/doomgeneric/z_zone.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept warranty appears in z_zone.h", "relation": "documents", "source": "concept:warranty", "target": "file:progs/doomgeneric/z_zone.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept when appears in ahci.c", "relation": "documents", "source": "concept:when", "target": "file:drivers/ahci.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept when appears in block.c", "relation": "documents", "source": "concept:when", "target": "file:drivers/block.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept when appears in kbd.c", "relation": "documents", "source": "concept:when", "target": "file:drivers/kbd.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept when appears in sb16.c", "relation": "documents", "source": "concept:when", "target": "file:drivers/sb16.c", "weight": 0.45}
@@ -8621,6 +8633,7 @@
 {"confidence": "INFERRED", "description": "concept when appears in pcache.c", "relation": "documents", "source": "concept:when", "target": "file:fs/pcache.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept when appears in zip.c", "relation": "documents", "source": "concept:when", "target": "file:fs/zip.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept when appears in arena.h", "relation": "documents", "source": "concept:when", "target": "file:headers/arena.h", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept when appears in ahci.h", "relation": "documents", "source": "concept:when", "target": "file:headers/drivers/ahci.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept when appears in kbd.h", "relation": "documents", "source": "concept:when", "target": "file:headers/drivers/kbd.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept when appears in modifiers.h", "relation": "documents", "source": "concept:when", "target": "file:headers/drivers/modifiers.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept when appears in pci.h", "relation": "documents", "source": "concept:when", "target": "file:headers/drivers/pci.h", "weight": 0.45}
@@ -8752,6 +8765,7 @@
 {"confidence": "INFERRED", "description": "without depends_on under", "relation": "depends_on", "source": "concept:without", "target": "concept:under", "weight": 0.6}
 {"confidence": "INFERRED", "description": "without depends_on version", "relation": "depends_on", "source": "concept:without", "target": "concept:version", "weight": 0.6}
 {"confidence": "INFERRED", "description": "concept without appears in ctx_sw.S", "relation": "documents", "source": "concept:without", "target": "file:arch/x86/ctx_sw.S", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept without appears in ahci.c", "relation": "documents", "source": "concept:without", "target": "file:drivers/ahci.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept without appears in usbblk.c", "relation": "documents", "source": "concept:without", "target": "file:drivers/usbblk.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept without appears in usbhid.c", "relation": "documents", "source": "concept:without", "target": "file:drivers/usbhid.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept without appears in xhci.c", "relation": "documents", "source": "concept:without", "target": "file:drivers/xhci.c", "weight": 0.45}
@@ -9138,32 +9152,168 @@
 {"confidence": "EXTRACTED", "description": "uefi_stub.c defines function w_u64", "relation": "defines", "source": "file:boot/uefi_stub.c", "target": "sym:boot/uefi_stub.c::w_u64@364", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "bootloader.c defines macro KSECTORS", "relation": "defines", "source": "file:bootloader.c", "target": "sym:bootloader.c::KSECTORS@19", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "bootloader.c defines function main", "relation": "defines", "source": "file:bootloader.c", "target": "sym:bootloader.c::main@21", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c imports external kernel.h", "relation": "imports", "source": "file:drivers/ahci.c", "target": "ext:kernel.h", "weight": 0.85}
+{"confidence": "EXTRACTED", "description": "ahci.c imports hal_io.h", "relation": "resolved_imports", "source": "file:drivers/ahci.c", "target": "file:headers/arch/x86/hal_io.h", "weight": 0.85}
+{"confidence": "EXTRACTED", "description": "ahci.c imports driver.h", "relation": "resolved_imports", "source": "file:drivers/ahci.c", "target": "file:headers/driver.h", "weight": 0.85}
+{"confidence": "EXTRACTED", "description": "ahci.c imports ahci.h", "relation": "resolved_imports", "source": "file:drivers/ahci.c", "target": "file:headers/drivers/ahci.h", "weight": 0.85}
+{"confidence": "EXTRACTED", "description": "ahci.c imports pci.h", "relation": "resolved_imports", "source": "file:drivers/ahci.c", "target": "file:headers/drivers/pci.h", "weight": 0.85}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_ABAR_INDEX", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_ABAR_INDEX@41", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_ALL_ONES", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_ALL_ONES@90", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_BOHC_BB", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_BOHC_BB@58", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_BOHC_BOS", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_BOHC_BOS@56", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_BOHC_OOS", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_BOHC_OOS@57", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_CAP2_BOH", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_CAP2_BOH@55", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_CAP_S64A", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_CAP_S64A@51", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_CAP_SSS", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_CAP_SSS@52", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_CH_BYTES", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_CH_BYTES@111", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_CH_CFL_H2D", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_CH_CFL_H2D@113", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_CH_PRDTL_SHIFT", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_CH_PRDTL_SHIFT@115", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_CH_WRITE", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_CH_WRITE@114", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_CLASS_BASE", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_CLASS_BASE@38", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_CLASS_PI", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_CLASS_PI@40", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_CLASS_SUB", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_CLASS_SUB@39", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_CL_ALIGN", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_CL_ALIGN@104", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_CL_BYTES", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_CL_BYTES@103", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_CMD_CR", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_CMD_CR@82", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_CMD_FR", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_CMD_FR@81", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_CMD_FRE", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_CMD_FRE@80", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_CMD_ICC_ACTIVE", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_CMD_ICC_ACTIVE@84", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_CMD_ICC_MASK", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_CMD_ICC_MASK@83", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_CMD_POD", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_CMD_POD@79", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_CMD_ST", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_CMD_ST@77", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_CMD_SUD", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_CMD_SUD@78", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_CT_ALIGN", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_CT_ALIGN@108", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_CT_BYTES", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_CT_BYTES@107", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_CT_PRDT_OFF", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_CT_PRDT_OFF@109", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_DMA_LIMIT_32", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_DMA_LIMIT_32@142", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_FIS_ALIGN", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_FIS_ALIGN@106", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_FIS_BYTES", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_FIS_BYTES@105", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_FIS_BYTES_H2D", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_FIS_BYTES_H2D@121", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_FIS_DEV_LBA", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_FIS_DEV_LBA@120", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_FIS_H2D_CMD", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_FIS_H2D_CMD@119", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_FIS_TYPE_H2D", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_FIS_TYPE_H2D@118", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_GHC_AE", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_GHC_AE@53", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_GHC_IE", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_GHC_IE@54", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_IS_TFES", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_IS_TFES@89", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_LBA48_LIMIT", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_LBA48_LIMIT@141", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_MAX_PORTS", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_MAX_PORTS@60", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_MAX_SECTORS", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_MAX_SECTORS@138", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_PORT_BASE", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_PORT_BASE@61", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_PORT_STRIDE", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_PORT_STRIDE@62", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_PRD_BYTES", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_PRD_BYTES@110", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_PRD_DBC_MASK", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_PRD_DBC_MASK@116", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_PX_CI", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_PX_CI@75", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_PX_CLB", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_PX_CLB@63", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_PX_CLBU", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_PX_CLBU@64", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_PX_CMD", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_PX_CMD@69", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_PX_FB", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_PX_FB@65", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_PX_FBU", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_PX_FBU@66", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_PX_IE", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_PX_IE@68", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_PX_IS", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_PX_IS@67", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_PX_SCTL", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_PX_SCTL@73", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_PX_SERR", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_PX_SERR@74", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_PX_SIG", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_PX_SIG@71", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_PX_SSTS", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_PX_SSTS@72", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_PX_TFD", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_PX_TFD@70", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_REG_BOHC", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_REG_BOHC@49", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_REG_CAP2", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_REG_CAP2@48", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_REG_CAP", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_REG_CAP@43", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_REG_GHC", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_REG_GHC@44", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_REG_IS", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_REG_IS@45", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_REG_PI", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_REG_PI@46", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_REG_VS", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_REG_VS@47", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_SCTL_DET_COMRESET", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_SCTL_DET_COMRESET@99", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_SCTL_DET_MASK", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_SCTL_DET_MASK@98", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_SECTOR", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_SECTOR@137", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_SIG_ATA", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_SIG_ATA@101", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_SSTS_DET_MASK", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_SSTS_DET_MASK@92", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_SSTS_DET_ONLINE", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_SSTS_DET_ONLINE@94", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_SSTS_DET_PRESENT", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_SSTS_DET_PRESENT@93", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_SSTS_IPM_ACTIVE", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_SSTS_IPM_ACTIVE@97", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_SSTS_IPM_MASK", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_SSTS_IPM_MASK@96", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_SSTS_IPM_SHIFT", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_SSTS_IPM_SHIFT@95", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_STAGE_ALIGN", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_STAGE_ALIGN@140", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_STAGE_BYTES", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_STAGE_BYTES@139", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_TFD_BSY", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_TFD_BSY@88", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_TFD_DRQ", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_TFD_DRQ@87", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_TFD_ERR", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_TFD_ERR@86", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_TMO_CMD_MS", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_TMO_CMD_MS@148", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_TMO_COMRESET_HOLD_MS", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_TMO_COMRESET_HOLD_MS@147", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_TMO_ENGINE_MS", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_TMO_ENGINE_MS@145", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_TMO_HANDOFF_MS", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_TMO_HANDOFF_MS@144", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro AHCI_TMO_LINK_MS", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::AHCI_TMO_LINK_MS@146", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro ATA_CMD_FLUSH_EXT", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ATA_CMD_FLUSH_EXT@126", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro ATA_CMD_IDENTIFY", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ATA_CMD_IDENTIFY@123", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro ATA_CMD_READ_DMA_EXT", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ATA_CMD_READ_DMA_EXT@124", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro ATA_CMD_WRITE_DMA_EXT", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ATA_CMD_WRITE_DMA_EXT@125", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro ATA_ID_CMDSET2", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ATA_ID_CMDSET2@129", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro ATA_ID_LBA48_BIT", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ATA_ID_LBA48_BIT@130", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro ATA_ID_LBA48_SECTORS", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ATA_ID_LBA48_SECTORS@131", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro ATA_ID_SECTOR_SIZE", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ATA_ID_SECTOR_SIZE@132", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro ATA_ID_SS_LONG", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ATA_ID_SS_LONG@135", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro ATA_ID_SS_VALID", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ATA_ID_SS_VALID@134", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro ATA_ID_SS_VALID_MASK", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ATA_ID_SS_VALID_MASK@133", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines macro ATA_ID_WORDS", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ATA_ID_WORDS@128", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahc_alloc", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahc_alloc@452", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahc_claim_port", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahc_claim_port@480", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahc_dma_ok", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahc_dma_ok@321", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahc_handoff", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahc_handoff@255", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahc_id_word", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahc_id_word@211", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahc_identify", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahc_identify@417", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahc_inl", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahc_inl@176", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahc_link_up", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahc_link_up@285", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahc_ops_present", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahc_ops_present@651", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahc_ops_read", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahc_ops_read@631", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahc_ops_total", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahc_ops_total@645", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahc_ops_write", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahc_ops_write@638", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahc_outl", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahc_outl@171", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahc_port_link", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahc_port_link@296", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahc_port_start", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahc_port_start@330", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahc_port_stop", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahc_port_stop@270", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahc_pr32", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahc_pr32@193", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahc_put32", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahc_put32@203", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahc_pw32", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahc_pw32@198", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahc_r32", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahc_r32@183", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahc_range_ok", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahc_range_ok@580", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahc_w32", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahc_w32@188", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahc_wait_port", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahc_wait_port@241", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahci_init", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahci_init@507", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahci_note", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahci_note@231", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahci_port", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahci_port@223", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahci_ports_implemented", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahci_ports_implemented@227", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahci_present", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahci_present@215", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahci_read_sectors", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahci_read_sectors@587", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahci_register_device", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahci_register_device@673", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahci_sectors", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahci_sectors@235", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahci_version", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahci_version@219", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.c defines function ahci_write_sectors", "relation": "defines", "source": "file:drivers/ahci.c", "target": "sym:drivers/ahci.c::ahci_write_sectors@607", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "block.c imports external kernel.h", "relation": "imports", "source": "file:drivers/block.c", "target": "ext:kernel.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "block.c imports block.h", "relation": "resolved_imports", "source": "file:drivers/block.c", "target": "file:headers/block.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "block.c imports driver.h", "relation": "resolved_imports", "source": "file:drivers/block.c", "target": "file:headers/driver.h", "weight": 0.85}
+{"confidence": "EXTRACTED", "description": "block.c imports ahci.h", "relation": "resolved_imports", "source": "file:drivers/block.c", "target": "file:headers/drivers/ahci.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "block.c imports nvme.h", "relation": "resolved_imports", "source": "file:drivers/block.c", "target": "file:headers/drivers/nvme.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "block.c imports usbblk.h", "relation": "resolved_imports", "source": "file:drivers/block.c", "target": "file:headers/drivers/usbblk.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "block.c imports virtio_blk.h", "relation": "resolved_imports", "source": "file:drivers/block.c", "target": "file:headers/drivers/virtio_blk.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "block.c imports ide.h", "relation": "resolved_imports", "source": "file:drivers/block.c", "target": "file:headers/ide.h", "weight": 0.85}
-{"confidence": "EXTRACTED", "description": "block.c defines macro BC_LINE", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::BC_LINE@62", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "block.c defines macro BC_MASK", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::BC_MASK@54", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "block.c defines macro BC_WAYS", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::BC_WAYS@53", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "block.c defines function bc_index", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::bc_index@64", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "block.c defines function bc_invalidate", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::bc_invalidate@73", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "block.c defines function bc_invalidate_locked", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::bc_invalidate_locked@68", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "block.c defines function block_dev_read", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::block_dev_read@128", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "block.c defines function block_dev_write", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::block_dev_write@146", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "block.c defines function block_disk_sectors", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::block_disk_sectors@255", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "block.c defines function block_flush", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::block_flush@234", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "block.c defines function block_init", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::block_init@80", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "block.c defines function block_read", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::block_read@164", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "block.c defines function block_read_multi", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::block_read_multi@214", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "block.c defines function block_read_sectors", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::block_read_sectors@244", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "block.c defines function block_set_base", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::block_set_base@113", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "block.c defines function block_total", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::block_total@236", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "block.c defines function block_write", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::block_write@205", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "block.c defines function block_write_multi", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::block_write_multi@219", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "block.c defines function table", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::table@122", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "block.c defines macro BC_LINE", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::BC_LINE@68", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "block.c defines macro BC_MASK", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::BC_MASK@60", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "block.c defines macro BC_WAYS", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::BC_WAYS@59", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "block.c defines function bc_index", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::bc_index@70", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "block.c defines function bc_invalidate", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::bc_invalidate@79", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "block.c defines function bc_invalidate_locked", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::bc_invalidate_locked@74", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "block.c defines function block_dev_read", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::block_dev_read@147", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "block.c defines function block_dev_write", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::block_dev_write@170", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "block.c defines function block_disk_sectors", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::block_disk_sectors@284", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "block.c defines function block_flush", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::block_flush@263", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "block.c defines function block_init", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::block_init@86", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "block.c defines function block_read", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::block_read@193", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "block.c defines function block_read_multi", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::block_read_multi@243", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "block.c defines function block_read_sectors", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::block_read_sectors@273", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "block.c defines function block_set_base", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::block_set_base@132", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "block.c defines function block_total", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::block_total@265", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "block.c defines function block_write", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::block_write@234", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "block.c defines function block_write_multi", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::block_write_multi@248", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "block.c defines function table", "relation": "defines", "source": "file:drivers/block.c", "target": "sym:drivers/block.c::table@141", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "driver.c imports driver.h", "relation": "resolved_imports", "source": "file:drivers/driver.c", "target": "file:headers/driver.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "driver.c defines function dev_copy", "relation": "defines", "source": "file:drivers/driver.c", "target": "sym:drivers/driver.c::dev_copy@20", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "driver.c defines function dev_eq", "relation": "defines", "source": "file:drivers/driver.c", "target": "sym:drivers/driver.c::dev_eq@27", "weight": 0.7}
@@ -10511,6 +10661,17 @@
 {"confidence": "EXTRACTED", "description": "driver.h defines function device_register", "relation": "defines", "source": "file:headers/driver.h", "target": "sym:headers/driver.h::device_register@56", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "driver.h defines function device_reset", "relation": "defines", "source": "file:headers/driver.h", "target": "sym:headers/driver.h::device_reset@60", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "driver.h defines type_alias device_t", "relation": "defines", "source": "file:headers/driver.h", "target": "sym:headers/driver.h::device_t@25", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.h defines macro DRIVERS_AHCI_H", "relation": "defines", "source": "file:headers/drivers/ahci.h", "target": "sym:headers/drivers/ahci.h::DRIVERS_AHCI_H@11", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.h defines function ahci_init", "relation": "defines", "source": "file:headers/drivers/ahci.h", "target": "sym:headers/drivers/ahci.h::ahci_init@16", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.h defines function ahci_note", "relation": "defines", "source": "file:headers/drivers/ahci.h", "target": "sym:headers/drivers/ahci.h::ahci_note@31", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.h defines function ahci_port", "relation": "defines", "source": "file:headers/drivers/ahci.h", "target": "sym:headers/drivers/ahci.h::ahci_port@25", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.h defines function ahci_ports_implemented", "relation": "defines", "source": "file:headers/drivers/ahci.h", "target": "sym:headers/drivers/ahci.h::ahci_ports_implemented@28", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.h defines function ahci_present", "relation": "defines", "source": "file:headers/drivers/ahci.h", "target": "sym:headers/drivers/ahci.h::ahci_present@19", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.h defines function ahci_read_sectors", "relation": "defines", "source": "file:headers/drivers/ahci.h", "target": "sym:headers/drivers/ahci.h::ahci_read_sectors@40", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.h defines function ahci_register_device", "relation": "defines", "source": "file:headers/drivers/ahci.h", "target": "sym:headers/drivers/ahci.h::ahci_register_device@48", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.h defines function ahci_sectors", "relation": "defines", "source": "file:headers/drivers/ahci.h", "target": "sym:headers/drivers/ahci.h::ahci_sectors@34", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.h defines function ahci_version", "relation": "defines", "source": "file:headers/drivers/ahci.h", "target": "sym:headers/drivers/ahci.h::ahci_version@22", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "ahci.h defines function ahci_write_sectors", "relation": "defines", "source": "file:headers/drivers/ahci.h", "target": "sym:headers/drivers/ahci.h::ahci_write_sectors@45", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "kbd.h defines macro KBD_H", "relation": "defines", "source": "file:headers/drivers/kbd.h", "target": "sym:headers/drivers/kbd.h::KBD_H@2", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "kbd.h defines macro KBD_LAYOUT_EN", "relation": "defines", "source": "file:headers/drivers/kbd.h", "target": "sym:headers/drivers/kbd.h::KBD_LAYOUT_EN@6", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "kbd.h defines macro KBD_LAYOUT_ES", "relation": "defines", "source": "file:headers/drivers/kbd.h", "target": "sym:headers/drivers/kbd.h::KBD_LAYOUT_ES@7", "weight": 0.7}
@@ -10593,23 +10754,23 @@
 {"confidence": "EXTRACTED", "description": "pci.h defines macro PCI_REG_VENDOR_ID", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::PCI_REG_VENDOR_ID@20", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "pci.h defines macro PCI_SUBCLASS_PCI_BRIDGE", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::PCI_SUBCLASS_PCI_BRIDGE@56", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "pci.h defines macro PCI_SUBCLASS_XHCI", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::PCI_SUBCLASS_XHCI@58", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "pci.h defines function pci_bar_base", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_bar_base@406", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "pci.h defines function pci_bar_count", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_bar_count@248", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "pci.h defines function pci_bar_ctz32", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_bar_ctz32@284", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "pci.h defines function pci_bar_is_64bit", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_bar_is_64bit@274", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "pci.h defines function pci_bar_is_io", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_bar_is_io@263", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "pci.h defines function pci_bar_relocate", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_bar_relocate@382", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "pci.h defines function pci_bar_restore", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_bar_restore@424", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "pci.h defines function pci_bar_size", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_bar_size@346", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "pci.h defines function pci_bar_size_from_mask", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_bar_size_from_mask@315", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "pci.h defines function number", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::number@186", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "pci.h defines function pci_bar_base", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_bar_base@412", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "pci.h defines function pci_bar_count", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_bar_count@254", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "pci.h defines function pci_bar_ctz32", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_bar_ctz32@290", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "pci.h defines function pci_bar_is_64bit", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_bar_is_64bit@280", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "pci.h defines function pci_bar_is_io", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_bar_is_io@269", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "pci.h defines function pci_bar_relocate", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_bar_relocate@388", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "pci.h defines function pci_bar_restore", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_bar_restore@430", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "pci.h defines function pci_bar_size", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_bar_size@352", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "pci.h defines function pci_bar_size_from_mask", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_bar_size_from_mask@321", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "pci.h defines struct pci_bdf_t", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_bdf_t@71", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "pci.h defines function pci_cfg_read8", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_cfg_read8@100", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "pci.h defines function pci_cfg_read", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_cfg_read@80", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "pci.h defines function pci_cfg_write8", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_cfg_write8@109", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "pci.h defines function pci_cfg_write", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_cfg_write@90", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "pci.h defines function pci_find", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_find@165", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "pci.h defines function pci_find_class", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_find_class@193", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "pci.h defines function pci_is_multifunction", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_is_multifunction@152", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "pci.h defines function pci_find", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_find@170", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "pci.h defines function pci_is_multifunction", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_is_multifunction@156", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "pci.h defines function pci_present", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::pci_present@122", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "pci.h defines function xHCI", "relation": "defines", "source": "file:headers/drivers/pci.h", "target": "sym:headers/drivers/pci.h::xHCI@134", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "usbblk.h defines macro DRIVERS_USBBLK_H", "relation": "defines", "source": "file:headers/drivers/usbblk.h", "target": "sym:headers/drivers/usbblk.h::DRIVERS_USBBLK_H@11", "weight": 0.7}
@@ -12671,6 +12832,7 @@
 {"confidence": "EXTRACTED", "description": "kernel.c imports cpu_setup.h", "relation": "resolved_imports", "source": "file:kernel.c", "target": "file:headers/arch/x86/cpu_setup.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "kernel.c imports msr.h", "relation": "resolved_imports", "source": "file:kernel.c", "target": "file:headers/arch/x86/msr.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "kernel.c imports block.h", "relation": "resolved_imports", "source": "file:kernel.c", "target": "file:headers/block.h", "weight": 0.85}
+{"confidence": "EXTRACTED", "description": "kernel.c imports ahci.h", "relation": "resolved_imports", "source": "file:kernel.c", "target": "file:headers/drivers/ahci.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "kernel.c imports usbblk.h", "relation": "resolved_imports", "source": "file:kernel.c", "target": "file:headers/drivers/usbblk.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "kernel.c imports usbhid.h", "relation": "resolved_imports", "source": "file:kernel.c", "target": "file:headers/drivers/usbhid.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "kernel.c imports virtio_blk.h", "relation": "resolved_imports", "source": "file:kernel.c", "target": "file:headers/drivers/virtio_blk.h", "weight": 0.85}
@@ -12684,21 +12846,21 @@
 {"confidence": "EXTRACTED", "description": "kernel.c imports smp.h", "relation": "resolved_imports", "source": "file:kernel.c", "target": "file:headers/smp.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "kernel.c imports syscall_asm.h", "relation": "resolved_imports", "source": "file:kernel.c", "target": "file:headers/syscall_asm.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "kernel.c imports vga_fb.h", "relation": "resolved_imports", "source": "file:kernel.c", "target": "file:headers/vga_fb.h", "weight": 0.85}
-{"confidence": "EXTRACTED", "description": "kernel.c defines macro BOOTLOG_MAX", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::BOOTLOG_MAX@188", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "kernel.c defines macro KSYM_MAX", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::KSYM_MAX@107", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "kernel.c defines function __attribute__", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::__attribute__@207", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "kernel.c defines function bootlog_mark", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::bootlog_mark@192", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "kernel.c defines function bootlog_report", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::bootlog_report@199", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "kernel.c defines function kstack", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::kstack@146", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "kernel.c defines function ksyscall", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::ksyscall@130", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "kernel.c defines function ms", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::ms@185", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "kernel.c defines variable ramdisk_end", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::ramdisk_end@180", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "kernel.c defines variable ramdisk_start", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::ramdisk_start@179", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "kernel.c defines function size", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::size@257", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "kernel.c defines function syscall_init", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::syscall_init@117", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "kernel.c defines variable syscall_kstack", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::syscall_kstack@115", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "kernel.c defines function table", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::table@104", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "kernel.c defines function tables", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::tables@279", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "kernel.c defines macro BOOTLOG_MAX", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::BOOTLOG_MAX@189", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "kernel.c defines macro KSYM_MAX", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::KSYM_MAX@108", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "kernel.c defines function __attribute__", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::__attribute__@208", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "kernel.c defines function bootlog_mark", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::bootlog_mark@193", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "kernel.c defines function bootlog_report", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::bootlog_report@200", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "kernel.c defines function kstack", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::kstack@147", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "kernel.c defines function ksyscall", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::ksyscall@131", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "kernel.c defines function ms", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::ms@186", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "kernel.c defines variable ramdisk_end", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::ramdisk_end@181", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "kernel.c defines variable ramdisk_start", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::ramdisk_start@180", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "kernel.c defines function size", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::size@258", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "kernel.c defines function syscall_init", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::syscall_init@118", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "kernel.c defines variable syscall_kstack", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::syscall_kstack@116", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "kernel.c defines function table", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::table@105", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "kernel.c defines function tables", "relation": "defines", "source": "file:kernel.c", "target": "sym:kernel.c::tables@280", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "abi.c imports external kernel.h", "relation": "imports", "source": "file:kernel/abi.c", "target": "ext:kernel.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "abi.c imports abi.h", "relation": "resolved_imports", "source": "file:kernel/abi.c", "target": "file:headers/abi.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "abi.c defines function abi_check_manifest", "relation": "defines", "source": "file:kernel/abi.c", "target": "sym:kernel/abi.c::abi_check_manifest@74", "weight": 0.7}
@@ -13100,37 +13262,37 @@
 {"confidence": "EXTRACTED", "description": "paging.c imports vga_fb.h", "relation": "resolved_imports", "source": "file:kernel/mm/paging.c", "target": "file:headers/vga_fb.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "paging.c defines macro KMM_DEVICE_FLAGS", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::KMM_DEVICE_FLAGS@211", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "paging.c defines macro KMM_DEVICE_MAX", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::KMM_DEVICE_MAX@200", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines macro KMM_DEVICE_WINDOWS", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::KMM_DEVICE_WINDOWS@286", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "paging.c defines macro KMM_MAX_IDENTITY", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::KMM_MAX_IDENTITY@204", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines function PTE", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::PTE@1015", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines macro PT_OWNED_BYTES", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::PT_OWNED_BYTES@371", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines function PTE", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::PTE@1055", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines macro PT_OWNED_BYTES", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::PT_OWNED_BYTES@411", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "paging.c defines variable _kernel_end", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::_kernel_end@49", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines function coherent", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::coherent@259", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines function explicitly", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::explicitly@1011", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines function honest", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::honest@655", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines function kmm_ensure_pt", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::kmm_ensure_pt@235", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines function kmm_map_device", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::kmm_map_device@296", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines function mm_anon_fault", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mm_anon_fault@779", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines function mm_anon_frame", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mm_anon_frame@715", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines function mm_copy_user_page", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mm_copy_user_page@1149", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines function mm_demand_pte", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mm_demand_pte@704", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines function mm_file_break", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mm_file_break@1070", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines function mm_file_page_phys", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mm_file_page_phys@861", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines function mm_file_pte", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mm_file_pte@880", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines variable mm_lock", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mm_lock@696", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines function coherent", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::coherent@245", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines function explicitly", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::explicitly@1051", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines function honest", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::honest@695", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines function kmm_ensure_pt", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::kmm_ensure_pt@221", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines function mm_anon_fault", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mm_anon_fault@819", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines function mm_anon_frame", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mm_anon_frame@755", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines function mm_copy_user_page", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mm_copy_user_page@1189", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines function mm_demand_pte", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mm_demand_pte@744", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines function mm_file_break", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mm_file_break@1110", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines function mm_file_page_phys", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mm_file_page_phys@901", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines function mm_file_pte", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mm_file_pte@920", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines variable mm_lock", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mm_lock@736", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "paging.c defines function mm_page_aligned_alloc", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mm_page_aligned_alloc@32", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "paging.c defines function mm_setup_protections", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mm_setup_protections@41", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines function mm_user_ensure_page", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mm_user_ensure_page@625", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines function mm_user_pte_update", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mm_user_pte_update@336", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines function mm_user_set_exec", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mm_user_set_exec@356", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines function mt_shared_slot", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mt_shared_slot@549", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines function pt_clone_user", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::pt_clone_user@420", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines function pt_clone_user_empty", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::pt_clone_user_empty@568", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines function pt_free_user", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::pt_free_user@1227", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines function pt_owned_index", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::pt_owned_index@374", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines function pt_page_alloc", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::pt_page_alloc@392", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines function pt_page_free", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::pt_page_free@411", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines function pt_page_owned", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::pt_page_owned@385", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "paging.c defines function tables", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::tables@1010", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines function mm_user_ensure_page", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mm_user_ensure_page@665", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines function mm_user_pte_update", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mm_user_pte_update@376", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines function mm_user_set_exec", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mm_user_set_exec@396", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines function mt_shared_slot", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::mt_shared_slot@589", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines function pt_clone_user", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::pt_clone_user@460", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines function pt_clone_user_empty", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::pt_clone_user_empty@608", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines function pt_free_user", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::pt_free_user@1267", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines function pt_owned_index", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::pt_owned_index@414", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines function pt_page_alloc", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::pt_page_alloc@432", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines function pt_page_free", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::pt_page_free@451", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines function pt_page_owned", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::pt_page_owned@425", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "paging.c defines function tables", "relation": "defines", "source": "file:kernel/mm/paging.c", "target": "sym:kernel/mm/paging.c::tables@1050", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "swap.c imports external kernel.h", "relation": "imports", "source": "file:kernel/mm/swap.c", "target": "ext:kernel.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "swap.c imports ide.h", "relation": "resolved_imports", "source": "file:kernel/mm/swap.c", "target": "file:headers/ide.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "swap.c imports lz4_kernel.h", "relation": "resolved_imports", "source": "file:kernel/mm/swap.c", "target": "file:headers/lz4_kernel.h", "weight": 0.85}
@@ -13444,6 +13606,7 @@
 {"confidence": "EXTRACTED", "description": "serial.c defines function serial_tx_ready", "relation": "defines", "source": "file:kernel/serial.c", "target": "sym:kernel/serial.c::serial_tx_ready@30", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "shell.c imports external kernel.h", "relation": "imports", "source": "file:kernel/shell.c", "target": "ext:kernel.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "shell.c imports external xxhash.h", "relation": "imports", "source": "file:kernel/shell.c", "target": "ext:xxhash.h", "weight": 0.85}
+{"confidence": "EXTRACTED", "description": "shell.c imports ahci.h", "relation": "resolved_imports", "source": "file:kernel/shell.c", "target": "file:headers/drivers/ahci.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "shell.c imports kbd.h", "relation": "resolved_imports", "source": "file:kernel/shell.c", "target": "file:headers/drivers/kbd.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "shell.c imports nvme.h", "relation": "resolved_imports", "source": "file:kernel/shell.c", "target": "file:headers/drivers/nvme.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "shell.c imports usbblk.h", "relation": "resolved_imports", "source": "file:kernel/shell.c", "target": "file:headers/drivers/usbblk.h", "weight": 0.85}
@@ -13475,104 +13638,104 @@
 {"confidence": "EXTRACTED", "description": "shell.c imports wm_layout.h", "relation": "resolved_imports", "source": "file:kernel/shell.c", "target": "file:headers/wm_layout.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "shell.c imports wm_notify.h", "relation": "resolved_imports", "source": "file:kernel/shell.c", "target": "file:headers/wm_notify.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "shell.c imports zip.h", "relation": "resolved_imports", "source": "file:kernel/shell.c", "target": "file:headers/zip.h", "weight": 0.85}
-{"confidence": "EXTRACTED", "description": "shell.c defines macro HTTPD_IO_CHUNK", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::HTTPD_IO_CHUNK@2574", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines macro HTTPD_REQ_CAP", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::HTTPD_REQ_CAP@2573", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines macro PIPE_HOP_MAX", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::PIPE_HOP_MAX@4114", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines macro QEMU_PM_PORT", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::QEMU_PM_PORT@1033", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines macro SHELL_BUILTIN_COUNT", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::SHELL_BUILTIN_COUNT@232", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines macro SHELL_CVM_INTERP", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::SHELL_CVM_INTERP@53", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines macro SHELL_HIST_MAX", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::SHELL_HIST_MAX@98", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines macro SHELL_LS_CAP", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::SHELL_LS_CAP@2831", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines macro SHELL_RUN_DIRS", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::SHELL_RUN_DIRS@72", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines struct ShellRunDir", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::ShellRunDir@61", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function VMA", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::VMA@2218", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines macro XXH_STATIC_LINKING_ONLY", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::XXH_STATIC_LINKING_ONLY@25", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function code", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::code@1412", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function context", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::context@1705", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function desktop_flag", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::desktop_flag@1566", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function desktop_flag_on", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::desktop_flag_on@1576", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function desktop_path", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::desktop_path@1557", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function desktop_srv_alive", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::desktop_srv_alive@1598", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function desktop_unflag", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::desktop_unflag@848", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function driver", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::driver@3341", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function etrel_path_trusted", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::etrel_path_trusted@1123", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function flows", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::flows@1590", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function frame", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::frame@3735", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function gfx_parse_int", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::gfx_parse_int@1751", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function gfx_read_palette", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::gfx_read_palette@1771", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines struct job_row", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::job_row@2089", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function line", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::line@446", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function outw_port", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::outw_port@1029", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines struct ps_row", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::ps_row@3733", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function root", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::root@665", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cmd_desktop", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cmd_desktop@1614", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cmd_gdb", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cmd_gdb@2412", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cmd_gfx", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cmd_gfx@1778", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cmd_hash", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cmd_hash@2455", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cmd_jobs", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cmd_jobs@2088", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cmd_kill", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cmd_kill@2162", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cmd_mem", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cmd_mem@2185", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cmd_mrun", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cmd_mrun@1466", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cmd_poweroff", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cmd_poweroff@1035", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cmd_wait", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cmd_wait@2127", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cmd_wm", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cmd_wm@1930", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_complete_minifs_arg", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_complete_minifs_arg@271", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_complete_replace", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_complete_replace@250", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_complete_tier", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_complete_tier@238", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cross_cat", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cross_cat@2873", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cross_ls", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cross_ls@2832", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_exec_builtin", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_exec_builtin@2915", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_file_is_real", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_file_is_real@1069", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_focus_park", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_focus_park@116", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_focus_restore", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_focus_restore@121", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_has_child", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_has_child@2117", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_hist_newest_match", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_hist_newest_match@429", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_hist_show", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_hist_show@346", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_httpd_one", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_httpd_one@2580", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_httpd_serve", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_httpd_serve@2665", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_is_pipe_tok", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_is_pipe_tok@4116", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_line_backspace", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_line_backspace@390", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_line_delete", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_line_delete@398", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_line_insert", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_line_insert@381", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_line_kill_front", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_line_kill_front@405", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_line_kill_tail", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_line_kill_tail@412", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_line_kill_word", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_line_kill_word@417", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_line_repaint", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_line_repaint@368", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_load", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_load@966", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_name_base", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_name_base@213", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_parse", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_parse@826", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_parse_long", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_parse_long@2376", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_parse_pid", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_parse_pid@2397", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_parse_u64", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_parse_u64@2360", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_parse_vol", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_parse_vol@158", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_prompt", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_prompt@148", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_queue_launch", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_queue_launch@87", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_read_elf_bytes", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_read_elf_bytes@1346", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_readline", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_readline@338", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_readline_active", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_readline_active@115", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_readline_buf", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_readline_buf@184", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_readline_hist", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_readline_hist@491", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_resolve_arg", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_resolve_arg@2474", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_resolve_run", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_resolve_run@1081", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_run", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_run@894", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_run_any", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_run_any@1678", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_run_bg", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_run_bg@1514", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_run_cvm", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_run_cvm@1266", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_run_dir_for", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_run_dir_for@1051", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_run_elf_buf_path", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_run_elf_buf_path@1163", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_run_elf_file", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_run_elf_file@1196", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_run_elf_minifs", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_run_elf_minifs@1209", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_run_file", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_run_file@1302", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_run_init", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_run_init@855", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_run_pipeline", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_run_pipeline@151", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function shell_run_stage", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_run_stage@4155", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function stdout", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::stdout@4104", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function terminal", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::terminal@2990", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function text", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::text@594", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function this", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::this@1544", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function to", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::to@2291", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function tree", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::tree@2075", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "shell.c defines function window", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::window@1339", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines macro HTTPD_IO_CHUNK", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::HTTPD_IO_CHUNK@2575", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines macro HTTPD_REQ_CAP", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::HTTPD_REQ_CAP@2574", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines macro PIPE_HOP_MAX", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::PIPE_HOP_MAX@4178", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines macro QEMU_PM_PORT", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::QEMU_PM_PORT@1034", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines macro SHELL_BUILTIN_COUNT", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::SHELL_BUILTIN_COUNT@233", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines macro SHELL_CVM_INTERP", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::SHELL_CVM_INTERP@54", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines macro SHELL_HIST_MAX", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::SHELL_HIST_MAX@99", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines macro SHELL_LS_CAP", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::SHELL_LS_CAP@2832", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines macro SHELL_RUN_DIRS", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::SHELL_RUN_DIRS@73", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines struct ShellRunDir", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::ShellRunDir@62", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function VMA", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::VMA@2219", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines macro XXH_STATIC_LINKING_ONLY", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::XXH_STATIC_LINKING_ONLY@26", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function code", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::code@1413", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function context", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::context@1706", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function desktop_flag", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::desktop_flag@1567", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function desktop_flag_on", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::desktop_flag_on@1577", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function desktop_path", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::desktop_path@1558", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function desktop_srv_alive", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::desktop_srv_alive@1599", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function desktop_unflag", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::desktop_unflag@849", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function driver", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::driver@3342", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function etrel_path_trusted", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::etrel_path_trusted@1124", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function flows", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::flows@1591", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function frame", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::frame@3799", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function gfx_parse_int", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::gfx_parse_int@1752", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function gfx_read_palette", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::gfx_read_palette@1772", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines struct job_row", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::job_row@2090", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function line", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::line@447", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function outw_port", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::outw_port@1030", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines struct ps_row", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::ps_row@3797", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function root", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::root@666", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cmd_desktop", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cmd_desktop@1615", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cmd_gdb", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cmd_gdb@2413", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cmd_gfx", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cmd_gfx@1779", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cmd_hash", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cmd_hash@2456", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cmd_jobs", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cmd_jobs@2089", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cmd_kill", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cmd_kill@2163", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cmd_mem", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cmd_mem@2186", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cmd_mrun", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cmd_mrun@1467", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cmd_poweroff", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cmd_poweroff@1036", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cmd_wait", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cmd_wait@2128", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cmd_wm", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cmd_wm@1931", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_complete_minifs_arg", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_complete_minifs_arg@272", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_complete_replace", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_complete_replace@251", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_complete_tier", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_complete_tier@239", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cross_cat", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cross_cat@2874", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_cross_ls", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_cross_ls@2833", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_exec_builtin", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_exec_builtin@2916", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_file_is_real", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_file_is_real@1070", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_focus_park", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_focus_park@117", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_focus_restore", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_focus_restore@122", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_has_child", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_has_child@2118", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_hist_newest_match", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_hist_newest_match@430", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_hist_show", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_hist_show@347", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_httpd_one", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_httpd_one@2581", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_httpd_serve", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_httpd_serve@2666", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_is_pipe_tok", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_is_pipe_tok@4180", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_line_backspace", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_line_backspace@391", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_line_delete", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_line_delete@399", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_line_insert", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_line_insert@382", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_line_kill_front", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_line_kill_front@406", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_line_kill_tail", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_line_kill_tail@413", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_line_kill_word", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_line_kill_word@418", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_line_repaint", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_line_repaint@369", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_load", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_load@967", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_name_base", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_name_base@214", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_parse", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_parse@827", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_parse_long", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_parse_long@2377", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_parse_pid", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_parse_pid@2398", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_parse_u64", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_parse_u64@2361", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_parse_vol", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_parse_vol@159", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_prompt", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_prompt@149", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_queue_launch", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_queue_launch@88", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_read_elf_bytes", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_read_elf_bytes@1347", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_readline", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_readline@339", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_readline_active", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_readline_active@116", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_readline_buf", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_readline_buf@185", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_readline_hist", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_readline_hist@492", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_resolve_arg", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_resolve_arg@2475", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_resolve_run", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_resolve_run@1082", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_run", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_run@895", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_run_any", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_run_any@1679", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_run_bg", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_run_bg@1515", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_run_cvm", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_run_cvm@1267", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_run_dir_for", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_run_dir_for@1052", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_run_elf_buf_path", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_run_elf_buf_path@1164", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_run_elf_file", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_run_elf_file@1197", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_run_elf_minifs", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_run_elf_minifs@1210", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_run_file", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_run_file@1303", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_run_init", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_run_init@856", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_run_pipeline", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_run_pipeline@152", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function shell_run_stage", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::shell_run_stage@4219", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function stdout", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::stdout@4168", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function terminal", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::terminal@2991", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function text", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::text@595", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function this", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::this@1545", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function to", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::to@2292", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function tree", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::tree@2076", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "shell.c defines function window", "relation": "defines", "source": "file:kernel/shell.c", "target": "sym:kernel/shell.c::window@1340", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "spawn.c imports external kernel.h", "relation": "imports", "source": "file:kernel/spawn.c", "target": "ext:kernel.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "spawn.c imports msr.h", "relation": "resolved_imports", "source": "file:kernel/spawn.c", "target": "file:headers/arch/x86/msr.h", "weight": 0.85}
 {"confidence": "EXTRACTED", "description": "spawn.c imports arena.h", "relation": "resolved_imports", "source": "file:kernel/spawn.c", "target": "file:headers/arena.h", "weight": 0.85}
@@ -24022,8 +24185,8 @@
 {"confidence": "EXTRACTED", "description": "mkvocab.py defines function bytes_to_unicode", "relation": "defines", "source": "file:tools/mkvocab.py", "target": "sym:tools/mkvocab.py::bytes_to_unicode@18", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "mkvocab.py defines function main", "relation": "defines", "source": "file:tools/mkvocab.py", "target": "sym:tools/mkvocab.py::main@35", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "mutate.sh defines function cleanup", "relation": "defines", "source": "file:tools/mutate.sh", "target": "sym:tools/mutate.sh::cleanup@146", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "mutate.sh defines function find_index", "relation": "defines", "source": "file:tools/mutate.sh", "target": "sym:tools/mutate.sh::find_index@576", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "mutate.sh defines function record", "relation": "defines", "source": "file:tools/mutate.sh", "target": "sym:tools/mutate.sh::record@570", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "mutate.sh defines function find_index", "relation": "defines", "source": "file:tools/mutate.sh", "target": "sym:tools/mutate.sh::find_index@585", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "mutate.sh defines function record", "relation": "defines", "source": "file:tools/mutate.sh", "target": "sym:tools/mutate.sh::record@579", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "mutate.sh defines function restore_sources", "relation": "defines", "source": "file:tools/mutate.sh", "target": "sym:tools/mutate.sh::restore_sources@139", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "mutate.sh defines function usage", "relation": "defines", "source": "file:tools/mutate.sh", "target": "sym:tools/mutate.sh::usage@51", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "probe_compute_vga.py imports external PIL", "relation": "imports", "source": "file:tools/probe_compute_vga.py", "target": "ext:PIL", "weight": 0.85}
@@ -24117,12 +24280,12 @@
 {"confidence": "EXTRACTED", "description": "test_bdd.sh defines function expect", "relation": "defines", "source": "file:tools/test_bdd.sh", "target": "sym:tools/test_bdd.sh::expect@100", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "test_bdd.sh defines function expect_count", "relation": "defines", "source": "file:tools/test_bdd.sh", "target": "sym:tools/test_bdd.sh::expect_count@148", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "test_bdd.sh defines function expect_min", "relation": "defines", "source": "file:tools/test_bdd.sh", "target": "sym:tools/test_bdd.sh::expect_min@123", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "test_bdd.sh defines function http_fixture_start", "relation": "defines", "source": "file:tools/test_bdd.sh", "target": "sym:tools/test_bdd.sh::http_fixture_start@1499", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "test_bdd.sh defines function http_fixture_stop", "relation": "defines", "source": "file:tools/test_bdd.sh", "target": "sym:tools/test_bdd.sh::http_fixture_stop@1506", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "test_bdd.sh defines function http_server_start", "relation": "defines", "source": "file:tools/test_bdd.sh", "target": "sym:tools/test_bdd.sh::http_server_start@1487", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "test_bdd.sh defines function http_server_stop", "relation": "defines", "source": "file:tools/test_bdd.sh", "target": "sym:tools/test_bdd.sh::http_server_stop@1494", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "test_bdd.sh defines function net_fixture_start", "relation": "defines", "source": "file:tools/test_bdd.sh", "target": "sym:tools/test_bdd.sh::net_fixture_start@1511", "weight": 0.7}
-{"confidence": "EXTRACTED", "description": "test_bdd.sh defines function net_fixture_stop", "relation": "defines", "source": "file:tools/test_bdd.sh", "target": "sym:tools/test_bdd.sh::net_fixture_stop@1518", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "test_bdd.sh defines function http_fixture_start", "relation": "defines", "source": "file:tools/test_bdd.sh", "target": "sym:tools/test_bdd.sh::http_fixture_start@1534", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "test_bdd.sh defines function http_fixture_stop", "relation": "defines", "source": "file:tools/test_bdd.sh", "target": "sym:tools/test_bdd.sh::http_fixture_stop@1541", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "test_bdd.sh defines function http_server_start", "relation": "defines", "source": "file:tools/test_bdd.sh", "target": "sym:tools/test_bdd.sh::http_server_start@1522", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "test_bdd.sh defines function http_server_stop", "relation": "defines", "source": "file:tools/test_bdd.sh", "target": "sym:tools/test_bdd.sh::http_server_stop@1529", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "test_bdd.sh defines function net_fixture_start", "relation": "defines", "source": "file:tools/test_bdd.sh", "target": "sym:tools/test_bdd.sh::net_fixture_start@1546", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "test_bdd.sh defines function net_fixture_stop", "relation": "defines", "source": "file:tools/test_bdd.sh", "target": "sym:tools/test_bdd.sh::net_fixture_stop@1553", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "test_bdd.sh defines function refute", "relation": "defines", "source": "file:tools/test_bdd.sh", "target": "sym:tools/test_bdd.sh::refute@171", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "test_bdd.sh defines function scenario", "relation": "defines", "source": "file:tools/test_bdd.sh", "target": "sym:tools/test_bdd.sh::scenario@56", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "test_bdd.sh defines function scenario_smp", "relation": "defines", "source": "file:tools/test_bdd.sh", "target": "sym:tools/test_bdd.sh::scenario_smp@77", "weight": 0.7}

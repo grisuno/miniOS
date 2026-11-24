@@ -3,6 +3,7 @@ Previous: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)
 
 ## External Imports
 
+- `drivers/ahci.c` -> kernel.h
 - `drivers/block.c` -> kernel.h
 - `drivers/ide.c` -> kernel.h
 - `drivers/kbd.c` -> kernel.h

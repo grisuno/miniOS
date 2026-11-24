@@ -1,8 +1,149 @@
-# Symbols (page 11 of 27)
+# Symbols (page 11 of 28)
 Previous: [SYMBOLS_p10.md](SYMBOLS_p10.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `lg_push` | function | `kernel/vga_fb.c:328` | `static void lg_push(const char *line, int len)` |
+| `line` | function | `kernel/vga_fb.c:3533` | `* display stale bytes left over from a longer previous line (e.g. the prompt  * would show the ta...` |
+| `line_at` | function | `kernel/vga_fb.c:416` | `static const char *line_at(int abs, int *off)` |
+| `line_nrows` | function | `kernel/vga_fb.c:380` | `static int line_nrows(int len)` |
+| `mouse_apply_wheel` | function | `kernel/vga_fb.c:5251` | `static void mouse_apply_wheel(int wheel, int step)` |
+| `mouse_drag_gfx` | function | `kernel/vga_fb.c:5275` | `static void mouse_drag_gfx(const wm_geom_config_t *gcfg, int mx, int my)` |
+| `mouse_drag_term` | function | `kernel/vga_fb.c:5332` | `static void mouse_drag_term(const wm_geom_config_t *gcfg, int win_w, int mx, int my, int gfx_cursor)` |
+| `mouse_focus_topmost` | function | `kernel/vga_fb.c:5225` | `static int mouse_focus_topmost(int mx, int my)` |
+| `mouse_scrollbar` | function | `kernel/vga_fb.c:5355` | `static void mouse_scrollbar(const wm_geom_config_t *gcfg, int mx, int my)` |
+| `path` | function | `kernel/vga_fb.c:5404` | `* present path (blit_gfx_buf) is the sole cursor painter. The tick * used to share the sprite state with it and...` |
+| `pipe_field` | function | `kernel/vga_fb.c:4597` | `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)` |
+| `pointer` | function | `kernel/vga_fb.c:5272` | `* tiled window floats it at native size under the pointer (the grab point * keeps its relative position along the...` |
+| `render_blank_row` | function | `kernel/vga_fb.c:3412` | `static void render_blank_row(int vrow)` |
+| `render_row` | function | `kernel/vga_fb.c:3422` | `static void render_row(int vrow, int abs)` |
+| `shcmd_base` | function | `kernel/vga_fb.c:707` | `static void shcmd_base(const char *cmd, char *out, unsigned long cap)` |
+| `shortcut_cell_left` | function | `kernel/vga_fb.c:4740` | `static int shortcut_cell_left(int i)` |
+| `shortcut_draw_scaled` | function | `kernel/vga_fb.c:4803` | `static void shortcut_draw_scaled(const struct desktop_shortcut *sc,                              ...` |
+| `shortcuts_layout` | function | `kernel/vga_fb.c:4722` | `static void shortcuts_layout(void)` |
+| `state` | function | `kernel/vga_fb.c:5518` | `* ignores the button state (the arming press is consumed) and settles      * once on expiry, so t...` |
+| `strip_compose_begin` | function | `kernel/vga_fb.c:5120` | `static int strip_compose_begin(void)` |
+| `strip_compose_end` | function | `kernel/vga_fb.c:5131` | `static void strip_compose_end(int owner, int x, int y, int w, int h)` |
+| `taskbar` | function | `kernel/vga_fb.c:2754` | `* minimize hides the app to the taskbar (it never closes it), maximize  * toggles true fullscreen...` |
+| `taskbar_handle_click` | function | `kernel/vga_fb.c:3316` | `static void taskbar_handle_click(int mx, int my)` |
+| `taskbar_layout` | function | `kernel/vga_fb.c:3120` | `static void taskbar_layout(void)` |
+| `taskbar_render` | function | `kernel/vga_fb.c:3160` | `static void taskbar_render(void)` |
+| `taskbar_theme_cycle` | function | `kernel/vga_fb.c:3276` | `static void taskbar_theme_cycle(void)` |
+| `taskbar_tick` | function | `kernel/vga_fb.c:3239` | `static void taskbar_tick(void)` |
+| `term_close_default` | function | `kernel/vga_fb.c:4307` | `static void term_close_default(void)` |
+| `term_finish_layout` | function | `kernel/vga_fb.c:4391` | `static void term_finish_layout(void)` |
+| `term_max_cols` | function | `kernel/vga_fb.c:4382` | `static int term_max_cols(void)` |
+| `term_max_rows` | function | `kernel/vga_fb.c:4386` | `static int term_max_rows(void)` |
+| `term_recalc` | function | `kernel/vga_fb.c:3061` | `static void term_recalc(void)` |
+| `term_render` | function | `kernel/vga_fb.c:3457` | `static void term_render(void)` |
+| `term_render_active` | function | `kernel/vga_fb.c:3490` | `static void term_render_active(void)` |
+| `term_toggle_fullscreen` | function | `kernel/vga_fb.c:4215` | `static void term_toggle_fullscreen(void)` |
+| `term_toggle_minimize` | function | `kernel/vga_fb.c:4238` | `static void term_toggle_minimize(void)` |
+| `termwin_t` | struct | `kernel/vga_fb.c:1061` | `` |
+| `text_px` | function | `kernel/vga_fb.c:2171` | `static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg)` |
+| `title` | function | `kernel/vga_fb.c:3170` | `* 8px row plus its title (bright when focused). The hint line * starts after it instead of underneath. */ const...` |
+| `total_rows` | function | `kernel/vga_fb.c:390` | `static int total_rows(void)` |
+| `tw_hit` | function | `kernel/vga_fb.c:1732` | `static int tw_hit(int i, int mx, int my)` |
+| `tw_park` | function | `kernel/vga_fb.c:1118` | `static void tw_park(int i)` |
+| `tw_select` | function | `kernel/vga_fb.c:1208` | `static void tw_select(int i)` |
+| `tw_unpark` | function | `kernel/vga_fb.c:1148` | `static void tw_unpark(int i)` |
+| `vga_fb_act_empty` | function | `kernel/vga_fb.c:1672` | `int vga_fb_act_empty(void)` |
+| `vga_fb_blit_gfx_window` | function | `kernel/vga_fb.c:3037` | `void vga_fb_blit_gfx_window(void)` |
+| `vga_fb_blit_nk_rgb_window` | function | `kernel/vga_fb.c:3052` | `void vga_fb_blit_nk_rgb_window(void)` |
+| `vga_fb_blit_nk_window` | function | `kernel/vga_fb.c:3046` | `void vga_fb_blit_nk_window(void)` |
+| `vga_fb_boot_config` | function | `kernel/vga_fb.c:98` | `void vga_fb_boot_config(void)` |
+| `vga_fb_boot_history_to_active` | function | `kernel/vga_fb.c:1337` | `static void vga_fb_boot_history_to_active(void)` |
+| `vga_fb_char` | function | `kernel/vga_fb.c:2130` | `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg)` |
+| `vga_fb_clear` | function | `kernel/vga_fb.c:2089` | `void vga_fb_clear(void)` |
+| `vga_fb_clear_prompt` | function | `kernel/vga_fb.c:1681` | `void vga_fb_clear_prompt(void)` |
+| `vga_fb_close_active` | function | `kernel/vga_fb.c:4323` | `int vga_fb_close_active(void)` |
+| `vga_fb_draw_desktop` | function | `kernel/vga_fb.c:3889` | `void vga_fb_draw_desktop(void)` |
+| `vga_fb_focus_event` | function | `kernel/vga_fb.c:1103` | `const wm_notify_event_t *vga_fb_focus_event(void)` |
+| `vga_fb_focus_get` | function | `kernel/vga_fb.c:1220` | `int vga_fb_focus_get(void)` |
+| `vga_fb_focus_id` | function | `kernel/vga_fb.c:1302` | `int vga_fb_focus_id(int id)` |
+| `vga_fb_focus_next` | function | `kernel/vga_fb.c:1237` | `void vga_fb_focus_next(void)` |
+| `vga_fb_focus_report` | function | `kernel/vga_fb.c:1109` | `void vga_fb_focus_report(int before, int source)` |
+| `vga_fb_gfx_cursor_draw` | function | `kernel/vga_fb.c:892` | `static void vga_fb_gfx_cursor_draw(void)` |
+| `vga_fb_gfx_cursor_erase` | function | `kernel/vga_fb.c:882` | `static void vga_fb_gfx_cursor_erase(void)` |
+| `vga_fb_gfx_map_mouse` | function | `kernel/vga_fb.c:867` | `void vga_fb_gfx_map_mouse(int *x, int *y)` |
+| `vga_fb_gfx_origin` | function | `kernel/vga_fb.c:850` | `void vga_fb_gfx_origin(int *x, int *y)` |
+| `vga_fb_gfx_set_hidden` | function | `kernel/vga_fb.c:4153` | `int vga_fb_gfx_set_hidden(int hide)` |
+| `vga_fb_gfx_view_name` | function | `kernel/vga_fb.c:4203` | `const char *vga_fb_gfx_view_name(void)` |
+| `vga_fb_hide_text_cursor` | function | `kernel/vga_fb.c:3613` | `void vga_fb_hide_text_cursor(void)` |
+| `vga_fb_history_page` | function | `kernel/vga_fb.c:5658` | `void vga_fb_history_page(int dir)` |
+| `vga_fb_init` | function | `kernel/vga_fb.c:5670` | `void vga_fb_init(void)` |
+| `vga_fb_is_fullscreen` | function | `kernel/vga_fb.c:4269` | `int vga_fb_is_fullscreen(void)` |
+| `vga_fb_is_minimized` | function | `kernel/vga_fb.c:4268` | `int vga_fb_is_minimized(void)` |
+| `vga_fb_layout_cycle` | function | `kernel/vga_fb.c:1453` | `void vga_fb_layout_cycle(void)` |
+| `vga_fb_layout_get` | function | `kernel/vga_fb.c:1469` | `int vga_fb_layout_get(void)` |
+| `vga_fb_layout_name` | function | `kernel/vga_fb.c:1475` | `const char *vga_fb_layout_name(void)` |
+| `vga_fb_layout_set` | function | `kernel/vga_fb.c:1442` | `int vga_fb_layout_set(int mode)` |
+| `vga_fb_list_windows` | function | `kernel/vga_fb.c:1614` | `void vga_fb_list_windows(void)` |
+| `vga_fb_mouse_init` | function | `kernel/vga_fb.c:5599` | `void vga_fb_mouse_init(void)` |
+| `vga_fb_mouse_tick` | function | `kernel/vga_fb.c:5393` | `void vga_fb_mouse_tick(void)` |
+| `vga_fb_move_terminal` | function | `kernel/vga_fb.c:4337` | `void vga_fb_move_terminal(int dx, int dy)` |
+| `vga_fb_note_prompt` | function | `kernel/vga_fb.c:1676` | `void vga_fb_note_prompt(void)` |
+| `vga_fb_nterms_get` | function | `kernel/vga_fb.c:1221` | `int vga_fb_nterms_get(void)` |
+| `vga_fb_park_line` | function | `kernel/vga_fb.c:1702` | `void vga_fb_park_line(const char *b, int p)` |
+| `vga_fb_pixel` | function | `kernel/vga_fb.c:2079` | `void vga_fb_pixel(int x, int y, uint8_t color)` |
+| `vga_fb_pixel_rgb` | function | `kernel/vga_fb.c:2114` | `void vga_fb_pixel_rgb(int x, int y, uint8_t r, uint8_t g, uint8_t b)` |
+| `vga_fb_prompt_live` | function | `kernel/vga_fb.c:1695` | `int vga_fb_prompt_live(void)` |
+| `vga_fb_prompted` | function | `kernel/vga_fb.c:1686` | `int vga_fb_prompted(void)` |
+| `vga_fb_ps2_owner` | function | `kernel/vga_fb.c:2734` | `int vga_fb_ps2_owner(int pid)` |
+| `vga_fb_puts_term` | function | `kernel/vga_fb.c:3599` | `void vga_fb_puts_term(const char *s)` |
+| `vga_fb_read_rgb` | function | `kernel/vga_fb.c:1913` | `unsigned long vga_fb_read_rgb(int x, int y)` |
+| `vga_fb_rect` | function | `kernel/vga_fb.c:2099` | `void vga_fb_rect(int x, int y, int w, int h, uint8_t color)` |
+| `vga_fb_rect_rgb` | function | `kernel/vga_fb.c:2123` | `void vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b)` |
+| `vga_fb_reset_default` | function | `kernel/vga_fb.c:4445` | `void vga_fb_reset_default(void)` |
+| `vga_fb_resize` | function | `kernel/vga_fb.c:4425` | `void vga_fb_resize(int dcols, int drows)` |
+| `vga_fb_set_gfx_mode` | function | `kernel/vga_fb.c:750` | `void vga_fb_set_gfx_mode(int on)` |
+| `vga_fb_set_gfx_palette` | function | `kernel/vga_fb.c:1838` | `void vga_fb_set_gfx_palette(const unsigned char *pal)` |
+| `vga_fb_set_gfx_program` | function | `kernel/vga_fb.c:688` | `void vga_fb_set_gfx_program(const char *name)` |
+| `vga_fb_set_palette` | function | `kernel/vga_fb.c:2005` | `static void vga_fb_set_palette(void)` |
+| `vga_fb_snap_window` | function | `kernel/vga_fb.c:4397` | `void vga_fb_snap_window(int zone)` |
+| `vga_fb_str` | function | `kernel/vga_fb.c:2156` | `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg)` |
+| `vga_fb_term_feed` | function | `kernel/vga_fb.c:373` | `void vga_fb_term_feed(const char *line, int len)` |
+| `vga_fb_term_ring_init` | function | `kernel/vga_fb.c:365` | `void vga_fb_term_ring_init(void)` |
+| `vga_fb_text_cursor` | function | `kernel/vga_fb.c:3605` | `void vga_fb_text_cursor(int col)` |
+| `vga_fb_theme_name` | function | `kernel/vga_fb.c:3255` | `int vga_fb_theme_name(char *dst, int cap)` |
+| `vga_fb_toggle_fullscreen` | function | `kernel/vga_fb.c:4227` | `void vga_fb_toggle_fullscreen(void)` |
+| `vga_fb_toggle_minimize` | function | `kernel/vga_fb.c:4260` | `void vga_fb_toggle_minimize(void)` |
+| `vga_fb_unpark_line` | function | `kernel/vga_fb.c:1717` | `int vga_fb_unpark_line(char *b, int *p)` |
+| `vga_fb_wait_tick` | function | `kernel/vga_fb.c:5384` | `void vga_fb_wait_tick(void)` |
+| `wall_level` | function | `kernel/vga_fb.c:1996` | `static int wall_level(int v)` |
+| `wallpaper_draw` | function | `kernel/vga_fb.c:4559` | `static void wallpaper_draw(void)` |
+| `wallpaper_ensure` | function | `kernel/vga_fb.c:4502` | `static void wallpaper_ensure(void)` |
+| `wallpaper_packed` | function | `kernel/vga_fb.c:4575` | `static int wallpaper_packed(int x, int y, unsigned int *out)` |
+| `wallpaper_rect` | function | `kernel/vga_fb.c:5093` | `static void wallpaper_rect(int x0, int y0, int w, int h)` |
+| `wallpaper_usable` | function | `kernel/vga_fb.c:4554` | `static int wallpaper_usable(void)` |
+| `wm_buttons_hit` | function | `kernel/vga_fb.c:2714` | `static int wm_buttons_hit(int mx, int my, int win_x, int win_y, int win_w)` |
+| `wm_clear_close` | function | `kernel/vga_fb.c:2730` | `void wm_clear_close(void)` |
+| `wm_close_pending` | function | `kernel/vga_fb.c:2729` | `int wm_close_pending(void)` |
+| `wm_drag_reset` | function | `kernel/vga_fb.c:76` | `static void wm_drag_reset(void)` |
+| `wm_draw_buttons` | function | `kernel/vga_fb.c:2200` | `static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg)` |
+| `wm_emit_focus_moved` | function | `kernel/vga_fb.c:1091` | `static void wm_emit_focus_moved(int before, int source)` |
+| `wm_event_cfg` | function | `kernel/vga_fb.c:67` | `static wm_event_config_t wm_event_cfg(void)` |
+| `wm_focus_cursor_sync` | function | `kernel/vga_fb.c:1084` | `static void wm_focus_cursor_sync(const wm_notify_event_t *e)` |
+| `wm_geom_cfg` | function | `kernel/vga_fb.c:56` | `static wm_geom_config_t wm_geom_cfg(void)` |
+| `wm_gfx_focus_sync` | function | `kernel/vga_fb.c:1283` | `static void wm_gfx_focus_sync(int on)` |
+| `wm_gfx_mode_active` | function | `kernel/vga_fb.c:2731` | `int wm_gfx_mode_active(void)` |
+| `wm_init_once` | function | `kernel/vga_fb.c:1183` | `static void wm_init_once(void)` |
+| `wm_snapshot_state` | function | `kernel/vga_fb.c:1224` | `static void wm_snapshot_state(wm_focus_state_t *st)` |
+| `fx_wait_until` | function | `kernel/vga_fx.c:40` | `static void fx_wait_until(unsigned long deadline)` |
+| `once` | function | `kernel/vga_fx.c:95` | `* once (prev[] tracks the revealed frontier per column), then the final  * restore guarantees the...` |
+| `vga_fx_enabled` | function | `kernel/vga_fx.c:32` | `int vga_fx_enabled(void)` |
+| `vga_fx_free` | function | `kernel/vga_fx.c:82` | `void vga_fx_free(unsigned int *buf)` |
+| `vga_fx_melt_from_black` | function | `kernel/vga_fx.c:164` | `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb)` |
+| `vga_fx_melt_rect` | function | `kernel/vga_fx.c:155` | `void vga_fx_melt_rect(int x, int y, int w, int h,     const unsigned int *oldb, const unsigned in...` |
+| `vga_fx_restore_rect` | function | `kernel/vga_fx.c:68` | `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf)` |
+| `vga_fx_set_enabled` | function | `kernel/vga_fx.c:27` | `void vga_fx_set_enabled(int on)` |
+| `vga_fx_snap_rect` | function | `kernel/vga_fx.c:46` | `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h)` |
+| `Client` | class | `mcp/mcp_dbg_driver.py:15` | `class Client` |
+| `__init__` | method | `mcp/mcp_dbg_driver.py:16` | `def __init__(self)` |
+| `close` | method | `mcp/mcp_dbg_driver.py:54` | `def close(self)` |
+| `main` | function | `mcp/mcp_dbg_driver.py:64` | `def main()` |
+| `request` | method | `mcp/mcp_dbg_driver.py:28` | `def request(self, method, params)` |
+| `tool` | method | `mcp/mcp_dbg_driver.py:46` | `def tool(self, name, params)` |
 | `Client` | class | `mcp/mcp_dogfood.py:19` | `class Client` |
 | `__init__` | method | `mcp/mcp_dogfood.py:20` | `def __init__(self, addons_dir)` |
 | `close` | method | `mcp/mcp_dogfood.py:68` | `def close(self)` |
@@ -355,146 +496,5 @@ Previous: [SYMBOLS_p10.md](SYMBOLS_p10.md)
 | `inl_port` | function | `net/rtl8139.c:33` | `static unsigned int inl_port(unsigned short port)` |
 | `outl_port` | function | `net/rtl8139.c:29` | `static void outl_port(unsigned short port, unsigned int val)` |
 | `rtl_counters` | function | `net/rtl8139.c:214` | `void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames)` |
-| `rtl_find` | function | `net/rtl8139.c:58` | `static unsigned short rtl_find(void)` |
-| `rtl_get_mac` | function | `net/rtl8139.c:205` | `void rtl_get_mac(unsigned char out[NET_ETH_ALEN])` |
-| `rtl_init` | function | `net/rtl8139.c:120` | `void rtl_init(void)` |
-| `rtl_iobase` | function | `net/rtl8139.c:210` | `unsigned short rtl_iobase(void)` |
-| `rtl_poll` | function | `net/rtl8139.c:238` | `void rtl_poll(void)` |
-| `rtl_present` | function | `net/rtl8139.c:107` | `int rtl_present(void)` |
-| `rtl_reg16` | function | `net/rtl8139.c:41` | `static unsigned short rtl_reg16(unsigned short off)` |
-| `rtl_reg16_w` | function | `net/rtl8139.c:42` | `static void rtl_reg16_w(unsigned short off, unsigned short v)` |
-| `rtl_reg32` | function | `net/rtl8139.c:43` | `static unsigned int rtl_reg32(unsigned short off)` |
-| `rtl_reg32_w` | function | `net/rtl8139.c:44` | `static void rtl_reg32_w(unsigned short off, unsigned int v)` |
-| `rtl_reg8` | function | `net/rtl8139.c:39` | `static unsigned char rtl_reg8(unsigned short off)` |
-| `rtl_reg8_w` | function | `net/rtl8139.c:40` | `static void rtl_reg8_w(unsigned short off, unsigned char v)` |
-| `rtl_reset` | function | `net/rtl8139.c:111` | `static void rtl_reset(void)` |
-| `rtl_send` | function | `net/rtl8139.c:177` | `int rtl_send(const unsigned char *frame, unsigned len)` |
-| `rtl_tx_wait` | function | `net/rtl8139.c:168` | `static int rtl_tx_wait(unsigned slot, unsigned long deadline)` |
-| `PORT_IO_DEFINED` | macro | `net/tls.c:809` | `#define PORT_IO_DEFINED` |
-| `build_client_hello` | function | `net/tls.c:190` | `static int build_client_hello(struct tls_session *s, unsigned char *out)` |
-| `client_finish_flight` | function | `net/tls.c:244` | `static int client_finish_flight(struct tls_session *s)` |
-| `cmos_read` | function | `net/tls.c:821` | `static inline unsigned char cmos_read(unsigned char reg)` |
-| `exchange` | function | `net/tls.c:173` | `* key exchange (ClientHello, ClientKeyExchange) go out in plaintext  * records, as TLS 1.2 requir...` |
-| `inb` | function | `net/tls.c:813` | `static inline unsigned char inb(unsigned short port)` |
-| `number` | function | `net/tls.c:64` | `* The nonce_explicit is the sequence number (RFC 5288 allows it and * OpenSSL uses it);` |
-| `outb` | function | `net/tls.c:810` | `static inline void outb(unsigned short port, unsigned char v)` |
-| `parse_certificate` | function | `net/tls.c:370` | `static int parse_certificate(struct tls_session *s,                              const unsigned c...` |
-| `parse_server_hello` | function | `net/tls.c:340` | `static int parse_server_hello(struct tls_session *s,                               const unsigned...` |
-| `parse_server_key_exchange` | function | `net/tls.c:401` | `static int parse_server_key_exchange(struct tls_session *s,                                      ...` |
-| `tls_aad` | function | `net/tls.c:52` | `static void tls_aad(unsigned char aad[13], int type, unsigned long long seq,                     ...` |
-| `tls_fail` | function | `net/tls.c:25` | `static void tls_fail(struct tls_session *s, const char *stage, const char *reason)` |
-| `tls_fd_of` | function | `net/tls.c:33` | `static int tls_fd_of(const struct tls_session *s)` |
-| `tls_free_fd` | function | `net/tls.c:40` | `void tls_free_fd(int fd)` |
-| `tls_handshake` | function | `net/tls.c:466` | `int tls_handshake(int fd, const char *host)` |
-| `tls_now_days` | function | `net/tls.c:826` | `long tls_now_days(void)` |
-| `tls_random` | function | `net/tls.c:795` | `void tls_random(unsigned char *out, unsigned len)` |
-| `tls_rdtsc` | function | `net/tls.c:789` | `static inline unsigned long long tls_rdtsc(void)` |
-| `tls_read_record` | function | `net/tls.c:114` | `static int tls_read_record(struct tls_session *s, int fd, int deadline_ms)` |
-| `tls_recv` | function | `net/tls.c:696` | `int tls_recv(int fd, char *buf, int len)` |
-| `tls_send` | function | `net/tls.c:687` | `int tls_send(int fd, const char *buf, int len)` |
-| `tls_send_raw_record` | function | `net/tls.c:95` | `static int tls_send_raw_record(struct tls_session *s, int type,                                co...` |
-| `tls_send_record` | function | `net/tls.c:66` | `static int tls_send_record(struct tls_session *s, int type,                            const unsi...` |
-| `tls_sys_handshake` | function | `net/tls.c:772` | `long tls_sys_handshake(long fd, long host)` |
-| `tls_sys_recv` | function | `net/tls.c:782` | `long tls_sys_recv(long fd, long buf, long len)` |
-| `tls_sys_send` | function | `net/tls.c:777` | `long tls_sys_send(long fd, long buf, long len)` |
-| `TLS_BN_WORDS` | macro | `net/tls_crypto.c:535` | `#define TLS_BN_WORDS` |
-| `aes128_encrypt_block` | function | `net/tls_crypto.c:263` | `void aes128_encrypt_block(const unsigned char key[16],                           const unsigned c...` |
-| `aes128_gcm_open` | function | `net/tls_crypto.c:487` | `int aes128_gcm_open(const unsigned char key[16],                     const unsigned char salt[4],...` |
-| `aes128_gcm_open_core` | function | `net/tls_crypto.c:516` | `int aes128_gcm_open_core(const unsigned char key[16],                          const unsigned cha...` |
-| `aes128_gcm_seal` | function | `net/tls_crypto.c:475` | `int aes128_gcm_seal(const unsigned char key[16],                     const unsigned char salt[4],...` |
-| `aes128_gcm_seal_core` | function | `net/tls_crypto.c:505` | `int aes128_gcm_seal_core(const unsigned char key[16],                          const unsigned cha...` |
-| `aes_key_expand` | function | `net/tls_crypto.c:235` | `static void aes_key_expand(const unsigned char key[16], unsigned rk[44])` |
-| `aes_mixcol` | function | `net/tls_crypto.c:253` | `static void aes_mixcol(unsigned a0, unsigned a1, unsigned a2, unsigned a3,                       ...` |
-| `aes_xtime` | function | `net/tls_crypto.c:230` | `static unsigned aes_xtime(unsigned x)` |
-| `bn_add` | function | `net/tls_crypto.c:559` | `static unsigned bn_add(const unsigned *a, const unsigned *b, unsigned *r, int nw)` |
-| `bn_cmp` | function | `net/tls_crypto.c:549` | `static int bn_cmp(const unsigned *a, const unsigned *b, int nw)` |
-| `bn_dbl_mod` | function | `net/tls_crypto.c:584` | `static void bn_dbl_mod(const unsigned *a, const unsigned *n, const unsigned *v,                  ...` |
-| `bn_from_be` | function | `net/tls_crypto.c:663` | `static void bn_from_be(const unsigned char *bytes, unsigned len,                        unsigned ...` |
-| `bn_is_zero` | function | `net/tls_crypto.c:542` | `static int bn_is_zero(const unsigned *a, int nw)` |
-| `bn_mont_mul` | function | `net/tls_crypto.c:596` | `static void bn_mont_mul(const unsigned *a, const unsigned *b, const unsigned *n,                 ...` |
-| `bn_mont_n0inv` | function | `net/tls_crypto.c:635` | `static unsigned bn_mont_n0inv(unsigned n0)` |
-| `bn_mont_r2` | function | `net/tls_crypto.c:643` | `static void bn_mont_r2(const unsigned *n, const unsigned *v, int nw,                        unsig...` |
-| `bn_sub` | function | `net/tls_crypto.c:571` | `static unsigned bn_sub(const unsigned *a, const unsigned *b, unsigned *r, int nw)` |
-| `bn_to_be` | function | `net/tls_crypto.c:671` | `static void bn_to_be(const unsigned *a, unsigned char *out, unsigned len)` |
-| `bn_zero` | function | `net/tls_crypto.c:537` | `static void bn_zero(unsigned *a, int nw)` |
-| `der_parse_sig` | function | `net/tls_crypto.c:1129` | `static int der_parse_sig(const unsigned char *sig, unsigned sig_len,                          con...` |
-| `ec_boot` | function | `net/tls_crypto.c:1080` | `static void ec_boot(void)` |
-| `ec_curve` | struct | `net/tls_crypto.c:838` | `` |
-| `ec_curve_by_id` | function | `net/tls_crypto.c:1076` | `static struct ec_curve *ec_curve_by_id(int curve)` |
-| `ec_init` | function | `net/tls_crypto.c:848` | `static void ec_init(struct ec_curve *c, const unsigned char *p,                     const unsigne...` |
-| `ecdsa_verify` | function | `net/tls_crypto.c:1163` | `int ecdsa_verify(int curve, const unsigned char pub_x[], const unsigned char pub_y[],            ...` |
-| `gcm_ctr` | function | `net/tls_crypto.c:467` | `static void gcm_ctr(const unsigned char key[16], const unsigned char salt[4],                    ...` |
-| `gcm_ctr_core` | function | `net/tls_crypto.c:427` | `static void gcm_ctr_core(const unsigned char key[16],                          const unsigned cha...` |
-| `gcm_tag` | function | `net/tls_crypto.c:457` | `static void gcm_tag(const unsigned char key[16], const unsigned char salt[4],                    ...` |
-| `gcm_tag_core` | function | `net/tls_crypto.c:384` | `static void gcm_tag_core(const unsigned char key[16],                          const unsigned cha...` |
-| `gf128` | struct | `net/tls_crypto.c:316` | `` |
-| `gf_mul` | function | `net/tls_crypto.c:334` | `static gf128 gf_mul(gf128 z, gf128 h)` |
-| `gf_put` | function | `net/tls_crypto.c:351` | `static gf128 gf_put(const unsigned char *p)` |
-| `gf_shift_right` | function | `net/tls_crypto.c:321` | `static gf128 gf_shift_right(gf128 v)` |
-| `ghash_blocks` | function | `net/tls_crypto.c:361` | `static gf128 ghash_blocks(gf128 z, gf128 h, const unsigned char *data, unsigned len)` |
-| `hmac_sha256` | function | `net/tls_crypto.c:135` | `void hmac_sha256(const unsigned char *key, unsigned klen,                  const unsigned char *d...` |
-| `jpt` | struct | `net/tls_crypto.c:859` | `` |
-| `jpt_add` | function | `net/tls_crypto.c:936` | `static void jpt_add(struct ec_curve *c, const struct jpt *p1, const struct jpt *p2,              ...` |
-| `jpt_copy` | function | `net/tls_crypto.c:875` | `static void jpt_copy(struct jpt *d, const struct jpt *s, int nw)` |
-| `jpt_cswap` | function | `net/tls_crypto.c:885` | `static void jpt_cswap(struct jpt *a, struct jpt *b, unsigned mask, int nw)` |
-| `jpt_dbl` | function | `net/tls_crypto.c:896` | `static void jpt_dbl(struct ec_curve *c, const struct jpt *p1, struct jpt *p3)` |
-| `jpt_from_affine` | function | `net/tls_crypto.c:1032` | `static int jpt_from_affine(struct ec_curve *c, const unsigned char *x_bytes,                     ...` |
-| `jpt_is_inf` | function | `net/tls_crypto.c:865` | `static int jpt_is_inf(const struct jpt *p, int nw)` |
-| `jpt_scalar_mult` | function | `net/tls_crypto.c:980` | `static void jpt_scalar_mult(struct ec_curve *c, const struct jpt *base,                          ...` |
-| `jpt_set_inf` | function | `net/tls_crypto.c:869` | `static void jpt_set_inf(struct jpt *p, int nw)` |
-| `jpt_to_affine` | function | `net/tls_crypto.c:1007` | `static void jpt_to_affine(struct ec_curve *c, const struct jpt *p,                           unsi...` |
-| `mont_add` | function | `net/tls_crypto.c:712` | `static void mont_add(struct mont_ctx *m, const unsigned *a, const unsigned *b,                   ...` |
-| `mont_ctx` | struct | `net/tls_crypto.c:655` | `` |
-| `mont_from` | function | `net/tls_crypto.c:693` | `static void mont_from(struct mont_ctx *m, const unsigned *a, unsigned *r)` |
-| `mont_init` | function | `net/tls_crypto.c:677` | `static void mont_init(struct mont_ctx *m, const unsigned char *p_bytes,                       uns...` |
-| `mont_inv` | function | `net/tls_crypto.c:736` | `static void mont_inv(struct mont_ctx *m, const unsigned *a, unsigned *r)` |
-| `mont_mul` | function | `net/tls_crypto.c:700` | `static void mont_mul(struct mont_ctx *m, const unsigned *a, const unsigned *b,                   ...` |
-| `mont_sqr` | function | `net/tls_crypto.c:705` | `static void mont_sqr(struct mont_ctx *m, const unsigned *a, unsigned *r)` |
-| `mont_sub` | function | `net/tls_crypto.c:721` | `static void mont_sub(struct mont_ctx *m, const unsigned *a, const unsigned *b,                   ...` |
-| `mont_to` | function | `net/tls_crypto.c:689` | `static void mont_to(struct mont_ctx *m, const unsigned *a, unsigned *r)` |
-| `p256_ecdh` | function | `net/tls_crypto.c:1114` | `int p256_ecdh(const unsigned char priv[32],               const unsigned char peer_x[32], const u...` |
-| `p256_point_valid` | function | `net/tls_crypto.c:1512` | `int p256_point_valid(const unsigned char x[32], const unsigned char y[32])` |
-| `p256_pub` | function | `net/tls_crypto.c:1520` | `int p256_pub(const unsigned char priv[32],              unsigned char x[32], unsigned char y[32])` |
-| `p256_scalar_mult` | function | `net/tls_crypto.c:1088` | `int p256_scalar_mult(const unsigned char scalar[32],                      const unsigned char qx[...` |
-| `p256_scalar_valid` | function | `net/tls_crypto.c:1539` | `int p256_scalar_valid(const unsigned char scalar[32])` |
-| `p384_scalar_mult` | function | `net/tls_crypto.c:1101` | `int p384_scalar_mult(const unsigned char scalar[48],                      const unsigned char qx[...` |
-| `p_hash` | function | `net/tls_crypto.c:165` | `static void p_hash(const unsigned char *secret, unsigned secret_len,                    const uns...` |
-| `rsa_pkcs1_verify_raw` | function | `net/tls_crypto.c:1285` | `static int rsa_pkcs1_verify_raw(const unsigned char *n, unsigned n_len,                          ...` |
-| `rsa_pkcs1_verify_sha256` | function | `net/tls_crypto.c:1326` | `int rsa_pkcs1_verify_sha256(const unsigned char *n, unsigned n_len,                             c...` |
-| `rsa_pkcs1_verify_sha384` | function | `net/tls_crypto.c:1340` | `int rsa_pkcs1_verify_sha384(const unsigned char *n, unsigned n_len,                             c...` |
-| `rsa_verify_digestinfo` | function | `net/tls_crypto.c:1261` | `static int rsa_verify_digestinfo(const unsigned char *em, unsigned em_len,                       ...` |
-| `sha256` | function | `net/tls_crypto.c:126` | `void sha256(const unsigned char *data, unsigned len, unsigned char out[32])` |
-| `sha256_block` | function | `net/tls_crypto.c:50` | `static void sha256_block(struct sha256_ctx *c, const unsigned char *p)` |
-| `sha256_final` | function | `net/tls_crypto.c:105` | `void sha256_final(struct sha256_ctx *c, unsigned char out[32])` |
-| `sha256_init` | function | `net/tls_crypto.c:37` | `void sha256_init(struct sha256_ctx *c)` |
-| `sha256_rotr` | function | `net/tls_crypto.c:33` | `static unsigned sha256_rotr(unsigned x, unsigned n)` |
-| `sha256_update` | function | `net/tls_crypto.c:80` | `void sha256_update(struct sha256_ctx *c, const unsigned char *data, unsigned len)` |
-| `sha384` | function | `net/tls_crypto.c:1506` | `void sha384(const unsigned char *data, unsigned len, unsigned char out[48])` |
-| `sha384_raw` | function | `net/tls_crypto.c:1390` | `static void sha384_raw(const unsigned char *data, unsigned len,                        unsigned c...` |
-| `sha384_rotr` | function | `net/tls_crypto.c:1386` | `static unsigned long long sha384_rotr(unsigned long long x, unsigned n)` |
-| `tls_nonce` | function | `net/tls_crypto.c:450` | `static void tls_nonce(const unsigned char salt[4], unsigned long long seq,                       ...` |
-| `tls_prf` | function | `net/tls_crypto.c:188` | `void tls_prf(const unsigned char *secret, unsigned secret_len,              const char *label, co...` |
-| `word` | function | `net/tls_crypto.c:326` | `* of the low word (hi holds bits 64..127, lo bits 0..63). Masked in, * so the shift never branches on key bits. */...` |
-| `TLS_SAN_MAX` | macro | `net/tls_x509.c:170` | `#define TLS_SAN_MAX` |
-| `ascii_lower` | function | `net/tls_x509.c:392` | `static int ascii_lower(int c)` |
-| `cert_parse` | function | `net/tls_x509.c:279` | `static int cert_parse(const unsigned char *der, unsigned len,                       struct x509_c...` |
-| `cert_verify_signature` | function | `net/tls_x509.c:479` | `static int cert_verify_signature(const struct x509_cert *cert,                                  c...` |
-| `days_from_civil` | function | `net/tls_x509.c:94` | `static long days_from_civil(int y, int m, int d)` |
-| `der_container` | function | `net/tls_x509.c:82` | `static int der_container(const unsigned char *p, unsigned limit, unsigned *pos,                  ...` |
-| `der_next` | function | `net/tls_x509.c:51` | `static int der_next(const unsigned char *p, unsigned limit, unsigned *pos,                     st...` |
-| `der_time_to_days` | function | `net/tls_x509.c:106` | `static long der_time_to_days(const struct der_tlv *t)` |
-| `der_tlv` | struct | `net/tls_x509.c:43` | `` |
-| `host_match_exact` | function | `net/tls_x509.c:397` | `static int host_match_exact(const char *host, const unsigned char *name,                         ...` |
-| `host_match_wildcard` | function | `net/tls_x509.c:410` | `static int host_match_wildcard(const char *host, const unsigned char *name,                      ...` |
-| `host_matches` | function | `net/tls_x509.c:431` | `static int host_matches(const char *host, const struct x509_cert *leaf)` |
-| `name_find_cn` | function | `net/tls_x509.c:135` | `static int name_find_cn(const unsigned char *p, unsigned limit,                         struct x5...` |
-| `oid_eq` | function | `net/tls_x509.c:36` | `static int oid_eq(const unsigned char *bytes, unsigned len,                   const unsigned char...` |
-| `pubkey_equal` | function | `net/tls_x509.c:468` | `static int pubkey_equal(const struct tls_pubkey *a, const struct tls_pubkey *b)` |
-| `san_add` | function | `net/tls_x509.c:178` | `static void san_add(struct x509_sans *out, const unsigned char *v, unsigned len)` |
-| `san_parse` | function | `net/tls_x509.c:186` | `static void san_parse(const unsigned char *p, unsigned limit,                       struct x509_s...` |
-| `spki_parse` | function | `net/tls_x509.c:203` | `static int spki_parse(const unsigned char *p, unsigned limit,                       struct tls_pu...` |
-| `tls_x509_parse_pubkey` | function | `net/tls_x509.c:452` | `int tls_x509_parse_pubkey(const unsigned char *der, unsigned len,                           struc...` |
-| `tls_x509_verify_chain` | function | `net/tls_x509.c:521` | `int tls_x509_verify_chain(const unsigned char *chain, unsigned chain_len,                        ...` |
-| `x509_cert` | struct | `net/tls_x509.c:265` | `` |
 
 Next: [SYMBOLS_p12.md](SYMBOLS_p12.md)

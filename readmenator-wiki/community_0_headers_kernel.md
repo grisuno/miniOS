@@ -1,59 +1,61 @@
 # headers: kernel
 
-*Community 0 | 137 files | cohesion 0.90*
+*Community 0 | 146 files | cohesion 0.88*
 
 ## Definition
 
-This community groups 137 file(s) rooted at `headers` with dominant language c (cohesion 0.90). Central symbols: `A20_CONTROL_PORT`, `A20_ENABLE_BIT`, `A20_RESET_CLEAR_MASK`, `ALIGN_UP`, `AP_STUB_ADDR`, `ARCH_X86_CPU_SETUP_H`, `ARCH_X86_MSR_H`, `BC_LINE`. Core file: `headers/kernel.h` (412 symbols). Documented purpose: SMP application-processor bootstrap stub..
+This community groups 146 file(s) rooted at `headers` with dominant language c (cohesion 0.88). Central symbols: `A20_CONTROL_PORT`, `A20_ENABLE_BIT`, `A20_RESET_CLEAR_MASK`, `AHCI_ABAR_INDEX`, `AHCI_ALL_ONES`, `AHCI_BOHC_BB`, `AHCI_BOHC_BOS`, `AHCI_BOHC_OOS`. Core file: `headers/kernel.h` (412 symbols). Documented purpose: SMP application-processor bootstrap stub..
 
 ## Files
 
-### `headers` (41 files)
+### `headers` (45 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `headers/ap_stub.h` | h | testing | 0 | yes |
-| `headers/block.h` | h | utility | 14 | yes |
+| `headers/batch.h` | h | utility | 12 | yes |
 
-### `tests` (23 files)
+### `tests` (27 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
+| `tests/test_batch.c` | c | testing | 3 | yes |
 | `tests/test_driver.c` | c | testing | 5 | yes |
-| `tests/test_ext4.c` | c | testing | 31 | yes |
 
-### `kernel` (21 files)
+### `kernel` (25 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
+| `kernel/batch.c` | c | utility | 1 | yes |
 | `kernel/console.c` | c | utility | 29 | yes |
-| `kernel/console_in.c` | c | utility | 32 | yes |
 
 ### `drivers` (15 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
+| `drivers/ahci.c` | c | infrastructure | 130 | yes |
 | `drivers/block.c` | c | infrastructure | 19 | yes |
-| `drivers/driver.c` | c | infrastructure | 8 | yes |
 
 ### `headers/drivers` (10 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
+| `headers/drivers/ahci.h` | h | infrastructure | 11 | yes |
 | `headers/drivers/kbd.h` | h | infrastructure | 24 | yes |
-| `headers/drivers/modifiers.h` | h | infrastructure | 11 | yes |
 
 ### `fs` (7 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `fs/ext4.c` | c | utility | 38 | yes |
+| `fs/fat32.c` | c | utility | 31 | yes |
 
 ### `.` (4 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `kernel.c` | c | utility | 15 | yes |
+| `qga.c` | c | utility | 27 | yes |
 
 ### `kernel/mm` (4 files)
 
@@ -79,12 +81,6 @@ This community groups 137 file(s) rooted at `headers` with dominant language c (
 |------|----------|-------|---------|-----|
 | `arch/x86/boot/stage1.S` | S | utility | 11 | yes |
 
-### `net` (2 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `net/net.c` | c | utility | 157 | yes |
-
 ### `headers/arch/x86/boot` (1 files)
 
 | File | Language | Layer | Symbols | Doc |
@@ -97,13 +93,7 @@ This community groups 137 file(s) rooted at `headers` with dominant language c (
 |------|----------|-------|---------|-----|
 | `headers/kernel/console_in.h` | h | utility | 12 | yes |
 
-### `headers/net` (1 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `headers/net/rtl8139.h` | h | utility | 8 | no |
-
-*... and 117 more files in this community.*
+*... and 126 more files in this community.*
 
 
 ## Key Symbols
@@ -141,42 +131,41 @@ This community groups 137 file(s) rooted at `headers` with dominant language c (
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 319
-- Cross-boundary resolved imports (EXTRACTED): 37
+- Internal resolved imports (EXTRACTED): 322
+- Cross-boundary resolved imports (EXTRACTED): 43
 
 ## Connections
 
-- [EXTRACTED] depends_on community 0 <-> 5 (strength 0.9): Extracted import edge crosses communities: drivers/kbd.c imports headers/wm_events.h.
 - [EXTRACTED] depends_on community 0 <-> 2 (strength 0.9): Extracted import edge crosses communities: drivers/pcm2.c imports headers/pcm_ring.h.
-- [EXTRACTED] depends_on community 4 <-> 0 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports headers/kernel.h.
-- [EXTRACTED] depends_on community 0 <-> 8 (strength 0.9): Extracted import edge crosses communities: kernel/sched.c imports headers/tick.h.
-- [EXTRACTED] depends_on community 0 <-> 7 (strength 0.9): Extracted import edge crosses communities: kernel/syscalls.c imports headers/batch.h.
-- [INFERRED] shares_context community 0 <-> 6 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers: kernel) and community 6 (progs/doomgeneric: net_defs).
-- [INFERRED] shares_context community 0 <-> 10 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 0 (headers: kernel) and community 10 (orphans).
+- [EXTRACTED] depends_on community 6 <-> 0 (strength 0.9): Extracted import edge crosses communities: drivers/virtio_net.c imports headers/drivers/pci.h.
+- [EXTRACTED] depends_on community 0 <-> 5 (strength 0.9): Extracted import edge crosses communities: headers/vga_fb.h imports headers/wm_notify.h.
+- [EXTRACTED] depends_on community 0 <-> 4 (strength 0.9): Extracted import edge crosses communities: kernel/syscalls.c imports headers/ktime.h.
+- [INFERRED] shares_context community 0 <-> 7 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers: kernel) and community 7 (progs/doomgeneric: net_defs).
+- [INFERRED] shares_context community 0 <-> 9 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 0 (headers: kernel) and community 9 (orphans).
 
 ## Risks
 
+- [layer strict] `tests/test_httpd.c` (testing) -> `headers/httpd.h` (presentation)
+- [dataflow DEAD_STORE] `drivers/ahci.c:364` `ahc_port_start` `fis`: `fis` assigned at line 364 but never read afterwards.
 - [dataflow DEAD_STORE] `drivers/sb16.c:259` `sb16_pump` `dst`: `dst` assigned at line 259 but never read afterwards.
 - [dataflow DEAD_STORE] `drivers/sb16.c:531` `sb16_init` `major`: `major` assigned at line 531 but never read afterwards.
 - [dataflow DEAD_STORE] `drivers/virtio_blk.c:169` `vblk_desc` `d`: `d` assigned at line 169 but never read afterwards.
 - [dataflow DEAD_STORE] `drivers/virtio_blk.c:189` `vblk_avail_push` `a`: `a` assigned at line 189 but never read afterwards.
-- [dataflow DEAD_STORE] `drivers/virtio_net.c:146` `vnet_desc` `d`: `d` assigned at line 146 but never read afterwards.
 - [dataflow DEAD_STORE] `fs/kfile.c:103` `kpipe_pair` `ref`: `ref` assigned at line 103 but never read afterwards.
 - [dataflow UNINIT_USE] `kernel/loader.c:932` `ldso_bind_into` `symname`: `symname` may be read before initialization (declared line 896).
 - [dataflow DEAD_STORE] `kernel/loader.c:1278` `load_exec_elf` `base`: `base` assigned at line 1278 but never read afterwards.
 - [dataflow DEAD_STORE] `kernel/loader.c:1283` `load_exec_elf` `max_end`: `max_end` assigned at line 1283 but never read afterwards.
 - [dataflow DEAD_STORE] `kernel/mm/cow.c:117` `cow_rehash` `ref`: `ref` assigned at line 117 but never read afterwards.
 - [dataflow DEAD_STORE] `kernel/mm/paging.c:44` `mm_setup_protections` `pd`: `pd` assigned at line 44 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/mm/paging.c:686` `honest` `pt`: `pt` assigned at line 686 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/mm/paging.c:726` `honest` `pt`: `pt` assigned at line 726 but never read afterwards.
 - [dataflow DEAD_STORE] `kernel/sched.c:632` `irqstat_report` `txf`: `txf` assigned at line 632 but never read afterwards.
 - [dataflow DEAD_STORE] `kernel/sched.c:1399` `syscall` `wheel`: `wheel` assigned at line 1399 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/sched.c:2080` `proc_spawn_elf_inner` `frame`: `frame` assigned at line 2080 but never read afterwards.
 
 ## Open Questions
 
-- Why do 14 file(s) lack file-level docs (e.g. `arch/x86/syscall_entry.S`)? What purpose do they serve?
+- Why do 11 file(s) lack file-level docs (e.g. `arch/x86/syscall_entry.S`)? What purpose do they serve?
 - What would break if the most connected file in headers: kernel changed?
-- Should headers: kernel be split, given cohesion 0.90?
+- Should headers: kernel be split, given cohesion 0.88?
 
 ## Sources
 
@@ -184,6 +173,7 @@ This community groups 137 file(s) rooted at `headers` with dominant language c (
 - `arch/x86/boot/stage1.S`
 - `arch/x86/boot/stage2.S`
 - `arch/x86/syscall_entry.S`
+- `drivers/ahci.c`
 - `drivers/block.c`
 - `drivers/driver.c`
 - `drivers/ide.c`
@@ -197,7 +187,6 @@ This community groups 137 file(s) rooted at `headers` with dominant language c (
 - `drivers/usbblk.c`
 - `drivers/usbhid.c`
 - `drivers/virtio_blk.c`
-- `drivers/virtio_net.c`
 - `drivers/xhci.c`
 - `fs/ext4.c`
-- *... and 117 more*
+- *... and 126 more*

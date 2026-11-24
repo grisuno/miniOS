@@ -293,121 +293,121 @@ Previous: [KB_kernel.md](KB_kernel.md)
 - Layer: utility
 - Language: c
 - Symbols:
-  - `job_row` (struct, line 2089)
-  - `ps_row` (struct, line 3733)
-  - `ShellRunDir` (struct, line 61)
-  - `shell_queue_launch` (function, line 87) `void shell_queue_launch(const char *cmd)`
-  - `shell_readline_active` (function, line 115) `int shell_readline_active(void)`
-  - `shell_focus_park` (function, line 116) `void shell_focus_park(void)`
-  - `shell_focus_restore` (function, line 121) `void shell_focus_restore(void)`
-  - `shell_prompt` (function, line 148) `static void shell_prompt(void)`
-  - `shell_parse_vol` (function, line 158) `static int shell_parse_vol(const char *s, unsigned *out)`
-  - `shell_readline_buf` (function, line 184) `void shell_readline_buf(char *buf, int size)`
-  - `shell_name_base` (function, line 213) `static const char *shell_name_base(const char *path)`
-  - `shell_complete_tier` (function, line 238) `static int shell_complete_tier(const char *nm)`
-  - `shell_complete_replace` (function, line 250) `static void shell_complete_replace(char *buf, int size, int *pos,
+  - `job_row` (struct, line 2090)
+  - `ps_row` (struct, line 3797)
+  - `ShellRunDir` (struct, line 62)
+  - `shell_queue_launch` (function, line 88) `void shell_queue_launch(const char *cmd)`
+  - `shell_readline_active` (function, line 116) `int shell_readline_active(void)`
+  - `shell_focus_park` (function, line 117) `void shell_focus_park(void)`
+  - `shell_focus_restore` (function, line 122) `void shell_focus_restore(void)`
+  - `shell_prompt` (function, line 149) `static void shell_prompt(void)`
+  - `shell_parse_vol` (function, line 159) `static int shell_parse_vol(const char *s, unsigned *out)`
+  - `shell_readline_buf` (function, line 185) `void shell_readline_buf(char *buf, int size)`
+  - `shell_name_base` (function, line 214) `static const char *shell_name_base(const char *path)`
+  - `shell_complete_tier` (function, line 239) `static int shell_complete_tier(const char *nm)`
+  - `shell_complete_replace` (function, line 251) `static void shell_complete_replace(char *buf, int size, int *pos,
                                ...`
-  - `shell_complete_minifs_arg` (function, line 271) `static void shell_complete_minifs_arg(const char *word, unsigned long wlen,
+  - `shell_complete_minifs_arg` (function, line 272) `static void shell_complete_minifs_arg(const char *word, unsigned long wlen,
                      ...`
-  - `shell_readline` (function, line 338) `static void shell_readline(void)`
-  - `shell_hist_show` (function, line 346) `static void shell_hist_show(char *buf, int size, int *pos, const char *text)`
-  - `shell_line_repaint` (function, line 368) `static void shell_line_repaint(char *buf, int size, int pos)`
-  - `shell_line_insert` (function, line 381) `static void shell_line_insert(char *buf, int size, int *pos, char c)`
-  - `shell_line_backspace` (function, line 390) `static void shell_line_backspace(char *buf, int size, int *pos)`
-  - `shell_line_delete` (function, line 398) `static void shell_line_delete(char *buf, int size, int *pos)`
-  - `shell_line_kill_front` (function, line 405) `static void shell_line_kill_front(char *buf, int size, int *pos)`
-  - `shell_line_kill_tail` (function, line 412) `static void shell_line_kill_tail(char *buf, int size, int *pos)`
-  - `shell_line_kill_word` (function, line 417) `static void shell_line_kill_word(char *buf, int size, int *pos)`
-  - `shell_hist_newest_match` (function, line 429) `static int shell_hist_newest_match(const char *prefix, unsigned long plen)`
-  - `line` (function, line 446) `* to the live line (handled by the caller resetting shell_hist_idx). */
+  - `shell_readline` (function, line 339) `static void shell_readline(void)`
+  - `shell_hist_show` (function, line 347) `static void shell_hist_show(char *buf, int size, int *pos, const char *text)`
+  - `shell_line_repaint` (function, line 369) `static void shell_line_repaint(char *buf, int size, int pos)`
+  - `shell_line_insert` (function, line 382) `static void shell_line_insert(char *buf, int size, int *pos, char c)`
+  - `shell_line_backspace` (function, line 391) `static void shell_line_backspace(char *buf, int size, int *pos)`
+  - `shell_line_delete` (function, line 399) `static void shell_line_delete(char *buf, int size, int *pos)`
+  - `shell_line_kill_front` (function, line 406) `static void shell_line_kill_front(char *buf, int size, int *pos)`
+  - `shell_line_kill_tail` (function, line 413) `static void shell_line_kill_tail(char *buf, int size, int *pos)`
+  - `shell_line_kill_word` (function, line 418) `static void shell_line_kill_word(char *buf, int size, int *pos)`
+  - `shell_hist_newest_match` (function, line 430) `static int shell_hist_newest_match(const char *prefix, unsigned long plen)`
+  - `line` (function, line 447) `* to the live line (handled by the caller resetting shell_hist_idx). */
 static void shell_hist_na...`
-  - `shell_readline_hist` (function, line 491) `static void shell_readline_hist(char *buf, int size)`
-  - `shell_parse` (function, line 826) `int shell_parse(char *line, char **argv, int max_args)`
-  - `shell_run_init` (function, line 855) `static void shell_run_init(void)`
-  - `shell_run` (function, line 894) `void shell_run(void)`
-  - `shell_load` (function, line 966) `static int shell_load(const char *fname, char *progname_out, void **entry_out)`
-  - `outw_port` (function, line 1029) `static inline void outw_port(unsigned short port, unsigned short val)`
-  - `shell_cmd_poweroff` (function, line 1035) `static void shell_cmd_poweroff(void)`
-  - `shell_run_dir_for` (function, line 1051) `static const ShellRunDir *shell_run_dir_for(const char *name)`
-  - `shell_file_is_real` (function, line 1069) `static int shell_file_is_real(const char *resolved)`
-  - `shell_resolve_run` (function, line 1081) `static int shell_resolve_run(const char *name, char *out, unsigned cap)`
-  - `etrel_path_trusted` (function, line 1123) `static int etrel_path_trusted(const char *full)`
-  - `shell_run_elf_buf_path` (function, line 1163) `static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,
+  - `shell_readline_hist` (function, line 492) `static void shell_readline_hist(char *buf, int size)`
+  - `shell_parse` (function, line 827) `int shell_parse(char *line, char **argv, int max_args)`
+  - `shell_run_init` (function, line 856) `static void shell_run_init(void)`
+  - `shell_run` (function, line 895) `void shell_run(void)`
+  - `shell_load` (function, line 967) `static int shell_load(const char *fname, char *progname_out, void **entry_out)`
+  - `outw_port` (function, line 1030) `static inline void outw_port(unsigned short port, unsigned short val)`
+  - `shell_cmd_poweroff` (function, line 1036) `static void shell_cmd_poweroff(void)`
+  - `shell_run_dir_for` (function, line 1052) `static const ShellRunDir *shell_run_dir_for(const char *name)`
+  - `shell_file_is_real` (function, line 1070) `static int shell_file_is_real(const char *resolved)`
+  - `shell_resolve_run` (function, line 1082) `static int shell_resolve_run(const char *name, char *out, unsigned cap)`
+  - `etrel_path_trusted` (function, line 1124) `static int etrel_path_trusted(const char *full)`
+  - `shell_run_elf_buf_path` (function, line 1164) `static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,
                     ...`
-  - `shell_run_elf_file` (function, line 1196) `static int shell_run_elf_file(const char *full, int argc, char **argv)`
-  - `shell_run_elf_minifs` (function, line 1209) `static int shell_run_elf_minifs(const char *name, int argc, char **argv)`
-  - `shell_run_cvm` (function, line 1266) `static int shell_run_cvm(const char *full, int argc, char **argv)`
-  - `shell_run_file` (function, line 1302) `static int shell_run_file(const char *name, int argc, char **argv)`
-  - `shell_read_elf_bytes` (function, line 1346) `static int shell_read_elf_bytes(const char *name, unsigned char **out,
+  - `shell_run_elf_file` (function, line 1197) `static int shell_run_elf_file(const char *full, int argc, char **argv)`
+  - `shell_run_elf_minifs` (function, line 1210) `static int shell_run_elf_minifs(const char *name, int argc, char **argv)`
+  - `shell_run_cvm` (function, line 1267) `static int shell_run_cvm(const char *full, int argc, char **argv)`
+  - `shell_run_file` (function, line 1303) `static int shell_run_file(const char *name, int argc, char **argv)`
+  - `shell_read_elf_bytes` (function, line 1347) `static int shell_read_elf_bytes(const char *name, unsigned char **out,
                           ...`
-  - `code` (function, line 1412) `* the last exit code (130 when interrupted). */
+  - `code` (function, line 1413) `* the last exit code (130 when interrupted). */
 static int shell_wait_fg(int *pids, int n, int ki...`
-  - `shell_cmd_mrun` (function, line 1466) `static void shell_cmd_mrun(int argc, char **argv)`
-  - `shell_run_bg` (function, line 1514) `static void shell_run_bg(const char *name, int argc, char **argv)`
-  - `desktop_path` (function, line 1557) `static void desktop_path(const char *name, char *dst, unsigned cap)`
-  - `desktop_flag` (function, line 1566) `static void desktop_flag(const char *name)`
-  - `desktop_flag_on` (function, line 1576) `static int desktop_flag_on(const char *name)`
-  - `flows` (function, line 1590) `* and external flows (make wl) set it themselves. */
+  - `shell_cmd_mrun` (function, line 1467) `static void shell_cmd_mrun(int argc, char **argv)`
+  - `shell_run_bg` (function, line 1515) `static void shell_run_bg(const char *name, int argc, char **argv)`
+  - `desktop_path` (function, line 1558) `static void desktop_path(const char *name, char *dst, unsigned cap)`
+  - `desktop_flag` (function, line 1567) `static void desktop_flag(const char *name)`
+  - `desktop_flag_on` (function, line 1577) `static int desktop_flag_on(const char *name)`
+  - `flows` (function, line 1591) `* and external flows (make wl) set it themselves. */
 static void desktop_unflag(const char *name)`
-  - `desktop_srv_alive` (function, line 1598) `static int desktop_srv_alive(void)`
-  - `shell_cmd_desktop` (function, line 1614) `static void shell_cmd_desktop(int argc, char **argv)`
-  - `shell_run_any` (function, line 1678) `int shell_run_any(const char *name, int argc, char **argv)`
-  - `gfx_parse_int` (function, line 1751) `static int gfx_parse_int(const char *s, int *out)`
-  - `gfx_read_palette` (function, line 1771) `static void gfx_read_palette(unsigned char pal[768])`
-  - `shell_cmd_gfx` (function, line 1778) `static void shell_cmd_gfx(int argc, char **argv)`
-  - `shell_cmd_wm` (function, line 1930) `static void shell_cmd_wm(int argc, char **argv)`
-  - `tree` (function, line 2075) `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
+  - `desktop_srv_alive` (function, line 1599) `static int desktop_srv_alive(void)`
+  - `shell_cmd_desktop` (function, line 1615) `static void shell_cmd_desktop(int argc, char **argv)`
+  - `shell_run_any` (function, line 1679) `int shell_run_any(const char *name, int argc, char **argv)`
+  - `gfx_parse_int` (function, line 1752) `static int gfx_parse_int(const char *s, int *out)`
+  - `gfx_read_palette` (function, line 1772) `static void gfx_read_palette(unsigned char pal[768])`
+  - `shell_cmd_gfx` (function, line 1779) `static void shell_cmd_gfx(int argc, char **argv)`
+  - `shell_cmd_wm` (function, line 1931) `static void shell_cmd_wm(int argc, char **argv)`
+  - `tree` (function, line 2076) `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
  * Ctrl+C (it never poll...`
-  - `shell_cmd_jobs` (function, line 2088) `static void shell_cmd_jobs(void)`
-  - `shell_has_child` (function, line 2117) `static int shell_has_child(int pid)`
-  - `shell_cmd_wait` (function, line 2127) `static void shell_cmd_wait(int argc, char **argv)`
-  - `shell_cmd_kill` (function, line 2162) `static void shell_cmd_kill(int argc, char **argv)`
-  - `shell_cmd_mem` (function, line 2185) `static void shell_cmd_mem(void)`
-  - `VMA` (function, line 2218) `* plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit
+  - `shell_cmd_jobs` (function, line 2089) `static void shell_cmd_jobs(void)`
+  - `shell_has_child` (function, line 2118) `static int shell_has_child(int pid)`
+  - `shell_cmd_wait` (function, line 2128) `static void shell_cmd_wait(int argc, char **argv)`
+  - `shell_cmd_kill` (function, line 2163) `static void shell_cmd_kill(int argc, char **argv)`
+  - `shell_cmd_mem` (function, line 2186) `static void shell_cmd_mem(void)`
+  - `VMA` (function, line 2219) `* plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit
  * stack, 128 regions prin...`
-  - `to` (function, line 2291) `* actually trap to (brk/mmap/munmap/mprotect) and says so up front. */
+  - `to` (function, line 2292) `* actually trap to (brk/mmap/munmap/mprotect) and says so up front. */
 static void shell_cmd_trac...`
-  - `shell_parse_u64` (function, line 2360) `static int shell_parse_u64(const char *s, unsigned long *out)`
-  - `shell_parse_long` (function, line 2376) `int shell_parse_long(const char *s, long *out)`
-  - `shell_parse_pid` (function, line 2397) `int shell_parse_pid(const char *s, int min_pid, int *out)`
-  - `shell_cmd_gdb` (function, line 2412) `static void shell_cmd_gdb(int argc, char **argv)`
-  - `shell_cmd_hash` (function, line 2455) `static void shell_cmd_hash(int argc, char **argv)`
-  - `shell_resolve_arg` (function, line 2474) `static int shell_resolve_arg(const char *cmd, const char *arg,
+  - `shell_parse_u64` (function, line 2361) `static int shell_parse_u64(const char *s, unsigned long *out)`
+  - `shell_parse_long` (function, line 2377) `int shell_parse_long(const char *s, long *out)`
+  - `shell_parse_pid` (function, line 2398) `int shell_parse_pid(const char *s, int min_pid, int *out)`
+  - `shell_cmd_gdb` (function, line 2413) `static void shell_cmd_gdb(int argc, char **argv)`
+  - `shell_cmd_hash` (function, line 2456) `static void shell_cmd_hash(int argc, char **argv)`
+  - `shell_resolve_arg` (function, line 2475) `static int shell_resolve_arg(const char *cmd, const char *arg,
                              const...`
-  - `shell_httpd_one` (function, line 2580) `static void shell_httpd_one(int child, const char *root)`
-  - `shell_httpd_serve` (function, line 2665) `static void shell_httpd_serve(unsigned short port, const char *root,
+  - `shell_httpd_one` (function, line 2581) `static void shell_httpd_one(int child, const char *root)`
+  - `shell_httpd_serve` (function, line 2666) `static void shell_httpd_serve(unsigned short port, const char *root,
         int max_conn)`
-  - `shell_cross_ls` (function, line 2832) `static void shell_cross_ls(const char *drv, const char *imgarg,
+  - `shell_cross_ls` (function, line 2833) `static void shell_cross_ls(const char *drv, const char *imgarg,
                            const ...`
-  - `shell_cross_cat` (function, line 2873) `static void shell_cross_cat(const char *drv, const char *imgarg,
+  - `shell_cross_cat` (function, line 2874) `static void shell_cross_cat(const char *drv, const char *imgarg,
                             cons...`
-  - `shell_exec_builtin` (function, line 2915) `void shell_exec_builtin(int argc, char **argv)`
-  - `driver` (function, line 3341) `* stream through the fat: VFS driver ("img:fatpath" per open,
+  - `shell_exec_builtin` (function, line 2916) `void shell_exec_builtin(int argc, char **argv)`
+  - `driver` (function, line 3342) `* stream through the fat: VFS driver ("img:fatpath" per open,
      * registered at boot beside me...`
-  - `shell_is_pipe_tok` (function, line 4116) `static int shell_is_pipe_tok(const char *a)`
-  - `shell_run_stage` (function, line 4155) `static char *shell_run_stage(char **sargv, int sargc,
+  - `shell_is_pipe_tok` (function, line 4180) `static int shell_is_pipe_tok(const char *a)`
+  - `shell_run_stage` (function, line 4219) `static char *shell_run_stage(char **sargv, int sargc,
         const char *input, unsigned long in...`
-  - `shell_run_pipeline` (function, line 151) `static int shell_run_pipeline(char **argv, int argc, const char *redir_path, int redir_append, int redirected);`
-  - `text` (function, line 594) `* swallowed the sequence as plain text ("5~" in the * line) and the history was unreachable from the * prompt. */...`
-  - `root` (function, line 665) `* MiniFS root (where the big ELFs live under bare names), * and only the highest-priority non-empty tier is kept. An...`
-  - `desktop_unflag` (function, line 848) `static void desktop_unflag(const char *name);`
-  - `window` (function, line 1339) `* window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so...`
-  - `this` (function, line 1544) `* boot into the tiled Wayland desktop: every NK app started after * this (paint, vedit, file, nuklear, doomedit...`
-  - `context` (function, line 1705) `* ISR context (which corrupts the running program's state) or * nesting a second foreground run inside the wait. */...`
-  - `terminal` (function, line 2990) `* sequence clears serial consoles and is swallowed without * garbage by the framebuffer terminal (vedit pattern). */...`
-  - `frame` (function, line 3735) `* not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row...`
-  - `stdout` (function, line 4104) `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...`
-  - `XXH_STATIC_LINKING_ONLY` (macro, line 25) `#define XXH_STATIC_LINKING_ONLY`
-  - `SHELL_CVM_INTERP` (macro, line 53) `#define SHELL_CVM_INTERP`
-  - `SHELL_RUN_DIRS` (macro, line 72) `#define SHELL_RUN_DIRS`
-  - `SHELL_HIST_MAX` (macro, line 98) `#define SHELL_HIST_MAX`
-  - `SHELL_BUILTIN_COUNT` (macro, line 232) `#define SHELL_BUILTIN_COUNT`
-  - `QEMU_PM_PORT` (macro, line 1033) `#define QEMU_PM_PORT`
-  - `HTTPD_REQ_CAP` (macro, line 2573) `#define HTTPD_REQ_CAP`
-  - `HTTPD_IO_CHUNK` (macro, line 2574) `#define HTTPD_IO_CHUNK`
-  - `SHELL_LS_CAP` (macro, line 2831) `#define SHELL_LS_CAP`
-  - `PIPE_HOP_MAX` (macro, line 4114) `#define PIPE_HOP_MAX`
-- Depends on: `headers/drivers/kbd.h`, `headers/drivers/nvme.h`, `headers/drivers/usbblk.h`, `headers/drivers/usbhid.h`, `headers/drivers/virtio_blk.h`, `headers/drivers/virtio_net.h`, `headers/drivers/xhci.h`, `headers/editor.h`, `headers/ext4.h`, `headers/fat32.h`, `headers/httpd.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/proc_sec.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/spawn.h`, `headers/tlb.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
+  - `shell_run_pipeline` (function, line 152) `static int shell_run_pipeline(char **argv, int argc, const char *redir_path, int redir_append, int redirected);`
+  - `text` (function, line 595) `* swallowed the sequence as plain text ("5~" in the * line) and the history was unreachable from the * prompt. */...`
+  - `root` (function, line 666) `* MiniFS root (where the big ELFs live under bare names), * and only the highest-priority non-empty tier is kept. An...`
+  - `desktop_unflag` (function, line 849) `static void desktop_unflag(const char *name);`
+  - `window` (function, line 1340) `* window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so...`
+  - `this` (function, line 1545) `* boot into the tiled Wayland desktop: every NK app started after * this (paint, vedit, file, nuklear, doomedit...`
+  - `context` (function, line 1706) `* ISR context (which corrupts the running program's state) or * nesting a second foreground run inside the wait. */...`
+  - `terminal` (function, line 2991) `* sequence clears serial consoles and is swallowed without * garbage by the framebuffer terminal (vedit pattern). */...`
+  - `frame` (function, line 3799) `* not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row...`
+  - `stdout` (function, line 4168) `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...`
+  - `XXH_STATIC_LINKING_ONLY` (macro, line 26) `#define XXH_STATIC_LINKING_ONLY`
+  - `SHELL_CVM_INTERP` (macro, line 54) `#define SHELL_CVM_INTERP`
+  - `SHELL_RUN_DIRS` (macro, line 73) `#define SHELL_RUN_DIRS`
+  - `SHELL_HIST_MAX` (macro, line 99) `#define SHELL_HIST_MAX`
+  - `SHELL_BUILTIN_COUNT` (macro, line 233) `#define SHELL_BUILTIN_COUNT`
+  - `QEMU_PM_PORT` (macro, line 1034) `#define QEMU_PM_PORT`
+  - `HTTPD_REQ_CAP` (macro, line 2574) `#define HTTPD_REQ_CAP`
+  - `HTTPD_IO_CHUNK` (macro, line 2575) `#define HTTPD_IO_CHUNK`
+  - `SHELL_LS_CAP` (macro, line 2832) `#define SHELL_LS_CAP`
+  - `PIPE_HOP_MAX` (macro, line 4178) `#define PIPE_HOP_MAX`
+- Depends on: `headers/drivers/ahci.h`, `headers/drivers/kbd.h`, `headers/drivers/nvme.h`, `headers/drivers/usbblk.h`, `headers/drivers/usbhid.h`, `headers/drivers/virtio_blk.h`, `headers/drivers/virtio_net.h`, `headers/drivers/xhci.h`, `headers/editor.h`, `headers/ext4.h`, `headers/fat32.h`, `headers/httpd.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/proc_sec.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/spawn.h`, `headers/tlb.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ## kernel/spawn.c
 - Doc: Docstring: Save the caller shared-window view into ctx.

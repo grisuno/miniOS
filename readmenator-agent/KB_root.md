@@ -12,24 +12,24 @@
 - Layer: utility
 - Language: c
 - Symbols:
-  - `syscall_init` (function, line 117) `void syscall_init(void)`
-  - `bootlog_mark` (function, line 192) `void bootlog_mark(const char *name)`
-  - `bootlog_report` (function, line 199) `void bootlog_report(void)`
-  - `__attribute__` (function, line 207) `__attribute__((section(".init.text")))
+  - `syscall_init` (function, line 118) `void syscall_init(void)`
+  - `bootlog_mark` (function, line 193) `void bootlog_mark(const char *name)`
+  - `bootlog_report` (function, line 200) `void bootlog_report(void)`
+  - `__attribute__` (function, line 208) `__attribute__((section(".init.text")))
 void kmain(void)`
-  - `tables` (function, line 279) `* tables (already built above) for its uncached register window and the
+  - `tables` (function, line 280) `* tables (already built above) for its uncached register window and the
      * heap for its rings...`
-  - `table` (function, line 104) `* Symbol table (for resolving program references) * ================================================================...`
-  - `ksyscall` (function, line 130) `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `kstack` (function, line 146) `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...`
-  - `ms` (function, line 185) `* 0 ms (TSC ticks since power-on divided down, still monotonic);`
-  - `size` (function, line 257) `* image size (see kernel.ld);`
-  - `syscall_kstack` (variable, line 115) `extern unsigned long syscall_kstack;`
-  - `ramdisk_start` (variable, line 179) `extern char ramdisk_start[];`
-  - `ramdisk_end` (variable, line 180) `extern char ramdisk_end[];`
-  - `KSYM_MAX` (macro, line 107) `#define KSYM_MAX`
-  - `BOOTLOG_MAX` (macro, line 188) `#define BOOTLOG_MAX`
-- Depends on: `headers/abi.h`, `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/cpu_setup.h`, `headers/arch/x86/msr.h`, `headers/block.h`, `headers/drivers/usbblk.h`, `headers/drivers/usbhid.h`, `headers/drivers/virtio_blk.h`, `headers/drivers/xhci.h`, `headers/ide.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/sb16.h`, `headers/sched.h`, `headers/smp.h`, `headers/syscall_asm.h`, `headers/vga_fb.h`
+  - `table` (function, line 105) `* Symbol table (for resolving program references) * ================================================================...`
+  - `ksyscall` (function, line 131) `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
+  - `kstack` (function, line 147) `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...`
+  - `ms` (function, line 186) `* 0 ms (TSC ticks since power-on divided down, still monotonic);`
+  - `size` (function, line 258) `* image size (see kernel.ld);`
+  - `syscall_kstack` (variable, line 116) `extern unsigned long syscall_kstack;`
+  - `ramdisk_start` (variable, line 180) `extern char ramdisk_start[];`
+  - `ramdisk_end` (variable, line 181) `extern char ramdisk_end[];`
+  - `KSYM_MAX` (macro, line 108) `#define KSYM_MAX`
+  - `BOOTLOG_MAX` (macro, line 189) `#define BOOTLOG_MAX`
+- Depends on: `headers/abi.h`, `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/cpu_setup.h`, `headers/arch/x86/msr.h`, `headers/block.h`, `headers/drivers/ahci.h`, `headers/drivers/usbblk.h`, `headers/drivers/usbhid.h`, `headers/drivers/virtio_blk.h`, `headers/drivers/xhci.h`, `headers/ide.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/sb16.h`, `headers/sched.h`, `headers/smp.h`, `headers/syscall_asm.h`, `headers/vga_fb.h`
 
 ## qga.c
 - Doc: MiniOS QEMU guest agent (QGA).

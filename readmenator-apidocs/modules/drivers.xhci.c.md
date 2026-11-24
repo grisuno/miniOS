@@ -57,7 +57,6 @@ flowchart LR
     n_headers_drivers_pci_h__pci_bar_size["pci.pci_bar_size"]
     n_headers_drivers_pci_h__pci_cfg_read["pci.pci_cfg_read"]
     n_headers_drivers_pci_h__pci_cfg_write["pci.pci_cfg_write"]
-    n_headers_drivers_pci_h__pci_find_class["pci.pci_find_class"]
     n_drivers_xhci_c__XF_LINK_TC --> n_drivers_xhci_c__XHC_TRB_MAKE_TYPE
     n_drivers_xhci_c__xhc_poll --> n_drivers_xhci_c__XHC_EVT_CC
     n_drivers_xhci_c__xhc_poll --> n_drivers_xhci_c__XHC_EVT_LEN
@@ -81,7 +80,6 @@ flowchart LR
     n_drivers_xhci_c__xhc_init -.-> n_headers_drivers_pci_h__pci_bar_size
     n_drivers_xhci_c__xhc_init -.-> n_headers_drivers_pci_h__pci_cfg_read
     n_drivers_xhci_c__xhc_init -.-> n_headers_drivers_pci_h__pci_cfg_write
-    n_drivers_xhci_c__xhc_init -.-> n_headers_drivers_pci_h__pci_find_class
 ```
 
 ## Structs
@@ -596,7 +594,7 @@ Returns 1 when a controller is running and xhc_poll will service it, 0 when ther
 
 > **Inherited:** Documentation from [`xhc_init`](#xhc_init) (headers/drivers/xhci.h:140).
 
-*Calls:* [`pci_bar_base`](headers.drivers.pci.h.md#pci_bar_base), [`pci_bar_is_io`](headers.drivers.pci.h.md#pci_bar_is_io), [`pci_bar_restore`](headers.drivers.pci.h.md#pci_bar_restore), [`pci_bar_size`](headers.drivers.pci.h.md#pci_bar_size), [`pci_cfg_read`](headers.drivers.pci.h.md#pci_cfg_read), [`pci_cfg_write`](headers.drivers.pci.h.md#pci_cfg_write), [`pci_find_class`](headers.drivers.pci.h.md#pci_find_class), [`kmm_map_device`](kernel.mm.paging.c.md#kmm_map_device)
+*Calls:* [`pci_bar_base`](headers.drivers.pci.h.md#pci_bar_base), [`pci_bar_is_io`](headers.drivers.pci.h.md#pci_bar_is_io), [`pci_bar_restore`](headers.drivers.pci.h.md#pci_bar_restore), [`pci_bar_size`](headers.drivers.pci.h.md#pci_bar_size), [`pci_cfg_read`](headers.drivers.pci.h.md#pci_cfg_read), [`pci_cfg_write`](headers.drivers.pci.h.md#pci_cfg_write)
 
 ---
 

@@ -1,31 +1,171 @@
-# Subsystem: drivers (page 1 of 2)
-Pages: [KB_drivers.md](KB_drivers.md), [KB_drivers_p2.md](KB_drivers_p2.md)
+# Subsystem: drivers (page 1 of 3)
+Pages: [KB_drivers.md](KB_drivers.md), [KB_drivers_p2.md](KB_drivers_p2.md), [KB_drivers_p3.md](KB_drivers_p3.md)
+
+## drivers/ahci.c
+- Doc: Docstring: drivers/ahci.c -- Polled AHCI (SATA) disk driver.
+- Layer: infrastructure
+- Language: c
+- Symbols:
+  - `ahc_outl` (function, line 171) `static void ahc_outl(unsigned short port, unsigned val)`
+  - `ahc_inl` (function, line 176) `static unsigned ahc_inl(unsigned short port)`
+  - `ahc_r32` (function, line 183) `static unsigned ahc_r32(unsigned off)`
+  - `ahc_w32` (function, line 188) `static void ahc_w32(unsigned off, unsigned val)`
+  - `ahc_pr32` (function, line 193) `static unsigned ahc_pr32(volatile unsigned char *px, unsigned off)`
+  - `ahc_pw32` (function, line 198) `static void ahc_pw32(volatile unsigned char *px, unsigned off, unsigned val)`
+  - `ahc_put32` (function, line 203) `static void ahc_put32(unsigned char *p, unsigned v)`
+  - `ahc_id_word` (function, line 211) `static unsigned ahc_id_word(const unsigned char *id, unsigned idx)`
+  - `ahci_present` (function, line 215) `int ahci_present(void)`
+  - `ahci_version` (function, line 219) `unsigned ahci_version(void)`
+  - `ahci_port` (function, line 223) `int ahci_port(void)`
+  - `ahci_ports_implemented` (function, line 227) `unsigned ahci_ports_implemented(void)`
+  - `ahci_note` (function, line 231) `const char *ahci_note(void)`
+  - `ahci_sectors` (function, line 235) `unsigned long ahci_sectors(void)`
+  - `ahc_wait_port` (function, line 241) `static int ahc_wait_port(volatile unsigned char *px, unsigned off,
+                         unsig...`
+  - `ahc_handoff` (function, line 255) `static int ahc_handoff(void)`
+  - `ahc_port_stop` (function, line 270) `static int ahc_port_stop(volatile unsigned char *px)`
+  - `ahc_link_up` (function, line 285) `static int ahc_link_up(volatile unsigned char *px)`
+  - `ahc_port_link` (function, line 296) `static int ahc_port_link(volatile unsigned char *px)`
+  - `ahc_dma_ok` (function, line 321) `static int ahc_dma_ok(const void *p, unsigned long len)`
+  - `ahc_port_start` (function, line 330) `static int ahc_port_start(volatile unsigned char *px)`
+  - `ahc_identify` (function, line 417) `static int ahc_identify(void)`
+  - `ahc_alloc` (function, line 452) `static int ahc_alloc(void)`
+  - `ahc_claim_port` (function, line 480) `static int ahc_claim_port(void)`
+  - `ahci_init` (function, line 507) `int ahci_init(void)`
+  - `ahc_range_ok` (function, line 580) `static int ahc_range_ok(unsigned lba, unsigned count, const void *buf)`
+  - `ahci_read_sectors` (function, line 587) `int ahci_read_sectors(unsigned lba, unsigned count, void *buf)`
+  - `ahci_write_sectors` (function, line 607) `int ahci_write_sectors(unsigned lba, unsigned count, const void *buf)`
+  - `ahc_ops_read` (function, line 631) `static int ahc_ops_read(device_t *dev, unsigned lba, unsigned count,
+                        void...`
+  - `ahc_ops_write` (function, line 638) `static int ahc_ops_write(device_t *dev, unsigned lba, unsigned count,
+                         co...`
+  - `ahc_ops_total` (function, line 645) `static unsigned ahc_ops_total(device_t *dev)`
+  - `ahc_ops_present` (function, line 651) `static int ahc_ops_present(device_t *dev)`
+  - `ahci_register_device` (function, line 673) `void ahci_register_device(void)`
+  - `AHCI_CLASS_BASE` (macro, line 38) `#define AHCI_CLASS_BASE`
+  - `AHCI_CLASS_SUB` (macro, line 39) `#define AHCI_CLASS_SUB`
+  - `AHCI_CLASS_PI` (macro, line 40) `#define AHCI_CLASS_PI`
+  - `AHCI_ABAR_INDEX` (macro, line 41) `#define AHCI_ABAR_INDEX`
+  - `AHCI_REG_CAP` (macro, line 43) `#define AHCI_REG_CAP`
+  - `AHCI_REG_GHC` (macro, line 44) `#define AHCI_REG_GHC`
+  - `AHCI_REG_IS` (macro, line 45) `#define AHCI_REG_IS`
+  - `AHCI_REG_PI` (macro, line 46) `#define AHCI_REG_PI`
+  - `AHCI_REG_VS` (macro, line 47) `#define AHCI_REG_VS`
+  - `AHCI_REG_CAP2` (macro, line 48) `#define AHCI_REG_CAP2`
+  - `AHCI_REG_BOHC` (macro, line 49) `#define AHCI_REG_BOHC`
+  - `AHCI_CAP_S64A` (macro, line 51) `#define AHCI_CAP_S64A`
+  - `AHCI_CAP_SSS` (macro, line 52) `#define AHCI_CAP_SSS`
+  - `AHCI_GHC_AE` (macro, line 53) `#define AHCI_GHC_AE`
+  - `AHCI_GHC_IE` (macro, line 54) `#define AHCI_GHC_IE`
+  - `AHCI_CAP2_BOH` (macro, line 55) `#define AHCI_CAP2_BOH`
+  - `AHCI_BOHC_BOS` (macro, line 56) `#define AHCI_BOHC_BOS`
+  - `AHCI_BOHC_OOS` (macro, line 57) `#define AHCI_BOHC_OOS`
+  - `AHCI_BOHC_BB` (macro, line 58) `#define AHCI_BOHC_BB`
+  - `AHCI_MAX_PORTS` (macro, line 60) `#define AHCI_MAX_PORTS`
+  - `AHCI_PORT_BASE` (macro, line 61) `#define AHCI_PORT_BASE`
+  - `AHCI_PORT_STRIDE` (macro, line 62) `#define AHCI_PORT_STRIDE`
+  - `AHCI_PX_CLB` (macro, line 63) `#define AHCI_PX_CLB`
+  - `AHCI_PX_CLBU` (macro, line 64) `#define AHCI_PX_CLBU`
+  - `AHCI_PX_FB` (macro, line 65) `#define AHCI_PX_FB`
+  - `AHCI_PX_FBU` (macro, line 66) `#define AHCI_PX_FBU`
+  - `AHCI_PX_IS` (macro, line 67) `#define AHCI_PX_IS`
+  - `AHCI_PX_IE` (macro, line 68) `#define AHCI_PX_IE`
+  - `AHCI_PX_CMD` (macro, line 69) `#define AHCI_PX_CMD`
+  - `AHCI_PX_TFD` (macro, line 70) `#define AHCI_PX_TFD`
+  - `AHCI_PX_SIG` (macro, line 71) `#define AHCI_PX_SIG`
+  - `AHCI_PX_SSTS` (macro, line 72) `#define AHCI_PX_SSTS`
+  - `AHCI_PX_SCTL` (macro, line 73) `#define AHCI_PX_SCTL`
+  - `AHCI_PX_SERR` (macro, line 74) `#define AHCI_PX_SERR`
+  - `AHCI_PX_CI` (macro, line 75) `#define AHCI_PX_CI`
+  - `AHCI_CMD_ST` (macro, line 77) `#define AHCI_CMD_ST`
+  - `AHCI_CMD_SUD` (macro, line 78) `#define AHCI_CMD_SUD`
+  - `AHCI_CMD_POD` (macro, line 79) `#define AHCI_CMD_POD`
+  - `AHCI_CMD_FRE` (macro, line 80) `#define AHCI_CMD_FRE`
+  - `AHCI_CMD_FR` (macro, line 81) `#define AHCI_CMD_FR`
+  - `AHCI_CMD_CR` (macro, line 82) `#define AHCI_CMD_CR`
+  - `AHCI_CMD_ICC_MASK` (macro, line 83) `#define AHCI_CMD_ICC_MASK`
+  - `AHCI_CMD_ICC_ACTIVE` (macro, line 84) `#define AHCI_CMD_ICC_ACTIVE`
+  - `AHCI_TFD_ERR` (macro, line 86) `#define AHCI_TFD_ERR`
+  - `AHCI_TFD_DRQ` (macro, line 87) `#define AHCI_TFD_DRQ`
+  - `AHCI_TFD_BSY` (macro, line 88) `#define AHCI_TFD_BSY`
+  - `AHCI_IS_TFES` (macro, line 89) `#define AHCI_IS_TFES`
+  - `AHCI_ALL_ONES` (macro, line 90) `#define AHCI_ALL_ONES`
+  - `AHCI_SSTS_DET_MASK` (macro, line 92) `#define AHCI_SSTS_DET_MASK`
+  - `AHCI_SSTS_DET_PRESENT` (macro, line 93) `#define AHCI_SSTS_DET_PRESENT`
+  - `AHCI_SSTS_DET_ONLINE` (macro, line 94) `#define AHCI_SSTS_DET_ONLINE`
+  - `AHCI_SSTS_IPM_SHIFT` (macro, line 95) `#define AHCI_SSTS_IPM_SHIFT`
+  - `AHCI_SSTS_IPM_MASK` (macro, line 96) `#define AHCI_SSTS_IPM_MASK`
+  - `AHCI_SSTS_IPM_ACTIVE` (macro, line 97) `#define AHCI_SSTS_IPM_ACTIVE`
+  - `AHCI_SCTL_DET_MASK` (macro, line 98) `#define AHCI_SCTL_DET_MASK`
+  - `AHCI_SCTL_DET_COMRESET` (macro, line 99) `#define AHCI_SCTL_DET_COMRESET`
+  - `AHCI_SIG_ATA` (macro, line 101) `#define AHCI_SIG_ATA`
+  - `AHCI_CL_BYTES` (macro, line 103) `#define AHCI_CL_BYTES`
+  - `AHCI_CL_ALIGN` (macro, line 104) `#define AHCI_CL_ALIGN`
+  - `AHCI_FIS_BYTES` (macro, line 105) `#define AHCI_FIS_BYTES`
+  - `AHCI_FIS_ALIGN` (macro, line 106) `#define AHCI_FIS_ALIGN`
+  - `AHCI_CT_BYTES` (macro, line 107) `#define AHCI_CT_BYTES`
+  - `AHCI_CT_ALIGN` (macro, line 108) `#define AHCI_CT_ALIGN`
+  - `AHCI_CT_PRDT_OFF` (macro, line 109) `#define AHCI_CT_PRDT_OFF`
+  - `AHCI_PRD_BYTES` (macro, line 110) `#define AHCI_PRD_BYTES`
+  - `AHCI_CH_BYTES` (macro, line 111) `#define AHCI_CH_BYTES`
+  - `AHCI_CH_CFL_H2D` (macro, line 113) `#define AHCI_CH_CFL_H2D`
+  - `AHCI_CH_WRITE` (macro, line 114) `#define AHCI_CH_WRITE`
+  - `AHCI_CH_PRDTL_SHIFT` (macro, line 115) `#define AHCI_CH_PRDTL_SHIFT`
+  - `AHCI_PRD_DBC_MASK` (macro, line 116) `#define AHCI_PRD_DBC_MASK`
+  - `AHCI_FIS_TYPE_H2D` (macro, line 118) `#define AHCI_FIS_TYPE_H2D`
+  - `AHCI_FIS_H2D_CMD` (macro, line 119) `#define AHCI_FIS_H2D_CMD`
+  - `AHCI_FIS_DEV_LBA` (macro, line 120) `#define AHCI_FIS_DEV_LBA`
+  - `AHCI_FIS_BYTES_H2D` (macro, line 121) `#define AHCI_FIS_BYTES_H2D`
+  - `ATA_CMD_IDENTIFY` (macro, line 123) `#define ATA_CMD_IDENTIFY`
+  - `ATA_CMD_READ_DMA_EXT` (macro, line 124) `#define ATA_CMD_READ_DMA_EXT`
+  - `ATA_CMD_WRITE_DMA_EXT` (macro, line 125) `#define ATA_CMD_WRITE_DMA_EXT`
+  - `ATA_CMD_FLUSH_EXT` (macro, line 126) `#define ATA_CMD_FLUSH_EXT`
+  - `ATA_ID_WORDS` (macro, line 128) `#define ATA_ID_WORDS`
+  - `ATA_ID_CMDSET2` (macro, line 129) `#define ATA_ID_CMDSET2`
+  - `ATA_ID_LBA48_BIT` (macro, line 130) `#define ATA_ID_LBA48_BIT`
+  - `ATA_ID_LBA48_SECTORS` (macro, line 131) `#define ATA_ID_LBA48_SECTORS`
+  - `ATA_ID_SECTOR_SIZE` (macro, line 132) `#define ATA_ID_SECTOR_SIZE`
+  - `ATA_ID_SS_VALID_MASK` (macro, line 133) `#define ATA_ID_SS_VALID_MASK`
+  - `ATA_ID_SS_VALID` (macro, line 134) `#define ATA_ID_SS_VALID`
+  - `ATA_ID_SS_LONG` (macro, line 135) `#define ATA_ID_SS_LONG`
+  - `AHCI_SECTOR` (macro, line 137) `#define AHCI_SECTOR`
+  - `AHCI_MAX_SECTORS` (macro, line 138) `#define AHCI_MAX_SECTORS`
+  - `AHCI_STAGE_BYTES` (macro, line 139) `#define AHCI_STAGE_BYTES`
+  - `AHCI_STAGE_ALIGN` (macro, line 140) `#define AHCI_STAGE_ALIGN`
+  - `AHCI_LBA48_LIMIT` (macro, line 141) `#define AHCI_LBA48_LIMIT`
+  - `AHCI_DMA_LIMIT_32` (macro, line 142) `#define AHCI_DMA_LIMIT_32`
+  - `AHCI_TMO_HANDOFF_MS` (macro, line 144) `#define AHCI_TMO_HANDOFF_MS`
+  - `AHCI_TMO_ENGINE_MS` (macro, line 145) `#define AHCI_TMO_ENGINE_MS`
+  - `AHCI_TMO_LINK_MS` (macro, line 146) `#define AHCI_TMO_LINK_MS`
+  - `AHCI_TMO_COMRESET_HOLD_MS` (macro, line 147) `#define AHCI_TMO_COMRESET_HOLD_MS`
+  - `AHCI_TMO_CMD_MS` (macro, line 148) `#define AHCI_TMO_CMD_MS`
+- Depends on: `headers/arch/x86/hal_io.h`, `headers/driver.h`, `headers/drivers/ahci.h`, `headers/drivers/pci.h`
 
 ## drivers/block.c
 - Doc: Block device layer for MiniFS.
 - Layer: infrastructure
 - Language: c
 - Symbols:
-  - `bc_index` (function, line 64) `static unsigned int bc_index(unsigned int block_num)`
-  - `bc_invalidate_locked` (function, line 68) `static void bc_invalidate_locked(unsigned int block_num)`
-  - `bc_invalidate` (function, line 73) `static void bc_invalidate(unsigned int block_num)`
-  - `block_init` (function, line 80) `void block_init(void)`
-  - `block_set_base` (function, line 113) `void block_set_base(unsigned int lba_base)`
-  - `block_dev_read` (function, line 128) `static int block_dev_read(unsigned lba, unsigned count, void *buf)`
-  - `block_dev_write` (function, line 146) `static int block_dev_write(unsigned lba, unsigned count, const void *buf)`
-  - `block_read` (function, line 164) `int block_read(unsigned int block_num, void *buf)`
-  - `block_write` (function, line 205) `int block_write(unsigned int block_num, const void *buf)`
-  - `block_read_multi` (function, line 214) `int block_read_multi(unsigned int block_num, unsigned int count, void *buf)`
-  - `block_write_multi` (function, line 219) `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf)`
-  - `block_flush` (function, line 234) `void block_flush(void)`
-  - `block_total` (function, line 236) `unsigned int block_total(void)`
-  - `block_read_sectors` (function, line 244) `int block_read_sectors(unsigned lba, unsigned count, void *buf)`
-  - `block_disk_sectors` (function, line 255) `unsigned long block_disk_sectors(void)`
-  - `table` (function, line 122) `* ops table (dev->ops->read/write), never straight at the hardware. The * virtio queue wins when block_init...`
-  - `BC_WAYS` (macro, line 53) `#define BC_WAYS`
-  - `BC_MASK` (macro, line 54) `#define BC_MASK`
-  - `BC_LINE` (macro, line 62) `#define BC_LINE(idx)`
-- Depends on: `headers/block.h`, `headers/driver.h`, `headers/drivers/nvme.h`, `headers/drivers/usbblk.h`, `headers/drivers/virtio_blk.h`, `headers/ide.h`
+  - `bc_index` (function, line 70) `static unsigned int bc_index(unsigned int block_num)`
+  - `bc_invalidate_locked` (function, line 74) `static void bc_invalidate_locked(unsigned int block_num)`
+  - `bc_invalidate` (function, line 79) `static void bc_invalidate(unsigned int block_num)`
+  - `block_init` (function, line 86) `void block_init(void)`
+  - `block_set_base` (function, line 132) `void block_set_base(unsigned int lba_base)`
+  - `block_dev_read` (function, line 147) `static int block_dev_read(unsigned lba, unsigned count, void *buf)`
+  - `block_dev_write` (function, line 170) `static int block_dev_write(unsigned lba, unsigned count, const void *buf)`
+  - `block_read` (function, line 193) `int block_read(unsigned int block_num, void *buf)`
+  - `block_write` (function, line 234) `int block_write(unsigned int block_num, const void *buf)`
+  - `block_read_multi` (function, line 243) `int block_read_multi(unsigned int block_num, unsigned int count, void *buf)`
+  - `block_write_multi` (function, line 248) `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf)`
+  - `block_flush` (function, line 263) `void block_flush(void)`
+  - `block_total` (function, line 265) `unsigned int block_total(void)`
+  - `block_read_sectors` (function, line 273) `int block_read_sectors(unsigned lba, unsigned count, void *buf)`
+  - `block_disk_sectors` (function, line 284) `unsigned long block_disk_sectors(void)`
+  - `table` (function, line 141) `* ops table (dev->ops->read/write), never straight at the hardware. The * virtio queue wins when block_init...`
+  - `BC_WAYS` (macro, line 59) `#define BC_WAYS`
+  - `BC_MASK` (macro, line 60) `#define BC_MASK`
+  - `BC_LINE` (macro, line 68) `#define BC_LINE(idx)`
+- Depends on: `headers/block.h`, `headers/driver.h`, `headers/drivers/ahci.h`, `headers/drivers/nvme.h`, `headers/drivers/usbblk.h`, `headers/drivers/virtio_blk.h`, `headers/ide.h`
 
 ## drivers/driver.c
 - Doc: Device registry for the Strategy-pattern driver layer.
@@ -291,175 +431,6 @@ Pages: [KB_drivers.md](KB_drivers.md), [KB_drivers_p2.md](KB_drivers_p2.md)
   - `RTC_SEC_MAX` (macro, line 29) `#define RTC_SEC_MAX`
   - `RTC_UPDATE_WAIT` (macro, line 33) `#define RTC_UPDATE_WAIT`
 - Depends on: `headers/rtc.h`
-
-## drivers/sb16.c
-- Doc: Sound Blaster 16 DMA audio driver.
-- Layer: infrastructure
-- Language: c
-- Symbols:
-  - `sb16_kring_reset` (function, line 118) `static void sb16_kring_reset(void)`
-  - `sb16_slot` (function, line 130) `static unsigned char *sb16_slot(unsigned i)`
-  - `sb16_stream_open` (function, line 138) `int sb16_stream_open(void)`
-  - `sb16_stream_close` (function, line 154) `void sb16_stream_close(int id)`
-  - `sb16_stream_submit` (function, line 162) `int sb16_stream_submit(int id, const unsigned char *pcm, unsigned len)`
-  - `sb16_stream_volume` (function, line 177) `void sb16_stream_volume(int id, unsigned char vol)`
-  - `sb16_stream_count` (function, line 183) `int sb16_stream_count(void)`
-  - `sb16_mix_all` (function, line 194) `static void sb16_mix_all(void)`
-  - `sb16_pump` (function, line 236) `void sb16_pump(void)`
-  - `sb16_wait_write` (function, line 278) `static int sb16_wait_write(void)`
-  - `sb16_cmd` (function, line 282) `static void sb16_cmd(unsigned char c)`
-  - `sb16_read_data` (function, line 287) `static int sb16_read_data(unsigned char *out)`
-  - `sb16_reset_dsp` (function, line 297) `static int sb16_reset_dsp(void)`
-  - `sb16_dma_play` (function, line 323) `static void sb16_dma_play(unsigned addr, unsigned len)`
-  - `sb16_refill` (function, line 339) `static void sb16_refill(int slot_index)`
-  - `sb16_arm` (function, line 355) `static void sb16_arm(int from_irq)`
-  - `sb16_present` (function, line 380) `int sb16_present(void)`
-  - `sb16_tone` (function, line 382) `void sb16_tone(unsigned freq)`
-  - `sb16_pcm_open` (function, line 398) `void sb16_pcm_open(void)`
-  - `sb16_pcm_close` (function, line 422) `void sb16_pcm_close(void)`
-  - `sb16_pcm_submit` (function, line 431) `int sb16_pcm_submit(const unsigned char *pcm, unsigned len)`
-  - `sb16_irq` (function, line 449) `void sb16_irq(void)`
-  - `sb16_poll` (function, line 457) `void sb16_poll(void)`
-  - `sb16_ring_free` (function, line 466) `unsigned sb16_ring_free(void)`
-  - `sb16_mode_active` (function, line 467) `int sb16_mode_active(void)`
-  - `sb16_legacy_busy` (function, line 472) `int sb16_legacy_busy(void)`
-  - `sb16_counters` (function, line 479) `void sb16_counters(sb16_counters_t *out)`
-  - `sb16_ops_present` (function, line 484) `static int sb16_ops_present(device_t *dev)`
-  - `sb16_ops_pcm_open` (function, line 491) `static void sb16_ops_pcm_open(device_t *dev)`
-  - `sb16_ops_pcm_close` (function, line 498) `static void sb16_ops_pcm_close(device_t *dev)`
-  - `sb16_ops_pcm_submit` (function, line 505) `static int sb16_ops_pcm_submit(device_t *dev, const unsigned char *pcm, unsigned len)`
-  - `sb16_init` (function, line 530) `int sb16_init(void)`
-  - `IRQ` (function, line 22) `* QEMU audio backends never raise the completion IRQ (they only consume once * their engine buffer drains, which a...`
-  - `pending` (function, line 535) `* reading without it eats whatever byte happens to be pending (or * times out), so the probe used to fail or misread...`
-  - `SB16_BASE_PORT` (macro, line 48) `#define SB16_BASE_PORT`
-  - `SB16_DSP_RESET` (macro, line 49) `#define SB16_DSP_RESET`
-  - `SB16_DSP_READ_DATA` (macro, line 50) `#define SB16_DSP_READ_DATA`
-  - `SB16_DSP_WRITE_DATA` (macro, line 51) `#define SB16_DSP_WRITE_DATA`
-  - `SB16_DSP_STATUS` (macro, line 52) `#define SB16_DSP_STATUS`
-  - `SB16_IRQ_ACK` (macro, line 53) `#define SB16_IRQ_ACK`
-  - `SB16_CMD_READ_VER` (macro, line 55) `#define SB16_CMD_READ_VER`
-  - `SB16_CMD_SET_FREQ` (macro, line 56) `#define SB16_CMD_SET_FREQ`
-  - `SB16_CMD_PLAY8` (macro, line 57) `#define SB16_CMD_PLAY8`
-  - `SB16_CMD_SPK_ON` (macro, line 58) `#define SB16_CMD_SPK_ON`
-  - `SB16_CMD_SPK_OFF` (macro, line 59) `#define SB16_CMD_SPK_OFF`
-  - `SB16_DSP_RDSTATUS` (macro, line 61) `#define SB16_DSP_RDSTATUS`
-  - `DMA_MODE_PORT` (macro, line 67) `#define DMA_MODE_PORT`
-  - `DMA_CH1_SINGLE_READ` (macro, line 68) `#define DMA_CH1_SINGLE_READ`
-  - `SB16_FREQ_LO` (macro, line 70) `#define SB16_FREQ_LO`
-  - `SB16_FREQ_HI` (macro, line 71) `#define SB16_FREQ_HI`
-  - `SB16_DSP_READY_MASK` (macro, line 73) `#define SB16_DSP_READY_MASK`
-  - `DMA_CH1_ADDR` (macro, line 75) `#define DMA_CH1_ADDR`
-  - `DMA_CH1_CNT` (macro, line 76) `#define DMA_CH1_CNT`
-  - `DMA_CH1_PAGE` (macro, line 77) `#define DMA_CH1_PAGE`
-  - `DMA_MASK` (macro, line 78) `#define DMA_MASK`
-  - `DMA_FF_CLR` (macro, line 79) `#define DMA_FF_CLR`
-  - `DMA_CH1_UNMASK` (macro, line 80) `#define DMA_CH1_UNMASK`
-  - `DMA_CH1_MASK` (macro, line 81) `#define DMA_CH1_MASK`
-  - `SB16_DMA_BUF0` (macro, line 83) `#define SB16_DMA_BUF0`
-  - `SB16_SILENCE_SLOT` (macro, line 84) `#define SB16_SILENCE_SLOT`
-  - `SB16_BUF` (macro, line 85) `#define SB16_BUF`
-  - `SB16_MODE_TONE` (macro, line 88) `#define SB16_MODE_TONE`
-  - `SB16_MODE_PCM` (macro, line 89) `#define SB16_MODE_PCM`
-  - `SB16_SQ_CYCLE` (macro, line 91) `#define SB16_SQ_CYCLE`
-- Depends on: `headers/driver.h`, `headers/pcm2.h`, `headers/sb16.h`, `headers/sync.h`
-
-## drivers/usbblk.c
-- Doc: USB mass storage, Bulk-Only Transport over SCSI.
-- Layer: infrastructure
-- Language: c
-- Symbols:
-  - `ubk_disk_t` (struct, line 44)
-  - `ubk_counters` (function, line 72) `void ubk_counters(ubk_counters_t *out)`
-  - `ubk_cdb10` (function, line 80) `static void ubk_cdb10(unsigned char *cdb, unsigned char opcode,
-                      unsigned lo...`
-  - `ubk_build_cbw` (function, line 92) `void ubk_build_cbw(unsigned char *out, unsigned tag, unsigned long lba,
-                   unsign...`
-  - `ubk_check_csw` (function, line 121) `int ubk_check_csw(const unsigned char *csw, unsigned tag, unsigned expect_len)`
-  - `ubk_command_raw` (function, line 187) `static int ubk_command_raw(unsigned char *cdb, unsigned cdb_len,
-                           unsig...`
-  - `ubk_sense` (function, line 262) `static void ubk_sense(void)`
-  - `ubk_command` (function, line 279) `static int ubk_command(unsigned char *cdb, unsigned cdb_len,
-                       unsigned char...`
-  - `ubk_unit_ready` (function, line 294) `static int ubk_unit_ready(void)`
-  - `ubk_read_capacity` (function, line 311) `static int ubk_read_capacity(unsigned long *sectors)`
-  - `ubk_present` (function, line 336) `int ubk_present(void)`
-  - `ubk_sectors` (function, line 340) `unsigned long ubk_sectors(void)`
-  - `ubk_xfer` (function, line 347) `static int ubk_xfer(unsigned long lba, unsigned count, void *buf, int read)`
-  - `ubk_read_sectors` (function, line 365) `int ubk_read_sectors(unsigned long lba, unsigned count, void *buf)`
-  - `ubk_write_sectors` (function, line 370) `int ubk_write_sectors(unsigned long lba, unsigned count, const void *buf)`
-  - `ubk_claim_eps` (function, line 377) `static int ubk_claim_eps(int device, const xhc_iface_t *iface)`
-  - `ubk_blk_read` (function, line 421) `static int ubk_blk_read(device_t *dev, unsigned lba, unsigned count,
-                        void...`
-  - `ubk_blk_write` (function, line 427) `static int ubk_blk_write(device_t *dev, unsigned lba, unsigned count,
-                         co...`
-  - `ubk_blk_sectors` (function, line 433) `static unsigned ubk_blk_sectors(device_t *dev)`
-  - `ubk_blk_present` (function, line 438) `static int ubk_blk_present(device_t *dev)`
-  - `ubk_init` (function, line 457) `int ubk_init(void)`
-  - `UBK_CBW_LEN` (macro, line 22) `#define UBK_CBW_LEN`
-  - `UBK_CBW_SIG` (macro, line 23) `#define UBK_CBW_SIG`
-  - `UBK_CBW_FLAG_IN` (macro, line 24) `#define UBK_CBW_FLAG_IN`
-  - `UBK_CSW_LEN` (macro, line 27) `#define UBK_CSW_LEN`
-  - `UBK_CSW_SIG` (macro, line 28) `#define UBK_CSW_SIG`
-  - `UBK_CSW_STATUS_PASSED` (macro, line 29) `#define UBK_CSW_STATUS_PASSED`
-  - `UBK_CSW_STATUS_FAILED` (macro, line 30) `#define UBK_CSW_STATUS_FAILED`
-  - `UBK_SCSI_TEST_UNIT_READY` (macro, line 33) `#define UBK_SCSI_TEST_UNIT_READY`
-  - `UBK_SCSI_REQUEST_SENSE` (macro, line 34) `#define UBK_SCSI_REQUEST_SENSE`
-  - `UBK_SCSI_INQUIRY` (macro, line 35) `#define UBK_SCSI_INQUIRY`
-  - `UBK_SCSI_READ_CAPACITY` (macro, line 36) `#define UBK_SCSI_READ_CAPACITY`
-  - `UBK_SCSI_READ10` (macro, line 37) `#define UBK_SCSI_READ10`
-  - `UBK_SCSI_WRITE10` (macro, line 38) `#define UBK_SCSI_WRITE10`
-  - `UBK_BULK_INTERVAL` (macro, line 63) `#define UBK_BULK_INTERVAL`
-  - `UBK_BULK_BURST` (macro, line 64) `#define UBK_BULK_BURST`
-  - `UBK_MAX_XFER_BLOCKS` (macro, line 70) `#define UBK_MAX_XFER_BLOCKS`
-  - `UBK_CDB_LEN` (macro, line 79) `#define UBK_CDB_LEN`
-  - `UBK_MS_RESET` (macro, line 148) `#define UBK_MS_RESET`
-  - `UBK_CLEAR_FEATURE` (macro, line 149) `#define UBK_CLEAR_FEATURE`
-  - `UBK_ENDP_HALT` (macro, line 150) `#define UBK_ENDP_HALT`
-  - `UBK_CDB6_LEN` (macro, line 181) `#define UBK_CDB6_LEN`
-  - `UBK_SENSE_LEN` (macro, line 261) `#define UBK_SENSE_LEN`
-  - `UBK_READY_TRIES` (macro, line 293) `#define UBK_READY_TRIES`
-- Depends on: `headers/driver.h`, `headers/drivers/usbblk.h`, `headers/drivers/xhci.h`
-- Imported by: `tests/test_usbblk.c`
-
-## drivers/usbhid.c
-- Doc: USB HID boot-protocol keyboard and mouse.
-- Layer: infrastructure
-- Language: c
-- Symbols:
-  - `usbhid_dev_t` (struct, line 40)
-  - `usbhid_set1_from_usage` (function, line 117) `int usbhid_set1_from_usage(unsigned usage, unsigned char *sc, int *e0)`
-  - `usbhid_usage_make` (function, line 128) `static int usbhid_usage_make(unsigned usage, unsigned char *sc, int *e0)`
-  - `usbhid_report_has` (function, line 138) `static int usbhid_report_has(const unsigned char report[HID_KBD_REPORT_LEN],
-                    ...`
-  - `usbhid_put` (function, line 153) `static int usbhid_put(unsigned char *out, int max, int n, unsigned char sc)`
-  - `usbhid_emit_mod` (function, line 165) `static int usbhid_emit_mod(unsigned char *out, int max, int n, unsigned bit,
-                    ...`
-  - `usbhid_emit_usage` (function, line 183) `static int usbhid_emit_usage(unsigned char *out, int max, int n,
-                             uns...`
-  - `usbhid_kbd_scancodes` (function, line 206) `int usbhid_kbd_scancodes(const unsigned char prev[HID_KBD_REPORT_LEN],
-                         c...`
-  - `usbhid_mouse_decode` (function, line 241) `void usbhid_mouse_decode(const unsigned char prev[HID_MOUSE_REPORT_LEN],
-                        ...`
-  - `usbhid_keyboard_present` (function, line 256) `int usbhid_keyboard_present(void)`
-  - `usbhid_mouse_present` (function, line 263) `int usbhid_mouse_present(void)`
-  - `usbhid_counters` (function, line 270) `void usbhid_counters(usbhid_counters_t *out)`
-  - `usbhid_press_kbd_report` (function, line 274) `int usbhid_press_kbd_report(const unsigned char report[HID_KBD_REPORT_LEN])`
-  - `usbhid_set_boot_protocol` (function, line 295) `static int usbhid_set_boot_protocol(int device, int iface)`
-  - `usbhid_ep_taken` (function, line 312) `static int usbhid_ep_taken(int ep_index)`
-  - `usbhid_take_ep` (function, line 325) `static int usbhid_take_ep(int device, const xhc_iface_t *iface,
-                          int *maxp)`
-  - `usbhid_claim` (function, line 353) `static int usbhid_claim(int device, const xhc_iface_t *iface, int is_mouse)`
-  - `usbhid_is_mouse_maxp` (function, line 380) `static int usbhid_is_mouse_maxp(int maxp)`
-  - `usbhid_init` (function, line 384) `int usbhid_init(void)`
-  - `usbhid_poll_one` (function, line 422) `static int usbhid_poll_one(usbhid_dev_t *d)`
-  - `usbhid_poll_keyboard` (function, line 485) `int usbhid_poll_keyboard(void)`
-  - `usbhid_poll_mouse` (function, line 493) `int usbhid_poll_mouse(void)`
-  - `usbhid_poll` (function, line 501) `int usbhid_poll(void)`
-  - `USBHID_MAX_DEVS` (macro, line 35) `#define USBHID_MAX_DEVS`
-  - `USBHID_INTERVAL` (macro, line 55) `#define USBHID_INTERVAL`
-  - `USBHID_MAX_SCANCODES` (macro, line 204) `#define USBHID_MAX_SCANCODES`
-- Depends on: `headers/arch/x86/hal_io.h`, `headers/drivers/kbd.h`, `headers/drivers/modifiers.h`, `headers/drivers/usbhid.h`, `headers/drivers/xhci.h`, `headers/vga_fb.h`
-- Imported by: `tests/test_usbhid.c`
 
 
 Next: [KB_drivers_p2.md](KB_drivers_p2.md)

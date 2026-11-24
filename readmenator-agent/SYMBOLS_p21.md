@@ -1,8 +1,149 @@
-# Symbols (page 21 of 27)
+# Symbols (page 21 of 28)
 Previous: [SYMBOLS_p20.md](SYMBOLS_p20.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `MC_BREAK_MS` | macro | `progs/minicraft/minicraft.c:70` | `#define MC_BREAK_MS` |
+| `MC_CHUNK` | macro | `progs/minicraft/minicraft.c:35` | `#define MC_CHUNK` |
+| `MC_CHUNKS` | macro | `progs/minicraft/minicraft.c:37` | `#define MC_CHUNKS` |
+| `MC_CHUNK_MAGIC` | macro | `progs/minicraft/minicraft.c:55` | `#define MC_CHUNK_MAGIC` |
+| `MC_CHUNK_VERSION` | macro | `progs/minicraft/minicraft.c:56` | `#define MC_CHUNK_VERSION` |
+| `MC_COLS` | macro | `progs/minicraft/minicraft.c:39` | `#define MC_COLS` |
+| `MC_CREEPS_DEF` | macro | `progs/minicraft/minicraft.c:82` | `#define MC_CREEPS_DEF` |
+| `MC_CREEPS_MAX` | macro | `progs/minicraft/minicraft.c:81` | `#define MC_CREEPS_MAX` |
+| `MC_CREEP_DEFUSE_D` | macro | `progs/minicraft/minicraft.c:91` | `#define MC_CREEP_DEFUSE_D` |
+| `MC_CREEP_DZ_MAX` | macro | `progs/minicraft/minicraft.c:89` | `#define MC_CREEP_DZ_MAX` |
+| `MC_CREEP_FUSE_D` | macro | `progs/minicraft/minicraft.c:90` | `#define MC_CREEP_FUSE_D` |
+| `MC_CREEP_HP` | macro | `progs/minicraft/minicraft.c:83` | `#define MC_CREEP_HP` |
+| `MC_CREEP_NIGHT_MS` | macro | `progs/minicraft/minicraft.c:99` | `#define MC_CREEP_NIGHT_MS` |
+| `MC_CREEP_SENSE` | macro | `progs/minicraft/minicraft.c:88` | `#define MC_CREEP_SENSE` |
+| `MC_CREEP_SEP_D` | macro | `progs/minicraft/minicraft.c:102` | `#define MC_CREEP_SEP_D` |
+| `MC_CVOL` | macro | `progs/minicraft/minicraft.c:38` | `#define MC_CVOL` |
+| `MC_DAY_MS` | macro | `progs/minicraft/minicraft.c:108` | `#define MC_DAY_MS` |
+| `MC_DDA_STEPS` | macro | `progs/minicraft/minicraft.c:69` | `#define MC_DDA_STEPS` |
+| `MC_EYE` | macro | `progs/minicraft/minicraft.c:59` | `#define MC_EYE` |
+| `MC_FLY_SPEED` | macro | `progs/minicraft/minicraft.c:64` | `#define MC_FLY_SPEED` |
+| `MC_FUSE_MS` | macro | `progs/minicraft/minicraft.c:84` | `#define MC_FUSE_MS` |
+| `MC_GRAV` | macro | `progs/minicraft/minicraft.c:60` | `#define MC_GRAV` |
+| `MC_H` | macro | `progs/minicraft/minicraft.c:34` | `#define MC_H` |
+| `MC_HP_MAX` | macro | `progs/minicraft/minicraft.c:79` | `#define MC_HP_MAX` |
+| `MC_HUNGER_MAX` | macro | `progs/minicraft/minicraft.c:104` | `#define MC_HUNGER_MAX` |
+| `MC_HUNGER_MS` | macro | `progs/minicraft/minicraft.c:105` | `#define MC_HUNGER_MS` |
+| `MC_H_BASE` | macro | `progs/minicraft/minicraft.c:111` | `#define MC_H_BASE` |
+| `MC_H_WT_COARSE` | macro | `progs/minicraft/minicraft.c:114` | `#define MC_H_WT_COARSE` |
+| `MC_H_WT_DET` | macro | `progs/minicraft/minicraft.c:112` | `#define MC_H_WT_DET` |
+| `MC_H_WT_MID` | macro | `progs/minicraft/minicraft.c:113` | `#define MC_H_WT_MID` |
+| `MC_INV_MAX` | macro | `progs/minicraft/minicraft.c:76` | `#define MC_INV_MAX` |
+| `MC_JUMP` | macro | `progs/minicraft/minicraft.c:61` | `#define MC_JUMP` |
+| `MC_KBD_SEQ_SPINS` | macro | `progs/minicraft/minicraft.c:145` | `#define MC_KBD_SEQ_SPINS` |
+| `MC_LEGACY_WORLD` | macro | `progs/minicraft/minicraft.c:2916` | `#define MC_LEGACY_WORLD` |
+| `MC_LOAD_R` | macro | `progs/minicraft/minicraft.c:36` | `#define MC_LOAD_R` |
+| `MC_MAXFALL` | macro | `progs/minicraft/minicraft.c:62` | `#define MC_MAXFALL` |
+| `MC_MOUSE` | macro | `progs/minicraft/minicraft.c:66` | `#define MC_MOUSE` |
+| `MC_NIGHT_LIGHT` | macro | `progs/minicraft/minicraft.c:101` | `#define MC_NIGHT_LIGHT` |
+| `MC_PIGS` | macro | `progs/minicraft/minicraft.c:80` | `#define MC_PIGS` |
+| `MC_PIG_DAY_MS` | macro | `progs/minicraft/minicraft.c:100` | `#define MC_PIG_DAY_MS` |
+| `MC_PIG_HP` | macro | `progs/minicraft/minicraft.c:106` | `#define MC_PIG_HP` |
+| `MC_PIG_HURT_MS` | macro | `progs/minicraft/minicraft.c:107` | `#define MC_PIG_HURT_MS` |
+| `MC_PITCH_MAX` | macro | `progs/minicraft/minicraft.c:77` | `#define MC_PITCH_MAX` |
+| `MC_PLACE_MS` | macro | `progs/minicraft/minicraft.c:72` | `#define MC_PLACE_MS` |
+| `MC_PORK_HEAL` | macro | `progs/minicraft/minicraft.c:103` | `#define MC_PORK_HEAL` |
+| `MC_REACH` | macro | `progs/minicraft/minicraft.c:67` | `#define MC_REACH` |
+| `MC_RESPAWN_MS` | macro | `progs/minicraft/minicraft.c:98` | `#define MC_RESPAWN_MS` |
+| `MC_SAVE_CRC_SEED` | macro | `progs/minicraft/minicraft.c:54` | `#define MC_SAVE_CRC_SEED` |
+| `MC_SAVE_MAGIC` | macro | `progs/minicraft/minicraft.c:52` | `#define MC_SAVE_MAGIC` |
+| `MC_SAVE_SECS` | macro | `progs/minicraft/minicraft.c:109` | `#define MC_SAVE_SECS` |
+| `MC_SAVE_VERSION` | macro | `progs/minicraft/minicraft.c:53` | `#define MC_SAVE_VERSION` |
+| `MC_SEED_MAX` | macro | `progs/minicraft/minicraft.c:144` | `#define MC_SEED_MAX` |
+| `MC_SPEED` | macro | `progs/minicraft/minicraft.c:63` | `#define MC_SPEED` |
+| `MC_SPRINT` | macro | `progs/minicraft/minicraft.c:65` | `#define MC_SPRINT` |
+| `MC_VIEW` | macro | `progs/minicraft/minicraft.c:68` | `#define MC_VIEW` |
+| `MC_VORO_DESERT_CELL` | macro | `progs/minicraft/minicraft.c:858` | `#define MC_VORO_DESERT_CELL` |
+| `MC_VORO_SNOW_CELL` | macro | `progs/minicraft/minicraft.c:859` | `#define MC_VORO_SNOW_CELL` |
+| `MC_WATER_GRAV` | macro | `progs/minicraft/minicraft.c:73` | `#define MC_WATER_GRAV` |
+| `MC_WATER_SINK` | macro | `progs/minicraft/minicraft.c:74` | `#define MC_WATER_SINK` |
+| `MC_WATER_SWIM` | macro | `progs/minicraft/minicraft.c:75` | `#define MC_WATER_SWIM` |
+| `MOB_CREEP` | macro | `progs/minicraft/minicraft.c:309` | `#define MOB_CREEP` |
+| `MOB_PIG` | macro | `progs/minicraft/minicraft.c:308` | `#define MOB_PIG` |
+| `Pig` | struct | `progs/minicraft/minicraft.c:295` | `` |
+| `RayHit` | struct | `progs/minicraft/minicraft.c:1650` | `` |
+| `Recipe` | struct | `progs/minicraft/minicraft.c:216` | `` |
+| `SAVE_PATH` | macro | `progs/minicraft/minicraft.c:50` | `#define SAVE_PATH` |
+| `SAVE_TMP_PATH` | macro | `progs/minicraft/minicraft.c:51` | `#define SAVE_TMP_PATH` |
+| `SC_0` | macro | `progs/minicraft/minicraft.c:143` | `#define SC_0` |
+| `SC_1` | macro | `progs/minicraft/minicraft.c:118` | `#define SC_1` |
+| `SC_9` | macro | `progs/minicraft/minicraft.c:119` | `#define SC_9` |
+| `SC_A` | macro | `progs/minicraft/minicraft.c:130` | `#define SC_A` |
+| `SC_B` | macro | `progs/minicraft/minicraft.c:139` | `#define SC_B` |
+| `SC_BACK` | macro | `progs/minicraft/minicraft.c:142` | `#define SC_BACK` |
+| `SC_C` | macro | `progs/minicraft/minicraft.c:137` | `#define SC_C` |
+| `SC_CTRL` | macro | `progs/minicraft/minicraft.c:149` | `#define SC_CTRL` |
+| `SC_D` | macro | `progs/minicraft/minicraft.c:132` | `#define SC_D` |
+| `SC_E` | macro | `progs/minicraft/minicraft.c:122` | `#define SC_E` |
+| `SC_ENTER` | macro | `progs/minicraft/minicraft.c:141` | `#define SC_ENTER` |
+| `SC_ESC` | macro | `progs/minicraft/minicraft.c:117` | `#define SC_ESC` |
+| `SC_F` | macro | `progs/minicraft/minicraft.c:133` | `#define SC_F` |
+| `SC_G` | macro | `progs/minicraft/minicraft.c:134` | `#define SC_G` |
+| `SC_I` | macro | `progs/minicraft/minicraft.c:126` | `#define SC_I` |
+| `SC_J` | macro | `progs/minicraft/minicraft.c:129` | `#define SC_J` |
+| `SC_K` | macro | `progs/minicraft/minicraft.c:135` | `#define SC_K` |
+| `SC_L` | macro | `progs/minicraft/minicraft.c:136` | `#define SC_L` |
+| `SC_LSHIFT` | macro | `progs/minicraft/minicraft.c:147` | `#define SC_LSHIFT` |
+| `SC_N` | macro | `progs/minicraft/minicraft.c:140` | `#define SC_N` |
+| `SC_O` | macro | `progs/minicraft/minicraft.c:127` | `#define SC_O` |
+| `SC_P` | macro | `progs/minicraft/minicraft.c:128` | `#define SC_P` |
+| `SC_Q` | macro | `progs/minicraft/minicraft.c:120` | `#define SC_Q` |
+| `SC_R` | macro | `progs/minicraft/minicraft.c:123` | `#define SC_R` |
+| `SC_RSHIFT` | macro | `progs/minicraft/minicraft.c:148` | `#define SC_RSHIFT` |
+| `SC_S` | macro | `progs/minicraft/minicraft.c:131` | `#define SC_S` |
+| `SC_SPACE` | macro | `progs/minicraft/minicraft.c:146` | `#define SC_SPACE` |
+| `SC_T` | macro | `progs/minicraft/minicraft.c:124` | `#define SC_T` |
+| `SC_U` | macro | `progs/minicraft/minicraft.c:125` | `#define SC_U` |
+| `SC_V` | macro | `progs/minicraft/minicraft.c:138` | `#define SC_V` |
+| `SC_W` | macro | `progs/minicraft/minicraft.c:121` | `#define SC_W` |
+| `SER_STASH_CAP` | macro | `progs/minicraft/minicraft.c:369` | `#define SER_STASH_CAP` |
+| `SaveHeader` | struct | `progs/minicraft/minicraft.c:2892` | `` |
+| `SaveHeaderV3` | struct | `progs/minicraft/minicraft.c:2878` | `` |
+| `__attribute__` | function | `progs/minicraft/minicraft.c:473` | `static long __attribute__((unused)) s_tone(long f)` |
+| `beep` | function | `progs/minicraft/minicraft.c:478` | `static void beep(long freq, long dur_ms)` |
+| `best_tool_for` | function | `progs/minicraft/minicraft.c:231` | `static int best_tool_for(unsigned char b)` |
+| `biome_desert` | function | `progs/minicraft/minicraft.c:893` | `static int biome_desert(int x, int y, unsigned int seed)` |
+| `biome_fdiv` | function | `progs/minicraft/minicraft.c:846` | `static int biome_fdiv(int v, int c)` |
+| `biome_snow` | function | `progs/minicraft/minicraft.c:897` | `static int biome_snow(int x, int y, unsigned int seed)` |
+| `biome_voro` | function | `progs/minicraft/minicraft.c:869` | `static int biome_voro(int x, int y, unsigned int seed, int cell,     int ox, int oy, unsigned int...` |
+| `block_intersects_player` | function | `progs/minicraft/minicraft.c:2404` | `static int block_intersects_player(int bx, int by, int bz)` |
+| `break_beep_for` | function | `progs/minicraft/minicraft.c:275` | `static long break_beep_for(unsigned char b)` |
+| `break_time_ms` | function | `progs/minicraft/minicraft.c:250` | `static long break_time_ms(unsigned char b, int tool)` |
+| `build_palette` | function | `progs/minicraft/minicraft.c:503` | `static void build_palette(void)` |
+| `cam_build` | function | `progs/minicraft/minicraft.c:1892` | `static void cam_build(void)` |
+| `carve_blob` | function | `progs/minicraft/minicraft.c:3108` | `static void carve_blob(const unsigned char *blob)` |
+| `cast_ray` | function | `progs/minicraft/minicraft.c:1659` | `static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float dz, float maxd)` |
+| `census` | function | `progs/minicraft/minicraft.c:3606` | `static int census(void)` |
+| `chunk_build_meta` | function | `progs/minicraft/minicraft.c:658` | `static void chunk_build_meta(int slot)` |
+| `chunk_ensure` | function | `progs/minicraft/minicraft.c:635` | `static int chunk_ensure(int cx, int cy)` |
+| `chunk_evict_slot` | function | `progs/minicraft/minicraft.c:615` | `static int chunk_evict_slot(int cx, int cy)` |
+| `chunk_find` | function | `progs/minicraft/minicraft.c:592` | `static int chunk_find(int cx, int cy)` |
+| `chunk_lidx` | function | `progs/minicraft/minicraft.c:586` | `static int chunk_lidx(int lx, int ly, int z)` |
+| `chunk_local` | function | `progs/minicraft/minicraft.c:581` | `static int chunk_local(int v)` |
+| `chunk_of` | function | `progs/minicraft/minicraft.c:577` | `static int chunk_of(int v)` |
+| `chunk_path` | function | `progs/minicraft/minicraft.c:2938` | `static void chunk_path(int cx, int cy, char *out, size_t n)` |
+| `col_recompute` | function | `progs/minicraft/minicraft.c:703` | `static void col_recompute(int x, int y)` |
+| `col_top_at` | function | `progs/minicraft/minicraft.c:728` | `static int col_top_at(int x, int y)` |
+| `creep_has_los` | function | `progs/minicraft/minicraft.c:1337` | `static int creep_has_los(Pig *c)` |
+| `creep_sense` | function | `progs/minicraft/minicraft.c:1325` | `static void creep_sense(Pig *c, float *pdx, float *pdy, float *pdz, float *pd3)` |
+| `creep_separate` | function | `progs/minicraft/minicraft.c:1361` | `static void creep_separate(Pig *p, int id, float dt)` |
+| `creeper_explode` | function | `progs/minicraft/minicraft.c:1257` | `static void creeper_explode(Pig *c, long now)` |
+| `decorate_chunk` | function | `progs/minicraft/minicraft.c:1043` | `static void decorate_chunk(int slot)` |
+| `decorate_column` | function | `progs/minicraft/minicraft.c:995` | `static void decorate_column(int x, int y, unsigned int seed)` |
+| `dumpstats` | function | `progs/minicraft/minicraft.c:3670` | `static int dumpstats(void)` |
+| `ensure_around` | function | `progs/minicraft/minicraft.c:1090` | `static void ensure_around(void)` |
+| `ensure_around_px` | function | `progs/minicraft/minicraft.c:1056` | `static void ensure_around_px(float px, float py)` |
+| `eye_z` | function | `progs/minicraft/minicraft.c:1750` | `static float eye_z(void)` |
+| `face_color` | function | `progs/minicraft/minicraft.c:1520` | `static unsigned char face_color(unsigned char b, int face)` |
+| `gen_terrain_chunk` | function | `progs/minicraft/minicraft.c:1034` | `static void gen_terrain_chunk(int slot)` |
+| `get_b` | function | `progs/minicraft/minicraft.c:764` | `static unsigned char get_b(int x, int y, int z)` |
+| `goal_text` | function | `progs/minicraft/minicraft.c:2608` | `static const char *goal_text(void)` |
+| `ground_h_seed` | function | `progs/minicraft/minicraft.c:909` | `static int ground_h_seed(int x, int y, unsigned int seed)` |
 | `hash2` | function | `progs/minicraft/minicraft.c:823` | `static unsigned int hash2(int x, int y)` |
 | `hash2_seed` | function | `progs/minicraft/minicraft.c:830` | `static unsigned int hash2_seed(int x, int y, unsigned int seed)` |
 | `hurt` | function | `progs/minicraft/minicraft.c:2424` | `static void hurt(int dmg, const char *why)` |
@@ -355,146 +496,5 @@ Previous: [SYMBOLS_p20.md](SYMBOLS_p20.md)
 | `kind_name` | function | `progs/nuklear/node_editor.c:106` | `static const char *kind_name(int k)` |
 | `main` | function | `progs/nuklear/node_editor.c:983` | `int main(int argc, char **argv)` |
 | `node_h` | function | `progs/nuklear/node_editor.c:534` | `static float node_h(struct gnode *n)` |
-| `node_inputs` | function | `progs/nuklear/node_editor.c:96` | `static int node_inputs(int k)` |
-| `node_outputs` | function | `progs/nuklear/node_editor.c:101` | `static int node_outputs(int k)` |
-| `nodedef` | struct | `progs/nuklear/node_editor.c:55` | `` |
-| `parse_graph_file` | function | `progs/nuklear/node_editor.c:430` | `static int parse_graph_file(const char *path)` |
-| `parse_input` | function | `progs/nuklear/node_editor.c:443` | `int parse_input(const char *tok, int idx, int k)` |
-| `pin_y` | function | `progs/nuklear/node_editor.c:522` | `static float pin_y(struct gnode *n, int slot, int is_output)` |
-| `repair_graph` | function | `progs/nuklear/node_editor.c:176` | `static int repair_graph(char *rep, size_t repcap, char *herr, size_t herrcap,                    ...` |
-| `resolve` | function | `progs/nuklear/node_editor.c:437` | `int resolve(const char *nme, int upto)` |
-| `save_graph_file` | function | `progs/nuklear/node_editor.c:392` | `static int save_graph_file(const char *path)` |
-| `ui_build` | function | `progs/nuklear/node_editor.c:622` | `static void ui_build(struct nk_context *ctx, float win_w, float win_h)` |
-| `ui_inspector` | function | `progs/nuklear/node_editor.c:542` | `static void ui_inspector(struct nk_context *ctx)` |
-| `write_quoted` | function | `progs/nuklear/node_editor.c:339` | `static void write_quoted(FILE *f, const char *s)` |
-| `NK_IMPLEMENTATION` | macro | `progs/nuklear/nuklear_minios.c:17` | `#define NK_IMPLEMENTATION` |
-| `col_to_idx` | function | `progs/nuklear/nuklear_minios.c:438` | `static int col_to_idx(struct nk_color c)` |
-| `cur_bg_set` | function | `progs/nuklear/nuklear_minios.c:190` | `static void cur_bg_set(struct nk_color c)` |
-| `cur_set` | function | `progs/nuklear/nuklear_minios.c:186` | `static void cur_set(struct nk_color c)` |
-| `draw_arc` | function | `progs/nuklear/nuklear_minios.c:615` | `static void draw_arc(int cx, int cy, int r, float a0, float a1,                      int filled, ...` |
-| `draw_line` | function | `progs/nuklear/nuklear_minios.c:529` | `static void draw_line(int x0, int y0, int x1, int y1, int th, int c)` |
-| `draw_text` | function | `progs/nuklear/nuklear_minios.c:601` | `static void draw_text(int x, int y, const char *s, int len, int fg, int bg)` |
-| `feed_key` | function | `progs/nuklear/nuklear_minios.c:854` | `static void feed_key(struct nk_context *ctx, enum nk_keys key, int down)` |
-| `fill_circle` | function | `progs/nuklear/nuklear_minios.c:547` | `static void fill_circle(int cx, int cy, int r, int c)` |
-| `fill_poly` | function | `progs/nuklear/nuklear_minios.c:571` | `static void fill_poly(int *xs, int *ys, int n, int c)` |
-| `fill_rect` | function | `progs/nuklear/nuklear_minios.c:522` | `static void fill_rect(int x, int y, int w, int h, int c)` |
-| `handle_scancode` | function | `progs/nuklear/nuklear_minios.c:866` | `static void handle_scancode(struct nk_context *ctx, unsigned char sc)` |
-| `list` | function | `progs/nuklear/nuklear_minios.c:4` | `* abstract draw command list (nk__begin/nk__next);` |
-| `nk_build_palette` | function | `progs/nuklear/nuklear_minios.c:418` | `void nk_build_palette(unsigned char *pal768)` |
-| `nk_client_hash` | function | `progs/nuklear/nuklear_minios.c:216` | `static unsigned nk_client_hash(const unsigned char *p, unsigned n)` |
-| `nk_client_poll` | function | `progs/nuklear/nuklear_minios.c:914` | `static void nk_client_poll(struct nk_context *ctx)` |
-| `nk_client_probe` | function | `progs/nuklear/nuklear_minios.c:72` | `static int nk_client_probe(void)` |
-| `nk_client_publish` | function | `progs/nuklear/nuklear_minios.c:227` | `static int nk_client_publish(void)` |
-| `nk_foreach` | function | `progs/nuklear/nuklear_minios.c:641` | `nk_foreach(cmd, ctx)` |
-| `nk_idx_to_rgb` | function | `progs/nuklear/nuklear_minios.c:170` | `void nk_idx_to_rgb(int idx, unsigned char *r, unsigned char *g,                    unsigned char *b)` |
-| `nk_minios_font` | function | `progs/nuklear/nuklear_minios.c:819` | `struct nk_user_font nk_minios_font(void)` |
-| `nk_minios_font_width` | function | `progs/nuklear/nuklear_minios.c:813` | `static float nk_minios_font_width(nk_handle handle, float height,                                ...` |
-| `nk_mirror_box` | function | `progs/nuklear/nuklear_minios.c:314` | `static void nk_mirror_box(char *dst, int cap)` |
-| `nk_mirror_emit` | function | `progs/nuklear/nuklear_minios.c:335` | `static int nk_mirror_emit(const char *box, unsigned seq,         const unsigned char *msg, int mlen)` |
-| `nk_mirror_tick` | function | `progs/nuklear/nuklear_minios.c:352` | `static void nk_mirror_tick(void)` |
-| `nk_poll_input` | function | `progs/nuklear/nuklear_minios.c:961` | `void nk_poll_input(struct nk_context *ctx)` |
-| `nk_quit_requested` | function | `progs/nuklear/nuklear_minios.c:1008` | `int nk_quit_requested(void)` |
-| `nk_rasterize` | function | `progs/nuklear/nuklear_minios.c:636` | `void nk_rasterize(struct nk_context *ctx)` |
-| `nk_rgb_available` | function | `progs/nuklear/nuklear_minios.c:147` | `int nk_rgb_available(void)` |
-| `nk_set_scancode_hook` | function | `progs/nuklear/nuklear_minios.c:861` | `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud)` |
-| `nk_set_window_origin` | function | `progs/nuklear/nuklear_minios.c:1000` | `void nk_set_window_origin(int x, int y)` |
-| `nk_sys_fb_info` | function | `progs/nuklear/nuklear_minios.c:121` | `long nk_sys_fb_info(int *w, int *h, int *pitch)` |
-| `nk_sys_fb_info_rgb` | function | `progs/nuklear/nuklear_minios.c:137` | `static long nk_sys_fb_info_rgb(int *w, int *h, int *pitch, int *rgb)` |
-| `nk_sys_getpid` | function | `progs/nuklear/nuklear_minios.c:53` | `long nk_sys_getpid(void)` |
-| `nk_sys_gfx_set_title` | function | `progs/nuklear/nuklear_minios.c:409` | `long nk_sys_gfx_set_title(const char *t)` |
-| `nk_sys_kbd` | function | `progs/nuklear/nuklear_minios.c:38` | `long nk_sys_kbd(void)` |
-| `nk_sys_kbd_raw` | function | `progs/nuklear/nuklear_minios.c:48` | `long nk_sys_kbd_raw(int on)` |
-| `nk_sys_mouse` | function | `progs/nuklear/nuklear_minios.c:193` | `long nk_sys_mouse(int *xybw)` |
-| `nk_sys_mouse_badptr` | function | `progs/nuklear/nuklear_minios.c:198` | `long nk_sys_mouse_badptr(void)` |
-| `nk_sys_nk_frame` | function | `progs/nuklear/nuklear_minios.c:280` | `long nk_sys_nk_frame(int *origin)` |
-| `nk_sys_palette` | function | `progs/nuklear/nuklear_minios.c:43` | `long nk_sys_palette(const unsigned char *pal)` |
-| `nk_sys_time_ms` | function | `progs/nuklear/nuklear_minios.c:33` | `long nk_sys_time_ms(void)` |
-| `nk_sys_vga_mode` | function | `progs/nuklear/nuklear_minios.c:114` | `long nk_sys_vga_mode(int on)` |
-| `pal_prepare` | function | `progs/nuklear/nuklear_minios.c:427` | `static void pal_prepare(void)` |
-| `program_invocation_short_name` | variable | `progs/nuklear/nuklear_minios.c:27` | `extern char *program_invocation_short_name;` |
-| `px` | function | `progs/nuklear/nuklear_minios.c:479` | `static void px(int x, int y, int c)` |
-| `px_bg` | function | `progs/nuklear/nuklear_minios.c:492` | `static void px_bg(int x, int y, int c)` |
-| `px_idx` | function | `progs/nuklear/nuklear_minios.c:506` | `static void px_idx(int x, int y, int c)` |
-| `rgb256_prepare` | function | `progs/nuklear/nuklear_minios.c:162` | `static void rgb256_prepare(void)` |
-| `set_clip` | function | `progs/nuklear/nuklear_minios.c:469` | `static void set_clip(int x, int y, int w, int h)` |
-| `stroke_circle` | function | `progs/nuklear/nuklear_minios.c:553` | `static void stroke_circle(int cx, int cy, int r, int th, int c)` |
-| `stroke_poly` | function | `progs/nuklear/nuklear_minios.c:594` | `static void stroke_poly(int *xs, int *ys, int n, int th, int c)` |
-| `NK_BACKBUF` | macro | `progs/nuklear/nuklear_minios.h:26` | `#define NK_BACKBUF` |
-| `NK_H` | macro | `progs/nuklear/nuklear_minios.h:25` | `#define NK_H` |
-| `NK_MINIOS_IMG_MAX` | macro | `progs/nuklear/nuklear_minios.h:73` | `#define NK_MINIOS_IMG_MAX` |
-| `NK_RGB_BUF` | macro | `progs/nuklear/nuklear_minios.h:30` | `#define NK_RGB_BUF` |
-| `NK_W` | macro | `progs/nuklear/nuklear_minios.h:24` | `#define NK_W` |
-| `NUKLEAR_MINIOS_H` | macro | `progs/nuklear/nuklear_minios.h:2` | `#define NUKLEAR_MINIOS_H` |
-| `SYS_NK_FRAME` | function | `progs/nuklear/nuklear_minios.h:85` | `* SYS_NK_FRAME (nk_set_window_origin). */ void nk_set_window_origin(int x, int y);` |
-| `nk_build_palette` | function | `progs/nuklear/nuklear_minios.h:57` | `void nk_build_palette(unsigned char *pal768);` |
-| `nk_command_buffer` | struct | `progs/nuklear/nuklear_minios.h:22` | `` |
-| `nk_context` | struct | `progs/nuklear/nuklear_minios.h:20` | `` |
-| `nk_idx_to_rgb` | function | `progs/nuklear/nuklear_minios.h:37` | `void nk_idx_to_rgb(int idx, unsigned char *r, unsigned char *g, unsigned char *b);` |
-| `nk_minios_font` | function | `progs/nuklear/nuklear_minios.h:63` | `struct nk_user_font nk_minios_font(void);` |
-| `nk_minios_img` | struct | `progs/nuklear/nuklear_minios.h:74` | `` |
-| `nk_poll_input` | function | `progs/nuklear/nuklear_minios.h:87` | `void nk_poll_input(struct nk_context *ctx);` |
-| `nk_quit_requested` | function | `progs/nuklear/nuklear_minios.h:92` | `int nk_quit_requested(void);` |
-| `nk_rasterize` | function | `progs/nuklear/nuklear_minios.h:66` | `void nk_rasterize(struct nk_context *ctx);` |
-| `nk_rgb_available` | function | `progs/nuklear/nuklear_minios.h:33` | `int nk_rgb_available(void);` |
-| `nk_set_scancode_hook` | function | `progs/nuklear/nuklear_minios.h:101` | `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud);` |
-| `nk_sys_fb_info` | function | `progs/nuklear/nuklear_minios.h:46` | `long nk_sys_fb_info(int *w, int *h, int *pitch);` |
-| `nk_sys_gfx_set_title` | function | `progs/nuklear/nuklear_minios.h:53` | `long nk_sys_gfx_set_title(const char *t);` |
-| `nk_sys_kbd` | function | `progs/nuklear/nuklear_minios.h:42` | `long nk_sys_kbd(void);` |
-| `nk_sys_kbd_raw` | function | `progs/nuklear/nuklear_minios.h:44` | `long nk_sys_kbd_raw(int on);` |
-| `nk_sys_mouse` | function | `progs/nuklear/nuklear_minios.h:47` | `long nk_sys_mouse(int *xybw);` |
-| `nk_sys_mouse_badptr` | function | `progs/nuklear/nuklear_minios.h:51` | `long nk_sys_mouse_badptr(void);` |
-| `nk_sys_nk_frame` | function | `progs/nuklear/nuklear_minios.h:52` | `long nk_sys_nk_frame(int *origin);` |
-| `nk_sys_palette` | function | `progs/nuklear/nuklear_minios.h:43` | `long nk_sys_palette(const unsigned char *pal768);` |
-| `nk_sys_time_ms` | function | `progs/nuklear/nuklear_minios.h:41` | `long nk_sys_time_ms(void);` |
-| `nk_sys_vga_mode` | function | `progs/nuklear/nuklear_minios.h:45` | `long nk_sys_vga_mode(int on);` |
-| `nk_user_font` | struct | `progs/nuklear/nuklear_minios.h:21` | `` |
-| `X` | macro | `progs/nuklear/nuklear_theme.c:21` | `#define X(k, i)` |
-| `nk_theme_active` | function | `progs/nuklear/nuklear_theme.c:49` | `int nk_theme_active(char *dst, int cap)` |
-| `nk_theme_apply` | function | `progs/nuklear/nuklear_theme.c:141` | `int nk_theme_apply(struct nk_context *ctx, const char *name)` |
-| `nk_theme_name_ok` | function | `progs/nuklear/nuklear_theme.c:37` | `static int nk_theme_name_ok(const char *name)` |
-| `nk_theme_parse_line` | function | `progs/nuklear/nuklear_theme.c:73` | `static int nk_theme_parse_line(const char *line,                                unsigned char rgb...` |
-| `nk_theme_probe` | function | `progs/nuklear/nuklear_theme.c:105` | `int nk_theme_probe(const char *name, unsigned char rgb[NK_THEME_KEY_COUNT][3])` |
-| `nk_theme_slot` | struct | `progs/nuklear/nuklear_theme.c:15` | `` |
-| `NK_THEME_DEFAULT` | macro | `progs/nuklear/nuklear_theme.h:20` | `#define NK_THEME_DEFAULT` |
-| `NK_THEME_KEY_COUNT` | macro | `progs/nuklear/nuklear_theme.h:57` | `#define NK_THEME_KEY_COUNT` |
-| `NK_THEME_KEY_LIST` | macro | `progs/nuklear/nuklear_theme.h:23` | `#define NK_THEME_KEY_LIST` |
-| `NK_THEME_KEY_MAX` | macro | `progs/nuklear/nuklear_theme.h:16` | `#define NK_THEME_KEY_MAX` |
-| `NK_THEME_LINE_MAX` | macro | `progs/nuklear/nuklear_theme.h:17` | `#define NK_THEME_LINE_MAX` |
-| `NK_THEME_NAME_MAX` | macro | `progs/nuklear/nuklear_theme.h:15` | `#define NK_THEME_NAME_MAX` |
-| `NK_THEME_PATH_CURRENT` | macro | `progs/nuklear/nuklear_theme.h:19` | `#define NK_THEME_PATH_CURRENT` |
-| `NK_THEME_PATH_DIR` | macro | `progs/nuklear/nuklear_theme.h:18` | `#define NK_THEME_PATH_DIR` |
-| `NUKLEAR_THEME_H` | macro | `progs/nuklear/nuklear_theme.h:2` | `#define NUKLEAR_THEME_H` |
-| `nk_context` | struct | `progs/nuklear/nuklear_theme.h:59` | `` |
-| `nk_theme_active` | function | `progs/nuklear/nuklear_theme.h:62` | `int nk_theme_active(char *dst, int cap);` |
-| `nk_theme_apply` | function | `progs/nuklear/nuklear_theme.h:68` | `int nk_theme_apply(struct nk_context *ctx, const char *name);` |
-| `nk_theme_probe` | function | `progs/nuklear/nuklear_theme.h:65` | `int nk_theme_probe(const char *name, unsigned char rgb[NK_THEME_KEY_COUNT][3]);` |
-| `PAINT_DEFAULT_PATH` | macro | `progs/paint/paint.c:42` | `#define PAINT_DEFAULT_PATH` |
-| `PAINT_FILE_BTN_W` | macro | `progs/paint/paint.c:44` | `#define PAINT_FILE_BTN_W` |
-| `PAINT_FILE_MAX` | macro | `progs/paint/paint.c:36` | `#define PAINT_FILE_MAX` |
-| `PAINT_FRAME_ATTEMPTS` | macro | `progs/paint/paint.c:46` | `#define PAINT_FRAME_ATTEMPTS` |
-| `PAINT_FRAME_MS` | macro | `progs/paint/paint.c:45` | `#define PAINT_FRAME_MS` |
-| `PAINT_H` | macro | `progs/paint/paint.c:33` | `#define PAINT_H` |
-| `PAINT_N` | macro | `progs/paint/paint.c:34` | `#define PAINT_N` |
-| `PAINT_NCOLORS` | macro | `progs/paint/paint.c:47` | `#define PAINT_NCOLORS` |
-| `PAINT_NSIZES` | macro | `progs/paint/paint.c:48` | `#define PAINT_NSIZES` |
-| `PAINT_NTOOLS` | macro | `progs/paint/paint.c:49` | `#define PAINT_NTOOLS` |
-| `PAINT_PANEL_TITLE` | macro | `progs/paint/paint.c:43` | `#define PAINT_PANEL_TITLE` |
-| `PAINT_PATH_MAX` | macro | `progs/paint/paint.c:35` | `#define PAINT_PATH_MAX` |
-| `PAINT_PNG_MAX` | macro | `progs/paint/paint.c:39` | `#define PAINT_PNG_MAX` |
-| `PAINT_PNG_MAX_DIM` | macro | `progs/paint/paint.c:40` | `#define PAINT_PNG_MAX_DIM` |
-| `PAINT_STATUS_MAX` | macro | `progs/paint/paint.c:37` | `#define PAINT_STATUS_MAX` |
-| `PAINT_TITLE` | macro | `progs/paint/paint.c:41` | `#define PAINT_TITLE` |
-| `PAINT_TOOL_BRUSH` | macro | `progs/paint/paint.c:52` | `#define PAINT_TOOL_BRUSH` |
-| `PAINT_TOOL_CIRCLE` | macro | `progs/paint/paint.c:55` | `#define PAINT_TOOL_CIRCLE` |
-| `PAINT_TOOL_ERASER` | macro | `progs/paint/paint.c:57` | `#define PAINT_TOOL_ERASER` |
-| `PAINT_TOOL_FILL` | macro | `progs/paint/paint.c:56` | `#define PAINT_TOOL_FILL` |
-| `PAINT_TOOL_LINE` | macro | `progs/paint/paint.c:53` | `#define PAINT_TOOL_LINE` |
-| `PAINT_TOOL_RECT` | macro | `progs/paint/paint.c:54` | `#define PAINT_TOOL_RECT` |
-| `PAINT_UI_MEMORY` | macro | `progs/paint/paint.c:38` | `#define PAINT_UI_MEMORY` |
-| `PAINT_W` | macro | `progs/paint/paint.c:32` | `#define PAINT_W` |
-| `STBI_NO_STDIO` | macro | `progs/paint/paint.c:28` | `#define STBI_NO_STDIO` |
-| `STBI_ONLY_PNG` | macro | `progs/paint/paint.c:27` | `#define STBI_ONLY_PNG` |
-| `STB_IMAGE_IMPLEMENTATION` | macro | `progs/paint/paint.c:26` | `#define STB_IMAGE_IMPLEMENTATION` |
-| `main` | function | `progs/paint/paint.c:992` | `int main(int argc, char **argv)` |
 
 Next: [SYMBOLS_p22.md](SYMBOLS_p22.md)

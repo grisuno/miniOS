@@ -1,8 +1,149 @@
-# Symbols (page 6 of 27)
+# Symbols (page 6 of 28)
 Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `minifs_rename` | function | `headers/minifs.h:130` | `int minifs_rename(const char *oldpath, const char *newpath);` |
+| `minifs_resolve_path` | function | `headers/minifs.h:137` | `int minifs_resolve_path(const char *path);` |
+| `minifs_rmdir` | function | `headers/minifs.h:125` | `int minifs_rmdir(const char *path);` |
+| `minifs_stat` | function | `headers/minifs.h:134` | `int minifs_stat(int inode_num, MiniFSInode *out);` |
+| `minifs_sync` | function | `headers/minifs.h:119` | `int minifs_sync(void);` |
+| `minifs_truncate` | function | `headers/minifs.h:133` | `int minifs_truncate(int inode_num, unsigned int new_size);` |
+| `minifs_unlink` | function | `headers/minifs.h:124` | `int minifs_unlink(const char *path);` |
+| `minifs_usage` | function | `headers/minifs.h:164` | `void minifs_usage(unsigned int *free_b, unsigned int *total_b, unsigned int *free_i, unsigned int *total_i);` |
+| `minifs_write` | function | `headers/minifs.h:132` | `int minifs_write(int inode_num, const void *buf, unsigned int offset, unsigned int len);` |
+| `refuses` | function | `headers/minifs.h:128` | `* An existing file dst refuses (no silent overwrite);` |
+| `NET_ACCEPT_TMO_MS` | macro | `headers/net.h:68` | `#define NET_ACCEPT_TMO_MS` |
+| `NET_ARP_CACHE` | macro | `headers/net.h:50` | `#define NET_ARP_CACHE` |
+| `NET_ARP_REPLY` | macro | `headers/net.h:52` | `#define NET_ARP_REPLY` |
+| `NET_ARP_REQUEST` | macro | `headers/net.h:51` | `#define NET_ARP_REQUEST` |
+| `NET_CONNECT_TMO_S` | macro | `headers/net.h:66` | `#define NET_CONNECT_TMO_S` |
+| `NET_DNS` | macro | `headers/net.h:8` | `#define NET_DNS` |
+| `NET_DNS_PORT` | macro | `headers/net.h:62` | `#define NET_DNS_PORT` |
+| `NET_DNS_TMO_MS` | macro | `headers/net.h:65` | `#define NET_DNS_TMO_MS` |
+| `NET_DNS_TRIES` | macro | `headers/net.h:64` | `#define NET_DNS_TRIES` |
+| `NET_EPHEMERAL_MIN` | macro | `headers/net.h:63` | `#define NET_EPHEMERAL_MIN` |
+| `NET_ETHERTYPE_ARP` | macro | `headers/net.h:41` | `#define NET_ETHERTYPE_ARP` |
+| `NET_ETHERTYPE_IP` | macro | `headers/net.h:40` | `#define NET_ETHERTYPE_IP` |
+| `NET_ETHERTYPE_IPV6` | macro | `headers/net.h:42` | `#define NET_ETHERTYPE_IPV6` |
+| `NET_ETH_ALEN` | macro | `headers/net.h:39` | `#define NET_ETH_ALEN` |
+| `NET_FD_BASE` | macro | `headers/net.h:72` | `#define NET_FD_BASE` |
+| `NET_GATEWAY` | macro | `headers/net.h:7` | `#define NET_GATEWAY` |
+| `NET_H` | macro | `headers/net.h:2` | `#define NET_H` |
+| `NET_IOV_LEN` | macro | `headers/net.h:92` | `#define NET_IOV_LEN` |
+| `NET_IOV_MAX` | macro | `headers/net.h:93` | `#define NET_IOV_MAX` |
+| `NET_IP_ADDR` | macro | `headers/net.h:5` | `#define NET_IP_ADDR` |
+| `NET_MAX_FRAME` | macro | `headers/net.h:35` | `#define NET_MAX_FRAME` |
+| `NET_MMSGHDR_LEN` | macro | `headers/net.h:86` | `#define NET_MMSGHDR_LEN` |
+| `NET_MMSGHDR_LEN_OFF` | macro | `headers/net.h:91` | `#define NET_MMSGHDR_LEN_OFF` |
+| `NET_MMSG_MAX` | macro | `headers/net.h:94` | `#define NET_MMSG_MAX` |
+| `NET_MSGHDR_IOVLEN_OFF` | macro | `headers/net.h:90` | `#define NET_MSGHDR_IOVLEN_OFF` |
+| `NET_MSGHDR_IOV_OFF` | macro | `headers/net.h:89` | `#define NET_MSGHDR_IOV_OFF` |
+| `NET_MSGHDR_LEN` | macro | `headers/net.h:85` | `#define NET_MSGHDR_LEN` |
+| `NET_MSGHDR_NAMELEN_OFF` | macro | `headers/net.h:88` | `#define NET_MSGHDR_NAMELEN_OFF` |
+| `NET_MSGHDR_NAME_OFF` | macro | `headers/net.h:87` | `#define NET_MSGHDR_NAME_OFF` |
+| `NET_NETMASK` | macro | `headers/net.h:6` | `#define NET_NETMASK` |
+| `NET_PCI_DEVICE` | macro | `headers/net.h:20` | `#define NET_PCI_DEVICE` |
+| `NET_PCI_VENDOR` | macro | `headers/net.h:19` | `#define NET_PCI_VENDOR` |
+| `NET_POLLERR` | macro | `headers/net.h:14` | `#define NET_POLLERR` |
+| `NET_POLLHUP` | macro | `headers/net.h:15` | `#define NET_POLLHUP` |
+| `NET_POLLIN` | macro | `headers/net.h:12` | `#define NET_POLLIN` |
+| `NET_POLLNVAL` | macro | `headers/net.h:16` | `#define NET_POLLNVAL` |
+| `NET_POLLOUT` | macro | `headers/net.h:13` | `#define NET_POLLOUT` |
+| `NET_PROTO_ICMP` | macro | `headers/net.h:45` | `#define NET_PROTO_ICMP` |
+| `NET_PROTO_TCP` | macro | `headers/net.h:46` | `#define NET_PROTO_TCP` |
+| `NET_PROTO_UDP` | macro | `headers/net.h:47` | `#define NET_PROTO_UDP` |
+| `NET_RCR` | macro | `headers/net.h:34` | `#define NET_RCR` |
+| `NET_RETRY_MS` | macro | `headers/net.h:67` | `#define NET_RETRY_MS` |
+| `NET_RX_ALIGN` | macro | `headers/net.h:27` | `#define NET_RX_ALIGN` |
+| `NET_RX_BUF_LEN` | macro | `headers/net.h:26` | `#define NET_RX_BUF_LEN` |
+| `NET_RX_RING_PAD` | macro | `headers/net.h:31` | `#define NET_RX_RING_PAD` |
+| `NET_RX_RING_SIZE` | macro | `headers/net.h:60` | `#define NET_RX_RING_SIZE` |
+| `NET_SOCKADDR_IN_LEN` | macro | `headers/net.h:83` | `#define NET_SOCKADDR_IN_LEN` |
+| `NET_SOCKETS` | macro | `headers/net.h:61` | `#define NET_SOCKETS` |
+| `NET_SOCK_RX_BUF` | macro | `headers/net.h:59` | `#define NET_SOCK_RX_BUF` |
+| `NET_TCP_MSS` | macro | `headers/net.h:55` | `#define NET_TCP_MSS` |
+| `NET_TCP_WINDOW` | macro | `headers/net.h:56` | `#define NET_TCP_WINDOW` |
+| `NET_TX_MAX` | macro | `headers/net.h:69` | `#define NET_TX_MAX` |
+| `NET_TX_SLOTS` | macro | `headers/net.h:36` | `#define NET_TX_SLOTS` |
+| `NET_UDP_DGRAM_MAX` | macro | `headers/net.h:79` | `#define NET_UDP_DGRAM_MAX` |
+| `NET_UDP_EPHEMERAL_MAX` | macro | `headers/net.h:82` | `#define NET_UDP_EPHEMERAL_MAX` |
+| `NET_UDP_EPHEMERAL_MIN` | macro | `headers/net.h:81` | `#define NET_UDP_EPHEMERAL_MIN` |
+| `NET_UDP_FD_BASE` | macro | `headers/net.h:80` | `#define NET_UDP_FD_BASE` |
+| `NET_UDP_QUEUE` | macro | `headers/net.h:78` | `#define NET_UDP_QUEUE` |
+| `NET_UDP_SOCKETS` | macro | `headers/net.h:77` | `#define NET_UDP_SOCKETS` |
+| `demux` | function | `headers/net.h:131` | `* segment through the production demux (httpd selftest). */ int net_listen(unsigned short port);` |
+| `net6_rx_dropped` | variable | `headers/net.h:164` | `extern unsigned int net6_rx_dropped;` |
+| `net_accept` | function | `headers/net.h:134` | `int net_accept(int fd, unsigned long timeout_ms);` |
+| `net_accept_nb` | function | `headers/net.h:133` | `int net_accept_nb(int fd);` |
+| `net_close` | function | `headers/net.h:125` | `void net_close(int fd);` |
+| `net_cmd_dns` | function | `headers/net.h:116` | `void net_cmd_dns(const char *host);` |
+| `net_cmd_ping` | function | `headers/net.h:114` | `void net_cmd_ping(const char *ip_text);` |
+| `net_cmd_status` | function | `headers/net.h:113` | `void net_cmd_status(void);` |
+| `net_connect` | function | `headers/net.h:120` | `int net_connect(const char *host, unsigned short port);` |
+| `net_get_addrs` | function | `headers/net.h:115` | `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4]);` |
+| `net_open` | function | `headers/net.h:119` | `int net_open(void);` |
+| `net_recv` | function | `headers/net.h:122` | `int net_recv(int fd, char *buf, int len);` |
+| `net_recv_timeout` | function | `headers/net.h:124` | `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms);` |
+| `net_register_symbols` | function | `headers/net.h:110` | `void net_register_symbols(void);` |
+| `net_rx_dropped` | variable | `headers/net.h:163` | `extern unsigned int net_rx_dropped;` |
+| `net_rx_handle_frame` | function | `headers/net.h:159` | `void net_rx_handle_frame(const unsigned char *frame, unsigned len);` |
+| `net_send` | function | `headers/net.h:121` | `int net_send(int fd, const char *buf, int len);` |
+| `net_sock_seq` | function | `headers/net.h:136` | `int net_sock_seq(int fd, unsigned *seq_out, unsigned *ack_out);` |
+| `net_sock_state` | function | `headers/net.h:135` | `int net_sock_state(int fd);` |
+| `net_sys_accept` | function | `headers/net.h:146` | `long net_sys_accept(long fd, long sockaddr, long addrlen);` |
+| `net_sys_bind` | function | `headers/net.h:144` | `long net_sys_bind(long fd, long sockaddr, long addrlen);` |
+| `net_sys_close` | function | `headers/net.h:150` | `long net_sys_close(long fd);` |
+| `net_sys_connect` | function | `headers/net.h:143` | `long net_sys_connect(long fd, long sockaddr, long addrlen);` |
+| `net_sys_dns` | function | `headers/net.h:152` | `long net_sys_dns(long host);` |
+| `net_sys_fcntl` | function | `headers/net.h:108` | `long net_sys_fcntl(long fd, long cmd, long arg);` |
+| `net_sys_getpeername` | function | `headers/net.h:105` | `long net_sys_getpeername(long fd, long addr, long lenp);` |
+| `net_sys_getsockname` | function | `headers/net.h:104` | `long net_sys_getsockname(long fd, long addr, long lenp);` |
+| `net_sys_getsockopt` | function | `headers/net.h:103` | `long net_sys_getsockopt(long fd, long level, long name, long val, long lenp);` |
+| `net_sys_ioctl` | function | `headers/net.h:109` | `long net_sys_ioctl(long fd, long req, long arg);` |
+| `net_sys_is_socket` | function | `headers/net.h:101` | `int net_sys_is_socket(long fd);` |
+| `net_sys_listen` | function | `headers/net.h:145` | `long net_sys_listen(long fd, long backlog);` |
+| `net_sys_poll` | function | `headers/net.h:151` | `long net_sys_poll(long fds, long nfds, long timeout_ms);` |
+| `net_sys_recvfrom` | function | `headers/net.h:148` | `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen);` |
+| `net_sys_sendmmsg` | function | `headers/net.h:107` | `long net_sys_sendmmsg(long fd, long vec, long vlen, long flags);` |
+| `net_sys_sendmsg` | function | `headers/net.h:106` | `long net_sys_sendmsg(long fd, long msg, long flags);` |
+| `net_sys_sendto` | function | `headers/net.h:147` | `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen);` |
+| `net_sys_setsockopt` | function | `headers/net.h:102` | `long net_sys_setsockopt(long fd, long level, long name, long val, long len);` |
+| `net_sys_shutdown` | function | `headers/net.h:149` | `long net_sys_shutdown(long fd, long how);` |
+| `net_sys_socket` | function | `headers/net.h:142` | `long net_sys_socket(long a1, long a2, long a3);` |
+| `net_test_inject_tcp` | function | `headers/net.h:137` | `int net_test_inject_tcp(const unsigned char peer[4], unsigned short pport, unsigned short lport, unsigned char...` |
+| `net_time_ms` | function | `headers/net.h:155` | `unsigned long net_time_ms(void);` |
+| `ring` | function | `headers/net.h:58` | `* ring (below) is the rtl8139's 8 KB hardware ring, unrelated. */ #define NET_SOCK_RX_BUF 16384 #define...` |
+| `stack` | function | `headers/net.h:162` | `* the stack (dropped fragments);` |
+| `tls_free_fd` | function | `headers/net.h:170` | `void tls_free_fd(int fd);` |
+| `RTL8139_H` | macro | `headers/net/rtl8139.h:2` | `#define RTL8139_H` |
+| `net_rx_handle_frame` | function | `headers/net/rtl8139.h:28` | `* net_rx_handle_frame (the protocol demux in net.c). */ void rtl_poll(void);` |
+| `rtl_counters` | function | `headers/net/rtl8139.h:38` | `void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames);` |
+| `rtl_get_mac` | function | `headers/net/rtl8139.h:32` | `void rtl_get_mac(unsigned char out[NET_ETH_ALEN]);` |
+| `rtl_init` | function | `headers/net/rtl8139.h:21` | `void rtl_init(void);` |
+| `rtl_iobase` | function | `headers/net/rtl8139.h:35` | `unsigned short rtl_iobase(void);` |
+| `rtl_present` | function | `headers/net/rtl8139.h:18` | `int rtl_present(void);` |
+| `rtl_send` | function | `headers/net/rtl8139.h:25` | `int rtl_send(const unsigned char *frame, unsigned len);` |
+| `PANIC_BT_MAX` | macro | `headers/panic.h:17` | `#define PANIC_BT_MAX` |
+| `PANIC_H` | macro | `headers/panic.h:15` | `#define PANIC_H` |
+| `PANIC_HEX_MAX_DIGITS` | macro | `headers/panic.h:20` | `#define PANIC_HEX_MAX_DIGITS` |
+| `panic_backtrace` | function | `headers/panic.h:51` | `static inline int panic_backtrace(unsigned long rbp, panic_valid_fn valid,         unsigned long ...` |
+| `panic_hex_str` | function | `headers/panic.h:28` | `static inline int panic_hex_str(char *buf, int cap, unsigned long v, int digits)` |
+| `PCACHE_H` | macro | `headers/pcache.h:17` | `#define PCACHE_H` |
+| `PCACHE_PAGE` | macro | `headers/pcache.h:23` | `#define PCACHE_PAGE` |
+| `PCACHE_PAGES` | macro | `headers/pcache.h:20` | `#define PCACHE_PAGES` |
+| `match` | function | `headers/pcache.h:75` | `* a phys match (owned, ref dropped unless already zero), 0 * otherwise. */ int pcache_put_if(int ino, unsigned...` |
+| `pcache_data` | function | `headers/pcache.h:93` | `unsigned char *pcache_data(int slot);` |
+| `pcache_get` | function | `headers/pcache.h:42` | `int pcache_get(int ino, unsigned index, int *is_new);` |
+| `pcache_init` | function | `headers/pcache.h:28` | `void pcache_init(void);` |
+| `pcache_invalidate_ino` | function | `headers/pcache.h:102` | `void pcache_invalidate_ino(int ino);` |
+| `pcache_lookup` | function | `headers/pcache.h:32` | `int pcache_lookup(int ino, unsigned index);` |
+| `pcache_mark_dirty` | function | `headers/pcache.h:98` | `void pcache_mark_dirty(int slot);` |
+| `pcache_owns_phys` | function | `headers/pcache.h:88` | `int pcache_owns_phys(unsigned long phys);` |
+| `pcache_publish` | function | `headers/pcache.h:51` | `int pcache_publish(int ino, unsigned index, const unsigned char *data);` |
+| `pcache_put` | function | `headers/pcache.h:55` | `void pcache_put(int slot);` |
+| `pcache_ref` | function | `headers/pcache.h:61` | `int pcache_ref(int ino, unsigned index);` |
+| `pcache_ref_if` | function | `headers/pcache.h:83` | `int pcache_ref_if(int ino, unsigned index, unsigned long phys);` |
 | `pcache_stats` | function | `headers/pcache.h:106` | `void pcache_stats(unsigned long *pages_out, unsigned long *hits_out, unsigned long *miss_out, unsigned long...` |
 | `pcache_unmap` | function | `headers/pcache.h:69` | `void pcache_unmap(int ino, unsigned index);` |
 | `PCM2_DMA_BYTES` | macro | `headers/pcm2.h:55` | `#define PCM2_DMA_BYTES` |
@@ -355,146 +496,5 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `SBPF_MAX_INSNS` | macro | `headers/seccomp_bpf.h:30` | `#define SBPF_MAX_INSNS` |
 | `SBPF_MEM` | macro | `headers/seccomp_bpf.h:64` | `#define SBPF_MEM` |
 | `SBPF_MEMWORDS` | macro | `headers/seccomp_bpf.h:32` | `#define SBPF_MEMWORDS` |
-| `SBPF_MISC` | macro | `headers/seccomp_bpf.h:60` | `#define SBPF_MISC` |
-| `SBPF_MOD` | macro | `headers/seccomp_bpf.h:75` | `#define SBPF_MOD` |
-| `SBPF_MUL` | macro | `headers/seccomp_bpf.h:68` | `#define SBPF_MUL` |
-| `SBPF_NEG` | macro | `headers/seccomp_bpf.h:74` | `#define SBPF_NEG` |
-| `SBPF_OR` | macro | `headers/seccomp_bpf.h:70` | `#define SBPF_OR` |
-| `SBPF_RET` | macro | `headers/seccomp_bpf.h:59` | `#define SBPF_RET` |
-| `SBPF_RET_ACTION_FULL` | macro | `headers/seccomp_bpf.h:46` | `#define SBPF_RET_ACTION_FULL` |
-| `SBPF_RET_ALLOW` | macro | `headers/seccomp_bpf.h:45` | `#define SBPF_RET_ALLOW` |
-| `SBPF_RET_DATA` | macro | `headers/seccomp_bpf.h:47` | `#define SBPF_RET_DATA` |
-| `SBPF_RET_ERRNO` | macro | `headers/seccomp_bpf.h:41` | `#define SBPF_RET_ERRNO` |
-| `SBPF_RET_KILL_PROCESS` | macro | `headers/seccomp_bpf.h:38` | `#define SBPF_RET_KILL_PROCESS` |
-| `SBPF_RET_KILL_THREAD` | macro | `headers/seccomp_bpf.h:39` | `#define SBPF_RET_KILL_THREAD` |
-| `SBPF_RET_LOG` | macro | `headers/seccomp_bpf.h:44` | `#define SBPF_RET_LOG` |
-| `SBPF_RET_TRACE` | macro | `headers/seccomp_bpf.h:43` | `#define SBPF_RET_TRACE` |
-| `SBPF_RET_TRAP` | macro | `headers/seccomp_bpf.h:40` | `#define SBPF_RET_TRAP` |
-| `SBPF_RET_USER_NOTIF` | macro | `headers/seccomp_bpf.h:42` | `#define SBPF_RET_USER_NOTIF` |
-| `SBPF_RSH` | macro | `headers/seccomp_bpf.h:73` | `#define SBPF_RSH` |
-| `SBPF_SHIFT_MAX` | macro | `headers/seccomp_bpf.h:34` | `#define SBPF_SHIFT_MAX` |
-| `SBPF_ST` | macro | `headers/seccomp_bpf.h:55` | `#define SBPF_ST` |
-| `SBPF_STX` | macro | `headers/seccomp_bpf.h:56` | `#define SBPF_STX` |
-| `SBPF_SUB` | macro | `headers/seccomp_bpf.h:67` | `#define SBPF_SUB` |
-| `SBPF_TAX` | macro | `headers/seccomp_bpf.h:85` | `#define SBPF_TAX` |
-| `SBPF_TXA` | macro | `headers/seccomp_bpf.h:86` | `#define SBPF_TXA` |
-| `SBPF_W` | macro | `headers/seccomp_bpf.h:61` | `#define SBPF_W` |
-| `SBPF_WORD` | macro | `headers/seccomp_bpf.h:33` | `#define SBPF_WORD` |
-| `SBPF_X` | macro | `headers/seccomp_bpf.h:83` | `#define SBPF_X` |
-| `SBPF_XOR` | macro | `headers/seccomp_bpf.h:76` | `#define SBPF_XOR` |
-| `SECCOMP_BPF_H` | macro | `headers/seccomp_bpf.h:12` | `#define SECCOMP_BPF_H` |
-| `sbpf_action_rank` | function | `headers/seccomp_bpf.h:104` | `int sbpf_action_rank(unsigned int action);` |
-| `sbpf_check` | function | `headers/seccomp_bpf.h:95` | `int sbpf_check(const sbpf_insn *prog, unsigned len, unsigned short *scratch);` |
-| `sbpf_data` | struct | `headers/seccomp_bpf.h:23` | `` |
-| `sbpf_insn` | struct | `headers/seccomp_bpf.h:15` | `` |
-| `sbpf_run` | function | `headers/seccomp_bpf.h:100` | `unsigned int sbpf_run(const sbpf_insn *prog, unsigned len, const sbpf_data *d);` |
-| `SELECT_FD_SETSIZE` | macro | `headers/select_map.h:20` | `#define SELECT_FD_SETSIZE` |
-| `SELECT_FD_SET_BYTES` | macro | `headers/select_map.h:21` | `#define SELECT_FD_SET_BYTES` |
-| `SELECT_MAP_H` | macro | `headers/select_map.h:2` | `#define SELECT_MAP_H` |
-| `SELECT_POLLERR` | macro | `headers/select_map.h:27` | `#define SELECT_POLLERR` |
-| `SELECT_POLLHUP` | macro | `headers/select_map.h:28` | `#define SELECT_POLLHUP` |
-| `SELECT_POLLIN` | macro | `headers/select_map.h:24` | `#define SELECT_POLLIN` |
-| `SELECT_POLLNVAL` | macro | `headers/select_map.h:29` | `#define SELECT_POLLNVAL` |
-| `SELECT_POLLOUT` | macro | `headers/select_map.h:26` | `#define SELECT_POLLOUT` |
-| `SELECT_POLLPRI` | macro | `headers/select_map.h:25` | `#define SELECT_POLLPRI` |
-| `select_fd_isset` | function | `headers/select_map.h:37` | `static inline int select_fd_isset(const unsigned char *set, int fd)` |
-| `select_fd_put` | function | `headers/select_map.h:41` | `static inline void select_fd_put(unsigned char *set, int fd)` |
-| `select_poll_badfd` | function | `headers/select_map.h:131` | `static inline int select_poll_badfd(const select_pollfd_t *pfd,                                  ...` |
-| `select_poll_build` | function | `headers/select_map.h:66` | `static inline unsigned select_poll_build(select_pollfd_t *pfd,                                   ...` |
-| `select_poll_count` | function | `headers/select_map.h:46` | `static inline unsigned select_poll_count(const unsigned char *r,                                 ...` |
-| `select_poll_result` | function | `headers/select_map.h:95` | `static inline unsigned select_poll_result(unsigned char *rout,                                   ...` |
-| `select_pollfd_t` | struct | `headers/select_map.h:31` | `` |
-| `CMD_BUF_SZ` | macro | `headers/shell.h:13` | `#define CMD_BUF_SZ` |
-| `MAX_ARGS` | macro | `headers/shell.h:14` | `#define MAX_ARGS` |
-| `SHELL_H` | macro | `headers/shell.h:2` | `#define SHELL_H` |
-| `shell_cmd_sh` | function | `headers/shell.h:39` | `int shell_cmd_sh(int argc, char **argv);` |
-| `shell_parse` | function | `headers/shell.h:21` | `int shell_parse(char *line, char **argv, int max_args);` |
-| `shell_parse_long` | function | `headers/shell.h:29` | `int shell_parse_long(const char *s, long *out);` |
-| `shell_parse_pid` | function | `headers/shell.h:34` | `int shell_parse_pid(const char *s, int min_pid, int *out);` |
-| `shell_readline_buf` | function | `headers/shell.h:18` | `void shell_readline_buf(char *buf, int size);` |
-| `SIGN_DESC_BYTES` | macro | `headers/sign.h:24` | `#define SIGN_DESC_BYTES` |
-| `SIGN_H` | macro | `headers/sign.h:17` | `#define SIGN_H` |
-| `SIGN_KEYS` | macro | `headers/sign.h:21` | `#define SIGN_KEYS` |
-| `SIGN_KEY_DEV` | macro | `headers/sign.h:19` | `#define SIGN_KEY_DEV` |
-| `SIGN_KEY_PROD` | macro | `headers/sign.h:20` | `#define SIGN_KEY_PROD` |
-| `SIGN_NOTE_TYPE` | macro | `headers/sign.h:25` | `#define SIGN_NOTE_TYPE` |
-| `SIGN_PUB_BYTES` | macro | `headers/sign.h:22` | `#define SIGN_PUB_BYTES` |
-| `SIGN_SIG_BYTES` | macro | `headers/sign.h:23` | `#define SIGN_SIG_BYTES` |
-| `ed25519_verify` | function | `headers/sign.h:75` | `int ed25519_verify(const unsigned char sig[64], const unsigned char *msg, unsigned long msglen, const unsigned char...` |
-| `ed_sha` | struct | `headers/sign.h:61` | `` |
-| `ed_sha512_final` | function | `headers/sign.h:71` | `void ed_sha512_final(ed_sha *c, unsigned char out[64]);` |
-| `ed_sha512_init` | function | `headers/sign.h:69` | `void ed_sha512_init(ed_sha *c);` |
-| `ed_sha512_update` | function | `headers/sign.h:70` | `void ed_sha512_update(ed_sha *c, const unsigned char *data, unsigned long len);` |
-| `sign_pubkey` | function | `headers/sign.h:47` | `static inline const unsigned char *sign_pubkey(unsigned id)` |
-| `SMP_H` | macro | `headers/smp.h:2` | `#define SMP_H` |
-| `lapic_cal_10ms` | variable | `headers/smp.h:38` | `extern unsigned lapic_cal_10ms;` |
-| `lapic_cal_valid` | variable | `headers/smp.h:39` | `extern int lapic_cal_valid;` |
-| `smp_ap_entry` | function | `headers/smp.h:42` | `void smp_ap_entry(void);` |
-| `smp_dbg_ipis` | variable | `headers/smp.h:32` | `extern volatile unsigned smp_dbg_ipis;` |
-| `smp_dbg_lvt` | variable | `headers/smp.h:31` | `extern volatile unsigned smp_dbg_lvt;` |
-| `smp_dbg_sent` | variable | `headers/smp.h:33` | `extern volatile unsigned smp_dbg_sent;` |
-| `smp_dbg_svr` | variable | `headers/smp.h:30` | `extern volatile unsigned smp_dbg_svr;` |
-| `smp_init` | function | `headers/smp.h:41` | `void smp_init(void);` |
-| `smp_ipi_broadcast` | function | `headers/smp.h:43` | `void smp_ipi_broadcast(int vector);` |
-| `smp_lock` | variable | `headers/smp.h:25` | `extern spinlock_t smp_lock;` |
-| `smp_nmi_broadcast` | function | `headers/smp.h:44` | `void smp_nmi_broadcast(void);` |
-| `SPAWN_H` | macro | `headers/spawn.h:2` | `#define SPAWN_H` |
-| `spawn_backup` | function | `headers/spawn.h:28` | `int spawn_backup(spawn_ctx_t *ctx);` |
-| `spawn_copy_argv` | function | `headers/spawn.h:39` | `char **spawn_copy_argv(int argc, const char **uargv);` |
-| `spawn_ctx_t` | struct | `headers/spawn.h:9` | `` |
-| `spawn_execute` | function | `headers/spawn.h:48` | `int spawn_execute(const char *resolved, const char *redirect, unsigned char *data, unsigned data_size, int argc...` |
-| `spawn_free_argv` | function | `headers/spawn.h:42` | `void spawn_free_argv(char **kargv, int argc);` |
-| `spawn_load_image` | function | `headers/spawn.h:45` | `unsigned char *spawn_load_image(const char *resolved, unsigned *size_out);` |
-| `spawn_restore` | function | `headers/spawn.h:31` | `void spawn_restore(spawn_ctx_t *ctx);` |
-| `spawn_validate_argv` | function | `headers/spawn.h:34` | `int spawn_validate_argv(int argc, const char **uargv);` |
-| `SPINLOCK_H` | macro | `headers/spinlock.h:2` | `#define SPINLOCK_H` |
-| `SPINLOCK_INIT` | macro | `headers/spinlock.h:44` | `#define SPINLOCK_INIT` |
-| `irqflags_t` | type_alias | `headers/spinlock.h:41` | `typedef unsigned long irqflags_t;` |
-| `spin_init` | function | `headers/spinlock.h:46` | `static inline void spin_init(spinlock_t *lock)` |
-| `spin_lock` | function | `headers/spinlock.h:58` | `static inline void spin_lock(spinlock_t *lock)` |
-| `spin_lock` | function | `headers/spinlock.h:107` | `static inline void spin_lock(spinlock_t *lock)` |
-| `spin_lock_irqsave` | function | `headers/spinlock.h:68` | `static inline void spin_lock_irqsave(spinlock_t *lock, irqflags_t *flags)` |
-| `spin_restore_irq` | function | `headers/spinlock.h:57` | `static inline void spin_restore_irq(irqflags_t flags)` |
-| `spin_restore_irq` | function | `headers/spinlock.h:99` | `static inline void spin_restore_irq(irqflags_t flags)` |
-| `spin_save_irq` | function | `headers/spinlock.h:56` | `static inline irqflags_t spin_save_irq(void)` |
-| `spin_save_irq` | function | `headers/spinlock.h:92` | `static inline irqflags_t spin_save_irq(void)` |
-| `spin_trylock` | function | `headers/spinlock.h:84` | `static inline int spin_trylock(spinlock_t *lock)` |
-| `spin_unlock` | function | `headers/spinlock.h:64` | `static inline void spin_unlock(spinlock_t *lock)` |
-| `spin_unlock` | function | `headers/spinlock.h:118` | `static inline void spin_unlock(spinlock_t *lock)` |
-| `spin_unlock_irqrestore` | function | `headers/spinlock.h:75` | `static inline void spin_unlock_irqrestore(spinlock_t *lock, irqflags_t flags)` |
-| `spin_unlock_irqrestore` | function | `headers/spinlock.h:150` | `static inline void spin_unlock_irqrestore(spinlock_t *lock, irqflags_t flags)` |
-| `spin_unlock_keep_irq` | function | `headers/spinlock.h:80` | `static inline void spin_unlock_keep_irq(spinlock_t *lock)` |
-| `spin_unlock_keep_irq` | function | `headers/spinlock.h:130` | `static inline void spin_unlock_keep_irq(spinlock_t *lock)` |
-| `spinlock_t` | struct | `headers/spinlock.h:38` | `` |
-| `COND_INIT` | macro | `headers/sync.h:101` | `#define COND_INIT` |
-| `MUTEX_INIT` | macro | `headers/sync.h:70` | `#define MUTEX_INIT` |
-| `RWLOCK_INIT` | macro | `headers/sync.h:122` | `#define RWLOCK_INIT` |
-| `SEM_INIT` | macro | `headers/sync.h:87` | `#define SEM_INIT(n)` |
-| `SYNC_H` | macro | `headers/sync.h:2` | `#define SYNC_H` |
-| `WAIT_QUEUE_INIT` | macro | `headers/sync.h:48` | `#define WAIT_QUEUE_INIT` |
-| `WQ_NONE` | macro | `headers/sync.h:39` | `#define WQ_NONE` |
-| `cond_broadcast` | function | `headers/sync.h:106` | `void cond_broadcast(cond_t *c);` |
-| `cond_init` | function | `headers/sync.h:103` | `void cond_init(cond_t *c);` |
-| `cond_signal` | function | `headers/sync.h:105` | `void cond_signal(cond_t *c);` |
-| `cond_t` | struct | `headers/sync.h:97` | `` |
-| `cond_wait` | function | `headers/sync.h:104` | `void cond_wait(cond_t *c, mutex_t *m);` |
-| `inheritance` | function | `headers/sync.h:56` | `* Priority inheritance (thesis correction 3): a low-priority holder that * blocks a high-priority waiter is boosted...` |
-| `mutex_init` | function | `headers/sync.h:72` | `void mutex_init(mutex_t *m);` |
-| `mutex_lock` | function | `headers/sync.h:73` | `void mutex_lock(mutex_t *m);` |
-| `mutex_note_waiter` | function | `headers/sync.h:76` | `void mutex_note_waiter(mutex_t *m, int waiter);` |
-| `mutex_t` | struct | `headers/sync.h:63` | `` |
-| `mutex_trylock` | function | `headers/sync.h:75` | `int mutex_trylock(mutex_t *m);` |
-| `mutex_unlock` | function | `headers/sync.h:74` | `void mutex_unlock(mutex_t *m);` |
-| `now` | function | `headers/sync.h:130` | `* available right now (a reader never takes it while a writer waits). */ int rwlock_read_trylock(rwlock_t *rw);` |
-| `pi_get_eff` | function | `headers/sync.h:78` | `int pi_get_eff(int pid);` |
-| `pi_set_base` | function | `headers/sync.h:77` | `void pi_set_base(int pid, int prio);` |
-| `rwlock_init` | function | `headers/sync.h:124` | `void rwlock_init(rwlock_t *rw);` |
-| `rwlock_read_lock` | function | `headers/sync.h:125` | `void rwlock_read_lock(rwlock_t *rw);` |
-| `rwlock_read_unlock` | function | `headers/sync.h:126` | `void rwlock_read_unlock(rwlock_t *rw);` |
-| `rwlock_t` | struct | `headers/sync.h:114` | `` |
-| `rwlock_write_lock` | function | `headers/sync.h:127` | `void rwlock_write_lock(rwlock_t *rw);` |
-| `rwlock_write_trylock` | function | `headers/sync.h:132` | `int rwlock_write_trylock(rwlock_t *rw);` |
-| `rwlock_write_unlock` | function | `headers/sync.h:128` | `void rwlock_write_unlock(rwlock_t *rw);` |
-| `sem_init` | function | `headers/sync.h:89` | `void sem_init(sem_t *s, int value);` |
 
 Next: [SYMBOLS_p7.md](SYMBOLS_p7.md)

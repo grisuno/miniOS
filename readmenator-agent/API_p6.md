@@ -130,16 +130,16 @@ Imported by: `kernel/shell.c`, `kernel/syscalls.c`
 - `shell_cmd_zip` (function) `headers/zip.h:15` `void shell_cmd_zip(int argc, char **argv);`
 
 ## kernel.c
-Depends on: `headers/abi.h`, `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/cpu_setup.h`, `headers/arch/x86/msr.h`, `headers/block.h`, `headers/drivers/usbblk.h`, `headers/drivers/usbhid.h`, `headers/drivers/virtio_blk.h`, `headers/drivers/xhci.h`, `headers/ide.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/sb16.h`, `headers/sched.h`, `headers/smp.h`, `headers/syscall_asm.h`, `headers/vga_fb.h`
-- `table` (function) `kernel.c:104` `* Symbol table (for resolving program references) * ================================================================...`
-- `syscall_init` (function) `kernel.c:117` `void syscall_init(void)`
-- `ksyscall` (function) `kernel.c:130` `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
-- `kstack` (function) `kernel.c:146` `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...`
-- `ms` (function) `kernel.c:185` `* 0 ms (TSC ticks since power-on divided down, still monotonic);`
-- `bootlog_mark` (function) `kernel.c:192` `void bootlog_mark(const char *name)`
-- `bootlog_report` (function) `kernel.c:199` `void bootlog_report(void)`
-- `size` (function) `kernel.c:257` `* image size (see kernel.ld);`
-- `tables` (function) `kernel.c:279` `* tables (already built above) for its uncached register window and the
+Depends on: `headers/abi.h`, `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/cpu_setup.h`, `headers/arch/x86/msr.h`, `headers/block.h`, `headers/drivers/ahci.h`, `headers/drivers/usbblk.h`, `headers/drivers/usbhid.h`, `headers/drivers/virtio_blk.h`, `headers/drivers/xhci.h`, `headers/ide.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/sb16.h`, `headers/sched.h`, `headers/smp.h`, `headers/syscall_asm.h`, `headers/vga_fb.h`
+- `table` (function) `kernel.c:105` `* Symbol table (for resolving program references) * ================================================================...`
+- `syscall_init` (function) `kernel.c:118` `void syscall_init(void)`
+- `ksyscall` (function) `kernel.c:131` `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
+- `kstack` (function) `kernel.c:147` `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...`
+- `ms` (function) `kernel.c:186` `* 0 ms (TSC ticks since power-on divided down, still monotonic);`
+- `bootlog_mark` (function) `kernel.c:193` `void bootlog_mark(const char *name)`
+- `bootlog_report` (function) `kernel.c:200` `void bootlog_report(void)`
+- `size` (function) `kernel.c:258` `* image size (see kernel.ld);`
+- `tables` (function) `kernel.c:280` `* tables (already built above) for its uncached register window and the
      * heap for its rings...`
 
 ## kernel/abi.c

@@ -1,6 +1,6 @@
 # progs/src
 
-progs/src groups 86 files (c, h) around kstrlen, kstrcpy, kstrncpy, kstrncat, kstrcmp. Docstring: abi.h -- Boot-time ABI manifest gate contract.
+progs/src groups 77 files (c, h) around kstrlen, kstrcpy, kstrncpy, kstrncat, kstrcmp. Docstring: abi.h -- Boot-time ABI manifest gate contract.
 
 ```mermaid
 graph LR
@@ -10,7 +10,7 @@ graph LR
     tests["tests"]
     tools["tools"]
     headers -- "depends on" --> kernel
-    kernel -- "calls into" --> headers
+    kernel -- "depends on" --> headers
     progs -- "calls into" --> headers
     progs -- "calls into" --> kernel
     tests -- "calls into" --> headers
@@ -21,11 +21,11 @@ graph LR
 
 ## headers (3.1)
 
-headers groups 9 files (h) around SECCOMP_BPF_H, sbpf_insn, sbpf_data, SBPF_MAX_INSNS, SBPF_DATA_SIZE. Docstring: abi.h -- Boot-time ABI manifest gate contract.
+headers groups 6 files (h) around ABI_H, ABI_OK, ABI_NO_MANIFEST, ABI_BAD_FORMAT, ABI_VERSION_MISMATCH. Docstring: abi.h -- Boot-time ABI manifest gate contract.
 
 ## kernel (3.2)
 
-kernel groups 4 files (c) around kstrlen, kstrcpy, kstrncpy, kstrncat, kstrcmp. Docstring: kernel/abi.c -- Boot-time ABI manifest gate.
+kernel groups 2 files (c) around kstrlen, kstrcpy, kstrncpy, kstrncat, kstrcmp. Docstring: kernel/abi.c -- Boot-time ABI manifest gate.
 
 ## progs (3.3)
 
@@ -33,7 +33,7 @@ progs groups 53 files (c, h) around MINIOS_ABI_H, MINIOS_ABI_VERSION, MINIOS_ABI
 
 ## tests (3.4)
 
-tests groups 19 files (c, h) around observe, TEST_STUB_KERNEL_H, PCI_MMIO_SIZE, __attribute__, __attribute__. Docstring: Host-test stand-in for headers/kernel.h (tests/stubs first on
+tests groups 15 files (c, h) around observe, TEST_STUB_KERNEL_H, PCI_MMIO_SIZE, __attribute__, __attribute__. Docstring: Host-test stand-in for headers/kernel.h (tests/stubs first on
 
 ## tools (3.5)
 
@@ -44,15 +44,10 @@ tools groups 1 files (c) around main. Docstring: tools/abi_stamp.c -- Build-time
 - headers/abi.h
 - headers/arena.h
 - headers/audio.h
-- headers/httpd.h
 - headers/leakcheck.h
 - headers/pcm_ring.h
-- headers/seccomp_bpf.h
 - headers/select_map.h
-- headers/sign.h
 - kernel/abi.c
-- kernel/ed25519.c
-- kernel/seccomp_bpf.c
 - kernel/string.c
 - progs/doomedit/doomedit.c
 - progs/doomgeneric/doomgeneric_minios.c
@@ -113,16 +108,12 @@ tools groups 1 files (c) around main. Docstring: tools/abi_stamp.c -- Build-time
 - tests/test_file_assoc.c
 - tests/test_freedom_wl.c
 - tests/test_freedomui.c
-- tests/test_httpd.c
 - tests/test_leakcheck.c
 - tests/test_minios_png.c
 - tests/test_paint.c
 - tests/test_pcm.c
 - tests/test_ps2_keymap.c
-- tests/test_sanitize.c
-- tests/test_seccomp_bpf.c
 - tests/test_select_map.c
-- tests/test_sign.c
 - tests/test_theme.c
 - tests/test_vedit_build.c
 - tests/test_wl.c

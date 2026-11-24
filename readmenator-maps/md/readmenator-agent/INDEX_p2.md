@@ -3,6 +3,8 @@ Previous: [INDEX.md](INDEX.md)
 
 | File | Purpose | Subsystem | Symbols | Used by |
 |------|---------|-----------|---------|---------|
+| `tests/test_file_assoc.c` | Docstring: host test for the file browser assoc contract (make test-file). | tests | 10 | 0 |
+| `tests/test_freedom_wl.c` | test_freedom_wl - host suite for the Wayland to MiniOS mapping. | tests | 3 | 0 |
 | `tests/test_freedomui.c` | test_freedomui - host suite for the real FreeDom MiniOS backend. | tests | 2 | 0 |
 | `tests/test_futex.c` | Docstring: Host test for kernel/futex.c (make test-futex). | tests | 7 | 0 |
 | `tests/test_fx.c` | Docstring: Host test for headers/vga_fx.h (make test-fx). | tests | 2 | 0 |

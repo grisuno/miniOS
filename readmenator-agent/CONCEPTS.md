@@ -3,15 +3,15 @@
 Nouns map atomically to file sets (EXTRACTED); verbs aggregate structural edges (INFERRED).
 
 - `progs` | files=319 | mentions=335 | `headers/vga_fb.h`, `headers/vga_fx.h`, `progs/asm/aes.s`, `progs/asm/cp.s`, `progs/asm/cvmfmt.s`, `progs/asm/fib.s`, `progs/asm/freedom.s`, `progs/asm/http.s`, `progs/asm/json.s`, `progs/asm/ldhello.s`
+- `any` | files=242 | mentions=478 | `arch/x86/boot/stage2.S`, `drivers/usbhid.c`, `drivers/xhci.c`, `fs/ext4.c`, `fs/kfile.c`, `fs/minifs.c`, `fs/pcache.c`, `headers/block.h`, `headers/drivers/ahci.h`, `headers/drivers/pci.h`
 - `free` | files=241 | mentions=524 | `drivers/sb16.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `fs/minifs.c`, `fs/pcache.c`, `fs/zip.c`, `headers/arena.h`, `headers/kernel.h`, `headers/leakcheck.h`, `headers/minifs.h`
-- `any` | files=241 | mentions=479 | `arch/x86/boot/stage2.S`, `drivers/usbhid.c`, `drivers/xhci.c`, `fs/ext4.c`, `fs/kfile.c`, `fs/minifs.c`, `fs/pcache.c`, `headers/block.h`, `headers/drivers/pci.h`, `headers/drivers/xhci.h`
-- `without` | files=233 | mentions=462 | `arch/x86/ctx_sw.S`, `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `fs/pcache.c`, `headers/arena.h`, `headers/drivers/usbblk.h`, `headers/drivers/xhci.h`, `headers/kernel.h`, `headers/kernel/console_in.h`
+- `without` | files=234 | mentions=465 | `arch/x86/ctx_sw.S`, `drivers/ahci.c`, `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `fs/pcache.c`, `headers/arena.h`, `headers/drivers/usbblk.h`, `headers/drivers/xhci.h`, `headers/kernel.h`
+- `can` | files=222 | mentions=283 | `arch/x86/boot/stage2.S`, `drivers/ahci.c`, `drivers/sb16.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `fs/fat32.c`, `fs/kfile.c`, `fs/pcache.c`, `headers/drivers/usbhid.h`, `headers/kernel.h`
 - `program` | files=221 | mentions=447 | `drivers/pcm2.c`, `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `headers/drivers/pci.h`, `headers/kernel.h`, `headers/sched.h`, `headers/seccomp_bpf.h`, `headers/shell.h`, `headers/vga_fb.h`
-- `can` | files=221 | mentions=282 | `arch/x86/boot/stage2.S`, `drivers/sb16.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `fs/fat32.c`, `fs/kfile.c`, `fs/pcache.c`, `headers/drivers/usbhid.h`, `headers/kernel.h`, `headers/pcache.h`
 - `under` | files=217 | mentions=242 | `drivers/pcm2.c`, `drivers/usbblk.c`, `drivers/usbhid.c`, `fs/kfile.c`, `fs/pcache.c`, `fs/vfs.c`, `fs/zip.c`, `headers/arch/x86/cpu_setup.h`, `headers/fat32.h`, `headers/fsimg.h`
 - `see` | files=192 | mentions=201 | `drivers/xhci.c`, `fs/kfile.c`, `fs/pcache.c`, `headers/arch/x86/hal_io.h`, `headers/ext4.h`, `headers/kernel.h`, `headers/pcache.h`, `headers/sched.h`, `headers/sign.h`, `kernel/console_in.c`
+- `version` | files=188 | mentions=389 | `drivers/ahci.c`, `drivers/nvme.c`, `headers/abi.h`, `headers/drivers/ahci.h`, `headers/drivers/nvme.h`, `headers/drivers/xhci.h`, `headers/httpd.h`, `headers/minifs.h`, `headers/tls.h`, `kernel/abi.c`
 - `doomgeneric` | files=188 | mentions=211 | `headers/vga_fx.h`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`
-- `version` | files=186 | mentions=378 | `drivers/nvme.c`, `headers/abi.h`, `headers/drivers/nvme.h`, `headers/drivers/xhci.h`, `headers/httpd.h`, `headers/minifs.h`, `headers/tls.h`, `kernel/abi.c`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`
 - `but` | files=186 | mentions=198 | `drivers/usbhid.c`, `fs/ext4.c`, `headers/net.h`, `kernel/console.c`, `kernel/console_in.c`, `kernel/percpu_rq.c`, `kernel/sched.c`, `kernel/shell.c`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`
 - `later` | files=184 | mentions=198 | `drivers/usbblk.c`, `drivers/usbhid.c`, `fs/ext4.c`, `fs/kfile.c`, `headers/arch/x86/hal_io.h`, `headers/arena.h`, `headers/drivers/pci.h`, `headers/pipe.h`, `kernel/console_in.c`, `kernel/mm/cow.c`
 - `either` | files=184 | mentions=189 | `drivers/usbhid.c`, `drivers/xhci.c`, `fs/pcache.c`, `headers/drivers/pci.h`, `headers/drivers/xhci.h`, `headers/pcache.h`, `headers/wm_blur.h`, `kernel/console_in.c`, `kernel/vga_fb.c`, `progs/doomgeneric/am_map.c`
@@ -41,17 +41,17 @@ Nouns map atomically to file sets (EXTRACTED); verbs aggregate structural edges 
 - `redistribute` | files=170 | mentions=170 | `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_loop.c`
 - `howard` | files=168 | mentions=168 | `headers/rtc.h`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_iwad.h`
 - `simon` | files=167 | mentions=167 | `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_loop.c`
-- `one` | files=163 | mentions=664 | `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/kbd.c`, `drivers/pcm2.c`, `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/virtio_blk.c`, `drivers/virtio_net.c`, `drivers/xhci.c`, `fs/ext4.c`
+- `one` | files=164 | mentions=664 | `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/ahci.c`, `drivers/kbd.c`, `drivers/pcm2.c`, `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/virtio_blk.c`, `drivers/virtio_net.c`, `drivers/xhci.c`
 - `description` | files=159 | mentions=169 | `fs/kfile.c`, `kernel/syscalls.c`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`
 - `kernel` | files=155 | mentions=380 | `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/sb16.c`, `drivers/xhci.c`, `fs/kfile.c`, `fs/zip.c`, `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/arena.h`, `headers/audio.h`
-- `docstring` | files=149 | mentions=1286 | `boot/uefi_stub.c`, `drivers/block.c`, `drivers/kbd.c`, `drivers/mouse.c`, `drivers/sb16.c`, `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/virtio_blk.c`, `drivers/virtio_net.c`, `drivers/xhci.c`
-- `read` | files=149 | mentions=456 | `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/mouse.c`, `drivers/nvme.c`, `drivers/rtc.c`, `drivers/sb16.c`
+- `docstring` | files=151 | mentions=1358 | `boot/uefi_stub.c`, `drivers/ahci.c`, `drivers/block.c`, `drivers/kbd.c`, `drivers/mouse.c`, `drivers/sb16.c`, `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/virtio_blk.c`, `drivers/virtio_net.c`
+- `read` | files=151 | mentions=476 | `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/ahci.c`, `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/mouse.c`, `drivers/nvme.c`, `drivers/rtc.c`
 - `inc` | files=146 | mentions=147 | `headers/wm_events.h`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_loop.h`
 - `mini` | files=141 | mentions=258 | `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/block.c`, `drivers/ide.c`, `fs/kfile.c`, `fs/minifs.c`, `fs/pcache.c`, `fs/zip.c`, `headers/arch/x86/boot/bootdefs.h`
-- `every` | files=136 | mentions=319 | `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/virtio_blk.c`, `drivers/virtio_net.c`, `drivers/xhci.c`, `fs/ext4.c`, `fs/minifs.c`, `fs/pcache.c`, `fs/zip.c`, `headers/arch/x86/hal_io.h`
-- `max` | files=135 | mentions=613 | `boot/uefi_stub.c`, `drivers/nvme.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/virtio_net.c`, `drivers/xhci.c`, `fs/kfile.c`, `fs/ramdisk.c`
-- `when` | files=134 | mentions=437 | `drivers/block.c`, `drivers/kbd.c`, `drivers/sb16.c`, `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/virtio_blk.c`, `drivers/virtio_net.c`, `drivers/xhci.c`, `fs/kfile.c`, `fs/pcache.c`
-- `file` | files=131 | mentions=605 | `boot/uefi_stub.c`, `fs/ext4.c`, `fs/fat32.c`, `fs/fsimg.c`, `fs/kfile.c`, `fs/minifs.c`, `fs/pcache.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`
+- `max` | files=137 | mentions=615 | `boot/uefi_stub.c`, `drivers/ahci.c`, `drivers/nvme.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/virtio_net.c`, `drivers/xhci.c`, `fs/kfile.c`
+- `when` | files=136 | mentions=453 | `drivers/ahci.c`, `drivers/block.c`, `drivers/kbd.c`, `drivers/sb16.c`, `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/virtio_blk.c`, `drivers/virtio_net.c`, `drivers/xhci.c`, `fs/kfile.c`
+- `every` | files=136 | mentions=320 | `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/virtio_blk.c`, `drivers/virtio_net.c`, `drivers/xhci.c`, `fs/ext4.c`, `fs/minifs.c`, `fs/pcache.c`, `fs/zip.c`, `headers/arch/x86/hal_io.h`
+- `int` | files=131 | mentions=1387 | `boot/uefi_stub.c`, `drivers/ahci.c`, `drivers/kbd.c`, `drivers/sb16.c`, `drivers/virtio_blk.c`, `drivers/virtio_net.c`, `drivers/xhci.c`, `fs/kfile.c`, `fs/minifs.c`, `fs/pcache.c`
 
 ## Verb Edges
 
@@ -108,13 +108,13 @@ Nouns map atomically to file sets (EXTRACTED); verbs aggregate structural edges 
 
 ## Dialectic
 
-- Thesis: `any` centralizes 241 files; Antithesis: `but` pulls 186 files with 181 shared (Jaccard 0.74); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
-- Thesis: `any` centralizes 241 files; Antithesis: `can` pulls 221 files with 196 shared (Jaccard 0.74); Synthesis: should they merge, split by layer, or keep `depends_on` explicit?
-- Thesis: `any` centralizes 241 files; Antithesis: `copyright` pulls 170 files with 170 shared (Jaccard 0.71); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
-- Thesis: `any` centralizes 241 files; Antithesis: `description` pulls 159 files with 159 shared (Jaccard 0.66); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
-- Thesis: `any` centralizes 241 files; Antithesis: `details` pulls 170 files with 170 shared (Jaccard 0.71); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
-- Thesis: `any` centralizes 241 files; Antithesis: `distributed` pulls 170 files with 170 shared (Jaccard 0.71); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
-- Thesis: `any` centralizes 241 files; Antithesis: `doomgeneric` pulls 188 files with 170 shared (Jaccard 0.66); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
-- Thesis: `any` centralizes 241 files; Antithesis: `either` pulls 184 files with 179 shared (Jaccard 0.73); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
-- Thesis: `any` centralizes 241 files; Antithesis: `even` pulls 178 files with 172 shared (Jaccard 0.70); Synthesis: should they merge, split by layer, or keep `depends_on` explicit?
-- Thesis: `any` centralizes 241 files; Antithesis: `fitness` pulls 170 files with 170 shared (Jaccard 0.71); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `any` centralizes 242 files; Antithesis: `but` pulls 186 files with 181 shared (Jaccard 0.73); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `any` centralizes 242 files; Antithesis: `can` pulls 222 files with 196 shared (Jaccard 0.73); Synthesis: should they merge, split by layer, or keep `depends_on` explicit?
+- Thesis: `any` centralizes 242 files; Antithesis: `copyright` pulls 170 files with 170 shared (Jaccard 0.70); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `any` centralizes 242 files; Antithesis: `description` pulls 159 files with 159 shared (Jaccard 0.66); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `any` centralizes 242 files; Antithesis: `details` pulls 170 files with 170 shared (Jaccard 0.70); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `any` centralizes 242 files; Antithesis: `distributed` pulls 170 files with 170 shared (Jaccard 0.70); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `any` centralizes 242 files; Antithesis: `doomgeneric` pulls 188 files with 170 shared (Jaccard 0.65); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `any` centralizes 242 files; Antithesis: `either` pulls 184 files with 179 shared (Jaccard 0.72); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `any` centralizes 242 files; Antithesis: `even` pulls 178 files with 172 shared (Jaccard 0.69); Synthesis: should they merge, split by layer, or keep `depends_on` explicit?
+- Thesis: `any` centralizes 242 files; Antithesis: `fitness` pulls 170 files with 170 shared (Jaccard 0.70); Synthesis: should they merge, split by layer, or keep `bridges` explicit?

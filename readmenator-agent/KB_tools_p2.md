@@ -31,8 +31,8 @@ Previous: [KB_tools.md](KB_tools.md)
   - `usage` (function, line 51)
   - `restore_sources` (function, line 139)
   - `cleanup` (function, line 146)
-  - `record` (function, line 570)
-  - `find_index` (function, line 576)
+  - `record` (function, line 579)
+  - `find_index` (function, line 585)
 
 ## tools/probe_compute_vga.py
 - Doc: Docstring: VGA liveness probe during CPU-bound ring-3 compute.
@@ -141,12 +141,12 @@ Previous: [KB_tools.md](KB_tools.md)
   - `refute` (function, line 171)
   - `scenario_uefi` (function, line 196)
   - `usb_stick_ready` (function, line 672)
-  - `http_server_start` (function, line 1487)
-  - `http_server_stop` (function, line 1494)
-  - `http_fixture_start` (function, line 1499)
-  - `http_fixture_stop` (function, line 1506)
-  - `net_fixture_start` (function, line 1511)
-  - `net_fixture_stop` (function, line 1518)
+  - `http_server_start` (function, line 1522)
+  - `http_server_stop` (function, line 1529)
+  - `http_fixture_start` (function, line 1534)
+  - `http_fixture_stop` (function, line 1541)
+  - `net_fixture_start` (function, line 1546)
+  - `net_fixture_stop` (function, line 1553)
 
 ## tools/test_call_align.py
 - Doc: verify stack alignment at call sites, both parities.

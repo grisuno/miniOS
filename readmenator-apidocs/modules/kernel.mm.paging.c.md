@@ -1,13 +1,13 @@
 # `kernel/mm/paging.c`
 
-> Source: [kernel/mm/paging.c:1](../../kernel/mm/paging.c#L1) | language `c` | coverage 57.7% | [API index](../index.md)
+> Source: [kernel/mm/paging.c:1](../../kernel/mm/paging.c#L1) | language `c` | coverage 61.5% | [API index](../index.md)
 
 paging.c - Page table management for the user window and per-process KPTI.
 
 ## Contents
 
-- **Functions:** [`mm_setup_protections`](#mm_setup_protections), [`coherent`](#coherent), [`kmm_map_device`](#kmm_map_device), [`mm_user_pte_update`](#mm_user_pte_update), [`mm_user_set_exec`](#mm_user_set_exec), [`pt_page_owned`](#pt_page_owned), [`pt_page_alloc`](#pt_page_alloc), [`pt_page_free`](#pt_page_free), [`pt_clone_user`](#pt_clone_user), [`pt_clone_user_empty`](#pt_clone_user_empty), [`mm_user_ensure_page`](#mm_user_ensure_page), [`honest`](#honest), [`mm_demand_pte`](#mm_demand_pte), [`mm_anon_fault`](#mm_anon_fault), [`mm_file_page_phys`](#mm_file_page_phys), [`tables`](#tables), [`explicitly`](#explicitly), [`PTE`](#pte), [`mm_file_break`](#mm_file_break), [`mm_copy_user_page`](#mm_copy_user_page), [`pt_free_user`](#pt_free_user)
-- **Macros:** [`KMM_DEVICE_MAX`](#kmm_device_max), [`KMM_MAX_IDENTITY`](#kmm_max_identity), [`KMM_DEVICE_FLAGS`](#kmm_device_flags), [`PT_OWNED_BYTES`](#pt_owned_bytes)
+- **Functions:** [`mm_setup_protections`](#mm_setup_protections), [`coherent`](#coherent), [`mm_user_pte_update`](#mm_user_pte_update), [`mm_user_set_exec`](#mm_user_set_exec), [`pt_page_owned`](#pt_page_owned), [`pt_page_alloc`](#pt_page_alloc), [`pt_page_free`](#pt_page_free), [`pt_clone_user`](#pt_clone_user), [`pt_clone_user_empty`](#pt_clone_user_empty), [`mm_user_ensure_page`](#mm_user_ensure_page), [`honest`](#honest), [`mm_demand_pte`](#mm_demand_pte), [`mm_anon_fault`](#mm_anon_fault), [`mm_file_page_phys`](#mm_file_page_phys), [`tables`](#tables), [`explicitly`](#explicitly), [`PTE`](#pte), [`mm_file_break`](#mm_file_break), [`mm_copy_user_page`](#mm_copy_user_page), [`pt_free_user`](#pt_free_user)
+- **Macros:** [`KMM_DEVICE_MAX`](#kmm_device_max), [`KMM_MAX_IDENTITY`](#kmm_max_identity), [`KMM_DEVICE_FLAGS`](#kmm_device_flags), [`KMM_DEVICE_WINDOWS`](#kmm_device_windows), [`PT_OWNED_BYTES`](#pt_owned_bytes)
 - **Variables:** [`_kernel_end`](#_kernel_end), [`mm_lock`](#mm_lock)
 
 ## Call Graph
@@ -16,12 +16,12 @@ Solid arrows stay in this module, dashed arrows leave it.
 
 ```mermaid
 flowchart LR
-    n_kernel_mm_paging_c__kmm_map_device(["kmm_map_device"])
+    n_kernel_mm_paging_c__KMM_DEVICE_FLAGS(["KMM_DEVICE_FLAGS"])
     n_kernel_mm_paging_c__pt_page_alloc(["pt_page_alloc"])
-    n_kernel_mm_paging_c__pt_page_free(["pt_page_free"])
     n_kernel_mm_paging_c__mm_user_set_exec(["mm_user_set_exec"])
     n_kernel_mm_paging_c__mm_user_pte_update(["mm_user_pte_update"])
     n_kernel_mm_paging_c__pt_clone_user(["pt_clone_user"])
+    n_kernel_mm_paging_c__pt_page_free(["pt_page_free"])
     n_kernel_mm_paging_c__pt_clone_user_empty(["pt_clone_user_empty"])
     n_kernel_mm_paging_c__mm_user_ensure_page(["mm_user_ensure_page"])
     n_kernel_mm_paging_c__honest(["honest"])
@@ -42,8 +42,7 @@ flowchart LR
     n_headers_spinlock_h__spin_unlock_irqrestore["spinlock.spin_unlock_irqrestore"]
     n_headers_kernel_h__mm_file_range_release["kernel.mm_file_range_release"]
     n_headers_pcache_h__pcache_owns_phys["pcache.pcache_owns_phys"]
-    n_kernel_mm_paging_c__kmm_map_device --> n_kernel_mm_paging_c__pt_page_alloc
-    n_kernel_mm_paging_c__kmm_map_device --> n_kernel_mm_paging_c__pt_page_free
+    n_kernel_mm_paging_c__KMM_DEVICE_FLAGS --> n_kernel_mm_paging_c__pt_page_alloc
     n_kernel_mm_paging_c__mm_user_set_exec --> n_kernel_mm_paging_c__mm_user_pte_update
     n_kernel_mm_paging_c__pt_clone_user --> n_kernel_mm_paging_c__pt_page_alloc
     n_kernel_mm_paging_c__pt_clone_user --> n_kernel_mm_paging_c__pt_page_free
@@ -66,6 +65,7 @@ flowchart LR
     n_kernel_mm_paging_c__mm_anon_fault -.-> n_headers_spinlock_h__spin_unlock_irqrestore
     n_kernel_mm_paging_c__PTE -.-> n_headers_kernel_h__mm_file_range_release
     n_kernel_mm_paging_c__PTE -.-> n_headers_pcache_h__pcache_owns_phys
+    n_kernel_mm_paging_c__PTE -.-> n_headers_spinlock_h__spin_lock_irqsave
 ```
 
 ## Functions
@@ -92,7 +92,7 @@ void mm_setup_protections(void)
 
 ### `coherent`
 
-`function` | [kernel/mm/paging.c:259](../../kernel/mm/paging.c#L259)
+`function` | [kernel/mm/paging.c:245](../../kernel/mm/paging.c#L245)
 
 ```c
 * coherent (and an emulator that does not snoop the guest's caches) reads * stale zeros out of a write-back line, which looks like a device that never * answers. * * Refusals mirror kmm_map_device. Returns 1 on success, 0 on refusal, in * which case nothing is changed. */ int kmm_make_uncached(unsigned long phys, unsigned long len)
@@ -110,36 +110,11 @@ void mm_setup_protections(void)
 
 ---
 
-<a id="kmm_map_device"></a>
-
-### `kmm_map_device`
-
-`function` | [kernel/mm/paging.c:296](../../kernel/mm/paging.c#L296)
-
-```c
-unsigned long kmm_map_device(unsigned long phys, unsigned long len)
-```
-
-**Parameters**
-
-| Name | Type | Default | Description |
-|---|---|---|---|
-| `phys` | `unsigned long` |  |  |
-| `len` | `unsigned long` |  |  |
-
-**Returns:** `unsigned long`
-
-*Calls:* [`pt_page_alloc`](#pt_page_alloc), [`pt_page_free`](#pt_page_free)
-
-*Called by:* [`nvme_init`](drivers.nvme.c.md#nvme_init), [`xhc_init`](drivers.xhci.c.md#xhc_init)
-
----
-
 <a id="mm_user_pte_update"></a>
 
 ### `mm_user_pte_update`
 
-`function` | [kernel/mm/paging.c:336](../../kernel/mm/paging.c#L336)
+`function` | [kernel/mm/paging.c:376](../../kernel/mm/paging.c#L376)
 
 ```c
 void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3)
@@ -161,7 +136,7 @@ void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3)
 
 ### `mm_user_set_exec`
 
-`function` | [kernel/mm/paging.c:356](../../kernel/mm/paging.c#L356)
+`function` | [kernel/mm/paging.c:396](../../kernel/mm/paging.c#L396)
 
 ```c
 void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3)
@@ -183,7 +158,7 @@ void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3)
 
 ### `pt_page_owned`
 
-`function` | [kernel/mm/paging.c:385](../../kernel/mm/paging.c#L385)
+`function` | [kernel/mm/paging.c:425](../../kernel/mm/paging.c#L425)
 
 ```c
 int pt_page_owned(unsigned long phys)
@@ -207,7 +182,7 @@ int pt_page_owned(unsigned long phys)
 
 ### `pt_page_alloc`
 
-`function` | [kernel/mm/paging.c:392](../../kernel/mm/paging.c#L392)
+`function` | [kernel/mm/paging.c:432](../../kernel/mm/paging.c#L432)
 
 ```c
 void *pt_page_alloc(void)
@@ -215,7 +190,7 @@ void *pt_page_alloc(void)
 
 **Returns:** `void *`
 
-*Called by:* [`honest`](#honest), [`kmm_map_device`](#kmm_map_device), [`mm_anon_fault`](#mm_anon_fault), [`mm_file_break`](#mm_file_break), [`mm_user_ensure_page`](#mm_user_ensure_page), [`pt_clone_user`](#pt_clone_user), [`pt_clone_user_empty`](#pt_clone_user_empty)
+*Called by:* [`KMM_DEVICE_FLAGS`](#kmm_device_flags), [`honest`](#honest), [`mm_anon_fault`](#mm_anon_fault), [`mm_file_break`](#mm_file_break), [`mm_user_ensure_page`](#mm_user_ensure_page), [`pt_clone_user`](#pt_clone_user), [`pt_clone_user_empty`](#pt_clone_user_empty)
 
 ---
 
@@ -223,7 +198,7 @@ void *pt_page_alloc(void)
 
 ### `pt_page_free`
 
-`function` | [kernel/mm/paging.c:411](../../kernel/mm/paging.c#L411)
+`function` | [kernel/mm/paging.c:451](../../kernel/mm/paging.c#L451)
 
 ```c
 void pt_page_free(void *ptr)
@@ -235,7 +210,7 @@ void pt_page_free(void *ptr)
 |---|---|---|---|
 | `ptr` | `void *` |  |  |
 
-*Called by:* [`kmm_map_device`](#kmm_map_device), [`mm_file_break`](#mm_file_break), [`pt_clone_user`](#pt_clone_user), [`pt_clone_user_empty`](#pt_clone_user_empty), [`pt_free_user`](#pt_free_user)
+*Called by:* [`mm_file_break`](#mm_file_break), [`pt_clone_user`](#pt_clone_user), [`pt_clone_user_empty`](#pt_clone_user_empty), [`pt_free_user`](#pt_free_user)
 
 ---
 
@@ -243,7 +218,7 @@ void pt_page_free(void *ptr)
 
 ### `pt_clone_user`
 
-`function` | [kernel/mm/paging.c:420](../../kernel/mm/paging.c#L420)
+`function` | [kernel/mm/paging.c:460](../../kernel/mm/paging.c#L460)
 
 ```c
 uint64_t pt_clone_user(uint64_t parent_cr3)
@@ -269,7 +244,7 @@ uint64_t pt_clone_user(uint64_t parent_cr3)
 
 ### `pt_clone_user_empty`
 
-`function` | [kernel/mm/paging.c:568](../../kernel/mm/paging.c#L568)
+`function` | [kernel/mm/paging.c:608](../../kernel/mm/paging.c#L608)
 
 ```c
 unsigned long pt_clone_user_empty(void)
@@ -289,7 +264,7 @@ Returns PML4 phys (usable as CR3), or 0 on OOM. No user data page is mapped.
 
 ### `mm_user_ensure_page`
 
-`function` | [kernel/mm/paging.c:625](../../kernel/mm/paging.c#L625)
+`function` | [kernel/mm/paging.c:665](../../kernel/mm/paging.c#L665)
 
 ```c
 int mm_user_ensure_page(unsigned long cr3, unsigned long va)
@@ -318,7 +293,7 @@ Returns 0 on success, -1 on OOM or when va leaves the user window.
 
 ### `honest`
 
-`function` | [kernel/mm/paging.c:655](../../kernel/mm/paging.c#L655)
+`function` | [kernel/mm/paging.c:695](../../kernel/mm/paging.c#L695)
 
 ```c
 * and invlpg keeps the local TLB honest (cross-CPU shootdown rides * the documented T5 follow-up, same as the CoW path). The file * fault populate and the file CoW-break own this: no anonymous * caller should bypass ensure_page through it. Returns 0 mapped, * -1 refused. */ int mm_user_map_page(unsigned long cr3, unsigned long va, unsigned long phys, int write, int exec)
@@ -341,7 +316,7 @@ Returns 0 on success, -1 on OOM or when va leaves the user window.
 
 ### `mm_demand_pte`
 
-`function` | [kernel/mm/paging.c:704](../../kernel/mm/paging.c#L704)
+`function` | [kernel/mm/paging.c:744](../../kernel/mm/paging.c#L744)
 
 ```c
 unsigned long mm_demand_pte(unsigned long prot)
@@ -363,7 +338,7 @@ Encode a Linux prot as a demand-paging reservation PTE.
 
 ### `mm_anon_fault`
 
-`function` | [kernel/mm/paging.c:779](../../kernel/mm/paging.c#L779)
+`function` | [kernel/mm/paging.c:819](../../kernel/mm/paging.c#L819)
 
 ```c
 int mm_anon_fault(unsigned long cr3, unsigned long va, int write)
@@ -391,7 +366,7 @@ Returns 0 when mapped or when another CPU mapped it first (the faulting access r
 
 ### `mm_file_page_phys`
 
-`function` | [kernel/mm/paging.c:861](../../kernel/mm/paging.c#L861)
+`function` | [kernel/mm/paging.c:901](../../kernel/mm/paging.c#L901)
 
 ```c
 unsigned long mm_file_page_phys(unsigned long cr3, unsigned long va)
@@ -416,7 +391,7 @@ Fork and teardown prove sharing through the tables before taking or dropping cac
 
 ### `tables`
 
-`function` | [kernel/mm/paging.c:1010](../../kernel/mm/paging.c#L1010)
+`function` | [kernel/mm/paging.c:1050](../../kernel/mm/paging.c#L1050)
 
 ```c
 * tables (munmap/mremap in caller context, under their mm_lock);
@@ -437,7 +412,7 @@ Fork and teardown prove sharing through the tables before taking or dropping cac
 
 ### `explicitly`
 
-`function` | [kernel/mm/paging.c:1011](../../kernel/mm/paging.c#L1011)
+`function` | [kernel/mm/paging.c:1051](../../kernel/mm/paging.c#L1051)
 
 ```c
 * teardown passes the dying window explicitly (zombie-exclusive, no * lock needed). unmap == 0 drops refs only (teardown, whose tables * die next);
@@ -458,7 +433,7 @@ Fork and teardown prove sharing through the tables before taking or dropping cac
 
 ### `PTE`
 
-`function` | [kernel/mm/paging.c:1015](../../kernel/mm/paging.c#L1015)
+`function` | [kernel/mm/paging.c:1055](../../kernel/mm/paging.c#L1055)
 
 ```c
 * PTE (a cache page stays cached, but no stale writer may reach it). * Never allocates. */ void ...
@@ -481,7 +456,7 @@ Fork and teardown prove sharing through the tables before taking or dropping cac
 
 ### `mm_file_break`
 
-`function` | [kernel/mm/paging.c:1070](../../kernel/mm/paging.c#L1070)
+`function` | [kernel/mm/paging.c:1110](../../kernel/mm/paging.c#L1110)
 
 ```c
 int mm_file_break(unsigned long cr3, unsigned long va)
@@ -508,7 +483,7 @@ Fires after cow_resolve refuses (a file page is never in the cow table outside f
 
 ### `mm_copy_user_page`
 
-`function` | [kernel/mm/paging.c:1149](../../kernel/mm/paging.c#L1149)
+`function` | [kernel/mm/paging.c:1189](../../kernel/mm/paging.c#L1189)
 
 ```c
 int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va)
@@ -536,7 +511,7 @@ Used by fork-style clones. The executable bit rides along: ensure_page maps NX, 
 
 ### `pt_free_user`
 
-`function` | [kernel/mm/paging.c:1227](../../kernel/mm/paging.c#L1227)
+`function` | [kernel/mm/paging.c:1267](../../kernel/mm/paging.c#L1267)
 
 ```c
 void pt_free_user(uint64_t cr3)
@@ -596,13 +571,31 @@ Docstring: 4 KB device leaf: present, read-write, cache-disable, write-through, 
 
 Matches what Linux's ioremap produces. The supervisor bits matter: this window is reachable from the kernel PML4 and gets copied into per-process tables by the KPTI clone, so without them a ring-3 program could reach a device register.
 
+*Calls:* [`pt_page_alloc`](#pt_page_alloc)
+
+---
+
+<a id="kmm_device_windows"></a>
+
+### `KMM_DEVICE_WINDOWS`
+
+`macro` | [kernel/mm/paging.c:286](../../kernel/mm/paging.c#L286)
+
+```c
+#define KMM_DEVICE_WINDOWS
+```
+
+Docstring: Number of 2 MB device windows inside the device PDPT slot.
+
+One page directory covers the slot, and each controller gets its own directory entry, so xHCI, AHCI and NVMe on one real machine each map their BAR instead of the second one being refused.
+
 ---
 
 <a id="pt_owned_bytes"></a>
 
 ### `PT_OWNED_BYTES`
 
-`macro` | [kernel/mm/paging.c:371](../../kernel/mm/paging.c#L371)
+`macro` | [kernel/mm/paging.c:411](../../kernel/mm/paging.c#L411)
 
 ```c
 #define PT_OWNED_BYTES
@@ -632,7 +625,7 @@ extern char _kernel_end[];
 
 ### `mm_lock`
 
-`variable` `extern` | [kernel/mm/paging.c:696](../../kernel/mm/paging.c#L696)
+`variable` `extern` | [kernel/mm/paging.c:736](../../kernel/mm/paging.c#L736)
 
 ```c
 extern spinlock_t mm_lock;

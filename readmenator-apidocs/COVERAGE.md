@@ -1,6 +1,6 @@
 # Documentation Coverage
 
-Overall: **30.1%** (2890 of 9597 public modules, types, and callables). Data members are excluded from the ratio.
+Overall: **30.0%** (2912 of 9716 public modules, types, and callables). Data members are excluded from the ratio.
 
 [Back to index](index.md)
 
@@ -12,10 +12,10 @@ Overall: **30.1%** (2890 of 9597 public modules, types, and callables). Data mem
 | constructor | 3 | 24 | 12.5% |
 | enum | 2 | 3 | 66.7% |
 | exception | 5 | 5 | 100.0% |
-| function | 1521 | 4568 | 33.3% |
-| macro | 689 | 3908 | 17.6% |
+| function | 1540 | 4587 | 33.6% |
+| macro | 690 | 4006 | 17.2% |
 | method | 24 | 125 | 19.2% |
-| module | 430 | 518 | 83.0% |
+| module | 432 | 520 | 83.1% |
 | property | 0 | 2 | 0.0% |
 | staticmethod | 6 | 6 | 100.0% |
 | struct | 141 | 325 | 43.4% |
@@ -129,6 +129,7 @@ Overall: **30.1%** (2890 of 9597 public modules, types, and callables). Data mem
 | [`progs/doomgeneric/memio.c`](modules/progs.doomgeneric.memio.c.md) | 1 | 10 | 10.0% |
 | [`progs/file/file.c`](modules/progs.file.file.c.md) | 4 | 40 | 10.0% |
 | [`progs/lua/minios.c`](modules/progs.lua.minios.c.md) | 1 | 10 | 10.0% |
+| [`drivers/ahci.c`](modules/drivers.ahci.c.md) | 11 | 108 | 10.2% |
 | [`progs/paint/paint.c`](modules/progs.paint.paint.c.md) | 3 | 28 | 10.7% |
 | [`headers/arch/x86/msr.h`](modules/headers.arch.x86.msr.h.md) | 1 | 9 | 11.1% |
 | [`headers/pcspk.h`](modules/headers.pcspk.h.md) | 1 | 9 | 11.1% |
@@ -335,12 +336,12 @@ Overall: **30.1%** (2890 of 9597 public modules, types, and callables). Data mem
 | [`progs/doomgeneric/g_game.c`](modules/progs.doomgeneric.g_game.c.md) | 20 | 46 | 43.5% |
 | [`headers/drivers/modifiers.h`](modules/headers.drivers.modifiers.h.md) | 5 | 11 | 45.5% |
 | [`progs/wl/wl_mbox.h`](modules/progs.wl.wl_mbox.h.md) | 12 | 26 | 46.2% |
+| [`headers/drivers/pci.h`](modules/headers.drivers.pci.h.md) | 25 | 54 | 46.3% |
 | [`progs/doomgeneric/s_sound.h`](modules/progs.doomgeneric.s_sound.h.md) | 7 | 15 | 46.7% |
 | [`progs/doomgeneric/m_menu.c`](modules/progs.doomgeneric.m_menu.c.md) | 29 | 62 | 46.8% |
 | [`progs/doomgeneric/f_finale.c`](modules/progs.doomgeneric.f_finale.c.md) | 8 | 17 | 47.1% |
 | [`progs/doomgeneric/d_main.c`](modules/progs.doomgeneric.d_main.c.md) | 9 | 19 | 47.4% |
 | [`progs/doomgeneric/i_joystick.h`](modules/progs.doomgeneric.i_joystick.h.md) | 9 | 19 | 47.4% |
-| [`headers/drivers/pci.h`](modules/headers.drivers.pci.h.md) | 26 | 54 | 48.1% |
 | [`arch/x86/tlb_nmi.S`](modules/arch.x86.tlb_nmi.S.md) | 1 | 2 | 50.0% |
 | [`headers/avatar_data.h`](modules/headers.avatar_data.h.md) | 1 | 2 | 50.0% |
 | [`headers/desktop_icons.h`](modules/headers.desktop_icons.h.md) | 1 | 2 | 50.0% |
@@ -388,7 +389,6 @@ Overall: **30.1%** (2890 of 9597 public modules, types, and callables). Data mem
 | [`headers/leakcheck.h`](modules/headers.leakcheck.h.md) | 13 | 24 | 54.2% |
 | [`progs/doomgeneric/p_map.c`](modules/progs.doomgeneric.p_map.c.md) | 12 | 22 | 54.5% |
 | [`drivers/usbblk.c`](modules/drivers.usbblk.c.md) | 19 | 33 | 57.6% |
-| [`kernel/mm/paging.c`](modules/kernel.mm.paging.c.md) | 15 | 26 | 57.7% |
 | [`progs/lisp/lisp.c`](modules/progs.lisp.lisp.c.md) | 11 | 19 | 57.9% |
 | [`headers/kernel/console_in.h`](modules/headers.kernel.console_in.h.md) | 7 | 12 | 58.3% |
 | [`progs/doomgeneric/r_bsp.c`](modules/progs.doomgeneric.r_bsp.c.md) | 7 | 12 | 58.3% |
@@ -404,6 +404,7 @@ Overall: **30.1%** (2890 of 9597 public modules, types, and callables). Data mem
 | [`progs/doomgeneric/r_plane.c`](modules/progs.doomgeneric.r_plane.c.md) | 6 | 10 | 60.0% |
 | [`tools.gen_desktop_pngs`](modules/tools.gen_desktop_pngs.py.md) | 3 | 5 | 60.0% |
 | [`headers/drivers/usbhid.h`](modules/headers.drivers.usbhid.h.md) | 20 | 33 | 60.6% |
+| [`kernel/mm/paging.c`](modules/kernel.mm.paging.c.md) | 16 | 26 | 61.5% |
 | [`progs/freedomui/ps2_keymap.h`](modules/progs.freedomui.ps2_keymap.h.md) | 8 | 13 | 61.5% |
 | [`kernel/ed25519.c`](modules/kernel.ed25519.c.md) | 5 | 8 | 62.5% |
 | [`progs/doomgeneric/hu_lib.h`](modules/progs.doomgeneric.hu_lib.h.md) | 16 | 25 | 64.0% |
@@ -489,6 +490,7 @@ Overall: **30.1%** (2890 of 9597 public modules, types, and callables). Data mem
 | [`headers/ap_stub.h`](modules/headers.ap_stub.h.md) | 1 | 1 | 100.0% |
 | [`headers/arch/x86/cpu_setup.h`](modules/headers.arch.x86.cpu_setup.h.md) | 2 | 2 | 100.0% |
 | [`headers/arch/x86/hal_io.h`](modules/headers.arch.x86.hal_io.h.md) | 64 | 64 | 100.0% |
+| [`headers/drivers/ahci.h`](modules/headers.drivers.ahci.h.md) | 11 | 11 | 100.0% |
 | [`headers/drivers/mouse.h`](modules/headers.drivers.mouse.h.md) | 4 | 4 | 100.0% |
 | [`headers/kernel/vga_cursor.h`](modules/headers.kernel.vga_cursor.h.md) | 8 | 8 | 100.0% |
 | [`headers/tick.h`](modules/headers.tick.h.md) | 16 | 16 | 100.0% |
@@ -548,7 +550,7 @@ Overall: **30.1%** (2890 of 9597 public modules, types, and callables). Data mem
 
 DOC001 undocumented public item, DOC002 parameter not documented, DOC003 documented parameter missing from the signature (stale doc), DOC004 return value not documented, DOC005 raised exception not documented.
 
-DOC001: 6696, DOC005: 1
+DOC001: 6793, DOC005: 1
 
 - DOC001 `arch/x86/ap_entry.S:21` function ap_stub_start is not documented
 - DOC001 `arch/x86/ap_entry.S:39` function ap_pm is not documented
@@ -685,12 +687,109 @@ DOC001: 6696, DOC005: 1
 - DOC001 `boot/uefi_stub.c:416` function efi_main is not documented
 - DOC001 `bootloader.c:1` module bootloader.c is not documented
 - DOC001 `bootloader.c:21` function main is not documented
-- DOC001 `drivers/block.c:53` macro BC_WAYS is not documented
-- DOC001 `drivers/block.c:54` macro BC_MASK is not documented
-- DOC001 `drivers/block.c:62` macro BC_LINE is not documented
-- DOC001 `drivers/block.c:122` function table is not documented
-- DOC001 `drivers/block.c:205` function block_write is not documented
-- DOC001 `drivers/block.c:219` function block_write_multi is not documented
+- DOC001 `drivers/ahci.c:38` macro AHCI_CLASS_BASE is not documented
+- DOC001 `drivers/ahci.c:39` macro AHCI_CLASS_SUB is not documented
+- DOC001 `drivers/ahci.c:40` macro AHCI_CLASS_PI is not documented
+- DOC001 `drivers/ahci.c:41` macro AHCI_ABAR_INDEX is not documented
+- DOC001 `drivers/ahci.c:43` macro AHCI_REG_CAP is not documented
+- DOC001 `drivers/ahci.c:44` macro AHCI_REG_GHC is not documented
+- DOC001 `drivers/ahci.c:45` macro AHCI_REG_IS is not documented
+- DOC001 `drivers/ahci.c:46` macro AHCI_REG_PI is not documented
+- DOC001 `drivers/ahci.c:47` macro AHCI_REG_VS is not documented
+- DOC001 `drivers/ahci.c:48` macro AHCI_REG_CAP2 is not documented
+- DOC001 `drivers/ahci.c:49` macro AHCI_REG_BOHC is not documented
+- DOC001 `drivers/ahci.c:51` macro AHCI_CAP_S64A is not documented
+- DOC001 `drivers/ahci.c:52` macro AHCI_CAP_SSS is not documented
+- DOC001 `drivers/ahci.c:53` macro AHCI_GHC_AE is not documented
+- DOC001 `drivers/ahci.c:54` macro AHCI_GHC_IE is not documented
+- DOC001 `drivers/ahci.c:55` macro AHCI_CAP2_BOH is not documented
+- DOC001 `drivers/ahci.c:56` macro AHCI_BOHC_BOS is not documented
+- DOC001 `drivers/ahci.c:57` macro AHCI_BOHC_OOS is not documented
+- DOC001 `drivers/ahci.c:58` macro AHCI_BOHC_BB is not documented
+- DOC001 `drivers/ahci.c:60` macro AHCI_MAX_PORTS is not documented
+- DOC001 `drivers/ahci.c:61` macro AHCI_PORT_BASE is not documented
+- DOC001 `drivers/ahci.c:62` macro AHCI_PORT_STRIDE is not documented
+- DOC001 `drivers/ahci.c:63` macro AHCI_PX_CLB is not documented
+- DOC001 `drivers/ahci.c:64` macro AHCI_PX_CLBU is not documented
+- DOC001 `drivers/ahci.c:65` macro AHCI_PX_FB is not documented
+- DOC001 `drivers/ahci.c:66` macro AHCI_PX_FBU is not documented
+- DOC001 `drivers/ahci.c:67` macro AHCI_PX_IS is not documented
+- DOC001 `drivers/ahci.c:68` macro AHCI_PX_IE is not documented
+- DOC001 `drivers/ahci.c:69` macro AHCI_PX_CMD is not documented
+- DOC001 `drivers/ahci.c:70` macro AHCI_PX_TFD is not documented
+- DOC001 `drivers/ahci.c:71` macro AHCI_PX_SIG is not documented
+- DOC001 `drivers/ahci.c:72` macro AHCI_PX_SSTS is not documented
+- DOC001 `drivers/ahci.c:73` macro AHCI_PX_SCTL is not documented
+- DOC001 `drivers/ahci.c:74` macro AHCI_PX_SERR is not documented
+- DOC001 `drivers/ahci.c:75` macro AHCI_PX_CI is not documented
+- DOC001 `drivers/ahci.c:77` macro AHCI_CMD_ST is not documented
+- DOC001 `drivers/ahci.c:78` macro AHCI_CMD_SUD is not documented
+- DOC001 `drivers/ahci.c:79` macro AHCI_CMD_POD is not documented
+- DOC001 `drivers/ahci.c:80` macro AHCI_CMD_FRE is not documented
+- DOC001 `drivers/ahci.c:81` macro AHCI_CMD_FR is not documented
+- DOC001 `drivers/ahci.c:82` macro AHCI_CMD_CR is not documented
+- DOC001 `drivers/ahci.c:83` macro AHCI_CMD_ICC_MASK is not documented
+- DOC001 `drivers/ahci.c:84` macro AHCI_CMD_ICC_ACTIVE is not documented
+- DOC001 `drivers/ahci.c:86` macro AHCI_TFD_ERR is not documented
+- DOC001 `drivers/ahci.c:87` macro AHCI_TFD_DRQ is not documented
+- DOC001 `drivers/ahci.c:88` macro AHCI_TFD_BSY is not documented
+- DOC001 `drivers/ahci.c:89` macro AHCI_IS_TFES is not documented
+- DOC001 `drivers/ahci.c:90` macro AHCI_ALL_ONES is not documented
+- DOC001 `drivers/ahci.c:92` macro AHCI_SSTS_DET_MASK is not documented
+- DOC001 `drivers/ahci.c:93` macro AHCI_SSTS_DET_PRESENT is not documented
+- DOC001 `drivers/ahci.c:94` macro AHCI_SSTS_DET_ONLINE is not documented
+- DOC001 `drivers/ahci.c:95` macro AHCI_SSTS_IPM_SHIFT is not documented
+- DOC001 `drivers/ahci.c:96` macro AHCI_SSTS_IPM_MASK is not documented
+- DOC001 `drivers/ahci.c:97` macro AHCI_SSTS_IPM_ACTIVE is not documented
+- DOC001 `drivers/ahci.c:98` macro AHCI_SCTL_DET_MASK is not documented
+- DOC001 `drivers/ahci.c:99` macro AHCI_SCTL_DET_COMRESET is not documented
+- DOC001 `drivers/ahci.c:101` macro AHCI_SIG_ATA is not documented
+- DOC001 `drivers/ahci.c:103` macro AHCI_CL_BYTES is not documented
+- DOC001 `drivers/ahci.c:104` macro AHCI_CL_ALIGN is not documented
+- DOC001 `drivers/ahci.c:105` macro AHCI_FIS_BYTES is not documented
+- DOC001 `drivers/ahci.c:106` macro AHCI_FIS_ALIGN is not documented
+- DOC001 `drivers/ahci.c:107` macro AHCI_CT_BYTES is not documented
+- DOC001 `drivers/ahci.c:108` macro AHCI_CT_ALIGN is not documented
+- DOC001 `drivers/ahci.c:109` macro AHCI_CT_PRDT_OFF is not documented
+- DOC001 `drivers/ahci.c:110` macro AHCI_PRD_BYTES is not documented
+- DOC001 `drivers/ahci.c:111` macro AHCI_CH_BYTES is not documented
+- DOC001 `drivers/ahci.c:113` macro AHCI_CH_CFL_H2D is not documented
+- DOC001 `drivers/ahci.c:114` macro AHCI_CH_WRITE is not documented
+- DOC001 `drivers/ahci.c:115` macro AHCI_CH_PRDTL_SHIFT is not documented
+- DOC001 `drivers/ahci.c:116` macro AHCI_PRD_DBC_MASK is not documented
+- DOC001 `drivers/ahci.c:118` macro AHCI_FIS_TYPE_H2D is not documented
+- DOC001 `drivers/ahci.c:119` macro AHCI_FIS_H2D_CMD is not documented
+- DOC001 `drivers/ahci.c:120` macro AHCI_FIS_DEV_LBA is not documented
+- DOC001 `drivers/ahci.c:121` macro AHCI_FIS_BYTES_H2D is not documented
+- DOC001 `drivers/ahci.c:123` macro ATA_CMD_IDENTIFY is not documented
+- DOC001 `drivers/ahci.c:124` macro ATA_CMD_READ_DMA_EXT is not documented
+- DOC001 `drivers/ahci.c:125` macro ATA_CMD_WRITE_DMA_EXT is not documented
+- DOC001 `drivers/ahci.c:126` macro ATA_CMD_FLUSH_EXT is not documented
+- DOC001 `drivers/ahci.c:128` macro ATA_ID_WORDS is not documented
+- DOC001 `drivers/ahci.c:129` macro ATA_ID_CMDSET2 is not documented
+- DOC001 `drivers/ahci.c:130` macro ATA_ID_LBA48_BIT is not documented
+- DOC001 `drivers/ahci.c:131` macro ATA_ID_LBA48_SECTORS is not documented
+- DOC001 `drivers/ahci.c:132` macro ATA_ID_SECTOR_SIZE is not documented
+- DOC001 `drivers/ahci.c:133` macro ATA_ID_SS_VALID_MASK is not documented
+- DOC001 `drivers/ahci.c:134` macro ATA_ID_SS_VALID is not documented
+- DOC001 `drivers/ahci.c:135` macro ATA_ID_SS_LONG is not documented
+- DOC001 `drivers/ahci.c:137` macro AHCI_SECTOR is not documented
+- DOC001 `drivers/ahci.c:138` macro AHCI_MAX_SECTORS is not documented
+- DOC001 `drivers/ahci.c:139` macro AHCI_STAGE_BYTES is not documented
+- DOC001 `drivers/ahci.c:140` macro AHCI_STAGE_ALIGN is not documented
+- DOC001 `drivers/ahci.c:141` macro AHCI_LBA48_LIMIT is not documented
+- DOC001 `drivers/ahci.c:142` macro AHCI_DMA_LIMIT_32 is not documented
+- DOC001 `drivers/ahci.c:144` macro AHCI_TMO_HANDOFF_MS is not documented
+- DOC001 `drivers/ahci.c:145` macro AHCI_TMO_ENGINE_MS is not documented
+- DOC001 `drivers/ahci.c:146` macro AHCI_TMO_LINK_MS is not documented
+- DOC001 `drivers/ahci.c:147` macro AHCI_TMO_COMRESET_HOLD_MS is not documented
+- DOC001 `drivers/ahci.c:148` macro AHCI_TMO_CMD_MS is not documented
+- DOC001 `drivers/block.c:59` macro BC_WAYS is not documented
+- DOC001 `drivers/block.c:60` macro BC_MASK is not documented
+- DOC001 `drivers/block.c:68` macro BC_LINE is not documented
+- DOC001 `drivers/block.c:141` function table is not documented
+- DOC001 `drivers/block.c:234` function block_write is not documented
+- DOC001 `drivers/block.c:248` function block_write_multi is not documented
 - DOC001 `drivers/driver.c:32` function device_reset is not documented
 - DOC001 `drivers/driver.c:44` function device_register is not documented
 - DOC001 `drivers/driver.c:66` function device_find is not documented
@@ -953,101 +1052,4 @@ DOC001: 6696, DOC005: 1
 - DOC001 `drivers/xhci.c:89` macro XHC_HCC_CSZ is not documented
 - DOC001 `drivers/xhci.c:93` macro XHC_CMD_RESET is not documented
 - DOC001 `drivers/xhci.c:97` macro XHC_STS_ATE is not documented
-- DOC001 `drivers/xhci.c:101` macro XHC_PORT_PED is not documented
-- DOC001 `drivers/xhci.c:102` macro XHC_PORT_PR is not documented
-- DOC001 `drivers/xhci.c:103` macro XHC_PORT_PP is not documented
-- DOC001 `drivers/xhci.c:104` macro XHC_PORT_SPEED_SHIFT is not documented
-- DOC001 `drivers/xhci.c:105` macro XHC_PORT_SPEED_MASK is not documented
-- DOC001 `drivers/xhci.c:106` macro XHC_PORT_CHG_MASK is not documented
-- DOC001 `drivers/xhci.c:110` macro XHC_TRB_CYCLE is not documented
-- DOC001 `drivers/xhci.c:111` macro XHC_TRB_MAKE_TYPE is not documented
-- DOC001 `drivers/xhci.c:113` macro XHC_TRB_TYPE_NORMAL is not documented
-- DOC001 `drivers/xhci.c:114` macro XHC_TRB_TYPE_SETUP is not documented
-- DOC001 `drivers/xhci.c:115` macro XHC_TRB_TYPE_DATA is not documented
-- DOC001 `drivers/xhci.c:116` macro XHC_TRB_TYPE_STATUS is not documented
-- DOC001 `drivers/xhci.c:117` macro XHC_TRB_TYPE_LINK is not documented
-- DOC001 `drivers/xhci.c:118` macro XHC_TRB_TYPE_NOOP_TRB is not documented
-- DOC001 `drivers/xhci.c:119` macro XHC_TRB_TYPE_ENABLE_SLOT is not documented
-- DOC001 `drivers/xhci.c:120` macro XHC_TRB_TYPE_ADDRESS_DEVICE is not documented
-- DOC001 `drivers/xhci.c:121` macro XHC_TRB_TYPE_CONFIGURE_ENDPOINT is not documented
-- DOC001 `drivers/xhci.c:122` macro XHC_TRB_TYPE_RESET_ENDPOINT is not documented
-- DOC001 `drivers/xhci.c:123` macro XHC_TRB_TYPE_STOP_ENDPOINT is not documented
-- DOC001 `drivers/xhci.c:124` macro XHC_TRB_TYPE_SET_DEQUEUE is not documented
-- DOC001 `drivers/xhci.c:125` macro XHC_TRB_TYPE_NOOP_CMD is not documented
-- DOC001 `drivers/xhci.c:126` macro XHC_TRB_TYPE_TRANSFER_EVENT is not documented
-- DOC001 `drivers/xhci.c:127` macro XHC_TRB_TYPE_CMD_COMPLETION is not documented
-- DOC001 `drivers/xhci.c:128` macro XHC_TRB_TYPE_PORT_STATUS is not documented
-- DOC001 `drivers/xhci.c:132` macro XHC_CC_SHORT_PACKET is not documented
-- DOC001 `drivers/xhci.c:136` macro XHC_EVT_CC is not documented
-- DOC001 `drivers/xhci.c:137` macro XHC_EVT_SLOT is not documented
-- DOC001 `drivers/xhci.c:138` macro XHC_EVT_LEN is not documented
-- DOC001 `drivers/xhci.c:139` macro XHC_EVT_TRANSFER is not documented
-- DOC001 `drivers/xhci.c:140` macro XHC_EVT_CMD_COMPLETION is not documented
-- DOC001 `drivers/xhci.c:151` macro XHC_EP_DW1_OFF is not documented
-- DOC001 `drivers/xhci.c:152` macro XHC_EP_DEQ_OFF is not documented
-- DOC001 `drivers/xhci.c:153` macro XHC_EP_AVG_OFF is not documented
-- DOC001 `drivers/xhci.c:154` macro XHC_EP_MULT_SHIFT is not documented
-- DOC001 `drivers/xhci.c:155` macro XHC_EP_INTERVAL_SHIFT is not documented
-- DOC001 `drivers/xhci.c:156` macro XHC_EP_TYPE_SHIFT is not documented
-- DOC001 `drivers/xhci.c:157` macro XHC_EP_BURST_SHIFT is not documented
-- DOC001 `drivers/xhci.c:158` macro XHC_EP_MAXP_SHIFT is not documented
-- DOC001 `drivers/xhci.c:159` macro XHC_EP_DCS_BIT is not documented
-- DOC001 `drivers/xhci.c:163` macro XHC_EPT_ISO_OUT is not documented
-- DOC001 `drivers/xhci.c:164` macro XHC_EPT_BULK_OUT is not documented
-- DOC001 `drivers/xhci.c:165` macro XHC_EPT_INT_OUT is not documented
-- DOC001 `drivers/xhci.c:166` macro XHC_EPT_ISO_IN is not documented
-- DOC001 `drivers/xhci.c:167` macro XHC_EPT_BULK_IN is not documented
-- DOC001 `drivers/xhci.c:168` macro XHC_EPT_INT_IN is not documented
-- DOC001 `drivers/xhci.c:169` macro XHC_EP_CERR is not documented
-- DOC001 `drivers/xhci.c:174` macro XHC_CTX_SLOT_STRIDE64 is not documented
-- DOC001 `drivers/xhci.c:175` macro XHC_CTX_DEVICE_BYTES is not documented
-- DOC001 `drivers/xhci.c:176` macro XHC_CTX_EP_BYTES is not documented
-- DOC001 `drivers/xhci.c:177` macro XHC_ICTX_BYTES is not documented
-- DOC001 `drivers/xhci.c:182` macro XHC_SLOT_DW1_OFF is not documented
-- DOC001 `drivers/xhci.c:183` macro XHC_SLOT_ADDR_OFF is not documented
-- DOC001 `drivers/xhci.c:184` macro XHC_SLOT_SPEED_SHIFT is not documented
-- DOC001 `drivers/xhci.c:185` macro XHC_SLOT_ENTRIES_SHIFT is not documented
-- DOC001 `drivers/xhci.c:186` macro XHC_SLOT_RHPORT_SHIFT is not documented
-- DOC001 `drivers/xhci.c:190` macro XHC_ICTX_ADD_OFF is not documented
-- DOC001 `drivers/xhci.c:197` macro XHC_ERST_RING_HI is not documented
-- DOC001 `drivers/xhci.c:198` macro XHC_ERST_SIZE is not documented
-- DOC001 `drivers/xhci.c:199` macro XHC_ERST_CYCLE is not documented
-- DOC001 `drivers/xhci.c:200` macro XHC_ERST_BYTES is not documented
-- DOC001 `drivers/xhci.c:219` macro XHC_DT_CONFIG is not documented
-- DOC001 `drivers/xhci.c:220` macro XHC_DT_INTERFACE is not documented
-- DOC001 `drivers/xhci.c:221` macro XHC_DT_ENDPOINT is not documented
-- DOC001 `drivers/xhci.c:225` macro XHC_DEV_DESC_TYPE_OFF is not documented
-- DOC001 `drivers/xhci.c:226` macro XHC_DEV_DESC_NUM_CFG_OFF is not documented
-- DOC001 `drivers/xhci.c:227` macro XHC_CFG_TOTAL_LEN_OFF is not documented
-- DOC001 `drivers/xhci.c:228` macro XHC_IFACE_OFF is not documented
-- DOC001 `drivers/xhci.c:229` macro XHC_IFACE_CLASS_OFF is not documented
-- DOC001 `drivers/xhci.c:230` macro XHC_IFACE_SUBCLASS_OFF is not documented
-- DOC001 `drivers/xhci.c:231` macro XHC_IFACE_PROTO_OFF is not documented
-- DOC001 `drivers/xhci.c:232` macro XHC_EP_DESC_ADDR_OFF is not documented
-- DOC001 `drivers/xhci.c:233` macro XHC_EP_DESC_TYPE_OFF is not documented
-- DOC001 `drivers/xhci.c:234` macro XHC_EP_DESC_MAXP_OFF is not documented
-- DOC001 `drivers/xhci.c:515` macro XHC_DB_COMMAND is not documented
-- DOC001 `drivers/xhci.c:925` macro XHC_TRB_IDT is not documented
-- DOC001 `drivers/xhci.c:926` macro XHC_TRB_DIR is not documented
-- DOC001 `drivers/xhci.c:927` macro XHC_TRT_OUT is not documented
-- DOC001 `drivers/xhci.c:928` macro XHC_TRT_IN is not documented
-- DOC001 `drivers/xhci.c:1252` function xhc_poll_token is not documented
-- DOC001 `fs/ext4.c:18` macro EXT4_SUPER_OFF is not documented
-- DOC001 `fs/ext4.c:19` macro EXT4_MAGIC is not documented
-- DOC001 `fs/ext4.c:20` macro EXT4_EXT_MAGIC is not documented
-- DOC001 `fs/ext4.c:21` macro EXT4_S_IFMT is not documented
-- DOC001 `fs/ext4.c:22` macro EXT4_S_IFREG is not documented
-- DOC001 `fs/ext4.c:23` macro EXT4_S_IFDIR is not documented
-- DOC001 `fs/ext4.c:24` macro EXT4_S_IFLNK is not documented
-- DOC001 `fs/ext4.c:25` macro EXT4_EXTENTS_FL is not documented
-- DOC001 `fs/ext4.c:26` macro EXT4_INDEX_FL is not documented
-- DOC001 `fs/ext4.c:27` macro EXT4_ENCRYPT_FL is not documented
-- DOC001 `fs/ext4.c:28` macro EXT4_INLINE_FL is not documented
-- DOC001 `fs/ext4.c:29` macro EXT4_EXT_UNINIT is not documented
-- DOC001 `fs/ext4.c:30` macro EXT4_MBR_LINUX is not documented
-- DOC001 `fs/ext4.c:352` function only is not documented
-- DOC001 `fs/ext4.c:626` function ext4_vfs_read is not documented
-- DOC001 `fs/ext4.c:666` function ext4_vfs_write is not documented
-- DOC001 `fs/ext4.c:675` function ext4_vfs_close is not documented
-- DOC001 `fs/ext4.c:680` function ext4_vfs_fstat is not documented
-- ... 6197 more in `api/warnings.jsonl`
+- ... 6294 more in `api/warnings.jsonl`

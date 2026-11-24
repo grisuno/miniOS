@@ -1,6 +1,6 @@
 # tools: doom_pwad
 
-*Community 9 | 2 files | cohesion 1.00*
+*Community 8 | 2 files | cohesion 1.00*
 
 ## Definition
 

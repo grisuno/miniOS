@@ -1,8 +1,149 @@
-# Symbols (page 27 of 27)
+# Symbols (page 27 of 28)
 Previous: [SYMBOLS_p26.md](SYMBOLS_p26.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `check_file` | function | `tools/check_spin_discipline.py:64` | `def check_file(path)` |
+| `iter_functions` | function | `tools/check_spin_discipline.py:38` | `def iter_functions(path)` |
+| `main` | function | `tools/check_spin_discipline.py:99` | `def main(argv)` |
+| `bfs_min_hops` | function | `tools/check_surprising.py:56` | `def bfs_min_hops(nodes, edges, source, target_community, max_hops)` |
+| `build_graph` | function | `tools/check_surprising.py:33` | `def build_graph(cpg)` |
+| `find_surprising_connections` | function | `tools/check_surprising.py:87` | `def find_surprising_connections(nodes, edges, min_hops)` |
+| `load_cpg` | function | `tools/check_surprising.py:25` | `def load_cpg(path)` |
+| `main` | function | `tools/check_surprising.py:118` | `def main()` |
+| `Config` | class | `tools/check_syscall_sanitize.py:18` | `class Config` |
+| `audit_body` | function | `tools/check_syscall_sanitize.py:163` | `def audit_body(name, body)` |
+| `audit_file` | function | `tools/check_syscall_sanitize.py:218` | `def audit_file(path)` |
+| `checked_names` | function | `tools/check_syscall_sanitize.py:113` | `def checked_names(body)` |
+| `delegated_only` | function | `tools/check_syscall_sanitize.py:123` | `def delegated_only(body, alias)` |
+| `main` | function | `tools/check_syscall_sanitize.py:229` | `def main()` |
+| `split_functions` | function | `tools/check_syscall_sanitize.py:70` | `def split_functions(lines)` |
+| `split_top_args` | function | `tools/check_syscall_sanitize.py:144` | `def split_top_args(argtext)` |
+| `ClipBridgeConfig` | class | `tools/clip_bridge.py:30` | `class ClipBridgeConfig` |
+| `build_plan` | function | `tools/clip_bridge.py:59` | `def build_plan(text, dst, cfg)` |
+| `main` | function | `tools/clip_bridge.py:84` | `def main(argv)` |
+| `printable_line` | function | `tools/clip_bridge.py:52` | `def printable_line(line, cfg)` |
+| `valid_dst` | function | `tools/clip_bridge.py:41` | `def valid_dst(name, cfg)` |
+| `DoomPwadConfig` | class | `tools/doom_pwad.py:52` | `class DoomPwadConfig` |
+| `PwadError` | class | `tools/doom_pwad.py:161` | `class PwadError(Exception)` |
+| `build_lumps` | function | `tools/doom_pwad.py:516` | `def build_lumps(rows)` |
+| `build_pwad` | function | `tools/doom_pwad.py:597` | `def build_pwad(rows)` |
+| `cell_class` | function | `tools/doom_pwad.py:279` | `def cell_class(cell)` |
+| `cell_corners` | function | `tools/doom_pwad.py:269` | `def cell_corners(row, col)` |
+| `check_multiple` | function | `tools/doom_pwad.py:655` | `def check_multiple(name, fmt)` |
+| `check_pwad` | function | `tools/doom_pwad.py:639` | `def check_pwad(data)` |
+| `cmd_build` | function | `tools/doom_pwad.py:816` | `def cmd_build(grid_path, out_path)` |
+| `cmd_check` | function | `tools/doom_pwad.py:826` | `def cmd_check(path)` |
+| `compile_geometry` | function | `tools/doom_pwad.py:371` | `def compile_geometry(rows, exit_pos, wall_side)` |
+| `compile_things` | function | `tools/doom_pwad.py:485` | `def compile_things(rows)` |
+| `flood_reachable` | function | `tools/doom_pwad.py:210` | `def flood_reachable(rows)` |
+| `grid_extents` | function | `tools/doom_pwad.py:195` | `def grid_extents(rows)` |
+| `is_wall` | function | `tools/doom_pwad.py:203` | `def is_wall(rows, row, col)` |
+| `label_regions` | function | `tools/doom_pwad.py:291` | `def label_regions(rows)` |
+| `main` | function | `tools/doom_pwad.py:834` | `def main(argv)` |
+| `pad_tex` | function | `tools/doom_pwad.py:165` | `def pad_tex(raw)` |
+| `parse_grid` | function | `tools/doom_pwad.py:172` | `def parse_grid(text)` |
+| `payload` | function | `tools/doom_pwad.py:650` | `def payload(name)` |
+| `read_pwad` | function | `tools/doom_pwad.py:616` | `def read_pwad(data)` |
+| `region_sector` | function | `tools/doom_pwad.py:326` | `def region_sector(region, door_tag)` |
+| `seg_angle` | function | `tools/doom_pwad.py:506` | `def seg_angle(dx, dy)` |
+| `validate_grid` | function | `tools/doom_pwad.py:240` | `def validate_grid(rows)` |
+| `vertex` | function | `tools/doom_pwad.py:386` | `def vertex(x, y)` |
+| `main` | function | `tools/gdb_repro.py:27` | `def main()` |
+| `quit_doom` | function | `tools/gdb_repro.py:70` | `def quit_doom()` |
+| `rs` | function | `tools/gdb_repro.py:23` | `def rs(m, t)` |
+| `send` | function | `tools/gdb_repro.py:65` | `def send(line)` |
+| `AvatarConfig` | class | `tools/gen_avatar.py:38` | `class AvatarConfig` |
+| `AvatarPainter` | class | `tools/gen_avatar.py:61` | `class AvatarPainter` |
+| `__init__` | method | `tools/gen_avatar.py:64` | `def __init__(self, cfg)` |
+| `_box` | method | `tools/gen_avatar.py:73` | `def _box(self, cx, cy, rx, ry)` |
+| `_gradient` | method | `tools/gen_avatar.py:77` | `def _gradient(self, top, bottom, y0, y1, box_fn)` |
+| `_pt` | method | `tools/gen_avatar.py:70` | `def _pt(self, p)` |
+| `background` | method | `tools/gen_avatar.py:83` | `def background(self)` |
+| `bangs` | method | `tools/gen_avatar.py:134` | `def bangs(self)` |
+| `eye` | method | `tools/gen_avatar.py:103` | `def eye(self, cx, cy)` |
+| `eyes` | method | `tools/gen_avatar.py:123` | `def eyes(self)` |
+| `face` | method | `tools/gen_avatar.py:96` | `def face(self)` |
+| `hair_back` | method | `tools/gen_avatar.py:86` | `def hair_back(self)` |
+| `load_portrait` | function | `tools/gen_avatar.py:169` | `def load_portrait(path, crop)` |
+| `main` | function | `tools/gen_avatar.py:225` | `def main(argv)` |
+| `nose_mouth` | method | `tools/gen_avatar.py:127` | `def nose_mouth(self)` |
+| `parse_crop` | function | `tools/gen_avatar.py:180` | `def parse_crop(text)` |
+| `render` | method | `tools/gen_avatar.py:157` | `def render(self)` |
+| `ribbon` | method | `tools/gen_avatar.py:149` | `def ribbon(self)` |
+| `write_header` | function | `tools/gen_avatar.py:191` | `def write_header(image, path)` |
+| `fit_wallpaper` | function | `tools/gen_desktop_pngs.py:81` | `def fit_wallpaper(im)` |
+| `main` | function | `tools/gen_desktop_pngs.py:99` | `def main()` |
+| `scaled` | function | `tools/gen_desktop_pngs.py:75` | `def scaled(im, scale)` |
+| `write_atomic` | function | `tools/gen_desktop_pngs.py:93` | `def write_atomic(img, path)` |
+| `main` | function | `tools/gen_icons.py:214` | `def main()` |
+| `make_chunk` | function | `tools/gen_icons.py:209` | `def make_chunk(chunk_type, data)` |
+| `make_png` | function | `tools/gen_icons.py:179` | `def make_png(pixels, palette, width, height)` |
+| `main` | function | `tools/gen_zip_fixtures.py:42` | `def main()` |
+| `write_zip` | function | `tools/gen_zip_fixtures.py:28` | `def write_zip(path, entries)` |
+| `SurveyConfig` | class | `tools/kernel_feature_survey.py:18` | `class SurveyConfig` |
+| `count_params` | function | `tools/kernel_feature_survey.py:59` | `def count_params(params)` |
+| `find_asm_constraints` | function | `tools/kernel_feature_survey.py:49` | `def find_asm_constraints(path, text)` |
+| `find_fnptr_hits` | function | `tools/kernel_feature_survey.py:43` | `def find_fnptr_hits(path, text)` |
+| `iter_sources` | function | `tools/kernel_feature_survey.py:34` | `def iter_sources(root)` |
+| `main` | function | `tools/kernel_feature_survey.py:122` | `def main(argv)` |
+| `render_text` | function | `tools/kernel_feature_survey.py:103` | `def render_text(findings)` |
+| `survey` | function | `tools/kernel_feature_survey.py:67` | `def survey(root)` |
+| `die` | function | `tools/lisp_scoped.sh:9` | `` |
+| `lisp_mut` | function | `tools/lisp_scoped.sh:41` | `` |
+| `mut_usage` | function | `tools/lisp_scoped.sh:63` | `` |
+| `mutant` | function | `tools/lisp_scoped.sh:20` | `` |
+| `say` | function | `tools/lisp_scoped.sh:8` | `` |
+| `usage` | function | `tools/make_usb.sh:40` | `` |
+| `wizard` | function | `tools/make_usb.sh:56` | `` |
+| `FS` | class | `tools/minifs_dump.py:25` | `class FS` |
+| `__init__` | method | `tools/minifs_dump.py:26` | `def __init__(self, fn)` |
+| `_sb` | method | `tools/minifs_dump.py:30` | `def _sb(self)` |
+| `blk` | method | `tools/minifs_dump.py:29` | `def blk(self, n)` |
+| `inode` | method | `tools/minifs_dump.py:38` | `def inode(self, i)` |
+| `ls` | method | `tools/minifs_dump.py:86` | `def ls(self, ino, prefix)` |
+| `main` | function | `tools/minifs_dump.py:105` | `def main()` |
+| `mode_str` | function | `tools/minifs_dump.py:16` | `def mode_str(m)` |
+| `read` | method | `tools/minifs_dump.py:47` | `def read(self, ino)` |
+| `resolve` | method | `tools/minifs_dump.py:67` | `def resolve(self, path)` |
+| `u16` | function | `tools/minifs_dump.py:13` | `def u16(d, o)` |
+| `u32` | function | `tools/minifs_dump.py:14` | `def u32(d, o)` |
+| `FSCK` | class | `tools/minifs_fsck.py:23` | `class FSCK` |
+| `__init__` | method | `tools/minifs_fsck.py:24` | `def __init__(self, fn)` |
+| `_find_base` | method | `tools/minifs_fsck.py:31` | `def _find_base(self)` |
+| `_sb` | method | `tools/minifs_fsck.py:52` | `def _sb(self)` |
+| `bitmap_free` | method | `tools/minifs_fsck.py:137` | `def bitmap_free(self, start, count)` |
+| `blk` | method | `tools/minifs_fsck.py:49` | `def blk(self, n)` |
+| `check_counters` | method | `tools/minifs_fsck.py:146` | `def check_counters(self)` |
+| `crc32` | function | `tools/minifs_fsck.py:15` | `def crc32(data)` |
+| `err` | method | `tools/minifs_fsck.py:86` | `def err(self, msg)` |
+| `inode` | method | `tools/minifs_fsck.py:58` | `def inode(self, i)` |
+| `inode_crc_ok` | method | `tools/minifs_fsck.py:65` | `def inode_crc_ok(self, i)` |
+| `main` | function | `tools/minifs_fsck.py:173` | `def main()` |
+| `mark_block` | method | `tools/minifs_fsck.py:88` | `def mark_block(self, n)` |
+| `read` | method | `tools/minifs_fsck.py:71` | `def read(self, ino)` |
+| `run` | method | `tools/minifs_fsck.py:161` | `def run(self)` |
+| `scan_dir` | method | `tools/minifs_fsck.py:105` | `def scan_dir(self, ino)` |
+| `scan_inode` | method | `tools/minifs_fsck.py:93` | `def scan_inode(self, i)` |
+| `u16` | function | `tools/minifs_fsck.py:13` | `def u16(d, o)` |
+| `u32` | function | `tools/minifs_fsck.py:14` | `def u32(d, o)` |
+| `FS` | class | `tools/minifs_saves.py:85` | `class FS` |
+| `Image` | class | `tools/minifs_saves.py:61` | `class Image` |
+| `__init__` | method | `tools/minifs_saves.py:64` | `def __init__(self, fn, base)` |
+| `__init__` | method | `tools/minifs_saves.py:86` | `def __init__(self, img)` |
+| `blk` | method | `tools/minifs_saves.py:75` | `def blk(self, n)` |
+| `close` | method | `tools/minifs_saves.py:72` | `def close(self)` |
+| `cmd_backup` | function | `tools/minifs_saves.py:271` | `def cmd_backup(img_path, stage)` |
+| `find_partition_base` | function | `tools/minifs_saves.py:233` | `def find_partition_base(fn)` |
+| `inode` | method | `tools/minifs_saves.py:95` | `def inode(self, i)` |
+| `is_dir` | method | `tools/minifs_saves.py:110` | `def is_dir(self, st)` |
+| `listdir` | method | `tools/minifs_saves.py:146` | `def listdir(self, ino)` |
+| `main` | function | `tools/minifs_saves.py:343` | `def main(argv)` |
+| `read_file` | method | `tools/minifs_saves.py:113` | `def read_file(self, ino)` |
+| `read_file_dir` | method | `tools/minifs_saves.py:165` | `def read_file_dir(self, ino)` |
+| `read_file_raw` | method | `tools/minifs_saves.py:173` | `def read_file_raw(self, st)` |
+| `resolve` | method | `tools/minifs_saves.py:197` | `def resolve(self, path)` |
+| `strict_name` | function | `tools/minifs_saves.py:224` | `def strict_name(nm)` |
 | `u16` | function | `tools/minifs_saves.py:53` | `def u16(d, o)` |
 | `u32` | function | `tools/minifs_saves.py:57` | `def u32(d, o)` |
 | `valid_name` | function | `tools/minifs_saves.py:216` | `def valid_name(nm)` |
@@ -105,8 +246,8 @@ Previous: [SYMBOLS_p26.md](SYMBOLS_p26.md)
 | `bytes_to_unicode` | function | `tools/mkvocab.py:18` | `def bytes_to_unicode()` |
 | `main` | function | `tools/mkvocab.py:35` | `def main(encoder_path, vocab_path)` |
 | `cleanup` | function | `tools/mutate.sh:146` | `` |
-| `find_index` | function | `tools/mutate.sh:576` | `` |
-| `record` | function | `tools/mutate.sh:570` | `` |
+| `find_index` | function | `tools/mutate.sh:585` | `` |
+| `record` | function | `tools/mutate.sh:579` | `` |
 | `restore_sources` | function | `tools/mutate.sh:139` | `` |
 | `usage` | function | `tools/mutate.sh:51` | `` |
 | `dump` | function | `tools/probe_compute_vga.py:104` | `def dump(name)` |
@@ -165,12 +306,12 @@ Previous: [SYMBOLS_p26.md](SYMBOLS_p26.md)
 | `expect` | function | `tools/test_bdd.sh:100` | `` |
 | `expect_count` | function | `tools/test_bdd.sh:148` | `` |
 | `expect_min` | function | `tools/test_bdd.sh:123` | `` |
-| `http_fixture_start` | function | `tools/test_bdd.sh:1499` | `` |
-| `http_fixture_stop` | function | `tools/test_bdd.sh:1506` | `` |
-| `http_server_start` | function | `tools/test_bdd.sh:1487` | `` |
-| `http_server_stop` | function | `tools/test_bdd.sh:1494` | `` |
-| `net_fixture_start` | function | `tools/test_bdd.sh:1511` | `` |
-| `net_fixture_stop` | function | `tools/test_bdd.sh:1518` | `` |
+| `http_fixture_start` | function | `tools/test_bdd.sh:1534` | `` |
+| `http_fixture_stop` | function | `tools/test_bdd.sh:1541` | `` |
+| `http_server_start` | function | `tools/test_bdd.sh:1522` | `` |
+| `http_server_stop` | function | `tools/test_bdd.sh:1529` | `` |
+| `net_fixture_start` | function | `tools/test_bdd.sh:1546` | `` |
+| `net_fixture_stop` | function | `tools/test_bdd.sh:1553` | `` |
 | `refute` | function | `tools/test_bdd.sh:171` | `` |
 | `scenario` | function | `tools/test_bdd.sh:56` | `` |
 | `scenario_smp` | function | `tools/test_bdd.sh:77` | `` |
@@ -355,44 +496,5 @@ Previous: [SYMBOLS_p26.md](SYMBOLS_p26.md)
 | `upstream_target` | function | `tools/update_sources.py:316` | `def upstream_target(git, path, branch)` |
 | `write_snapshot` | function | `tools/update_sources.py:513` | `def write_snapshot(path, outcomes)` |
 | `die` | function | `tools/wl_scoped.sh:9` | `` |
-| `mut` | function | `tools/wl_scoped.sh:77` | `` |
-| `mutm` | function | `tools/wl_scoped.sh:84` | `` |
-| `say` | function | `tools/wl_scoped.sh:8` | `` |
-| `WmLayoutSync` | class | `tools/wm_layout_sync.py:46` | `class WmLayoutSync` |
-| `WmLayoutSyncConfig` | class | `tools/wm_layout_sync.py:17` | `class WmLayoutSyncConfig` |
-| `WmLayoutSyncResult` | class | `tools/wm_layout_sync.py:36` | `class WmLayoutSyncResult` |
-| `__init__` | method | `tools/wm_layout_sync.py:20` | `def __init__(self, root)` |
-| `__init__` | method | `tools/wm_layout_sync.py:39` | `def __init__(self, modes, symbols, checks)` |
-| `__init__` | method | `tools/wm_layout_sync.py:49` | `def __init__(self, config)` |
-| `_count_layout_checks` | method | `tools/wm_layout_sync.py:133` | `def _count_layout_checks(self, tests_text)` |
-| `_extract_modes` | method | `tools/wm_layout_sync.py:116` | `def _extract_modes(self, header_text)` |
-| `_extract_symbols` | method | `tools/wm_layout_sync.py:125` | `def _extract_symbols(self, header_text)` |
-| `_read_text` | method | `tools/wm_layout_sync.py:110` | `def _read_text(self, path)` |
-| `_require_modes` | method | `tools/wm_layout_sync.py:138` | `def _require_modes(self, modes)` |
-| `_require_symbols` | method | `tools/wm_layout_sync.py:144` | `def _require_symbols(self, symbols)` |
-| `discover` | method | `tools/wm_layout_sync.py:53` | `def discover(self)` |
-| `main` | function | `tools/wm_layout_sync.py:159` | `def main(argv)` |
-| `parse_args` | function | `tools/wm_layout_sync.py:151` | `def parse_args(argv)` |
-| `render` | method | `tools/wm_layout_sync.py:66` | `def render(self, result)` |
-| `synchronize` | method | `tools/wm_layout_sync.py:101` | `def synchronize(self, write)` |
-| `die` | function | `tools/wm_scoped.sh:9` | `` |
-| `say` | function | `tools/wm_scoped.sh:8` | `` |
-| `vma_alloc_node` | function | `vma.c:113` | `static vma_node_t *vma_alloc_node(void)` |
-| `vma_ctx_bind` | function | `vma.c:52` | `void vma_ctx_bind(vma_ctx_t *c)` |
-| `vma_ctx_init` | function | `vma.c:37` | `void vma_ctx_init(vma_ctx_t *c, vma_node_t *pool)` |
-| `vma_ctx_save` | function | `vma.c:64` | `void vma_ctx_save(vma_ctx_t *c)` |
-| `vma_delete_fixup` | function | `vma.c:264` | `static void vma_delete_fixup(vma_node_t **root, vma_node_t *x)` |
-| `vma_insert_fixup` | function | `vma.c:148` | `static void vma_insert_fixup(vma_node_t **root, vma_node_t *z)` |
-| `vma_node_in_tree` | function | `vma.c:215` | `static int vma_node_in_tree(vma_node_t *root, vma_node_t *n)` |
-| `vma_rotate_left` | function | `vma.c:124` | `static void vma_rotate_left(vma_node_t **root, vma_node_t *x)` |
-| `vma_rotate_right` | function | `vma.c:136` | `static void vma_rotate_right(vma_node_t **root, vma_node_t *x)` |
-| `vma_transplant` | function | `vma.c:252` | `static void vma_transplant(vma_node_t **root, vma_node_t *u, vma_node_t *v)` |
-| `vma_tree_delete` | function | `vma.c:319` | `int vma_tree_delete(vma_node_t **root, unsigned long base)` |
-| `vma_tree_find` | function | `vma.c:220` | `vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base)` |
-| `vma_tree_find_containing` | function | `vma.c:238` | `vma_node_t *vma_tree_find_containing(vma_node_t *root, unsigned long va)` |
-| `vma_tree_init` | function | `vma.c:98` | `void vma_tree_init(void)` |
-| `vma_tree_insert` | function | `vma.c:187` | `vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long len)` |
-| `vma_tree_minimum` | function | `vma.c:259` | `static vma_node_t *vma_tree_minimum(vma_node_t *x)` |
-| `vma_view_load` | function | `vma.c:86` | `void vma_view_load(const vma_view_t *v)` |
-| `vma_view_save` | function | `vma.c:74` | `void vma_view_save(vma_view_t *v)` |
 
+Next: [SYMBOLS_p28.md](SYMBOLS_p28.md)

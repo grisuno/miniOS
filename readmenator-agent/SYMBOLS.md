@@ -1,5 +1,5 @@
-# Symbols (page 1 of 27)
-Pages: [SYMBOLS.md](SYMBOLS.md), [SYMBOLS_p2.md](SYMBOLS_p2.md), [SYMBOLS_p3.md](SYMBOLS_p3.md), [SYMBOLS_p4.md](SYMBOLS_p4.md), [SYMBOLS_p5.md](SYMBOLS_p5.md), [SYMBOLS_p6.md](SYMBOLS_p6.md), [SYMBOLS_p7.md](SYMBOLS_p7.md), [SYMBOLS_p8.md](SYMBOLS_p8.md), [SYMBOLS_p9.md](SYMBOLS_p9.md), [SYMBOLS_p10.md](SYMBOLS_p10.md), [SYMBOLS_p11.md](SYMBOLS_p11.md), [SYMBOLS_p12.md](SYMBOLS_p12.md), [SYMBOLS_p13.md](SYMBOLS_p13.md), [SYMBOLS_p14.md](SYMBOLS_p14.md), [SYMBOLS_p15.md](SYMBOLS_p15.md), [SYMBOLS_p16.md](SYMBOLS_p16.md), [SYMBOLS_p17.md](SYMBOLS_p17.md), [SYMBOLS_p18.md](SYMBOLS_p18.md), [SYMBOLS_p19.md](SYMBOLS_p19.md), [SYMBOLS_p20.md](SYMBOLS_p20.md), [SYMBOLS_p21.md](SYMBOLS_p21.md), [SYMBOLS_p22.md](SYMBOLS_p22.md), [SYMBOLS_p23.md](SYMBOLS_p23.md), [SYMBOLS_p24.md](SYMBOLS_p24.md), [SYMBOLS_p25.md](SYMBOLS_p25.md), [SYMBOLS_p26.md](SYMBOLS_p26.md), [SYMBOLS_p27.md](SYMBOLS_p27.md)
+# Symbols (page 1 of 28)
+Pages: [SYMBOLS.md](SYMBOLS.md), [SYMBOLS_p2.md](SYMBOLS_p2.md), [SYMBOLS_p3.md](SYMBOLS_p3.md), [SYMBOLS_p4.md](SYMBOLS_p4.md), [SYMBOLS_p5.md](SYMBOLS_p5.md), [SYMBOLS_p6.md](SYMBOLS_p6.md), [SYMBOLS_p7.md](SYMBOLS_p7.md), [SYMBOLS_p8.md](SYMBOLS_p8.md), [SYMBOLS_p9.md](SYMBOLS_p9.md), [SYMBOLS_p10.md](SYMBOLS_p10.md), [SYMBOLS_p11.md](SYMBOLS_p11.md), [SYMBOLS_p12.md](SYMBOLS_p12.md), [SYMBOLS_p13.md](SYMBOLS_p13.md), [SYMBOLS_p14.md](SYMBOLS_p14.md), [SYMBOLS_p15.md](SYMBOLS_p15.md), [SYMBOLS_p16.md](SYMBOLS_p16.md), [SYMBOLS_p17.md](SYMBOLS_p17.md), [SYMBOLS_p18.md](SYMBOLS_p18.md), [SYMBOLS_p19.md](SYMBOLS_p19.md), [SYMBOLS_p20.md](SYMBOLS_p20.md), [SYMBOLS_p21.md](SYMBOLS_p21.md), [SYMBOLS_p22.md](SYMBOLS_p22.md), [SYMBOLS_p23.md](SYMBOLS_p23.md), [SYMBOLS_p24.md](SYMBOLS_p24.md), [SYMBOLS_p25.md](SYMBOLS_p25.md), [SYMBOLS_p26.md](SYMBOLS_p26.md), [SYMBOLS_p27.md](SYMBOLS_p27.md), [SYMBOLS_p28.md](SYMBOLS_p28.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
@@ -153,25 +153,155 @@ Pages: [SYMBOLS.md](SYMBOLS.md), [SYMBOLS_p2.md](SYMBOLS_p2.md), [SYMBOLS_p3.md]
 | `w_u64` | function | `boot/uefi_stub.c:364` | `static void w_u64(unsigned long addr, unsigned long long v)` |
 | `KSECTORS` | macro | `bootloader.c:19` | `#define KSECTORS` |
 | `main` | function | `bootloader.c:21` | `void main(void)` |
-| `BC_LINE` | macro | `drivers/block.c:62` | `#define BC_LINE(idx)` |
-| `BC_MASK` | macro | `drivers/block.c:54` | `#define BC_MASK` |
-| `BC_WAYS` | macro | `drivers/block.c:53` | `#define BC_WAYS` |
-| `bc_index` | function | `drivers/block.c:64` | `static unsigned int bc_index(unsigned int block_num)` |
-| `bc_invalidate` | function | `drivers/block.c:73` | `static void bc_invalidate(unsigned int block_num)` |
-| `bc_invalidate_locked` | function | `drivers/block.c:68` | `static void bc_invalidate_locked(unsigned int block_num)` |
-| `block_dev_read` | function | `drivers/block.c:128` | `static int block_dev_read(unsigned lba, unsigned count, void *buf)` |
-| `block_dev_write` | function | `drivers/block.c:146` | `static int block_dev_write(unsigned lba, unsigned count, const void *buf)` |
-| `block_disk_sectors` | function | `drivers/block.c:255` | `unsigned long block_disk_sectors(void)` |
-| `block_flush` | function | `drivers/block.c:234` | `void block_flush(void)` |
-| `block_init` | function | `drivers/block.c:80` | `void block_init(void)` |
-| `block_read` | function | `drivers/block.c:164` | `int block_read(unsigned int block_num, void *buf)` |
-| `block_read_multi` | function | `drivers/block.c:214` | `int block_read_multi(unsigned int block_num, unsigned int count, void *buf)` |
-| `block_read_sectors` | function | `drivers/block.c:244` | `int block_read_sectors(unsigned lba, unsigned count, void *buf)` |
-| `block_set_base` | function | `drivers/block.c:113` | `void block_set_base(unsigned int lba_base)` |
-| `block_total` | function | `drivers/block.c:236` | `unsigned int block_total(void)` |
-| `block_write` | function | `drivers/block.c:205` | `int block_write(unsigned int block_num, const void *buf)` |
-| `block_write_multi` | function | `drivers/block.c:219` | `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf)` |
-| `table` | function | `drivers/block.c:122` | `* ops table (dev->ops->read/write), never straight at the hardware. The * virtio queue wins when block_init...` |
+| `AHCI_ABAR_INDEX` | macro | `drivers/ahci.c:41` | `#define AHCI_ABAR_INDEX` |
+| `AHCI_ALL_ONES` | macro | `drivers/ahci.c:90` | `#define AHCI_ALL_ONES` |
+| `AHCI_BOHC_BB` | macro | `drivers/ahci.c:58` | `#define AHCI_BOHC_BB` |
+| `AHCI_BOHC_BOS` | macro | `drivers/ahci.c:56` | `#define AHCI_BOHC_BOS` |
+| `AHCI_BOHC_OOS` | macro | `drivers/ahci.c:57` | `#define AHCI_BOHC_OOS` |
+| `AHCI_CAP2_BOH` | macro | `drivers/ahci.c:55` | `#define AHCI_CAP2_BOH` |
+| `AHCI_CAP_S64A` | macro | `drivers/ahci.c:51` | `#define AHCI_CAP_S64A` |
+| `AHCI_CAP_SSS` | macro | `drivers/ahci.c:52` | `#define AHCI_CAP_SSS` |
+| `AHCI_CH_BYTES` | macro | `drivers/ahci.c:111` | `#define AHCI_CH_BYTES` |
+| `AHCI_CH_CFL_H2D` | macro | `drivers/ahci.c:113` | `#define AHCI_CH_CFL_H2D` |
+| `AHCI_CH_PRDTL_SHIFT` | macro | `drivers/ahci.c:115` | `#define AHCI_CH_PRDTL_SHIFT` |
+| `AHCI_CH_WRITE` | macro | `drivers/ahci.c:114` | `#define AHCI_CH_WRITE` |
+| `AHCI_CLASS_BASE` | macro | `drivers/ahci.c:38` | `#define AHCI_CLASS_BASE` |
+| `AHCI_CLASS_PI` | macro | `drivers/ahci.c:40` | `#define AHCI_CLASS_PI` |
+| `AHCI_CLASS_SUB` | macro | `drivers/ahci.c:39` | `#define AHCI_CLASS_SUB` |
+| `AHCI_CL_ALIGN` | macro | `drivers/ahci.c:104` | `#define AHCI_CL_ALIGN` |
+| `AHCI_CL_BYTES` | macro | `drivers/ahci.c:103` | `#define AHCI_CL_BYTES` |
+| `AHCI_CMD_CR` | macro | `drivers/ahci.c:82` | `#define AHCI_CMD_CR` |
+| `AHCI_CMD_FR` | macro | `drivers/ahci.c:81` | `#define AHCI_CMD_FR` |
+| `AHCI_CMD_FRE` | macro | `drivers/ahci.c:80` | `#define AHCI_CMD_FRE` |
+| `AHCI_CMD_ICC_ACTIVE` | macro | `drivers/ahci.c:84` | `#define AHCI_CMD_ICC_ACTIVE` |
+| `AHCI_CMD_ICC_MASK` | macro | `drivers/ahci.c:83` | `#define AHCI_CMD_ICC_MASK` |
+| `AHCI_CMD_POD` | macro | `drivers/ahci.c:79` | `#define AHCI_CMD_POD` |
+| `AHCI_CMD_ST` | macro | `drivers/ahci.c:77` | `#define AHCI_CMD_ST` |
+| `AHCI_CMD_SUD` | macro | `drivers/ahci.c:78` | `#define AHCI_CMD_SUD` |
+| `AHCI_CT_ALIGN` | macro | `drivers/ahci.c:108` | `#define AHCI_CT_ALIGN` |
+| `AHCI_CT_BYTES` | macro | `drivers/ahci.c:107` | `#define AHCI_CT_BYTES` |
+| `AHCI_CT_PRDT_OFF` | macro | `drivers/ahci.c:109` | `#define AHCI_CT_PRDT_OFF` |
+| `AHCI_DMA_LIMIT_32` | macro | `drivers/ahci.c:142` | `#define AHCI_DMA_LIMIT_32` |
+| `AHCI_FIS_ALIGN` | macro | `drivers/ahci.c:106` | `#define AHCI_FIS_ALIGN` |
+| `AHCI_FIS_BYTES` | macro | `drivers/ahci.c:105` | `#define AHCI_FIS_BYTES` |
+| `AHCI_FIS_BYTES_H2D` | macro | `drivers/ahci.c:121` | `#define AHCI_FIS_BYTES_H2D` |
+| `AHCI_FIS_DEV_LBA` | macro | `drivers/ahci.c:120` | `#define AHCI_FIS_DEV_LBA` |
+| `AHCI_FIS_H2D_CMD` | macro | `drivers/ahci.c:119` | `#define AHCI_FIS_H2D_CMD` |
+| `AHCI_FIS_TYPE_H2D` | macro | `drivers/ahci.c:118` | `#define AHCI_FIS_TYPE_H2D` |
+| `AHCI_GHC_AE` | macro | `drivers/ahci.c:53` | `#define AHCI_GHC_AE` |
+| `AHCI_GHC_IE` | macro | `drivers/ahci.c:54` | `#define AHCI_GHC_IE` |
+| `AHCI_IS_TFES` | macro | `drivers/ahci.c:89` | `#define AHCI_IS_TFES` |
+| `AHCI_LBA48_LIMIT` | macro | `drivers/ahci.c:141` | `#define AHCI_LBA48_LIMIT` |
+| `AHCI_MAX_PORTS` | macro | `drivers/ahci.c:60` | `#define AHCI_MAX_PORTS` |
+| `AHCI_MAX_SECTORS` | macro | `drivers/ahci.c:138` | `#define AHCI_MAX_SECTORS` |
+| `AHCI_PORT_BASE` | macro | `drivers/ahci.c:61` | `#define AHCI_PORT_BASE` |
+| `AHCI_PORT_STRIDE` | macro | `drivers/ahci.c:62` | `#define AHCI_PORT_STRIDE` |
+| `AHCI_PRD_BYTES` | macro | `drivers/ahci.c:110` | `#define AHCI_PRD_BYTES` |
+| `AHCI_PRD_DBC_MASK` | macro | `drivers/ahci.c:116` | `#define AHCI_PRD_DBC_MASK` |
+| `AHCI_PX_CI` | macro | `drivers/ahci.c:75` | `#define AHCI_PX_CI` |
+| `AHCI_PX_CLB` | macro | `drivers/ahci.c:63` | `#define AHCI_PX_CLB` |
+| `AHCI_PX_CLBU` | macro | `drivers/ahci.c:64` | `#define AHCI_PX_CLBU` |
+| `AHCI_PX_CMD` | macro | `drivers/ahci.c:69` | `#define AHCI_PX_CMD` |
+| `AHCI_PX_FB` | macro | `drivers/ahci.c:65` | `#define AHCI_PX_FB` |
+| `AHCI_PX_FBU` | macro | `drivers/ahci.c:66` | `#define AHCI_PX_FBU` |
+| `AHCI_PX_IE` | macro | `drivers/ahci.c:68` | `#define AHCI_PX_IE` |
+| `AHCI_PX_IS` | macro | `drivers/ahci.c:67` | `#define AHCI_PX_IS` |
+| `AHCI_PX_SCTL` | macro | `drivers/ahci.c:73` | `#define AHCI_PX_SCTL` |
+| `AHCI_PX_SERR` | macro | `drivers/ahci.c:74` | `#define AHCI_PX_SERR` |
+| `AHCI_PX_SIG` | macro | `drivers/ahci.c:71` | `#define AHCI_PX_SIG` |
+| `AHCI_PX_SSTS` | macro | `drivers/ahci.c:72` | `#define AHCI_PX_SSTS` |
+| `AHCI_PX_TFD` | macro | `drivers/ahci.c:70` | `#define AHCI_PX_TFD` |
+| `AHCI_REG_BOHC` | macro | `drivers/ahci.c:49` | `#define AHCI_REG_BOHC` |
+| `AHCI_REG_CAP` | macro | `drivers/ahci.c:43` | `#define AHCI_REG_CAP` |
+| `AHCI_REG_CAP2` | macro | `drivers/ahci.c:48` | `#define AHCI_REG_CAP2` |
+| `AHCI_REG_GHC` | macro | `drivers/ahci.c:44` | `#define AHCI_REG_GHC` |
+| `AHCI_REG_IS` | macro | `drivers/ahci.c:45` | `#define AHCI_REG_IS` |
+| `AHCI_REG_PI` | macro | `drivers/ahci.c:46` | `#define AHCI_REG_PI` |
+| `AHCI_REG_VS` | macro | `drivers/ahci.c:47` | `#define AHCI_REG_VS` |
+| `AHCI_SCTL_DET_COMRESET` | macro | `drivers/ahci.c:99` | `#define AHCI_SCTL_DET_COMRESET` |
+| `AHCI_SCTL_DET_MASK` | macro | `drivers/ahci.c:98` | `#define AHCI_SCTL_DET_MASK` |
+| `AHCI_SECTOR` | macro | `drivers/ahci.c:137` | `#define AHCI_SECTOR` |
+| `AHCI_SIG_ATA` | macro | `drivers/ahci.c:101` | `#define AHCI_SIG_ATA` |
+| `AHCI_SSTS_DET_MASK` | macro | `drivers/ahci.c:92` | `#define AHCI_SSTS_DET_MASK` |
+| `AHCI_SSTS_DET_ONLINE` | macro | `drivers/ahci.c:94` | `#define AHCI_SSTS_DET_ONLINE` |
+| `AHCI_SSTS_DET_PRESENT` | macro | `drivers/ahci.c:93` | `#define AHCI_SSTS_DET_PRESENT` |
+| `AHCI_SSTS_IPM_ACTIVE` | macro | `drivers/ahci.c:97` | `#define AHCI_SSTS_IPM_ACTIVE` |
+| `AHCI_SSTS_IPM_MASK` | macro | `drivers/ahci.c:96` | `#define AHCI_SSTS_IPM_MASK` |
+| `AHCI_SSTS_IPM_SHIFT` | macro | `drivers/ahci.c:95` | `#define AHCI_SSTS_IPM_SHIFT` |
+| `AHCI_STAGE_ALIGN` | macro | `drivers/ahci.c:140` | `#define AHCI_STAGE_ALIGN` |
+| `AHCI_STAGE_BYTES` | macro | `drivers/ahci.c:139` | `#define AHCI_STAGE_BYTES` |
+| `AHCI_TFD_BSY` | macro | `drivers/ahci.c:88` | `#define AHCI_TFD_BSY` |
+| `AHCI_TFD_DRQ` | macro | `drivers/ahci.c:87` | `#define AHCI_TFD_DRQ` |
+| `AHCI_TFD_ERR` | macro | `drivers/ahci.c:86` | `#define AHCI_TFD_ERR` |
+| `AHCI_TMO_CMD_MS` | macro | `drivers/ahci.c:148` | `#define AHCI_TMO_CMD_MS` |
+| `AHCI_TMO_COMRESET_HOLD_MS` | macro | `drivers/ahci.c:147` | `#define AHCI_TMO_COMRESET_HOLD_MS` |
+| `AHCI_TMO_ENGINE_MS` | macro | `drivers/ahci.c:145` | `#define AHCI_TMO_ENGINE_MS` |
+| `AHCI_TMO_HANDOFF_MS` | macro | `drivers/ahci.c:144` | `#define AHCI_TMO_HANDOFF_MS` |
+| `AHCI_TMO_LINK_MS` | macro | `drivers/ahci.c:146` | `#define AHCI_TMO_LINK_MS` |
+| `ATA_CMD_FLUSH_EXT` | macro | `drivers/ahci.c:126` | `#define ATA_CMD_FLUSH_EXT` |
+| `ATA_CMD_IDENTIFY` | macro | `drivers/ahci.c:123` | `#define ATA_CMD_IDENTIFY` |
+| `ATA_CMD_READ_DMA_EXT` | macro | `drivers/ahci.c:124` | `#define ATA_CMD_READ_DMA_EXT` |
+| `ATA_CMD_WRITE_DMA_EXT` | macro | `drivers/ahci.c:125` | `#define ATA_CMD_WRITE_DMA_EXT` |
+| `ATA_ID_CMDSET2` | macro | `drivers/ahci.c:129` | `#define ATA_ID_CMDSET2` |
+| `ATA_ID_LBA48_BIT` | macro | `drivers/ahci.c:130` | `#define ATA_ID_LBA48_BIT` |
+| `ATA_ID_LBA48_SECTORS` | macro | `drivers/ahci.c:131` | `#define ATA_ID_LBA48_SECTORS` |
+| `ATA_ID_SECTOR_SIZE` | macro | `drivers/ahci.c:132` | `#define ATA_ID_SECTOR_SIZE` |
+| `ATA_ID_SS_LONG` | macro | `drivers/ahci.c:135` | `#define ATA_ID_SS_LONG` |
+| `ATA_ID_SS_VALID` | macro | `drivers/ahci.c:134` | `#define ATA_ID_SS_VALID` |
+| `ATA_ID_SS_VALID_MASK` | macro | `drivers/ahci.c:133` | `#define ATA_ID_SS_VALID_MASK` |
+| `ATA_ID_WORDS` | macro | `drivers/ahci.c:128` | `#define ATA_ID_WORDS` |
+| `ahc_alloc` | function | `drivers/ahci.c:452` | `static int ahc_alloc(void)` |
+| `ahc_claim_port` | function | `drivers/ahci.c:480` | `static int ahc_claim_port(void)` |
+| `ahc_dma_ok` | function | `drivers/ahci.c:321` | `static int ahc_dma_ok(const void *p, unsigned long len)` |
+| `ahc_handoff` | function | `drivers/ahci.c:255` | `static int ahc_handoff(void)` |
+| `ahc_id_word` | function | `drivers/ahci.c:211` | `static unsigned ahc_id_word(const unsigned char *id, unsigned idx)` |
+| `ahc_identify` | function | `drivers/ahci.c:417` | `static int ahc_identify(void)` |
+| `ahc_inl` | function | `drivers/ahci.c:176` | `static unsigned ahc_inl(unsigned short port)` |
+| `ahc_link_up` | function | `drivers/ahci.c:285` | `static int ahc_link_up(volatile unsigned char *px)` |
+| `ahc_ops_present` | function | `drivers/ahci.c:651` | `static int ahc_ops_present(device_t *dev)` |
+| `ahc_ops_read` | function | `drivers/ahci.c:631` | `static int ahc_ops_read(device_t *dev, unsigned lba, unsigned count,                         void...` |
+| `ahc_ops_total` | function | `drivers/ahci.c:645` | `static unsigned ahc_ops_total(device_t *dev)` |
+| `ahc_ops_write` | function | `drivers/ahci.c:638` | `static int ahc_ops_write(device_t *dev, unsigned lba, unsigned count,                          co...` |
+| `ahc_outl` | function | `drivers/ahci.c:171` | `static void ahc_outl(unsigned short port, unsigned val)` |
+| `ahc_port_link` | function | `drivers/ahci.c:296` | `static int ahc_port_link(volatile unsigned char *px)` |
+| `ahc_port_start` | function | `drivers/ahci.c:330` | `static int ahc_port_start(volatile unsigned char *px)` |
+| `ahc_port_stop` | function | `drivers/ahci.c:270` | `static int ahc_port_stop(volatile unsigned char *px)` |
+| `ahc_pr32` | function | `drivers/ahci.c:193` | `static unsigned ahc_pr32(volatile unsigned char *px, unsigned off)` |
+| `ahc_put32` | function | `drivers/ahci.c:203` | `static void ahc_put32(unsigned char *p, unsigned v)` |
+| `ahc_pw32` | function | `drivers/ahci.c:198` | `static void ahc_pw32(volatile unsigned char *px, unsigned off, unsigned val)` |
+| `ahc_r32` | function | `drivers/ahci.c:183` | `static unsigned ahc_r32(unsigned off)` |
+| `ahc_range_ok` | function | `drivers/ahci.c:580` | `static int ahc_range_ok(unsigned lba, unsigned count, const void *buf)` |
+| `ahc_w32` | function | `drivers/ahci.c:188` | `static void ahc_w32(unsigned off, unsigned val)` |
+| `ahc_wait_port` | function | `drivers/ahci.c:241` | `static int ahc_wait_port(volatile unsigned char *px, unsigned off,                          unsig...` |
+| `ahci_init` | function | `drivers/ahci.c:507` | `int ahci_init(void)` |
+| `ahci_note` | function | `drivers/ahci.c:231` | `const char *ahci_note(void)` |
+| `ahci_port` | function | `drivers/ahci.c:223` | `int ahci_port(void)` |
+| `ahci_ports_implemented` | function | `drivers/ahci.c:227` | `unsigned ahci_ports_implemented(void)` |
+| `ahci_present` | function | `drivers/ahci.c:215` | `int ahci_present(void)` |
+| `ahci_read_sectors` | function | `drivers/ahci.c:587` | `int ahci_read_sectors(unsigned lba, unsigned count, void *buf)` |
+| `ahci_register_device` | function | `drivers/ahci.c:673` | `void ahci_register_device(void)` |
+| `ahci_sectors` | function | `drivers/ahci.c:235` | `unsigned long ahci_sectors(void)` |
+| `ahci_version` | function | `drivers/ahci.c:219` | `unsigned ahci_version(void)` |
+| `ahci_write_sectors` | function | `drivers/ahci.c:607` | `int ahci_write_sectors(unsigned lba, unsigned count, const void *buf)` |
+| `BC_LINE` | macro | `drivers/block.c:68` | `#define BC_LINE(idx)` |
+| `BC_MASK` | macro | `drivers/block.c:60` | `#define BC_MASK` |
+| `BC_WAYS` | macro | `drivers/block.c:59` | `#define BC_WAYS` |
+| `bc_index` | function | `drivers/block.c:70` | `static unsigned int bc_index(unsigned int block_num)` |
+| `bc_invalidate` | function | `drivers/block.c:79` | `static void bc_invalidate(unsigned int block_num)` |
+| `bc_invalidate_locked` | function | `drivers/block.c:74` | `static void bc_invalidate_locked(unsigned int block_num)` |
+| `block_dev_read` | function | `drivers/block.c:147` | `static int block_dev_read(unsigned lba, unsigned count, void *buf)` |
+| `block_dev_write` | function | `drivers/block.c:170` | `static int block_dev_write(unsigned lba, unsigned count, const void *buf)` |
+| `block_disk_sectors` | function | `drivers/block.c:284` | `unsigned long block_disk_sectors(void)` |
+| `block_flush` | function | `drivers/block.c:263` | `void block_flush(void)` |
+| `block_init` | function | `drivers/block.c:86` | `void block_init(void)` |
+| `block_read` | function | `drivers/block.c:193` | `int block_read(unsigned int block_num, void *buf)` |
+| `block_read_multi` | function | `drivers/block.c:243` | `int block_read_multi(unsigned int block_num, unsigned int count, void *buf)` |
+| `block_read_sectors` | function | `drivers/block.c:273` | `int block_read_sectors(unsigned lba, unsigned count, void *buf)` |
+| `block_set_base` | function | `drivers/block.c:132` | `void block_set_base(unsigned int lba_base)` |
+| `block_total` | function | `drivers/block.c:265` | `unsigned int block_total(void)` |
+| `block_write` | function | `drivers/block.c:234` | `int block_write(unsigned int block_num, const void *buf)` |
+| `block_write_multi` | function | `drivers/block.c:248` | `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf)` |
+| `table` | function | `drivers/block.c:141` | `* ops table (dev->ops->read/write), never straight at the hardware. The * virtio queue wins when block_init...` |
 | `dev_copy` | function | `drivers/driver.c:20` | `static void dev_copy(char *dst, const char *src, unsigned cap)` |
 | `dev_eq` | function | `drivers/driver.c:27` | `static int dev_eq(const char *a, const char *b)` |
 | `dev_len` | function | `drivers/driver.c:14` | `static unsigned dev_len(const char *s)` |
@@ -366,135 +496,5 @@ Pages: [SYMBOLS.md](SYMBOLS.md), [SYMBOLS_p2.md](SYMBOLS_p2.md), [SYMBOLS_p3.md]
 | `RTC_REG_SEC` | macro | `drivers/rtc.c:12` | `#define RTC_REG_SEC` |
 | `RTC_REG_STATUS_A` | macro | `drivers/rtc.c:18` | `#define RTC_REG_STATUS_A` |
 | `RTC_REG_STATUS_B` | macro | `drivers/rtc.c:19` | `#define RTC_REG_STATUS_B` |
-| `RTC_REG_YEAR` | macro | `drivers/rtc.c:17` | `#define RTC_REG_YEAR` |
-| `RTC_SEC_MAX` | macro | `drivers/rtc.c:29` | `#define RTC_SEC_MAX` |
-| `RTC_SEC_MIN` | macro | `drivers/rtc.c:28` | `#define RTC_SEC_MIN` |
-| `RTC_UPDATE_IN_PROGRESS` | macro | `drivers/rtc.c:21` | `#define RTC_UPDATE_IN_PROGRESS` |
-| `RTC_UPDATE_WAIT` | macro | `drivers/rtc.c:33` | `#define RTC_UPDATE_WAIT` |
-| `rtc_cmos_read` | function | `drivers/rtc.c:35` | `static inline unsigned char rtc_cmos_read(unsigned char reg)` |
-| `rtc_from_bcd` | function | `drivers/rtc.c:40` | `static int rtc_from_bcd(unsigned char v)` |
-| `rtc_month_len` | function | `drivers/rtc.c:68` | `static int rtc_month_len(long full_year, long mon)` |
-| `rtc_read_date` | function | `drivers/rtc.c:78` | `int rtc_read_date(int *year, int *mon, int *day)` |
-| `rtc_read_tod` | function | `drivers/rtc.c:44` | `int rtc_read_tod(int *hour, int *min, int *sec)` |
-| `rtc_wall_seconds` | function | `drivers/rtc.c:102` | `int rtc_wall_seconds(unsigned long *out)` |
-| `DMA_CH1_ADDR` | macro | `drivers/sb16.c:75` | `#define DMA_CH1_ADDR` |
-| `DMA_CH1_CNT` | macro | `drivers/sb16.c:76` | `#define DMA_CH1_CNT` |
-| `DMA_CH1_MASK` | macro | `drivers/sb16.c:81` | `#define DMA_CH1_MASK` |
-| `DMA_CH1_PAGE` | macro | `drivers/sb16.c:77` | `#define DMA_CH1_PAGE` |
-| `DMA_CH1_SINGLE_READ` | macro | `drivers/sb16.c:68` | `#define DMA_CH1_SINGLE_READ` |
-| `DMA_CH1_UNMASK` | macro | `drivers/sb16.c:80` | `#define DMA_CH1_UNMASK` |
-| `DMA_FF_CLR` | macro | `drivers/sb16.c:79` | `#define DMA_FF_CLR` |
-| `DMA_MASK` | macro | `drivers/sb16.c:78` | `#define DMA_MASK` |
-| `DMA_MODE_PORT` | macro | `drivers/sb16.c:67` | `#define DMA_MODE_PORT` |
-| `IRQ` | function | `drivers/sb16.c:22` | `* QEMU audio backends never raise the completion IRQ (they only consume once * their engine buffer drains, which a...` |
-| `SB16_BASE_PORT` | macro | `drivers/sb16.c:48` | `#define SB16_BASE_PORT` |
-| `SB16_BUF` | macro | `drivers/sb16.c:85` | `#define SB16_BUF` |
-| `SB16_CMD_PLAY8` | macro | `drivers/sb16.c:57` | `#define SB16_CMD_PLAY8` |
-| `SB16_CMD_READ_VER` | macro | `drivers/sb16.c:55` | `#define SB16_CMD_READ_VER` |
-| `SB16_CMD_SET_FREQ` | macro | `drivers/sb16.c:56` | `#define SB16_CMD_SET_FREQ` |
-| `SB16_CMD_SPK_OFF` | macro | `drivers/sb16.c:59` | `#define SB16_CMD_SPK_OFF` |
-| `SB16_CMD_SPK_ON` | macro | `drivers/sb16.c:58` | `#define SB16_CMD_SPK_ON` |
-| `SB16_DMA_BUF0` | macro | `drivers/sb16.c:83` | `#define SB16_DMA_BUF0` |
-| `SB16_DSP_RDSTATUS` | macro | `drivers/sb16.c:61` | `#define SB16_DSP_RDSTATUS` |
-| `SB16_DSP_READY_MASK` | macro | `drivers/sb16.c:73` | `#define SB16_DSP_READY_MASK` |
-| `SB16_DSP_READ_DATA` | macro | `drivers/sb16.c:50` | `#define SB16_DSP_READ_DATA` |
-| `SB16_DSP_RESET` | macro | `drivers/sb16.c:49` | `#define SB16_DSP_RESET` |
-| `SB16_DSP_STATUS` | macro | `drivers/sb16.c:52` | `#define SB16_DSP_STATUS` |
-| `SB16_DSP_WRITE_DATA` | macro | `drivers/sb16.c:51` | `#define SB16_DSP_WRITE_DATA` |
-| `SB16_FREQ_HI` | macro | `drivers/sb16.c:71` | `#define SB16_FREQ_HI` |
-| `SB16_FREQ_LO` | macro | `drivers/sb16.c:70` | `#define SB16_FREQ_LO` |
-| `SB16_IRQ_ACK` | macro | `drivers/sb16.c:53` | `#define SB16_IRQ_ACK` |
-| `SB16_MODE_PCM` | macro | `drivers/sb16.c:89` | `#define SB16_MODE_PCM` |
-| `SB16_MODE_TONE` | macro | `drivers/sb16.c:88` | `#define SB16_MODE_TONE` |
-| `SB16_SILENCE_SLOT` | macro | `drivers/sb16.c:84` | `#define SB16_SILENCE_SLOT` |
-| `SB16_SQ_CYCLE` | macro | `drivers/sb16.c:91` | `#define SB16_SQ_CYCLE` |
-| `pending` | function | `drivers/sb16.c:535` | `* reading without it eats whatever byte happens to be pending (or * times out), so the probe used to fail or misread...` |
-| `sb16_arm` | function | `drivers/sb16.c:355` | `static void sb16_arm(int from_irq)` |
-| `sb16_cmd` | function | `drivers/sb16.c:282` | `static void sb16_cmd(unsigned char c)` |
-| `sb16_counters` | function | `drivers/sb16.c:479` | `void sb16_counters(sb16_counters_t *out)` |
-| `sb16_dma_play` | function | `drivers/sb16.c:323` | `static void sb16_dma_play(unsigned addr, unsigned len)` |
-| `sb16_init` | function | `drivers/sb16.c:530` | `int sb16_init(void)` |
-| `sb16_irq` | function | `drivers/sb16.c:449` | `void sb16_irq(void)` |
-| `sb16_kring_reset` | function | `drivers/sb16.c:118` | `static void sb16_kring_reset(void)` |
-| `sb16_legacy_busy` | function | `drivers/sb16.c:472` | `int sb16_legacy_busy(void)` |
-| `sb16_mix_all` | function | `drivers/sb16.c:194` | `static void sb16_mix_all(void)` |
-| `sb16_mode_active` | function | `drivers/sb16.c:467` | `int sb16_mode_active(void)` |
-| `sb16_ops_pcm_close` | function | `drivers/sb16.c:498` | `static void sb16_ops_pcm_close(device_t *dev)` |
-| `sb16_ops_pcm_open` | function | `drivers/sb16.c:491` | `static void sb16_ops_pcm_open(device_t *dev)` |
-| `sb16_ops_pcm_submit` | function | `drivers/sb16.c:505` | `static int sb16_ops_pcm_submit(device_t *dev, const unsigned char *pcm, unsigned len)` |
-| `sb16_ops_present` | function | `drivers/sb16.c:484` | `static int sb16_ops_present(device_t *dev)` |
-| `sb16_pcm_close` | function | `drivers/sb16.c:422` | `void sb16_pcm_close(void)` |
-| `sb16_pcm_open` | function | `drivers/sb16.c:398` | `void sb16_pcm_open(void)` |
-| `sb16_pcm_submit` | function | `drivers/sb16.c:431` | `int sb16_pcm_submit(const unsigned char *pcm, unsigned len)` |
-| `sb16_poll` | function | `drivers/sb16.c:457` | `void sb16_poll(void)` |
-| `sb16_present` | function | `drivers/sb16.c:380` | `int sb16_present(void)` |
-| `sb16_pump` | function | `drivers/sb16.c:236` | `void sb16_pump(void)` |
-| `sb16_read_data` | function | `drivers/sb16.c:287` | `static int sb16_read_data(unsigned char *out)` |
-| `sb16_refill` | function | `drivers/sb16.c:339` | `static void sb16_refill(int slot_index)` |
-| `sb16_reset_dsp` | function | `drivers/sb16.c:297` | `static int sb16_reset_dsp(void)` |
-| `sb16_ring_free` | function | `drivers/sb16.c:466` | `unsigned sb16_ring_free(void)` |
-| `sb16_slot` | function | `drivers/sb16.c:130` | `static unsigned char *sb16_slot(unsigned i)` |
-| `sb16_stream_close` | function | `drivers/sb16.c:154` | `void sb16_stream_close(int id)` |
-| `sb16_stream_count` | function | `drivers/sb16.c:183` | `int sb16_stream_count(void)` |
-| `sb16_stream_open` | function | `drivers/sb16.c:138` | `int sb16_stream_open(void)` |
-| `sb16_stream_submit` | function | `drivers/sb16.c:162` | `int sb16_stream_submit(int id, const unsigned char *pcm, unsigned len)` |
-| `sb16_stream_volume` | function | `drivers/sb16.c:177` | `void sb16_stream_volume(int id, unsigned char vol)` |
-| `sb16_tone` | function | `drivers/sb16.c:382` | `void sb16_tone(unsigned freq)` |
-| `sb16_wait_write` | function | `drivers/sb16.c:278` | `static int sb16_wait_write(void)` |
-| `UBK_BULK_BURST` | macro | `drivers/usbblk.c:64` | `#define UBK_BULK_BURST` |
-| `UBK_BULK_INTERVAL` | macro | `drivers/usbblk.c:63` | `#define UBK_BULK_INTERVAL` |
-| `UBK_CBW_FLAG_IN` | macro | `drivers/usbblk.c:24` | `#define UBK_CBW_FLAG_IN` |
-| `UBK_CBW_LEN` | macro | `drivers/usbblk.c:22` | `#define UBK_CBW_LEN` |
-| `UBK_CBW_SIG` | macro | `drivers/usbblk.c:23` | `#define UBK_CBW_SIG` |
-| `UBK_CDB6_LEN` | macro | `drivers/usbblk.c:181` | `#define UBK_CDB6_LEN` |
-| `UBK_CDB_LEN` | macro | `drivers/usbblk.c:79` | `#define UBK_CDB_LEN` |
-| `UBK_CLEAR_FEATURE` | macro | `drivers/usbblk.c:149` | `#define UBK_CLEAR_FEATURE` |
-| `UBK_CSW_LEN` | macro | `drivers/usbblk.c:27` | `#define UBK_CSW_LEN` |
-| `UBK_CSW_SIG` | macro | `drivers/usbblk.c:28` | `#define UBK_CSW_SIG` |
-| `UBK_CSW_STATUS_FAILED` | macro | `drivers/usbblk.c:30` | `#define UBK_CSW_STATUS_FAILED` |
-| `UBK_CSW_STATUS_PASSED` | macro | `drivers/usbblk.c:29` | `#define UBK_CSW_STATUS_PASSED` |
-| `UBK_ENDP_HALT` | macro | `drivers/usbblk.c:150` | `#define UBK_ENDP_HALT` |
-| `UBK_MAX_XFER_BLOCKS` | macro | `drivers/usbblk.c:70` | `#define UBK_MAX_XFER_BLOCKS` |
-| `UBK_MS_RESET` | macro | `drivers/usbblk.c:148` | `#define UBK_MS_RESET` |
-| `UBK_READY_TRIES` | macro | `drivers/usbblk.c:293` | `#define UBK_READY_TRIES` |
-| `UBK_SCSI_INQUIRY` | macro | `drivers/usbblk.c:35` | `#define UBK_SCSI_INQUIRY` |
-| `UBK_SCSI_READ10` | macro | `drivers/usbblk.c:37` | `#define UBK_SCSI_READ10` |
-| `UBK_SCSI_READ_CAPACITY` | macro | `drivers/usbblk.c:36` | `#define UBK_SCSI_READ_CAPACITY` |
-| `UBK_SCSI_REQUEST_SENSE` | macro | `drivers/usbblk.c:34` | `#define UBK_SCSI_REQUEST_SENSE` |
-| `UBK_SCSI_TEST_UNIT_READY` | macro | `drivers/usbblk.c:33` | `#define UBK_SCSI_TEST_UNIT_READY` |
-| `UBK_SCSI_WRITE10` | macro | `drivers/usbblk.c:38` | `#define UBK_SCSI_WRITE10` |
-| `UBK_SENSE_LEN` | macro | `drivers/usbblk.c:261` | `#define UBK_SENSE_LEN` |
-| `ubk_blk_present` | function | `drivers/usbblk.c:438` | `static int ubk_blk_present(device_t *dev)` |
-| `ubk_blk_read` | function | `drivers/usbblk.c:421` | `static int ubk_blk_read(device_t *dev, unsigned lba, unsigned count,                         void...` |
-| `ubk_blk_sectors` | function | `drivers/usbblk.c:433` | `static unsigned ubk_blk_sectors(device_t *dev)` |
-| `ubk_blk_write` | function | `drivers/usbblk.c:427` | `static int ubk_blk_write(device_t *dev, unsigned lba, unsigned count,                          co...` |
-| `ubk_build_cbw` | function | `drivers/usbblk.c:92` | `void ubk_build_cbw(unsigned char *out, unsigned tag, unsigned long lba,                    unsign...` |
-| `ubk_cdb10` | function | `drivers/usbblk.c:80` | `static void ubk_cdb10(unsigned char *cdb, unsigned char opcode,                       unsigned lo...` |
-| `ubk_check_csw` | function | `drivers/usbblk.c:121` | `int ubk_check_csw(const unsigned char *csw, unsigned tag, unsigned expect_len)` |
-| `ubk_claim_eps` | function | `drivers/usbblk.c:377` | `static int ubk_claim_eps(int device, const xhc_iface_t *iface)` |
-| `ubk_command` | function | `drivers/usbblk.c:279` | `static int ubk_command(unsigned char *cdb, unsigned cdb_len,                        unsigned char...` |
-| `ubk_command_raw` | function | `drivers/usbblk.c:187` | `static int ubk_command_raw(unsigned char *cdb, unsigned cdb_len,                            unsig...` |
-| `ubk_counters` | function | `drivers/usbblk.c:72` | `void ubk_counters(ubk_counters_t *out)` |
-| `ubk_disk_t` | struct | `drivers/usbblk.c:44` | `` |
-| `ubk_init` | function | `drivers/usbblk.c:457` | `int ubk_init(void)` |
-| `ubk_present` | function | `drivers/usbblk.c:336` | `int ubk_present(void)` |
-| `ubk_read_capacity` | function | `drivers/usbblk.c:311` | `static int ubk_read_capacity(unsigned long *sectors)` |
-| `ubk_read_sectors` | function | `drivers/usbblk.c:365` | `int ubk_read_sectors(unsigned long lba, unsigned count, void *buf)` |
-| `ubk_sectors` | function | `drivers/usbblk.c:340` | `unsigned long ubk_sectors(void)` |
-| `ubk_sense` | function | `drivers/usbblk.c:262` | `static void ubk_sense(void)` |
-| `ubk_unit_ready` | function | `drivers/usbblk.c:294` | `static int ubk_unit_ready(void)` |
-| `ubk_write_sectors` | function | `drivers/usbblk.c:370` | `int ubk_write_sectors(unsigned long lba, unsigned count, const void *buf)` |
-| `ubk_xfer` | function | `drivers/usbblk.c:347` | `static int ubk_xfer(unsigned long lba, unsigned count, void *buf, int read)` |
-| `USBHID_INTERVAL` | macro | `drivers/usbhid.c:55` | `#define USBHID_INTERVAL` |
-| `USBHID_MAX_DEVS` | macro | `drivers/usbhid.c:35` | `#define USBHID_MAX_DEVS` |
-| `USBHID_MAX_SCANCODES` | macro | `drivers/usbhid.c:204` | `#define USBHID_MAX_SCANCODES` |
-| `usbhid_claim` | function | `drivers/usbhid.c:353` | `static int usbhid_claim(int device, const xhc_iface_t *iface, int is_mouse)` |
-| `usbhid_counters` | function | `drivers/usbhid.c:270` | `void usbhid_counters(usbhid_counters_t *out)` |
-| `usbhid_dev_t` | struct | `drivers/usbhid.c:40` | `` |
-| `usbhid_emit_mod` | function | `drivers/usbhid.c:165` | `static int usbhid_emit_mod(unsigned char *out, int max, int n, unsigned bit,                     ...` |
-| `usbhid_emit_usage` | function | `drivers/usbhid.c:183` | `static int usbhid_emit_usage(unsigned char *out, int max, int n,                              uns...` |
-| `usbhid_ep_taken` | function | `drivers/usbhid.c:312` | `static int usbhid_ep_taken(int ep_index)` |
-| `usbhid_init` | function | `drivers/usbhid.c:384` | `int usbhid_init(void)` |
-| `usbhid_is_mouse_maxp` | function | `drivers/usbhid.c:380` | `static int usbhid_is_mouse_maxp(int maxp)` |
 
 Next: [SYMBOLS_p2.md](SYMBOLS_p2.md)

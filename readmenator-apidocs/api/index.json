@@ -2,12 +2,12 @@
  "schema_version": 1,
  "format": "jsonl",
  "meta": {
-  "modules": 518,
-  "entities": 10559,
+  "modules": 520,
+  "entities": 10678,
   "languages": {
    "S": 7,
-   "c": 239,
-   "h": 199,
+   "c": 240,
+   "h": 200,
    "py": 50,
    "s": 13,
    "sh": 10
@@ -19,10 +19,10 @@
    "constructor": 24,
    "enum": 3,
    "exception": 5,
-   "function": 4568,
-   "macro": 3908,
+   "function": 4587,
+   "macro": 4006,
    "method": 125,
-   "module": 518,
+   "module": 520,
    "property": 2,
    "staticmethod": 6,
    "struct": 325,
@@ -35,9 +35,9 @@
  },
  "coverage": {
   "overall": {
-   "documented": 2890,
-   "total": 9597,
-   "percent": 30.1
+   "documented": 2912,
+   "total": 9716,
+   "percent": 30.0
   },
   "by_kind": {
    "class": {
@@ -61,14 +61,14 @@
     "percent": 100.0
    },
    "function": {
-    "documented": 1521,
-    "total": 4568,
-    "percent": 33.3
+    "documented": 1540,
+    "total": 4587,
+    "percent": 33.6
    },
    "macro": {
-    "documented": 689,
-    "total": 3908,
-    "percent": 17.6
+    "documented": 690,
+    "total": 4006,
+    "percent": 17.2
    },
    "method": {
     "documented": 24,
@@ -76,9 +76,9 @@
     "percent": 19.2
    },
    "module": {
-    "documented": 430,
-    "total": 518,
-    "percent": 83.0
+    "documented": 432,
+    "total": 520,
+    "percent": 83.1
    },
    "property": {
     "documented": 0,
@@ -146,6 +146,11 @@
     "documented": 1,
     "total": 3,
     "percent": 33.3
+   },
+   "drivers/ahci.c": {
+    "documented": 11,
+    "total": 108,
+    "percent": 10.2
    },
    "drivers/block.c": {
     "documented": 9,
@@ -337,6 +342,11 @@
     "total": 16,
     "percent": 12.5
    },
+   "headers/drivers/ahci.h": {
+    "documented": 11,
+    "total": 11,
+    "percent": 100.0
+   },
    "headers/drivers/kbd.h": {
     "documented": 6,
     "total": 24,
@@ -358,9 +368,9 @@
     "percent": 0.0
    },
    "headers/drivers/pci.h": {
-    "documented": 26,
+    "documented": 25,
     "total": 54,
-    "percent": 48.1
+    "percent": 46.3
    },
    "headers/drivers/usbblk.h": {
     "documented": 10,
@@ -803,9 +813,9 @@
     "percent": 36.8
    },
    "kernel/mm/paging.c": {
-    "documented": 15,
+    "documented": 16,
     "total": 26,
-    "percent": 57.7
+    "percent": 61.5
    },
    "kernel/mm/swap.c": {
     "documented": 2,
@@ -2741,6 +2751,11 @@
    "entities": 3
   },
   {
+   "uid": "drivers/ahci.c",
+   "path": "modules/drivers.ahci.c.jsonl",
+   "entities": 108
+  },
+  {
    "uid": "drivers/block.c",
    "path": "modules/drivers.block.c.jsonl",
    "entities": 15
@@ -2929,6 +2944,11 @@
    "uid": "headers/driver.h",
    "path": "modules/headers.driver.h.jsonl",
    "entities": 16
+  },
+  {
+   "uid": "headers/drivers/ahci.h",
+   "path": "modules/headers.drivers.ahci.h.jsonl",
+   "entities": 11
   },
   {
    "uid": "headers/drivers/kbd.h",
@@ -5288,7 +5308,7 @@
  ],
  "warnings": {
   "path": "warnings.jsonl",
-  "total": 6697
+  "total": 6794
  },
  "usage": [
   "grep -h '\"name\":\"<Name>\"' readmenator-apidocs/api/modules/*.jsonl",

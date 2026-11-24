@@ -1104,6 +1104,41 @@ expect "nvme: superblock ok"
 SCENARIO_QEMU_ARGS=""
 rm -f "$HERE/build/nvme-bdd.img"
 
+# AHCI (SATA) backend: q35 hangs its -drive if=ide disk off the ICH9
+# AHCI HBA at 00:1f.2 (function 2 of a multifunction device, so the PCI
+# walk must honour the header-type multifunction bit) and has no legacy
+# IDE ports, which is the shape of every UEFI-era PC. An xHCI rides
+# along so the HBA's BAR is the second device window, not the first.
+# The builtin proves READ DMA EXT (boot signature, superblock) and the
+# WRITE DMA EXT + FLUSH path; the reboot pair proves a MiniFS write
+# reaches the platter and is read back by the next boot. smm=off: with
+# SMM on, SeaBIOS serves INT 13h from its AHCI driver through an SMI
+# call32 trampoline (EAX=0xb5, ECX=0x1234 in SMM), which TCG emulates
+# so slowly that stage 2 never finishes loading the kernel in TMO; KVM
+# is unaffected, and the kernel never depends on SMM either way.
+cp "$IMAGE" "$HERE/build/ahci-bdd.img"
+AHCI_SAVED_IMAGE="$IMAGE"
+IMAGE="$HERE/build/ahci-bdd.img"
+SCENARIO_QEMU_ARGS="-machine q35,smm=off -device qemu-xhci"
+scenario "ahci serves MiniFS on a SATA-only machine" "ahci
+poweroff"
+expect "ahci: port 0 sectors="
+expect "block: backend=ahci"
+expect "minifs: mounted"
+expect "ahci: LBA0 ok"
+expect "ahci: superblock ok"
+expect "ahci: write+flush ok"
+scenario "ahci MiniFS write before reboot" "echo ahci-persist-7 > sata/p.txt
+poweroff"
+expect "block: backend=ahci"
+scenario "ahci MiniFS write read back after reboot" "cat sata/p.txt
+poweroff"
+expect "block: backend=ahci"
+expect "ahci-persist-7"
+SCENARIO_QEMU_ARGS=""
+IMAGE="$AHCI_SAVED_IMAGE"
+rm -f "$HERE/build/ahci-bdd.img"
+
 scenario_uefi "uefi stub proves firmware handshake and disk read"
 expect "uefi: MiniOS stub alive"
 expect "uefi: mmap entries="

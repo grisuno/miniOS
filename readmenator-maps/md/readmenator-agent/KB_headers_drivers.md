@@ -1,5 +1,23 @@
 # Subsystem: headers_drivers
 
+## headers/drivers/ahci.h
+- Doc: Docstring: drivers/ahci.h -- AHCI (SATA) host controller, polled.
+- Layer: infrastructure
+- Language: h
+- Symbols:
+  - `ahci_init` (function, line 16) `int ahci_init(void);`
+  - `ahci_present` (function, line 19) `int ahci_present(void);`
+  - `ahci_version` (function, line 22) `unsigned ahci_version(void);`
+  - `ahci_port` (function, line 25) `int ahci_port(void);`
+  - `ahci_ports_implemented` (function, line 28) `unsigned ahci_ports_implemented(void);`
+  - `ahci_note` (function, line 31) `const char *ahci_note(void);`
+  - `ahci_sectors` (function, line 34) `unsigned long ahci_sectors(void);`
+  - `ahci_read_sectors` (function, line 40) `int ahci_read_sectors(unsigned lba, unsigned count, void *buf);`
+  - `ahci_write_sectors` (function, line 45) `int ahci_write_sectors(unsigned lba, unsigned count, const void *buf);`
+  - `ahci_register_device` (function, line 48) `void ahci_register_device(void);`
+  - `DRIVERS_AHCI_H` (macro, line 11) `#define DRIVERS_AHCI_H`
+- Imported by: `drivers/ahci.c`, `drivers/block.c`, `kernel.c`, `kernel/shell.c`
+
 ## headers/drivers/kbd.h
 - Doc: Keyboard layout: US qwerty (default) or Spanish (Spain) qwerty.
 - Layer: infrastructure
@@ -92,28 +110,28 @@
         void (*outl)(uns...`
   - `xHCI` (function, line 134) `* base class: an xHCI (0x0C/0x03/0x30) would look for class 0x03, and a PCI
  * bridge (0x06/0x04)...`
-  - `pci_is_multifunction` (function, line 152) `static inline int pci_is_multifunction(unsigned bus, unsigned dev,
+  - `pci_is_multifunction` (function, line 156) `static inline int pci_is_multifunction(unsigned bus, unsigned dev,
         void (*outl)(unsigned ...`
-  - `pci_find` (function, line 165) `static inline int pci_find(unsigned vendor, unsigned device,
+  - `pci_find` (function, line 170) `static inline int pci_find(unsigned vendor, unsigned device,
         unsigned (*inl)(unsigned sho...`
-  - `pci_find_class` (function, line 193) `static inline int pci_find_class(pci_bdf_t *out,
-        unsigned cls, unsigned subclass, unsigne...`
-  - `pci_bar_count` (function, line 248) `static inline unsigned pci_bar_count(unsigned bus, unsigned dev, unsigned func,
+  - `number` (function, line 186) `* bus number (a bridge on any function, since PCIe root ports are functions
+ * of one multifuncti...`
+  - `pci_bar_count` (function, line 254) `static inline unsigned pci_bar_count(unsigned bus, unsigned dev, unsigned func,
         void (*ou...`
-  - `pci_bar_is_io` (function, line 263) `static inline int pci_bar_is_io(unsigned bus, unsigned dev, unsigned func,
+  - `pci_bar_is_io` (function, line 269) `static inline int pci_bar_is_io(unsigned bus, unsigned dev, unsigned func,
         unsigned bar,
 ...`
-  - `pci_bar_is_64bit` (function, line 274) `static inline int pci_bar_is_64bit(unsigned bus, unsigned dev, unsigned func,
+  - `pci_bar_is_64bit` (function, line 280) `static inline int pci_bar_is_64bit(unsigned bus, unsigned dev, unsigned func,
         unsigned ba...`
-  - `pci_bar_ctz32` (function, line 284) `static inline unsigned pci_bar_ctz32(unsigned val)`
-  - `pci_bar_size_from_mask` (function, line 315) `static inline unsigned long long pci_bar_size_from_mask(unsigned long long mask)`
-  - `pci_bar_size` (function, line 346) `static inline unsigned long long pci_bar_size(unsigned bus, unsigned dev,
+  - `pci_bar_ctz32` (function, line 290) `static inline unsigned pci_bar_ctz32(unsigned val)`
+  - `pci_bar_size_from_mask` (function, line 321) `static inline unsigned long long pci_bar_size_from_mask(unsigned long long mask)`
+  - `pci_bar_size` (function, line 352) `static inline unsigned long long pci_bar_size(unsigned bus, unsigned dev,
         unsigned func, ...`
-  - `pci_bar_relocate` (function, line 382) `static inline int pci_bar_relocate(unsigned bus, unsigned dev, unsigned func,
+  - `pci_bar_relocate` (function, line 388) `static inline int pci_bar_relocate(unsigned bus, unsigned dev, unsigned func,
         unsigned ba...`
-  - `pci_bar_base` (function, line 406) `static inline unsigned long long pci_bar_base(unsigned bus, unsigned dev,
+  - `pci_bar_base` (function, line 412) `static inline unsigned long long pci_bar_base(unsigned bus, unsigned dev,
         unsigned func, ...`
-  - `pci_bar_restore` (function, line 424) `static inline void pci_bar_restore(unsigned bus, unsigned dev,
+  - `pci_bar_restore` (function, line 430) `static inline void pci_bar_restore(unsigned bus, unsigned dev,
         unsigned func, unsigned ba...`
   - `DRIVERS_PCI_H` (macro, line 11) `#define DRIVERS_PCI_H`
   - `PCI_CFG_ADDR` (macro, line 13) `#define PCI_CFG_ADDR`
@@ -150,7 +168,7 @@
   - `PCI_PROGIF_XHCI` (macro, line 59) `#define PCI_PROGIF_XHCI`
   - `PCI_CLASS_ANY` (macro, line 62) `#define PCI_CLASS_ANY`
   - `PCI_CLASS_MAX_PASSES` (macro, line 68) `#define PCI_CLASS_MAX_PASSES`
-- Imported by: `drivers/nvme.c`, `drivers/virtio_blk.c`, `drivers/virtio_net.c`, `drivers/xhci.c`, `net/rtl8139.c`, `tests/test_pci.c`
+- Imported by: `drivers/ahci.c`, `drivers/nvme.c`, `drivers/virtio_blk.c`, `drivers/virtio_net.c`, `drivers/xhci.c`, `net/rtl8139.c`, `tests/test_pci.c`
 
 ## headers/drivers/usbblk.h
 - Doc: Docstring: drivers/usbblk.h -- boundary of the USB mass-storage driver.

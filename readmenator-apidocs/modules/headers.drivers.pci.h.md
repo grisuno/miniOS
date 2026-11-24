@@ -1,13 +1,13 @@
 # `headers/drivers/pci.h`
 
-> Source: [headers/drivers/pci.h:1](../../headers/drivers/pci.h#L1) | language `h` | coverage 48.1% | [API index](../index.md)
+> Source: [headers/drivers/pci.h:1](../../headers/drivers/pci.h#L1) | language `h` | coverage 46.3% | [API index](../index.md)
 
 Docstring: drivers/pci.h -- PCI configuration-space access.
 
 ## Contents
 
 - **Structs:** [`pci_bdf_t`](#pci_bdf_t)
-- **Functions:** [`pci_cfg_read`](#pci_cfg_read), [`pci_cfg_write`](#pci_cfg_write), [`pci_cfg_read8`](#pci_cfg_read8), [`pci_cfg_write8`](#pci_cfg_write8), [`pci_present`](#pci_present), [`xHCI`](#xhci), [`pci_is_multifunction`](#pci_is_multifunction), [`pci_find`](#pci_find), [`pci_find_class`](#pci_find_class), [`pci_bar_count`](#pci_bar_count), [`pci_bar_is_io`](#pci_bar_is_io), [`pci_bar_is_64bit`](#pci_bar_is_64bit), [`pci_bar_ctz32`](#pci_bar_ctz32), [`pci_bar_size_from_mask`](#pci_bar_size_from_mask), [`pci_bar_size`](#pci_bar_size), [`pci_bar_relocate`](#pci_bar_relocate), [`pci_bar_base`](#pci_bar_base), [`pci_bar_restore`](#pci_bar_restore)
+- **Functions:** [`pci_cfg_read`](#pci_cfg_read), [`pci_cfg_write`](#pci_cfg_write), [`pci_cfg_read8`](#pci_cfg_read8), [`pci_cfg_write8`](#pci_cfg_write8), [`pci_present`](#pci_present), [`xHCI`](#xhci), [`pci_is_multifunction`](#pci_is_multifunction), [`pci_find`](#pci_find), [`number`](#number), [`pci_bar_count`](#pci_bar_count), [`pci_bar_is_io`](#pci_bar_is_io), [`pci_bar_is_64bit`](#pci_bar_is_64bit), [`pci_bar_ctz32`](#pci_bar_ctz32), [`pci_bar_size_from_mask`](#pci_bar_size_from_mask), [`pci_bar_size`](#pci_bar_size), [`pci_bar_relocate`](#pci_bar_relocate), [`pci_bar_base`](#pci_bar_base), [`pci_bar_restore`](#pci_bar_restore)
 - **Macros:** [`PCI_CFG_ADDR`](#pci_cfg_addr), [`PCI_CFG_DATA`](#pci_cfg_data), [`PCI_MAX_BUS`](#pci_max_bus), [`PCI_MAX_DEV`](#pci_max_dev), [`PCI_MAX_FUNC`](#pci_max_func), [`PCI_REG_VENDOR_ID`](#pci_reg_vendor_id), [`PCI_REG_COMMAND`](#pci_reg_command), [`PCI_REG_CLASS_REV`](#pci_reg_class_rev), [`PCI_REG_CLASS_PROGIF`](#pci_reg_class_progif), [`PCI_REG_HEADER_TYPE`](#pci_reg_header_type), [`PCI_REG_BAR0`](#pci_reg_bar0), [`PCI_REG_CARD_BUS`](#pci_reg_card_bus), [`PCI_REG_BRIDGE_SECONDARY`](#pci_reg_bridge_secondary), [`PCI_REG_CAP_PTR`](#pci_reg_cap_ptr), [`PCI_REG_BAR_COUNT`](#pci_reg_bar_count), [`PCI_COMMAND_IO`](#pci_command_io), [`PCI_COMMAND_MEMORY`](#pci_command_memory), [`PCI_COMMAND_BUS_MASTER`](#pci_command_bus_master), [`PCI_BAR_TYPE_MASK`](#pci_bar_type_mask), [`PCI_BAR_IO`](#pci_bar_io), [`PCI_BAR_64BIT`](#pci_bar_64bit), [`PCI_BAR_PREFETCH`](#pci_bar_prefetch), [`PCI_BAR_ADDR_MASK`](#pci_bar_addr_mask), [`PCI_ABSENT_ID`](#pci_absent_id), [`PCI_HEADER_MULTIFUNC`](#pci_header_multifunc), [`PCI_HEADER_TYPE_MASK`](#pci_header_type_mask), [`PCI_HDR_TYPE_BRIDGE`](#pci_hdr_type_bridge), [`PCI_CLASS_BRIDGE`](#pci_class_bridge), [`PCI_SUBCLASS_PCI_BRIDGE`](#pci_subclass_pci_bridge), [`PCI_CLASS_XHCI`](#pci_class_xhci), [`PCI_SUBCLASS_XHCI`](#pci_subclass_xhci), [`PCI_PROGIF_XHCI`](#pci_progif_xhci), [`PCI_CLASS_ANY`](#pci_class_any), [`PCI_CLASS_MAX_PASSES`](#pci_class_max_passes)
 
 ## Call Graph
@@ -24,7 +24,6 @@ flowchart LR
     n_headers_drivers_pci_h__xHCI(["xHCI"])
     n_headers_drivers_pci_h__pci_is_multifunction(["pci_is_multifunction"])
     n_headers_drivers_pci_h__pci_find(["pci_find"])
-    n_headers_drivers_pci_h__pci_find_class(["pci_find_class"])
     n_headers_drivers_pci_h__pci_bar_count(["pci_bar_count"])
     n_headers_drivers_pci_h__pci_bar_is_io(["pci_bar_is_io"])
     n_headers_drivers_pci_h__pci_bar_is_64bit(["pci_bar_is_64bit"])
@@ -40,11 +39,8 @@ flowchart LR
     n_headers_drivers_pci_h__pci_cfg_write8 --> n_headers_drivers_pci_h__pci_cfg_write
     n_headers_drivers_pci_h__pci_present --> n_headers_drivers_pci_h__pci_cfg_read
     n_headers_drivers_pci_h__xHCI --> n_headers_drivers_pci_h__pci_cfg_read
-    n_headers_drivers_pci_h__pci_is_multifunction --> n_headers_drivers_pci_h__pci_cfg_read
+    n_headers_drivers_pci_h__pci_is_multifunction --> n_headers_drivers_pci_h__pci_cfg_read8
     n_headers_drivers_pci_h__pci_find --> n_headers_drivers_pci_h__pci_cfg_read
-    n_headers_drivers_pci_h__pci_find_class --> n_headers_drivers_pci_h__pci_cfg_read8
-    n_headers_drivers_pci_h__pci_find_class --> n_headers_drivers_pci_h__pci_is_multifunction
-    n_headers_drivers_pci_h__pci_find_class --> n_headers_drivers_pci_h__pci_present
     n_headers_drivers_pci_h__pci_bar_count --> n_headers_drivers_pci_h__pci_cfg_read
     n_headers_drivers_pci_h__pci_bar_is_io --> n_headers_drivers_pci_h__pci_cfg_read
     n_headers_drivers_pci_h__pci_bar_is_64bit --> n_headers_drivers_pci_h__pci_cfg_read
@@ -59,6 +55,9 @@ flowchart LR
     n_headers_drivers_pci_h__pci_cfg_read -.-> n_progs_doomgeneric_r_main_h__void
     n_headers_drivers_pci_h__pci_cfg_write -.-> n_progs_doomgeneric_r_main_h__void
     n_headers_drivers_pci_h__pci_cfg_read8 -.-> n_progs_doomgeneric_r_main_h__void
+    n_headers_drivers_pci_h__pci_cfg_write8 -.-> n_progs_doomgeneric_r_main_h__void
+    n_headers_drivers_pci_h__pci_present -.-> n_progs_doomgeneric_r_main_h__void
+    n_headers_drivers_pci_h__xHCI -.-> n_progs_doomgeneric_r_main_h__void
 ```
 
 ## Structs
@@ -108,7 +107,7 @@ Docstring: Read one config dword.
 
 *Calls:* [`void`](progs.doomgeneric.r_main.h.md#void)
 
-*Called by:* [`nvme_init`](drivers.nvme.c.md#nvme_init), [`vblk_init`](drivers.virtio_blk.c.md#vblk_init), [`unusable`](drivers.virtio_net.c.md#unusable), [`xhc_init`](drivers.xhci.c.md#xhc_init), [`pci_bar_base`](#pci_bar_base), [`pci_bar_count`](#pci_bar_count), [`pci_bar_is_64bit`](#pci_bar_is_64bit), [`pci_bar_is_io`](#pci_bar_is_io), [`pci_bar_relocate`](#pci_bar_relocate), [`pci_bar_size`](#pci_bar_size), [`pci_cfg_read8`](#pci_cfg_read8), [`pci_cfg_write8`](#pci_cfg_write8) and 5 more
+*Called by:* [`ahci_init`](drivers.ahci.c.md#ahci_init), [`nvme_init`](drivers.nvme.c.md#nvme_init), [`vblk_init`](drivers.virtio_blk.c.md#vblk_init), [`unusable`](drivers.virtio_net.c.md#unusable), [`xhc_init`](drivers.xhci.c.md#xhc_init), [`pci_bar_base`](#pci_bar_base), [`pci_bar_count`](#pci_bar_count), [`pci_bar_is_64bit`](#pci_bar_is_64bit), [`pci_bar_is_io`](#pci_bar_is_io), [`pci_bar_relocate`](#pci_bar_relocate), [`pci_bar_size`](#pci_bar_size), [`pci_cfg_read8`](#pci_cfg_read8) and 5 more
 
 ---
 
@@ -139,7 +138,7 @@ Same addressing as read.
 
 *Calls:* [`void`](progs.doomgeneric.r_main.h.md#void)
 
-*Called by:* [`nvme_init`](drivers.nvme.c.md#nvme_init), [`xhc_init`](drivers.xhci.c.md#xhc_init), [`pci_bar_relocate`](#pci_bar_relocate), [`pci_bar_restore`](#pci_bar_restore), [`pci_bar_size`](#pci_bar_size), [`pci_cfg_write8`](#pci_cfg_write8), [`RTL_REG_CONFIG1`](net.rtl8139.c.md#rtl_reg_config1)
+*Called by:* [`ahci_init`](drivers.ahci.c.md#ahci_init), [`nvme_init`](drivers.nvme.c.md#nvme_init), [`xhc_init`](drivers.xhci.c.md#xhc_init), [`pci_bar_relocate`](#pci_bar_relocate), [`pci_bar_restore`](#pci_bar_restore), [`pci_bar_size`](#pci_bar_size), [`pci_cfg_write8`](#pci_cfg_write8), [`RTL_REG_CONFIG1`](net.rtl8139.c.md#rtl_reg_config1)
 
 ---
 
@@ -172,7 +171,7 @@ The window is dword aligned once; the byte selector rides in the low address bit
 
 *Calls:* [`pci_cfg_read`](#pci_cfg_read), [`void`](progs.doomgeneric.r_main.h.md#void)
 
-*Called by:* [`pci_find_class`](#pci_find_class)
+*Called by:* [`pci_is_multifunction`](#pci_is_multifunction)
 
 ---
 
@@ -231,8 +230,6 @@ A dword read of vendor id returns all ones for an unpopulated function, which is
 
 *Calls:* [`pci_cfg_read`](#pci_cfg_read), [`void`](progs.doomgeneric.r_main.h.md#void)
 
-*Called by:* [`pci_find_class`](#pci_find_class)
-
 ---
 
 <a id="xhci"></a>
@@ -261,13 +258,15 @@ A dword read of vendor id returns all ones for an unpopulated function, which is
 
 ### `pci_is_multifunction`
 
-`function` `inline` `static` | [headers/drivers/pci.h:152](../../headers/drivers/pci.h#L152)
+`function` `inline` `static` | [headers/drivers/pci.h:156](../../headers/drivers/pci.h#L156)
 
 ```c
 static inline int pci_is_multifunction(unsigned bus, unsigned dev, void (*outl)(unsigned ...
 ```
 
 Docstring: True when a function advertises more than one function in its slot, so the walk must visit every function number, not just function 0.
+
+The flag is bit 7 of the header-type byte at 0x0E, which is bits 23:16 of the 0x0C dword: testing bit 7 of the dword reads cache line size instead, and every chipset function past 0 (the PCH SATA HBA at 00:1f.2, the PCIe root ports at 00:1c.x) silently vanishes from the walk.
 
 **Parameters**
 
@@ -279,9 +278,7 @@ Docstring: True when a function advertises more than one function in its slot, s
 
 **Returns:** `int`
 
-*Calls:* [`pci_cfg_read`](#pci_cfg_read), [`void`](progs.doomgeneric.r_main.h.md#void)
-
-*Called by:* [`pci_find_class`](#pci_find_class)
+*Calls:* [`pci_cfg_read8`](#pci_cfg_read8), [`void`](progs.doomgeneric.r_main.h.md#void)
 
 ---
 
@@ -289,7 +286,7 @@ Docstring: True when a function advertises more than one function in its slot, s
 
 ### `pci_find`
 
-`function` `inline` `static` | [headers/drivers/pci.h:165](../../headers/drivers/pci.h#L165)
+`function` `inline` `static` | [headers/drivers/pci.h:170](../../headers/drivers/pci.h#L170)
 
 ```c
 static inline int pci_find(unsigned vendor, unsigned device, unsigned (*inl)(unsigned sho...
@@ -318,48 +315,24 @@ devices needed. A device that must also be found behind a chipset bridge
 
 ---
 
-<a id="pci_find_class"></a>
+<a id="number"></a>
 
-### `pci_find_class`
+### `number`
 
-`function` `inline` `static` | [headers/drivers/pci.h:193](../../headers/drivers/pci.h#L193)
+`function` | [headers/drivers/pci.h:186](../../headers/drivers/pci.h#L186)
 
 ```c
-static inline int pci_find_class(pci_bdf_t *out, unsigned cls, unsigned subclass, unsigned prog_if, void (*outl)(unsigned short, unsigned), unsigned (*inl)(unsigned short))
+* bus number (a bridge on any function, since PCIe root ports are functions * of one multifunction device), so a controller behind a chipset bridge on real hardware is * found exactly as one on QEMU's bus 0. Two 256-bit masks, 32 bytes of stack * each: "reachable" (a bridge leads here) and "scanned" (already looked at). * Reachability and scanning are separate so a bus numbered *below* the bridge * that leads to it -- a forward reference, legal and real -- is still visited: * the sweep runs again while it keeps reaching unscanned buses, bounded by * PCI_CLASS_MAX_PASSES. A bus whose function 0 is empty is skipped whole, * which makes an unpopulated range cost two reads per bus. Any class * component may be PCI_CLASS_ANY. * * Returns 1 and fills out on a hit, 0 when nothing matches (out is then
 ```
-
-Docstring: Find the first function anywhere on the PCI tree matching a class triple, and report its bus/device/function.
-
-The walk starts at bus 0 and follows each PCI-to-PCI bridge's secondary
-bus number, so a controller behind a chipset bridge on real hardware is
-found exactly as one on QEMU's bus 0. Two 256-bit masks, 32 bytes of stack
-each: "reachable" (a bridge leads here) and "scanned" (already looked at).
-Reachability and scanning are separate so a bus numbered *below* the bridge
-that leads to it -- a forward reference, legal and real -- is still visited:
-the sweep runs again while it keeps reaching unscanned buses, bounded by
-PCI_CLASS_MAX_PASSES. A bus whose function 0 is empty is skipped whole,
-which makes an unpopulated range cost two reads per bus. Any class
-component may be PCI_CLASS_ANY.
-
-Returns 1 and fills out on a hit, 0 when nothing matches (out is then
-zeroed, so a caller that ignores the result still fails closed).
 
 **Parameters**
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `out` | `pci_bdf_t *` |  |  |
-| `cls` | `unsigned` |  |  |
-| `subclass` | `unsigned` |  |  |
-| `prog_if` | `unsigned` |  |  |
-| `unsigned` | `void (*outl)(unsigned short, )` |  |  |
-| `short` | `unsigned (*inl)(unsigned )` |  |  |
+| `function` | `a bridge on any` |  |  |
+| `device` | `since PCIe root ports are functions * of one multifunction` |  |  |
 
-**Returns:** `int`
-
-*Calls:* [`pci_cfg_read8`](#pci_cfg_read8), [`pci_is_multifunction`](#pci_is_multifunction), [`pci_present`](#pci_present), [`void`](progs.doomgeneric.r_main.h.md#void)
-
-*Called by:* [`nvme_init`](drivers.nvme.c.md#nvme_init), [`xhc_init`](drivers.xhci.c.md#xhc_init)
+**Returns:** `* bus`
 
 ---
 
@@ -367,7 +340,7 @@ zeroed, so a caller that ignores the result still fails closed).
 
 ### `pci_bar_count`
 
-`function` `inline` `static` | [headers/drivers/pci.h:248](../../headers/drivers/pci.h#L248)
+`function` `inline` `static` | [headers/drivers/pci.h:254](../../headers/drivers/pci.h#L254)
 
 ```c
 static inline unsigned pci_bar_count(unsigned bus, unsigned dev, unsigned func, void (*outl)(unsigned short, unsigned), unsigned (*inl)(unsigned short))
@@ -395,7 +368,7 @@ Docstring: Number of 64-bit BARs in the bar/6 dword.
 
 ### `pci_bar_is_io`
 
-`function` `inline` `static` | [headers/drivers/pci.h:263](../../headers/drivers/pci.h#L263)
+`function` `inline` `static` | [headers/drivers/pci.h:269](../../headers/drivers/pci.h#L269)
 
 ```c
 static inline int pci_bar_is_io(unsigned bus, unsigned dev, unsigned func, unsigned bar, void (*outl)(unsigned short, unsigned), unsigned (*inl)(unsigned short))
@@ -418,7 +391,7 @@ Docstring: True when a BAR is an I/O port range rather than memory.
 
 *Calls:* [`pci_cfg_read`](#pci_cfg_read), [`void`](progs.doomgeneric.r_main.h.md#void)
 
-*Called by:* [`nvme_init`](drivers.nvme.c.md#nvme_init), [`xhc_init`](drivers.xhci.c.md#xhc_init)
+*Called by:* [`ahci_init`](drivers.ahci.c.md#ahci_init), [`nvme_init`](drivers.nvme.c.md#nvme_init), [`xhc_init`](drivers.xhci.c.md#xhc_init)
 
 ---
 
@@ -426,7 +399,7 @@ Docstring: True when a BAR is an I/O port range rather than memory.
 
 ### `pci_bar_is_64bit`
 
-`function` `inline` `static` | [headers/drivers/pci.h:274](../../headers/drivers/pci.h#L274)
+`function` `inline` `static` | [headers/drivers/pci.h:280](../../headers/drivers/pci.h#L280)
 
 ```c
 static inline int pci_bar_is_64bit(unsigned bus, unsigned dev, unsigned func, unsigned bar, void (*outl)(unsigned short, unsigned), unsigned (*inl)(unsigned short))
@@ -455,7 +428,7 @@ Docstring: True when a BAR is a 64-bit memory BAR, so its high dword is the next
 
 ### `pci_bar_ctz32`
 
-`function` `inline` `static` | [headers/drivers/pci.h:284](../../headers/drivers/pci.h#L284)
+`function` `inline` `static` | [headers/drivers/pci.h:290](../../headers/drivers/pci.h#L290)
 
 ```c
 static inline unsigned pci_bar_ctz32(unsigned val)
@@ -479,7 +452,7 @@ Docstring: Count of trailing zero bits in a 32-bit word, 32 for zero.
 
 ### `pci_bar_size_from_mask`
 
-`function` `inline` `static` | [headers/drivers/pci.h:315](../../headers/drivers/pci.h#L315)
+`function` `inline` `static` | [headers/drivers/pci.h:321](../../headers/drivers/pci.h#L321)
 
 ```c
 static inline unsigned long long pci_bar_size_from_mask(unsigned long long mask)
@@ -525,7 +498,7 @@ caller must refuse on.
 
 ### `pci_bar_size`
 
-`function` `inline` `static` | [headers/drivers/pci.h:346](../../headers/drivers/pci.h#L346)
+`function` `inline` `static` | [headers/drivers/pci.h:352](../../headers/drivers/pci.h#L352)
 
 ```c
 static inline unsigned long long pci_bar_size(unsigned bus, unsigned dev, unsigned func, unsigned bar, void (*outl)(unsigned short, unsigned), unsigned (*inl)(unsigned short))
@@ -563,7 +536,7 @@ authorizes, and a device that is still decoding sees its own probe.
 
 *Calls:* [`pci_bar_size_from_mask`](#pci_bar_size_from_mask), [`pci_cfg_read`](#pci_cfg_read), [`pci_cfg_write`](#pci_cfg_write), [`void`](progs.doomgeneric.r_main.h.md#void)
 
-*Called by:* [`nvme_init`](drivers.nvme.c.md#nvme_init), [`xhc_init`](drivers.xhci.c.md#xhc_init)
+*Called by:* [`ahci_init`](drivers.ahci.c.md#ahci_init), [`nvme_init`](drivers.nvme.c.md#nvme_init), [`xhc_init`](drivers.xhci.c.md#xhc_init)
 
 ---
 
@@ -571,7 +544,7 @@ authorizes, and a device that is still decoding sees its own probe.
 
 ### `pci_bar_relocate`
 
-`function` `inline` `static` | [headers/drivers/pci.h:382](../../headers/drivers/pci.h#L382)
+`function` `inline` `static` | [headers/drivers/pci.h:388](../../headers/drivers/pci.h#L388)
 
 ```c
 static inline int pci_bar_relocate(unsigned bus, unsigned dev, unsigned func, unsigned bar, unsigned long long base, void (*outl)(unsigned short, unsigned), unsigned (*inl)(unsigned short))
@@ -608,7 +581,7 @@ is absent or the BAR is an I/O range.
 
 ### `pci_bar_base`
 
-`function` `inline` `static` | [headers/drivers/pci.h:406](../../headers/drivers/pci.h#L406)
+`function` `inline` `static` | [headers/drivers/pci.h:412](../../headers/drivers/pci.h#L412)
 
 ```c
 static inline unsigned long long pci_bar_base(unsigned bus, unsigned dev, unsigned func, unsigned bar, void (*outl)(unsigned short, unsigned), unsigned (*inl)(unsigned short))
@@ -638,7 +611,7 @@ holds whatever the next BAR or a bridge window put there.
 
 *Calls:* [`pci_cfg_read`](#pci_cfg_read), [`void`](progs.doomgeneric.r_main.h.md#void)
 
-*Called by:* [`nvme_init`](drivers.nvme.c.md#nvme_init), [`xhc_init`](drivers.xhci.c.md#xhc_init)
+*Called by:* [`ahci_init`](drivers.ahci.c.md#ahci_init), [`nvme_init`](drivers.nvme.c.md#nvme_init), [`xhc_init`](drivers.xhci.c.md#xhc_init)
 
 ---
 
@@ -646,7 +619,7 @@ holds whatever the next BAR or a bridge window put there.
 
 ### `pci_bar_restore`
 
-`function` `inline` `static` | [headers/drivers/pci.h:424](../../headers/drivers/pci.h#L424)
+`function` `inline` `static` | [headers/drivers/pci.h:430](../../headers/drivers/pci.h#L430)
 
 ```c
 static inline void pci_bar_restore(unsigned bus, unsigned dev, unsigned func, unsigned bar, unsigned orig, unsigned orig_hi, void (*outl)(unsigned short, unsigned))

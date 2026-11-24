@@ -4,20 +4,16 @@ graph LR
     progs_doomgeneric_d_englsh["progs/doomgeneric: d_englsh"]
     progs_src["progs/src"]
     progs_doomgeneric_p_spec["progs/doomgeneric: p_spec"]
-    tools_tls_crypto["tools: tls_crypto"]
+    tools_lxabi["tools: lxabi"]
     headers_vga_fb["headers: vga_fb"]
+    net["net"]
     progs_doomgeneric_net_defs["progs/doomgeneric: net_defs"]
-    headers_batch["headers: batch"]
-    headers_tick["headers: tick"]
     tools_doom_pwad["tools: doom_pwad"]
     headers_kernel -- "calls into" --> progs_src
     headers_kernel -- "calls into" --> progs_doomgeneric_p_spec
-    headers_kernel -- "calls into" --> tools_tls_crypto
+    headers_kernel -- "calls into" --> tools_lxabi
     headers_kernel -- "calls into" --> headers_vga_fb
-    headers_kernel -- "calls into" --> headers_batch
-    headers_kernel -- "calls into" --> headers_tick
-    tools_doom_pwad -- "calls into" --> headers_kernel
-    tools_doom_pwad -- "calls into" --> tools_tls_crypto
+    headers_kernel -- "calls into" --> net
     progs_doomgeneric_d_englsh -- "calls into" --> headers_kernel
     progs_doomgeneric_d_englsh -- "calls into" --> progs_src
     progs_doomgeneric_d_englsh -- "calls into" --> progs_doomgeneric_p_spec
@@ -25,35 +21,42 @@ graph LR
     progs_src -- "calls into" --> headers_kernel
     progs_src -- "calls into" --> progs_doomgeneric_d_englsh
     progs_src -- "calls into" --> progs_doomgeneric_p_spec
-    progs_src -- "calls into" --> tools_tls_crypto
+    progs_src -- "calls into" --> tools_lxabi
     progs_src -- "calls into" --> headers_vga_fb
     progs_doomgeneric_p_spec -- "calls into" --> progs_doomgeneric_d_englsh
     progs_doomgeneric_p_spec -- "depends on" --> progs_src
     progs_doomgeneric_p_spec -- "depends on" --> progs_doomgeneric_net_defs
-    tools_tls_crypto -- "calls into" --> headers_kernel
-    tools_tls_crypto -- "depends on" --> progs_doomgeneric_d_englsh
-    tools_tls_crypto -- "calls into" --> progs_src
-    tools_tls_crypto -- "calls into" --> progs_doomgeneric_p_spec
+    tools_lxabi -- "calls into" --> headers_kernel
+    tools_lxabi -- "depends on" --> progs_doomgeneric_d_englsh
+    tools_lxabi -- "calls into" --> progs_src
+    tools_lxabi -- "calls into" --> progs_doomgeneric_p_spec
+    tools_lxabi -- "calls into" --> net
     headers_vga_fb -- "calls into" --> headers_kernel
     headers_vga_fb -- "calls into" --> progs_src
+    headers_vga_fb -- "calls into" --> progs_doomgeneric_p_spec
+    headers_vga_fb -- "calls into" --> net
+    net -- "calls into" --> headers_kernel
+    net -- "calls into" --> progs_src
+    net -- "calls into" --> tools_lxabi
     progs_doomgeneric_net_defs -- "calls into" --> progs_doomgeneric_d_englsh
     progs_doomgeneric_net_defs -- "calls into" --> progs_src
     progs_doomgeneric_net_defs -- "calls into" --> progs_doomgeneric_p_spec
-    headers_batch -- "calls into" --> headers_kernel
-    headers_tick -- "calls into" --> progs_doomgeneric_p_spec
+    tools_doom_pwad -- "calls into" --> headers_kernel
+    tools_doom_pwad -- "calls into" --> tools_lxabi
     click headers_kernel href "./headers_kernel.md" "Details"
     click progs_src href "./progs_src.md" "Details"
-    click tools_tls_crypto href "./tools_tls_crypto.md" "Details"
+    click tools_lxabi href "./tools_lxabi.md" "Details"
     click headers_vga_fb href "./headers_vga_fb.md" "Details"
+    click net href "./net.md" "Details"
 ```
 
 ## Details
 
-Static architecture map of 600 files (S, c, h, lua, py, s, sh) in 10 components: headers: kernel, progs/doomgeneric: d_englsh, progs/src, progs/doomgeneric: p_spec, tools: tls_crypto, headers: vga_fb, progs/doomgeneric: net_defs, headers: batch. Structure is extracted statically without LLM calls; component prose may be enriched locally.
+Static architecture map of 602 files (S, c, h, lua, py, s, sh) in 9 components: headers: kernel, progs/doomgeneric: d_englsh, progs/src, progs/doomgeneric: p_spec, tools: lxabi, headers: vga_fb, net, progs/doomgeneric: net_defs. Structure is extracted statically without LLM calls; component prose may be enriched locally.
 
 ### headers: kernel (1)
 
-headers: kernel groups 137 files (S, c, h) around SPINLOCK_H, spinlock_t, irqflags_t, SPINLOCK_INIT, spin_init. SMP application-processor bootstrap stub.
+headers: kernel groups 146 files (S, c, h) around SPINLOCK_H, spinlock_t, irqflags_t, SPINLOCK_INIT, spin_init. SMP application-processor bootstrap stub.
 
 **Related Classes/Methods**:
 
@@ -83,7 +86,7 @@ progs/doomgeneric: d_englsh groups 99 files (c, h) around __DOOMTYPE__, strcasec
 
 ### progs/src (3)
 
-progs/src groups 86 files (c, h) around kstrlen, kstrcpy, kstrncpy, kstrncat, kstrcmp. Docstring: abi.h -- Boot-time ABI manifest gate contract.
+progs/src groups 77 files (c, h) around kstrlen, kstrcpy, kstrncpy, kstrncat, kstrcmp. Docstring: abi.h -- Boot-time ABI manifest gate contract.
 
 **Related Classes/Methods**:
 
@@ -111,9 +114,9 @@ progs/doomgeneric: p_spec groups 69 files (c, h) around __DOOMDEF__, DOOM_VERSIO
 - <a href="../progs/doomgeneric/doomdef.h">progs/doomgeneric/doomdef.h::MTF_NORMAL</a>
 - <a href="../progs/doomgeneric/doomdef.h#L79-L81">progs/doomgeneric/doomdef.h::MTF_HARD</a>
 
-### tools: tls_crypto (5)
+### tools: lxabi (5)
 
-tools: tls_crypto groups 44 files (c, h, py) around ktime_rdtsc, ktime_init, ktime_ms, ktime_us, KTIME_H. pure time-conversion helpers shared by the kernel clock
+tools: lxabi groups 37 files (c, h, py) around ktime_rdtsc, ktime_init, ktime_ms, ktime_us, KTIME_H. pure time-conversion helpers shared by the kernel clock
 
 **Related Classes/Methods**:
 
@@ -128,20 +131,35 @@ tools: tls_crypto groups 44 files (c, h, py) around ktime_rdtsc, ktime_init, kti
 
 ### headers: vga_fb (6)
 
-headers: vga_fb groups 26 files (c, h) around WM_GEOM_H, wm_geom_config_t, WM_GEOM_CONFIG_DEFAULT, wm_rect_t, wm_rect_valid. Docstring: Desktop profile avatar, generated by tools/gen_avatar.py.
+headers: vga_fb groups 27 files (c, h) around WM_NOTIFY_H, wm_notify_event_t, WM_NOTIFY_MAX_HANDLERS, wm_notify_bus_t, wm_notify_reset. Docstring: Desktop profile avatar, generated by tools/gen_avatar.py.
 
 **Related Classes/Methods**:
 
-- <a href="../headers/wm_geom.h#L11-L13">headers/wm_geom.h::WM_GEOM_H</a>
-- <a href="../headers/wm_geom.h#L14-L21">headers/wm_geom.h::wm_geom_config_t</a>
-- <a href="../headers/wm_geom.h#L22-L24">headers/wm_geom.h::WM_GEOM_CONFIG_DEFAULT</a>
-- <a href="../headers/wm_geom.h#L25-L32">headers/wm_geom.h::wm_rect_t</a>
-- <a href="../headers/wm_geom.h#L33-L38">headers/wm_geom.h::wm_rect_valid</a>
-- <a href="../headers/wm_geom.h#L39-L47">headers/wm_geom.h::wm_rect_contains</a>
-- <a href="../headers/wm_geom.h#L48-L58">headers/wm_geom.h::wm_title_bar_rect</a>
-- <a href="../headers/wm_geom.h#L59-L70">headers/wm_geom.h::wm_content_rect</a>
+- <a href="../headers/wm_notify.h#L2-L29">headers/wm_notify.h::WM_NOTIFY_H</a>
+- <a href="../headers/wm_notify.h#L30-L40">headers/wm_notify.h::wm_notify_event_t</a>
+- <a href="../headers/wm_notify.h#L41-L42">headers/wm_notify.h::WM_NOTIFY_MAX_HANDLERS</a>
+- <a href="../headers/wm_notify.h#L43-L50">headers/wm_notify.h::wm_notify_bus_t</a>
+- <a href="../headers/wm_notify.h#L51-L65">headers/wm_notify.h::wm_notify_reset</a>
+- <a href="../headers/wm_notify.h#L66-L75">headers/wm_notify.h::wm_notify_subscribe</a>
+- <a href="../headers/wm_notify.h#L76-L89">headers/wm_notify.h::wm_notify_emit</a>
+- <a href="../headers/wm_notify.h#L90-L97">headers/wm_notify.h::wm_notify_last</a>
 
-### progs/doomgeneric: net_defs (7)
+### net (7)
+
+net groups 14 files (c, h) around NET_H, NET_IP_ADDR, NET_NETMASK, NET_GATEWAY, NET_DNS. Docstring: drivers/virtio_net.c -- Polled legacy virtio-net driver.
+
+**Related Classes/Methods**:
+
+- <a href="../headers/net.h#L2-L4">headers/net.h::NET_H</a>
+- <a href="../headers/net.h">headers/net.h::NET_IP_ADDR</a>
+- <a href="../headers/net.h">headers/net.h::NET_NETMASK</a>
+- <a href="../headers/net.h">headers/net.h::NET_GATEWAY</a>
+- <a href="../headers/net.h#L8-L11">headers/net.h::NET_DNS</a>
+- <a href="../headers/net.h">headers/net.h::NET_POLLIN</a>
+- <a href="../headers/net.h">headers/net.h::NET_POLLOUT</a>
+- <a href="../headers/net.h">headers/net.h::NET_POLLERR</a>
+
+### progs/doomgeneric: net_defs (8)
 
 progs/doomgeneric: net_defs groups 13 files (c, h) around NET_DEFS_H, MAXNETNODES, NET_MAXPLAYERS, MAXPLAYERNAME, BACKUPTICS. Copyright(C) 1993-1996 Id Software, Inc.
 
@@ -156,37 +174,7 @@ progs/doomgeneric: net_defs groups 13 files (c, h) around NET_DEFS_H, MAXNETNODE
 - <a href="../progs/doomgeneric/net_defs.h">progs/doomgeneric/net_defs.h::net_packet_t</a>
 - <a href="../progs/doomgeneric/net_defs.h">progs/doomgeneric/net_defs.h::net_addr_t</a>
 
-### headers: batch (8)
-
-headers: batch groups 3 files (c, h) around BATCH_H, BATCH_MAX_OPS, BATCH_OP_NOP, BATCH_OP_YIELD, BATCH_OP_TIME. Docstring: batch.h -- Batched synchronous syscall submission.
-
-**Related Classes/Methods**:
-
-- <a href="../headers/batch.h#L2-L40">headers/batch.h::BATCH_H</a>
-- <a href="../headers/batch.h#L41-L42">headers/batch.h::BATCH_MAX_OPS</a>
-- <a href="../headers/batch.h">headers/batch.h::BATCH_OP_NOP</a>
-- <a href="../headers/batch.h">headers/batch.h::BATCH_OP_YIELD</a>
-- <a href="../headers/batch.h">headers/batch.h::BATCH_OP_TIME</a>
-- <a href="../headers/batch.h#L46-L47">headers/batch.h::BATCH_OP_GETPID</a>
-- <a href="../headers/batch.h">headers/batch.h::BATCH_OK</a>
-- <a href="../headers/batch.h">headers/batch.h::BATCH_ERR_COUNT</a>
-
-### headers: tick (9)
-
-headers: tick groups 3 files (c, h) around TICK_H, tick_config_t, TICK_MAX_AUDIO_LISTENERS, TICK_MAX_DESKTOP_LISTENERS, TICK_MAX_USB_LISTENERS. Docstring: Tick listener bus contract.
-
-**Related Classes/Methods**:
-
-- <a href="../headers/tick.h#L19-L21">headers/tick.h::TICK_H</a>
-- <a href="../headers/tick.h#L22-L28">headers/tick.h::tick_config_t</a>
-- <a href="../headers/tick.h#L29-L30">headers/tick.h::TICK_MAX_AUDIO_LISTENERS</a>
-- <a href="../headers/tick.h#L31-L33">headers/tick.h::TICK_MAX_DESKTOP_LISTENERS</a>
-- <a href="../headers/tick.h#L34-L36">headers/tick.h::TICK_MAX_USB_LISTENERS</a>
-- <a href="../headers/tick.h#L37-L46">headers/tick.h::TICK_CONFIG_DEFAULT</a>
-- <a href="../headers/tick.h#L47-L53">headers/tick.h::tick_reset</a>
-- <a href="../headers/tick.h#L54-L60">headers/tick.h::tick_register_audio</a>
-
-### tools: doom_pwad (10)
+### tools: doom_pwad (9)
 
 tools: doom_pwad groups 2 files (py) around DoomPwadConfig, PwadError, pad_tex, parse_grid, grid_extents. host contract suite for tools/doom_pwad.py.
 

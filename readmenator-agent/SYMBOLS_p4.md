@@ -1,8 +1,149 @@
-# Symbols (page 4 of 27)
+# Symbols (page 4 of 28)
 Previous: [SYMBOLS_p3.md](SYMBOLS_p3.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `BATCH_ERR_COUNT` | macro | `headers/batch.h:49` | `#define BATCH_ERR_COUNT` |
+| `BATCH_ERR_OPCODE` | macro | `headers/batch.h:51` | `#define BATCH_ERR_OPCODE` |
+| `BATCH_ERR_PTR` | macro | `headers/batch.h:50` | `#define BATCH_ERR_PTR` |
+| `BATCH_H` | macro | `headers/batch.h:2` | `#define BATCH_H` |
+| `BATCH_MAX_OPS` | macro | `headers/batch.h:41` | `#define BATCH_MAX_OPS` |
+| `BATCH_OK` | macro | `headers/batch.h:48` | `#define BATCH_OK` |
+| `BATCH_OP_GETPID` | macro | `headers/batch.h:46` | `#define BATCH_OP_GETPID` |
+| `BATCH_OP_NOP` | macro | `headers/batch.h:43` | `#define BATCH_OP_NOP` |
+| `BATCH_OP_TIME` | macro | `headers/batch.h:45` | `#define BATCH_OP_TIME` |
+| `BATCH_OP_YIELD` | macro | `headers/batch.h:44` | `#define BATCH_OP_YIELD` |
+| `batch_exec` | function | `headers/batch.h:62` | `long batch_exec(const batch_op_t *ops, long *results, int count, int *completed, batch_handler_t dispatch);` |
+| `batch_op_t` | struct | `headers/batch.h:53` | `` |
+| `BLOCK_H` | macro | `headers/block.h:2` | `#define BLOCK_H` |
+| `BLOCK_SHIFT` | macro | `headers/block.h:8` | `#define BLOCK_SHIFT` |
+| `BLOCK_SIZE` | macro | `headers/block.h:7` | `#define BLOCK_SIZE` |
+| `SECTORS_PER_BLOCK` | macro | `headers/block.h:9` | `#define SECTORS_PER_BLOCK` |
+| `block_disk_sectors` | function | `headers/block.h:40` | `unsigned long block_disk_sectors(void);` |
+| `block_flush` | function | `headers/block.h:27` | `void block_flush(void);` |
+| `block_init` | function | `headers/block.h:12` | `void block_init(void);` |
+| `block_read` | function | `headers/block.h:18` | `int block_read(unsigned int block_num, void *buf);` |
+| `block_read_multi` | function | `headers/block.h:23` | `int block_read_multi(unsigned int block_num, unsigned int count, void *buf);` |
+| `block_read_sectors` | function | `headers/block.h:37` | `int block_read_sectors(unsigned lba, unsigned count, void *buf);` |
+| `block_set_base` | function | `headers/block.h:15` | `void block_set_base(unsigned int lba_base);` |
+| `block_total` | function | `headers/block.h:30` | `unsigned int block_total(void);` |
+| `block_write` | function | `headers/block.h:19` | `int block_write(unsigned int block_num, const void *buf);` |
+| `block_write_multi` | function | `headers/block.h:24` | `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf);` |
+| `DESKTOP_ICONS_H` | macro | `headers/desktop_icons.h:8` | `#define DESKTOP_ICONS_H` |
+| `ICON_EMBEDDED_H` | macro | `headers/desktop_icons.h:13` | `#define ICON_EMBEDDED_H` |
+| `ICON_EMBEDDED_W` | macro | `headers/desktop_icons.h:12` | `#define ICON_EMBEDDED_W` |
+| `DESKTOP_SHORTCUTS_H` | macro | `headers/desktop_shortcuts.h:13` | `#define DESKTOP_SHORTCUTS_H` |
+| `DOCK_BOUNCE_H` | macro | `headers/desktop_shortcuts.h:58` | `#define DOCK_BOUNCE_H` |
+| `DOCK_BOUNCE_TICKS` | macro | `headers/desktop_shortcuts.h:59` | `#define DOCK_BOUNCE_TICKS` |
+| `DOCK_CRYSTAL_STEP` | macro | `headers/desktop_shortcuts.h:41` | `#define DOCK_CRYSTAL_STEP` |
+| `DOCK_GAP` | macro | `headers/desktop_shortcuts.h:35` | `#define DOCK_GAP` |
+| `DOCK_LABEL_GAP` | macro | `headers/desktop_shortcuts.h:36` | `#define DOCK_LABEL_GAP` |
+| `DOCK_MAG_H` | macro | `headers/desktop_shortcuts.h:50` | `#define DOCK_MAG_H` |
+| `DOCK_MAG_REACH_CELLS` | macro | `headers/desktop_shortcuts.h:51` | `#define DOCK_MAG_REACH_CELLS` |
+| `DOCK_MAG_TICKS` | macro | `headers/desktop_shortcuts.h:52` | `#define DOCK_MAG_TICKS` |
+| `DOCK_MAG_W` | macro | `headers/desktop_shortcuts.h:49` | `#define DOCK_MAG_W` |
+| `DOCK_PAD_X` | macro | `headers/desktop_shortcuts.h:33` | `#define DOCK_PAD_X` |
+| `DOCK_PAD_Y` | macro | `headers/desktop_shortcuts.h:34` | `#define DOCK_PAD_Y` |
+| `ICON_H` | macro | `headers/desktop_shortcuts.h:25` | `#define ICON_H` |
+| `ICON_LABEL_H` | macro | `headers/desktop_shortcuts.h:28` | `#define ICON_LABEL_H` |
+| `ICON_PAD_X` | macro | `headers/desktop_shortcuts.h:26` | `#define ICON_PAD_X` |
+| `ICON_PAD_Y` | macro | `headers/desktop_shortcuts.h:27` | `#define ICON_PAD_Y` |
+| `ICON_PAL_BASE` | macro | `headers/desktop_shortcuts.h:66` | `#define ICON_PAL_BASE` |
+| `ICON_PAL_SIZE` | macro | `headers/desktop_shortcuts.h:67` | `#define ICON_PAL_SIZE` |
+| `ICON_W` | macro | `headers/desktop_shortcuts.h:24` | `#define ICON_W` |
+| `MAX_SHORTCUTS` | macro | `headers/desktop_shortcuts.h:18` | `#define MAX_SHORTCUTS` |
+| `SHORTCUT_CMD_LEN` | macro | `headers/desktop_shortcuts.h:20` | `#define SHORTCUT_CMD_LEN` |
+| `SHORTCUT_NAME_LEN` | macro | `headers/desktop_shortcuts.h:19` | `#define SHORTCUT_NAME_LEN` |
+| `SHORTCUT_PATH_LEN` | macro | `headers/desktop_shortcuts.h:21` | `#define SHORTCUT_PATH_LEN` |
+| `desktop_shortcut` | struct | `headers/desktop_shortcuts.h:73` | `` |
+| `desktop_shortcuts_draw` | function | `headers/desktop_shortcuts.h:86` | `void desktop_shortcuts_draw(void);` |
+| `desktop_shortcuts_hit_test` | function | `headers/desktop_shortcuts.h:90` | `const char *desktop_shortcuts_hit_test(int mx, int my);` |
+| `desktop_shortcuts_load` | function | `headers/desktop_shortcuts.h:83` | `void desktop_shortcuts_load(void);` |
+| `DEV_MAX` | macro | `headers/driver.h:19` | `#define DEV_MAX` |
+| `DEV_NAME_LEN` | macro | `headers/driver.h:18` | `#define DEV_NAME_LEN` |
+| `DEV_TYPE_AUDIO` | macro | `headers/driver.h:22` | `#define DEV_TYPE_AUDIO` |
+| `DEV_TYPE_BLOCK` | macro | `headers/driver.h:21` | `#define DEV_TYPE_BLOCK` |
+| `DEV_TYPE_CHAR` | macro | `headers/driver.h:24` | `#define DEV_TYPE_CHAR` |
+| `DEV_TYPE_NET` | macro | `headers/driver.h:23` | `#define DEV_TYPE_NET` |
+| `DRIVER_H` | macro | `headers/driver.h:2` | `#define DRIVER_H` |
+| `audio_ops_t` | struct | `headers/driver.h:37` | `` |
+| `block_ops_t` | struct | `headers/driver.h:28` | `` |
+| `device` | struct | `headers/driver.h:48` | `` |
+| `device_count` | function | `headers/driver.h:59` | `int device_count(void);` |
+| `device_find` | function | `headers/driver.h:57` | `device_t *device_find(const char *name);` |
+| `device_find_by_type` | function | `headers/driver.h:58` | `device_t *device_find_by_type(int type);` |
+| `device_register` | function | `headers/driver.h:56` | `int device_register(device_t *dev);` |
+| `device_reset` | function | `headers/driver.h:60` | `void device_reset(void);` |
+| `device_t` | type_alias | `headers/driver.h:25` | `typedef struct device device_t;` |
+| `DRIVERS_AHCI_H` | macro | `headers/drivers/ahci.h:11` | `#define DRIVERS_AHCI_H` |
+| `ahci_init` | function | `headers/drivers/ahci.h:16` | `int ahci_init(void);` |
+| `ahci_note` | function | `headers/drivers/ahci.h:31` | `const char *ahci_note(void);` |
+| `ahci_port` | function | `headers/drivers/ahci.h:25` | `int ahci_port(void);` |
+| `ahci_ports_implemented` | function | `headers/drivers/ahci.h:28` | `unsigned ahci_ports_implemented(void);` |
+| `ahci_present` | function | `headers/drivers/ahci.h:19` | `int ahci_present(void);` |
+| `ahci_read_sectors` | function | `headers/drivers/ahci.h:40` | `int ahci_read_sectors(unsigned lba, unsigned count, void *buf);` |
+| `ahci_register_device` | function | `headers/drivers/ahci.h:48` | `void ahci_register_device(void);` |
+| `ahci_sectors` | function | `headers/drivers/ahci.h:34` | `unsigned long ahci_sectors(void);` |
+| `ahci_version` | function | `headers/drivers/ahci.h:22` | `unsigned ahci_version(void);` |
+| `ahci_write_sectors` | function | `headers/drivers/ahci.h:45` | `int ahci_write_sectors(unsigned lba, unsigned count, const void *buf);` |
+| `KBD_H` | macro | `headers/drivers/kbd.h:2` | `#define KBD_H` |
+| `KBD_LAYOUT_EN` | macro | `headers/drivers/kbd.h:6` | `#define KBD_LAYOUT_EN` |
+| `KBD_LAYOUT_ES` | macro | `headers/drivers/kbd.h:7` | `#define KBD_LAYOUT_ES` |
+| `kbd_available` | function | `headers/drivers/kbd.h:9` | `int kbd_available(void);` |
+| `kbd_drop_counts` | function | `headers/drivers/kbd.h:32` | `void kbd_drop_counts(unsigned long *cooked, unsigned long *raw);` |
+| `kbd_e0_get` | function | `headers/drivers/kbd.h:40` | `int kbd_e0_get(void);` |
+| `kbd_e0_set` | function | `headers/drivers/kbd.h:41` | `void kbd_e0_set(int v);` |
+| `kbd_feed_scancode` | function | `headers/drivers/kbd.h:11` | `int kbd_feed_scancode(unsigned char sc);` |
+| `kbd_flush_all` | function | `headers/drivers/kbd.h:42` | `void kbd_flush_all(void);` |
+| `kbd_get_layout` | function | `headers/drivers/kbd.h:15` | `int kbd_get_layout(void);` |
+| `kbd_q_empty` | function | `headers/drivers/kbd.h:27` | `int kbd_q_empty(void);` |
+| `kbd_q_pop` | function | `headers/drivers/kbd.h:28` | `int kbd_q_pop(void);` |
+| `kbd_q_push` | function | `headers/drivers/kbd.h:29` | `void kbd_q_push(unsigned char c);` |
+| `kbd_raw_empty` | function | `headers/drivers/kbd.h:37` | `int kbd_raw_empty(void);` |
+| `kbd_raw_flush` | function | `headers/drivers/kbd.h:43` | `void kbd_raw_flush(void);` |
+| `kbd_raw_mode_get` | function | `headers/drivers/kbd.h:35` | `int kbd_raw_mode_get(void);` |
+| `kbd_raw_mode_set` | function | `headers/drivers/kbd.h:36` | `void kbd_raw_mode_set(int on);` |
+| `kbd_raw_pop` | function | `headers/drivers/kbd.h:38` | `int kbd_raw_pop(void);` |
+| `kbd_raw_push_byte` | function | `headers/drivers/kbd.h:39` | `void kbd_raw_push_byte(unsigned char c);` |
+| `kbd_read` | function | `headers/drivers/kbd.h:10` | `int kbd_read(void);` |
+| `kbd_reset_for_shell` | function | `headers/drivers/kbd.h:12` | `void kbd_reset_for_shell(void);` |
+| `kbd_set_layout` | function | `headers/drivers/kbd.h:16` | `void kbd_set_layout(int layout);` |
+| `kbd_sys_raw_filter` | function | `headers/drivers/kbd.h:50` | `int kbd_sys_raw_filter(unsigned char sc);` |
+| `kbd_toggle_layout` | function | `headers/drivers/kbd.h:17` | `void kbd_toggle_layout(void);` |
+| `MODIFIERS_H` | macro | `headers/drivers/modifiers.h:2` | `#define MODIFIERS_H` |
+| `MOD_ALT` | macro | `headers/drivers/modifiers.h:32` | `#define MOD_ALT` |
+| `MOD_ALTGR` | macro | `headers/drivers/modifiers.h:33` | `#define MOD_ALTGR` |
+| `MOD_CTRL` | macro | `headers/drivers/modifiers.h:31` | `#define MOD_CTRL` |
+| `MOD_SHIFT` | macro | `headers/drivers/modifiers.h:30` | `#define MOD_SHIFT` |
+| `MOD_SUPER` | macro | `headers/drivers/modifiers.h:34` | `#define MOD_SUPER` |
+| `modifier_keys_t` | struct | `headers/drivers/modifiers.h:19` | `` |
+| `modifier_state_t` | struct | `headers/drivers/modifiers.h:5` | `` |
+| `modifiers_init` | function | `headers/drivers/modifiers.h:37` | `static inline void modifiers_init(modifier_state_t *st)` |
+| `modifiers_match` | function | `headers/drivers/modifiers.h:92` | `static inline int modifiers_match(const modifier_state_t *st, int mask)` |
+| `modifiers_update` | function | `headers/drivers/modifiers.h:54` | `static inline int modifiers_update(const modifier_keys_t *keys,                                  ...` |
+| `MOUSE_H` | macro | `headers/drivers/mouse.h:2` | `#define MOUSE_H` |
+| `mouse_disable` | function | `headers/drivers/mouse.h:14` | `void mouse_disable(void);` |
+| `mouse_enable` | function | `headers/drivers/mouse.h:17` | `void mouse_enable(void);` |
+| `mouse_hw_init` | function | `headers/drivers/mouse.h:11` | `void mouse_hw_init(void);` |
+| `DRIVERS_NVME_H` | macro | `headers/drivers/nvme.h:2` | `#define DRIVERS_NVME_H` |
+| `nvme_init` | function | `headers/drivers/nvme.h:4` | `int nvme_init(void);` |
+| `nvme_note` | function | `headers/drivers/nvme.h:7` | `const char *nvme_note(void);` |
+| `nvme_present` | function | `headers/drivers/nvme.h:5` | `int nvme_present(void);` |
+| `nvme_read_sectors` | function | `headers/drivers/nvme.h:9` | `int nvme_read_sectors(unsigned lba, unsigned count, void *buf);` |
+| `nvme_sectors` | function | `headers/drivers/nvme.h:8` | `unsigned long nvme_sectors(void);` |
+| `nvme_version` | function | `headers/drivers/nvme.h:6` | `unsigned nvme_version(void);` |
+| `DRIVERS_PCI_H` | macro | `headers/drivers/pci.h:11` | `#define DRIVERS_PCI_H` |
+| `PCI_ABSENT_ID` | macro | `headers/drivers/pci.h:44` | `#define PCI_ABSENT_ID` |
+| `PCI_BAR_64BIT` | macro | `headers/drivers/pci.h:39` | `#define PCI_BAR_64BIT` |
+| `PCI_BAR_ADDR_MASK` | macro | `headers/drivers/pci.h:41` | `#define PCI_BAR_ADDR_MASK` |
+| `PCI_BAR_IO` | macro | `headers/drivers/pci.h:38` | `#define PCI_BAR_IO` |
+| `PCI_BAR_PREFETCH` | macro | `headers/drivers/pci.h:40` | `#define PCI_BAR_PREFETCH` |
+| `PCI_BAR_TYPE_MASK` | macro | `headers/drivers/pci.h:37` | `#define PCI_BAR_TYPE_MASK` |
+| `PCI_CFG_ADDR` | macro | `headers/drivers/pci.h:13` | `#define PCI_CFG_ADDR` |
+| `PCI_CFG_DATA` | macro | `headers/drivers/pci.h:14` | `#define PCI_CFG_DATA` |
+| `PCI_CLASS_ANY` | macro | `headers/drivers/pci.h:62` | `#define PCI_CLASS_ANY` |
+| `PCI_CLASS_BRIDGE` | macro | `headers/drivers/pci.h:55` | `#define PCI_CLASS_BRIDGE` |
+| `PCI_CLASS_MAX_PASSES` | macro | `headers/drivers/pci.h:68` | `#define PCI_CLASS_MAX_PASSES` |
 | `PCI_CLASS_XHCI` | macro | `headers/drivers/pci.h:57` | `#define PCI_CLASS_XHCI` |
 | `PCI_COMMAND_BUS_MASTER` | macro | `headers/drivers/pci.h:34` | `#define PCI_COMMAND_BUS_MASTER` |
 | `PCI_COMMAND_IO` | macro | `headers/drivers/pci.h:32` | `#define PCI_COMMAND_IO` |
@@ -26,23 +167,23 @@ Previous: [SYMBOLS_p3.md](SYMBOLS_p3.md)
 | `PCI_REG_VENDOR_ID` | macro | `headers/drivers/pci.h:20` | `#define PCI_REG_VENDOR_ID` |
 | `PCI_SUBCLASS_PCI_BRIDGE` | macro | `headers/drivers/pci.h:56` | `#define PCI_SUBCLASS_PCI_BRIDGE` |
 | `PCI_SUBCLASS_XHCI` | macro | `headers/drivers/pci.h:58` | `#define PCI_SUBCLASS_XHCI` |
-| `pci_bar_base` | function | `headers/drivers/pci.h:406` | `static inline unsigned long long pci_bar_base(unsigned bus, unsigned dev,         unsigned func, ...` |
-| `pci_bar_count` | function | `headers/drivers/pci.h:248` | `static inline unsigned pci_bar_count(unsigned bus, unsigned dev, unsigned func,         void (*ou...` |
-| `pci_bar_ctz32` | function | `headers/drivers/pci.h:284` | `static inline unsigned pci_bar_ctz32(unsigned val)` |
-| `pci_bar_is_64bit` | function | `headers/drivers/pci.h:274` | `static inline int pci_bar_is_64bit(unsigned bus, unsigned dev, unsigned func,         unsigned ba...` |
-| `pci_bar_is_io` | function | `headers/drivers/pci.h:263` | `static inline int pci_bar_is_io(unsigned bus, unsigned dev, unsigned func,         unsigned bar, ...` |
-| `pci_bar_relocate` | function | `headers/drivers/pci.h:382` | `static inline int pci_bar_relocate(unsigned bus, unsigned dev, unsigned func,         unsigned ba...` |
-| `pci_bar_restore` | function | `headers/drivers/pci.h:424` | `static inline void pci_bar_restore(unsigned bus, unsigned dev,         unsigned func, unsigned ba...` |
-| `pci_bar_size` | function | `headers/drivers/pci.h:346` | `static inline unsigned long long pci_bar_size(unsigned bus, unsigned dev,         unsigned func, ...` |
-| `pci_bar_size_from_mask` | function | `headers/drivers/pci.h:315` | `static inline unsigned long long pci_bar_size_from_mask(unsigned long long mask)` |
+| `number` | function | `headers/drivers/pci.h:186` | `* bus number (a bridge on any function, since PCIe root ports are functions  * of one multifuncti...` |
+| `pci_bar_base` | function | `headers/drivers/pci.h:412` | `static inline unsigned long long pci_bar_base(unsigned bus, unsigned dev,         unsigned func, ...` |
+| `pci_bar_count` | function | `headers/drivers/pci.h:254` | `static inline unsigned pci_bar_count(unsigned bus, unsigned dev, unsigned func,         void (*ou...` |
+| `pci_bar_ctz32` | function | `headers/drivers/pci.h:290` | `static inline unsigned pci_bar_ctz32(unsigned val)` |
+| `pci_bar_is_64bit` | function | `headers/drivers/pci.h:280` | `static inline int pci_bar_is_64bit(unsigned bus, unsigned dev, unsigned func,         unsigned ba...` |
+| `pci_bar_is_io` | function | `headers/drivers/pci.h:269` | `static inline int pci_bar_is_io(unsigned bus, unsigned dev, unsigned func,         unsigned bar, ...` |
+| `pci_bar_relocate` | function | `headers/drivers/pci.h:388` | `static inline int pci_bar_relocate(unsigned bus, unsigned dev, unsigned func,         unsigned ba...` |
+| `pci_bar_restore` | function | `headers/drivers/pci.h:430` | `static inline void pci_bar_restore(unsigned bus, unsigned dev,         unsigned func, unsigned ba...` |
+| `pci_bar_size` | function | `headers/drivers/pci.h:352` | `static inline unsigned long long pci_bar_size(unsigned bus, unsigned dev,         unsigned func, ...` |
+| `pci_bar_size_from_mask` | function | `headers/drivers/pci.h:321` | `static inline unsigned long long pci_bar_size_from_mask(unsigned long long mask)` |
 | `pci_bdf_t` | struct | `headers/drivers/pci.h:71` | `` |
 | `pci_cfg_read` | function | `headers/drivers/pci.h:80` | `static inline unsigned pci_cfg_read(unsigned bus, unsigned dev,         unsigned func, unsigned r...` |
 | `pci_cfg_read8` | function | `headers/drivers/pci.h:100` | `static inline unsigned char pci_cfg_read8(unsigned bus, unsigned dev,         unsigned func, unsi...` |
 | `pci_cfg_write` | function | `headers/drivers/pci.h:90` | `static inline void pci_cfg_write(unsigned bus, unsigned dev,         unsigned func, unsigned reg,...` |
 | `pci_cfg_write8` | function | `headers/drivers/pci.h:109` | `static inline void pci_cfg_write8(unsigned bus, unsigned dev,         unsigned func, unsigned reg...` |
-| `pci_find` | function | `headers/drivers/pci.h:165` | `static inline int pci_find(unsigned vendor, unsigned device,         unsigned (*inl)(unsigned sho...` |
-| `pci_find_class` | function | `headers/drivers/pci.h:193` | `static inline int pci_find_class(pci_bdf_t *out,         unsigned cls, unsigned subclass, unsigne...` |
-| `pci_is_multifunction` | function | `headers/drivers/pci.h:152` | `static inline int pci_is_multifunction(unsigned bus, unsigned dev,         void (*outl)(unsigned ...` |
+| `pci_find` | function | `headers/drivers/pci.h:170` | `static inline int pci_find(unsigned vendor, unsigned device,         unsigned (*inl)(unsigned sho...` |
+| `pci_is_multifunction` | function | `headers/drivers/pci.h:156` | `static inline int pci_is_multifunction(unsigned bus, unsigned dev,         void (*outl)(unsigned ...` |
 | `pci_present` | function | `headers/drivers/pci.h:122` | `static inline int pci_present(unsigned bus, unsigned dev, unsigned func,         void (*outl)(uns...` |
 | `xHCI` | function | `headers/drivers/pci.h:134` | `* base class: an xHCI (0x0C/0x03/0x30) would look for class 0x03, and a PCI  * bridge (0x06/0x04)...` |
 | `DRIVERS_USBBLK_H` | macro | `headers/drivers/usbblk.h:11` | `#define DRIVERS_USBBLK_H` |
@@ -355,146 +496,5 @@ Previous: [SYMBOLS_p3.md](SYMBOLS_p3.md)
 | `PTE_DEMAND` | macro | `headers/kernel.h:798` | `#define PTE_DEMAND` |
 | `PTE_DEMAND_EXEC` | macro | `headers/kernel.h:801` | `#define PTE_DEMAND_EXEC` |
 | `PTE_DEMAND_READ` | macro | `headers/kernel.h:799` | `#define PTE_DEMAND_READ` |
-| `PTE_DEMAND_WRITE` | macro | `headers/kernel.h:800` | `#define PTE_DEMAND_WRITE` |
-| `RAMDISK_FNAME_LEN` | macro | `headers/kernel.h:279` | `#define RAMDISK_FNAME_LEN` |
-| `RAMDISK_FNAME_LEN` | function | `headers/kernel.h:295` | `* RAMDISK_FNAME_LEN (fs_resolve guarantees it);` |
-| `RAMDISK_MAX_FILES` | macro | `headers/kernel.h:269` | `#define RAMDISK_MAX_FILES` |
-| `RDFile` | struct | `headers/kernel.h:281` | `` |
-| `RD_DATA_MAX` | macro | `headers/kernel.h:305` | `#define RD_DATA_MAX` |
-| `SYS_KSTK_BASE` | macro | `headers/kernel.h:202` | `#define SYS_KSTK_BASE` |
-| `SYS_KSTK_TOP` | macro | `headers/kernel.h:201` | `#define SYS_KSTK_TOP` |
-| `USER_BRK_END` | macro | `headers/kernel.h:190` | `#define USER_BRK_END` |
-| `USER_HEAP_CEIL` | macro | `headers/kernel.h:764` | `#define USER_HEAP_CEIL` |
-| `USER_LOAD_BASE` | macro | `headers/kernel.h:185` | `#define USER_LOAD_BASE` |
-| `USER_LOAD_END` | macro | `headers/kernel.h:186` | `#define USER_LOAD_END` |
-| `USER_STACK_BASE` | macro | `headers/kernel.h:189` | `#define USER_STACK_BASE` |
-| `USER_STACK_SIZE` | macro | `headers/kernel.h:187` | `#define USER_STACK_SIZE` |
-| `USER_STACK_TOP` | macro | `headers/kernel.h:188` | `#define USER_STACK_TOP` |
-| `VFS_DRIVER_LEN` | macro | `headers/kernel.h:421` | `#define VFS_DRIVER_LEN` |
-| `VFS_MAX_MOUNTS` | macro | `headers/kernel.h:419` | `#define VFS_MAX_MOUNTS` |
-| `VFS_NAME_MAX` | macro | `headers/kernel.h:382` | `#define VFS_NAME_MAX` |
-| `VFS_PREFIX_LEN` | macro | `headers/kernel.h:420` | `#define VFS_PREFIX_LEN` |
-| `VGA_BASE` | macro | `headers/kernel.h:90` | `#define VGA_BASE` |
-| `VGA_COLS` | macro | `headers/kernel.h:91` | `#define VGA_COLS` |
-| `VGA_ROWS` | macro | `headers/kernel.h:92` | `#define VGA_ROWS` |
-| `block_init` | function | `headers/kernel.h:940` | `void block_init(void);` |
-| `block_read` | function | `headers/kernel.h:941` | `int block_read(unsigned int block_num, void *buf);` |
-| `block_read_multi` | function | `headers/kernel.h:943` | `int block_read_multi(unsigned int block_num, unsigned int count, void *buf);` |
-| `block_total` | function | `headers/kernel.h:945` | `unsigned int block_total(void);` |
-| `block_write` | function | `headers/kernel.h:942` | `int block_write(unsigned int block_num, const void *buf);` |
-| `block_write_multi` | function | `headers/kernel.h:944` | `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf);` |
-| `bootlog_mark` | function | `headers/kernel.h:917` | `void bootlog_mark(const char *name);` |
-| `bootlog_report` | function | `headers/kernel.h:918` | `void bootlog_report(void);` |
-| `clip_clear` | function | `headers/kernel.h:613` | `void clip_clear(void);` |
-| `clip_get` | function | `headers/kernel.h:612` | `int clip_get(char *out, unsigned long cap);` |
-| `clip_len_get` | function | `headers/kernel.h:614` | `int clip_len_get(void);` |
-| `clip_set` | function | `headers/kernel.h:611` | `int clip_set(const char *data, unsigned long len);` |
-| `console_getc` | function | `headers/kernel.h:590` | `int console_getc(void);` |
-| `console_lock` | variable | `headers/kernel.h:105` | `extern spinlock_t console_lock;` |
-| `console_peek` | function | `headers/kernel.h:591` | `int console_peek(void);` |
-| `console_stdin_active` | function | `headers/kernel.h:604` | `int console_stdin_active(void);` |
-| `console_stdin_clear` | function | `headers/kernel.h:603` | `void console_stdin_clear(void);` |
-| `console_stdin_push` | function | `headers/kernel.h:602` | `int console_stdin_push(const char *data, unsigned long len);` |
-| `cow_drop_ref` | function | `headers/kernel.h:811` | `int cow_drop_ref(unsigned long phys);` |
-| `cow_page_shared` | function | `headers/kernel.h:831` | `int cow_page_shared(unsigned long phys);` |
-| `cow_release_window` | function | `headers/kernel.h:829` | `void cow_release_window(unsigned long cr3);` |
-| `cow_resolve` | function | `headers/kernel.h:827` | `int cow_resolve(unsigned long cr3, unsigned long va);` |
-| `cow_shared` | function | `headers/kernel.h:830` | `int cow_shared(void);` |
-| `desktop_launch` | function | `headers/kernel.h:678` | `void desktop_launch(const char *cmd);` |
-| `dlmalloc_calloc` | function | `headers/kernel.h:233` | `void *dlmalloc_calloc(unsigned long nmemb, unsigned long size);` |
-| `dlmalloc_free` | function | `headers/kernel.h:232` | `void dlmalloc_free(void *ptr);` |
-| `dlmalloc_init` | function | `headers/kernel.h:226` | `void dlmalloc_init(unsigned long size);` |
-| `dlmalloc_malloc` | function | `headers/kernel.h:230` | `void *dlmalloc_malloc(unsigned long size);` |
-| `dlmalloc_memalign` | function | `headers/kernel.h:231` | `void *dlmalloc_memalign(unsigned long align, unsigned long size);` |
-| `dlmalloc_realloc` | function | `headers/kernel.h:234` | `void *dlmalloc_realloc(void *ptr, unsigned long size);` |
-| `dlmalloc_usage` | function | `headers/kernel.h:236` | `void dlmalloc_usage(unsigned long *used, unsigned long *free_b, unsigned long *arena);` |
-| `elf_load` | function | `headers/kernel.h:766` | `void *elf_load(void *data, unsigned size, void **base_out);` |
-| `elf_wants_process` | function | `headers/kernel.h:768` | `int elf_wants_process(const void *data, unsigned size);` |
-| `exec_exit_code` | variable | `headers/kernel.h:670` | `extern int exec_exit_code;` |
-| `exec_return` | variable | `headers/kernel.h:669` | `extern kjmpbuf exec_return;` |
-| `fault` | function | `headers/kernel.h:824` | `* fixes one write fault (0 = resume), cow_release_window drops a * dying window's shares ahead of pt_free_user. */...` |
-| `fd_lock` | variable | `headers/kernel.h:864` | `extern spinlock_t fd_lock;` |
-| `fd_lock` | function | `headers/kernel.h:889` | `* fd_lock (never nested, never held across yields);` |
-| `file_operations` | type_alias | `headers/kernel.h:414` | `typedef vfs_ops_t file_operations;` |
-| `fs_cwd` | variable | `headers/kernel.h:434` | `extern char fs_cwd[];` |
-| `fs_dir_exists` | function | `headers/kernel.h:312` | `int fs_dir_exists(const char *dir);` |
-| `fs_is_dir` | function | `headers/kernel.h:313` | `int fs_is_dir(const char *resolved);` |
-| `fs_lock` | variable | `headers/kernel.h:891` | `extern spinlock_t fs_lock;` |
-| `fs_rename` | function | `headers/kernel.h:524` | `int fs_rename(const char *oldr, const char *newr);` |
-| `fs_resolve` | function | `headers/kernel.h:311` | `int fs_resolve(const char *path, char *out, unsigned cap);` |
-| `g_brk` | variable | `headers/kernel.h:723` | `extern unsigned long g_brk;` |
-| `g_brk_limit` | variable | `headers/kernel.h:724` | `extern unsigned long g_brk_limit;` |
-| `ide_init` | function | `headers/kernel.h:931` | `void ide_init(void);` |
-| `ide_present` | function | `headers/kernel.h:937` | `int ide_present(void);` |
-| `ide_read_sector` | function | `headers/kernel.h:934` | `int ide_read_sector(unsigned int lba, void *buf);` |
-| `ide_read_sectors` | function | `headers/kernel.h:932` | `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf);` |
-| `ide_total_sectors` | function | `headers/kernel.h:936` | `unsigned int ide_total_sectors(void);` |
-| `ide_write_sector` | function | `headers/kernel.h:935` | `int ide_write_sector(unsigned int lba, const void *buf);` |
-| `ide_write_sectors` | function | `headers/kernel.h:933` | `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);` |
-| `inb` | function | `headers/kernel.h:29` | `static inline unsigned char inb(unsigned short port)` |
-| `insw` | function | `headers/kernel.h:47` | `static inline void insw(unsigned short port, unsigned short *buf,                         unsigne...` |
-| `inw` | function | `headers/kernel.h:37` | `static inline unsigned short inw(unsigned short port)` |
-| `k_exec_user` | function | `headers/kernel.h:657` | `int k_exec_user(void *entry, int argc, char **argv);` |
-| `k_register_process` | function | `headers/kernel.h:649` | `void k_register_process(const char *name, void *proc_entry);` |
-| `k_register_program` | function | `headers/kernel.h:648` | `void k_register_program(const char *name, prog_entry_t entry);` |
-| `k_register_symbol` | function | `headers/kernel.h:650` | `void k_register_symbol(const char *name, void *addr);` |
-| `k_run_on_stack` | function | `headers/kernel.h:662` | `int k_run_on_stack(void *stack_top, prog_entry_t entry, int argc, char **argv);` |
-| `k_run_rel` | function | `headers/kernel.h:658` | `int k_run_rel(prog_entry_t entry, int argc, char **argv);` |
-| `k_spawn` | function | `headers/kernel.h:647` | `int k_spawn(const char *name, int argc, char **argv);` |
-| `k_user_fault_return` | function | `headers/kernel.h:948` | `void k_user_fault_return(void);` |
-| `kallocator_init` | function | `headers/kernel.h:218` | `void kallocator_init(void);` |
-| `katol` | function | `headers/kernel.h:557` | `long katol(const char *s);` |
-| `kbd_available` | function | `headers/kernel.h:174` | `int kbd_available(void);` |
-| `kbd_read` | function | `headers/kernel.h:173` | `int kbd_read(void);` |
-| `kbd_reset_for_shell` | function | `headers/kernel.h:175` | `void kbd_reset_for_shell(void);` |
-| `kcalloc` | function | `headers/kernel.h:216` | `void *kcalloc(unsigned long nmemb, unsigned long size);` |
-| `kernel_end` | variable | `headers/kernel.h:894` | `extern unsigned long kernel_end;` |
-| `kerrno` | variable | `headers/kernel.h:521` | `extern int kerrno;` |
-| `kevent_create` | function | `headers/kernel.h:882` | `KFILE *kevent_create(unsigned long long initval, int semaphore);` |
-| `kevent_read` | function | `headers/kernel.h:883` | `long kevent_read(KFILE *f, unsigned long long *out);` |
-| `kevent_readable` | function | `headers/kernel.h:885` | `int kevent_readable(KFILE *f);` |
-| `kevent_writable` | function | `headers/kernel.h:886` | `int kevent_writable(KFILE *f);` |
-| `kevent_write` | function | `headers/kernel.h:884` | `long kevent_write(KFILE *f, unsigned long long v);` |
-| `kexit` | function | `headers/kernel.h:659` | `void kexit(int code);` |
-| `kfclose` | function | `headers/kernel.h:500` | `int kfclose(KFILE *f);` |
-| `kfd_get` | function | `headers/kernel.h:865` | `KFILE *kfd_get(int fd);` |
-| `kfd_override` | function | `headers/kernel.h:867` | `KFILE *kfd_override(int fd, KFILE *f);` |
-| `kfd_poll_revents` | function | `headers/kernel.h:876` | `int kfd_poll_revents(int fd);` |
-| `kfd_put` | function | `headers/kernel.h:866` | `void kfd_put(KFILE *f);` |
-| `kfd_view` | struct | `headers/kernel.h:855` | `` |
-| `kfflush` | function | `headers/kernel.h:534` | `int kfflush(KFILE *f);` |
-| `kfgetc` | function | `headers/kernel.h:525` | `int kfgetc(KFILE *f);` |
-| `kfgets` | function | `headers/kernel.h:526` | `char *kfgets(char *buf, int size, KFILE *f);` |
-| `kfile_stderr` | function | `headers/kernel.h:542` | `KFILE *kfile_stderr(void);` |
-| `kfile_stdin` | function | `headers/kernel.h:540` | `KFILE *kfile_stdin(void);` |
-| `kfile_stdout` | function | `headers/kernel.h:541` | `KFILE *kfile_stdout(void);` |
-| `kfopen` | function | `headers/kernel.h:495` | `KFILE *kfopen(const char *path, const char *mode);` |
-| `kfopen_dir` | function | `headers/kernel.h:499` | `KFILE *kfopen_dir(const char *resolved);` |
-| `kfprintf` | function | `headers/kernel.h:561` | `int kfprintf(KFILE *f, const char *fmt, ...);` |
-| `kfputc` | function | `headers/kernel.h:533` | `int kfputc(int c, KFILE *f);` |
-| `kfputs` | function | `headers/kernel.h:532` | `int kfputs(const char *s, KFILE *f);` |
-| `kfread` | function | `headers/kernel.h:528` | `unsigned long kfread(void *ptr, unsigned long size, unsigned long nmemb, KFILE *f);` |
-| `kfree` | function | `headers/kernel.h:215` | `void kfree(void *ptr);` |
-| `kfree_aligned` | function | `headers/kernel.h:222` | `void kfree_aligned(void *ptr);` |
-| `kfseek` | function | `headers/kernel.h:530` | `int kfseek(KFILE *f, long offset, int whence);` |
-| `kftell` | function | `headers/kernel.h:531` | `long kftell(KFILE *f);` |
-| `kfungetc` | function | `headers/kernel.h:527` | `int kfungetc(int c, KFILE *f);` |
-| `kfwrite` | function | `headers/kernel.h:529` | `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long nmemb, KFILE *f);` |
-| `kheap_size` | variable | `headers/kernel.h:229` | `extern unsigned long kheap_size;` |
-| `kjmpbuf` | struct | `headers/kernel.h:666` | `` |
-| `klog` | function | `headers/kernel.h:578` | `void klog(log_level_t level, log_subsystem_t subsys, const char *fmt, ...);` |
-| `klog_disable` | function | `headers/kernel.h:584` | `void klog_disable(void);` |
-| `klog_enable` | function | `headers/kernel.h:585` | `void klog_enable(void);` |
-| `klog_hexdump` | function | `headers/kernel.h:580` | `void klog_hexdump(log_level_t level, log_subsystem_t subsys, const void *data, unsigned long len, const char *label);` |
-| `klog_set_level` | function | `headers/kernel.h:582` | `void klog_set_level(log_level_t level);` |
-| `klog_set_subsys_level` | function | `headers/kernel.h:583` | `void klog_set_subsys_level(log_subsystem_t subsys, log_level_t level);` |
-| `klongjmp` | function | `headers/kernel.h:668` | `void klongjmp(void *buf, int val) __attribute__((noreturn));` |
-| `kmalloc` | function | `headers/kernel.h:213` | `void *kmalloc(unsigned long size);` |
-| `kmalloc_aligned` | function | `headers/kernel.h:219` | `void *kmalloc_aligned(unsigned long size, unsigned long align);` |
-| `kmalloc_fail_after` | variable | `headers/kernel.h:214` | `extern long kmalloc_fail_after;` |
-| `kmalloc_page` | function | `headers/kernel.h:221` | `void *kmalloc_page(void);` |
-| `kmemcmp` | function | `headers/kernel.h:555` | `int kmemcmp(const void *a, const void *b, unsigned long n);` |
-| `kmemcpy` | function | `headers/kernel.h:553` | `void *kmemcpy(void *dst, const void *src, unsigned long n);` |
-| `kmemmove` | function | `headers/kernel.h:556` | `void *kmemmove(void *dst, const void *src, unsigned long n);` |
 
 Next: [SYMBOLS_p5.md](SYMBOLS_p5.md)

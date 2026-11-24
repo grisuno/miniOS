@@ -1,8 +1,149 @@
-# Symbols (page 23 of 27)
+# Symbols (page 23 of 28)
 Previous: [SYMBOLS_p22.md](SYMBOLS_p22.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `audio_tone` | function | `progs/src/audio.c:31` | `void audio_tone(unsigned freq)` |
+| `syscall0` | function | `progs/src/audio.c:21` | `static long syscall0(long n)` |
+| `syscall1` | function | `progs/src/audio.c:3` | `static long syscall1(long n, long a1)` |
+| `syscall2` | function | `progs/src/audio.c:9` | `static long syscall2(long n, long a1, long a2)` |
+| `syscall3` | function | `progs/src/audio.c:15` | `static long syscall3(long n, long a1, long a2, long a3)` |
+| `bn_exit` | function | `progs/src/burn.c:31` | `static void bn_exit(long code)` |
+| `bn_fail` | function | `progs/src/burn.c:48` | `static void bn_fail(void)` |
+| `bn_mmap` | function | `progs/src/burn.c:14` | `static long bn_mmap(unsigned long len)` |
+| `bn_putu` | function | `progs/src/burn.c:36` | `static void bn_putu(unsigned long v)` |
+| `bn_sc` | function | `progs/src/burn.c:6` | `static long bn_sc(long n, long a1, long a2, long a3)` |
+| `bn_write` | function | `progs/src/burn.c:27` | `static void bn_write(const char *s, unsigned long len)` |
+| `lmain` | function | `progs/src/burn.c:53` | `int lmain(void)` |
+| `CP_BUF_SIZE` | macro | `progs/src/cp.c:7` | `#define CP_BUF_SIZE` |
+| `CP_EXIT_FAIL` | macro | `progs/src/cp.c:8` | `#define CP_EXIT_FAIL` |
+| `fclose` | function | `progs/src/cp.c:3` | `int fclose();` |
+| `fopen` | function | `progs/src/cp.c:2` | `void *fopen();` |
+| `fread` | function | `progs/src/cp.c:4` | `int fread();` |
+| `fwrite` | function | `progs/src/cp.c:5` | `int fwrite();` |
+| `main` | function | `progs/src/cp.c:10` | `int main(int argc, char **argv)` |
+| `printf` | function | `progs/src/cp.c:1` | `int printf();` |
+| `_start` | function | `progs/src/cpl.c:16` | `void _start(void)` |
+| `exit_now` | function | `progs/src/cpl.c:12` | `static void exit_now(long code)` |
+| `read_cpl` | function | `progs/src/cpl.c:6` | `static long read_cpl(void)` |
+| `main` | function | `progs/src/cvmfmt.c:19` | `int main(void)` |
+| `ex_exit` | function | `progs/src/execho.c:24` | `static void ex_exit(long code)` |
+| `ex_fail` | function | `progs/src/execho.c:29` | `static void ex_fail(int step)` |
+| `ex_write` | function | `progs/src/execho.c:20` | `static void ex_write(const char *s, unsigned long len)` |
+| `lmain` | function | `progs/src/execho.c:37` | `int lmain(void)` |
+| `path` | function | `progs/src/execho.c:7` | `* execs a ghost path (must fail -2, exits 42). The parent checks  * both wait4 results with Linux...` |
+| `program` | function | `progs/src/execho.c:5` | `* * Proves the UNIX process composition the kernel lacked: a child * produced by fork replaces its image with execve...` |
+| `et_exit` | function | `progs/src/execthr.c:19` | `static void et_exit(long code)` |
+| `et_sc` | function | `progs/src/execthr.c:11` | `static long et_sc(long n, long a1, long a2, long a3)` |
+| `et_thread` | function | `progs/src/execthr.c:27` | `static void et_thread(void)` |
+| `lmain` | function | `progs/src/execthr.c:33` | `int lmain(void)` |
+| `fib` | function | `progs/src/fib.c:1` | `int fib(int n)` |
+| `main` | function | `progs/src/fib.c:6` | `int main(void)` |
+| `SYS_close` | macro | `progs/src/forktest.c:32` | `#define SYS_close` |
+| `SYS_exit` | macro | `progs/src/forktest.c:36` | `#define SYS_exit` |
+| `SYS_fork` | macro | `progs/src/forktest.c:35` | `#define SYS_fork` |
+| `SYS_pipe` | macro | `progs/src/forktest.c:33` | `#define SYS_pipe` |
+| `SYS_read` | macro | `progs/src/forktest.c:30` | `#define SYS_read` |
+| `SYS_wait4` | macro | `progs/src/forktest.c:37` | `#define SYS_wait4` |
+| `SYS_write` | macro | `progs/src/forktest.c:31` | `#define SYS_write` |
+| `SYS_yield` | macro | `progs/src/forktest.c:34` | `#define SYS_yield` |
+| `_start` | function | `progs/src/forktest.c:56` | `void _start(void)` |
+| `fx_exit` | function | `progs/src/forktest.c:51` | `static void fx_exit(long code)` |
+| `fx_strlen` | function | `progs/src/forktest.c:41` | `static unsigned long fx_strlen(const char *s)` |
+| `fx_syscall6` | function | `progs/src/forktest.c:17` | `static long fx_syscall6(long n, long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `fx_write` | function | `progs/src/forktest.c:47` | `static void fx_write(const char *s)` |
+| `this` | function | `progs/src/forktest.c:115` | `* this (and the child's closes must survive below). */ fx_syscall6(SYS_close, pfd[1], 0, 0, 0, 0, 0);` |
+| `FP_ITERS` | macro | `progs/src/fptest.c:38` | `#define FP_ITERS` |
+| `fp_slot_t` | struct | `progs/src/fptest.c:56` | `` |
+| `gettid` | function | `progs/src/fptest.c:21` | `* * The same run smokes gettid (Phase 0.4: the two workers must observe * distinct tids, never the constant 1) and...` |
+| `main` | function | `progs/src/fptest.c:148` | `int main(void)` |
+| `raw_getrandom` | function | `progs/src/fptest.c:52` | `static long raw_getrandom(void *buf, unsigned long n)` |
+| `raw_gettid` | function | `progs/src/fptest.c:48` | `static long raw_gettid(void)` |
+| `read_mxcsr` | function | `progs/src/fptest.c:42` | `static unsigned int read_mxcsr(void)` |
+| `stack_align_canary` | function | `progs/src/fptest.c:78` | `static void stack_align_canary(void)` |
+| `worker` | function | `progs/src/fptest.c:84` | `static void *worker(void *p)` |
+| `FREEDOM_ATTR_MAX` | macro | `progs/src/freedom.c:81` | `#define FREEDOM_ATTR_MAX` |
+| `FREEDOM_BUF` | macro | `progs/src/freedom.c:76` | `#define FREEDOM_BUF` |
+| `FREEDOM_CHUNK_MAX` | macro | `progs/src/freedom.c:77` | `#define FREEDOM_CHUNK_MAX` |
+| `FREEDOM_CSS_BUF` | macro | `progs/src/freedom.c:79` | `#define FREEDOM_CSS_BUF` |
+| `FREEDOM_CSS_MAX` | macro | `progs/src/freedom.c:78` | `#define FREEDOM_CSS_MAX` |
+| `FREEDOM_DOM_BUF` | macro | `progs/src/freedom.c:80` | `#define FREEDOM_DOM_BUF` |
+| `FREEDOM_HDR_MAX` | macro | `progs/src/freedom.c:75` | `#define FREEDOM_HDR_MAX` |
+| `FREEDOM_HOPS_MAX` | macro | `progs/src/freedom.c:74` | `#define FREEDOM_HOPS_MAX` |
+| `FREEDOM_LINE_MAX` | macro | `progs/src/freedom.c:82` | `#define FREEDOM_LINE_MAX` |
+| `append` | function | `progs/src/freedom.c:166` | `static int append(char *dst, int pos, char *src, int cap)` |
+| `atoi` | function | `progs/src/freedom.c:151` | `static int atoi(char *s)` |
+| `body_byte` | function | `progs/src/freedom.c:631` | `static void body_byte(int c)` |
+| `ci_eq` | function | `progs/src/freedom.c:193` | `static int ci_eq(char *a, char *b)` |
+| `ci_index` | function | `progs/src/freedom.c:203` | `static int ci_index(char *s, char *needle)` |
+| `ci_lower` | function | `progs/src/freedom.c:176` | `static int ci_lower(int c)` |
+| `ci_starts` | function | `progs/src/freedom.c:182` | `static int ci_starts(char *s, char *pre)` |
+| `classify_tag` | function | `progs/src/freedom.c:546` | `static void classify_tag(void)` |
+| `close` | function | `progs/src/freedom.c:56` | `int close(int fd);` |
+| `connect` | function | `progs/src/freedom.c:53` | `int connect(int fd, void *addr, int addrlen);` |
+| `css_append` | function | `progs/src/freedom.c:483` | `static void css_append(char *s, int n)` |
+| `css_line` | function | `progs/src/freedom.c:489` | `static void css_line(char *s)` |
+| `curlfree` | function | `progs/src/freedom.c:4` | `* spirit of curlfree (http.c + htmlfilter.c): a bounded header phase, * Content-Length or EOF body reading...` |
+| `dom_append` | function | `progs/src/freedom.c:494` | `static void dom_append(char *s, int n)` |
+| `dom_nl` | function | `progs/src/freedom.c:504` | `static void dom_nl(void)` |
+| `dom_space` | function | `progs/src/freedom.c:500` | `static void dom_space(void)` |
+| `fetch` | function | `progs/src/freedom.c:860` | `static int fetch(char *host, char *path, int port)` |
+| `fetch_css` | function | `progs/src/freedom.c:1031` | `static void fetch_css(char *host, char *path)` |
+| `has_scheme` | function | `progs/src/freedom.c:226` | `static int has_scheme(char *s)` |
+| `head_line` | function | `progs/src/freedom.c:796` | `static void head_line(char *line)` |
+| `is_void_tag` | function | `progs/src/freedom.c:534` | `static int is_void_tag(void)` |
+| `looks_like_url` | function | `progs/src/freedom.c:212` | `static int looks_like_url(char *s)` |
+| `main` | function | `progs/src/freedom.c:1129` | `int main(int argc, char **argv)` |
+| `make_search` | function | `progs/src/freedom.c:242` | `static void make_search(char *out, char *query, int cap)` |
+| `memcpy` | function | `progs/src/freedom.c:69` | `int memcpy(char *dst, char *src, int n);` |
+| `memset` | function | `progs/src/freedom.c:70` | `int memset(char *dst, int c, int n);` |
+| `net_dns_resolve` | function | `progs/src/freedom.c:41` | `int net_dns_resolve(const char *host);` |
+| `parse_head` | function | `progs/src/freedom.c:821` | `static void parse_head(void)` |
+| `print_css_dump` | function | `progs/src/freedom.c:1113` | `static void print_css_dump(void)` |
+| `print_dom_dump` | function | `progs/src/freedom.c:1122` | `static void print_dom_dump(void)` |
+| `printf` | function | `progs/src/freedom.c:63` | `int printf(char *fmt, ...);` |
+| `put_text` | function | `progs/src/freedom.c:427` | `static void put_text(int c)` |
+| `put_utf` | function | `progs/src/freedom.c:377` | `static void put_utf(int c)` |
+| `put_ws` | function | `progs/src/freedom.c:366` | `static void put_ws(void)` |
+| `putchar` | function | `progs/src/freedom.c:71` | `int putchar(int c);` |
+| `puts` | function | `progs/src/freedom.c:64` | `int puts(char *s);` |
+| `record_attr` | function | `progs/src/freedom.c:509` | `static void record_attr(void)` |
+| `recv_body` | function | `progs/src/freedom.c:843` | `static int recv_body(int fd, char *buf, int len)` |
+| `recvfrom` | function | `progs/src/freedom.c:55` | `int recvfrom(int fd, char *buf, int len, int flags, void *from, int *fromlen);` |
+| `resolve_redirect` | function | `progs/src/freedom.c:313` | `static int resolve_redirect(void)` |
+| `send_all` | function | `progs/src/freedom.c:849` | `static int send_all(int fd, char *buf, int len)` |
+| `sendto` | function | `progs/src/freedom.c:54` | `int sendto(int fd, char *buf, int len, int flags, void *to, int tolen);` |
+| `socket` | function | `progs/src/freedom.c:52` | `int socket(int domain, int type, int proto);` |
+| `split_url` | function | `progs/src/freedom.c:266` | `static int split_url(char *url)` |
+| `strchr` | function | `progs/src/freedom.c:66` | `char *strchr(char *s, int c);` |
+| `strcmp` | function | `progs/src/freedom.c:67` | `int strcmp(char *a, char *b);` |
+| `strlen` | function | `progs/src/freedom.c:65` | `int strlen(char *s);` |
+| `strncmp` | function | `progs/src/freedom.c:68` | `int strncmp(char *a, char *b, int n);` |
+| `tls_close` | function | `progs/src/freedom.c:58` | `static int tls_close(int fd)` |
+| `tls_handshake` | function | `progs/src/freedom.c:42` | `int tls_handshake(int fd, char *host);` |
+| `tls_recv` | function | `progs/src/freedom.c:44` | `int tls_recv(int fd, char *buf, int len);` |
+| `tls_send` | function | `progs/src/freedom.c:43` | `int tls_send(int fd, char *buf, int len);` |
+| `FreedomWlConfig` | struct | `progs/src/freedom_wl.c:76` | `` |
+| `WL_BODY_CAP` | macro | `progs/src/freedom_wl.c:54` | `#define WL_BODY_CAP` |
+| `WL_COLS` | macro | `progs/src/freedom_wl.c:49` | `#define WL_COLS` |
+| `WL_ENT_MAX` | macro | `progs/src/freedom_wl.c:65` | `#define WL_ENT_MAX` |
+| `WL_FONT_H` | macro | `progs/src/freedom_wl.c:63` | `#define WL_FONT_H` |
+| `WL_FONT_W` | macro | `progs/src/freedom_wl.c:62` | `#define WL_FONT_W` |
+| `WL_HDR_MAX` | macro | `progs/src/freedom_wl.c:55` | `#define WL_HDR_MAX` |
+| `WL_HOPS_MAX` | macro | `progs/src/freedom_wl.c:61` | `#define WL_HOPS_MAX` |
+| `WL_HOST_MAX` | macro | `progs/src/freedom_wl.c:58` | `#define WL_HOST_MAX` |
+| `WL_LINES_MAX` | macro | `progs/src/freedom_wl.c:52` | `#define WL_LINES_MAX` |
+| `WL_LINE_LEN` | macro | `progs/src/freedom_wl.c:53` | `#define WL_LINE_LEN` |
+| `WL_NET_BUF` | macro | `progs/src/freedom_wl.c:56` | `#define WL_NET_BUF` |
+| `WL_PATH_MAX` | macro | `progs/src/freedom_wl.c:59` | `#define WL_PATH_MAX` |
+| `WL_REQ_MAX` | macro | `progs/src/freedom_wl.c:57` | `#define WL_REQ_MAX` |
+| `WL_ROWS` | macro | `progs/src/freedom_wl.c:50` | `#define WL_ROWS` |
+| `WL_TAG_MAX` | macro | `progs/src/freedom_wl.c:64` | `#define WL_TAG_MAX` |
+| `WL_TEXT_ROWS` | macro | `progs/src/freedom_wl.c:51` | `#define WL_TEXT_ROWS` |
+| `WL_URL_MAX` | macro | `progs/src/freedom_wl.c:60` | `#define WL_URL_MAX` |
+| `freedom_wl_build_palette` | function | `progs/src/freedom_wl.c:1039` | `static long freedom_wl_build_palette(unsigned char *pal, long cap)` |
+| `freedom_wl_clip_rect` | function | `progs/src/freedom_wl.c:196` | `static long freedom_wl_clip_rect(FreedomWlConfig *c, long *x, long *y, long *w, long *h)` |
+| `freedom_wl_default` | function | `progs/src/freedom_wl.c:158` | `static FreedomWlConfig freedom_wl_default(void)` |
 | `freedom_wl_frame_bytes` | function | `progs/src/freedom_wl.c:227` | `static long freedom_wl_frame_bytes(FreedomWlConfig *c, long w, long h)` |
 | `freedom_wl_host_probe` | function | `progs/src/freedom_wl.c:1696` | `int freedom_wl_host_probe(FreedomWlConfig *c)` |
 | `freedom_wl_keysym` | function | `progs/src/freedom_wl.c:246` | `static long freedom_wl_keysym(FreedomWlConfig *c, long sc)` |
@@ -355,146 +496,5 @@ Previous: [SYMBOLS_p22.md](SYMBOLS_p22.md)
 | `mmutex_lock` | function | `progs/src/mthreads.h:75` | `static inline void mmutex_lock(mmutex_t *m)` |
 | `mmutex_t` | struct | `progs/src/mthreads.h:38` | `` |
 | `mmutex_unlock` | function | `progs/src/mthreads.h:90` | `static inline void mmutex_unlock(mmutex_t *m)` |
-| `mthread_create` | function | `progs/src/mthreads.h:117` | `static int mthread_create(mthread_t *t, void *(*fn)(void *), void *arg)` |
-| `mthread_entry` | function | `progs/src/mthreads.h:98` | `static void mthread_entry(void *p)` |
-| `mthread_join` | function | `progs/src/mthreads.h:144` | `static int mthread_join(mthread_t t, void **retval)` |
-| `mthread_slot_t` | struct | `progs/src/mthreads.h:42` | `` |
-| `mthread_t` | type_alias | `progs/src/mthreads.h:35` | `typedef int mthread_t;` |
-| `myield` | function | `progs/src/mthreads.h:59` | `static inline void myield(void)` |
-| `MTOP_DISK_BUF` | macro | `progs/src/mtop.c:47` | `#define MTOP_DISK_BUF` |
-| `MTOP_DISK_MAX` | macro | `progs/src/mtop.c:48` | `#define MTOP_DISK_MAX` |
-| `MTOP_HIST` | macro | `progs/src/mtop.c:46` | `#define MTOP_HIST` |
-| `MTOP_MINFO` | macro | `progs/src/mtop.c:49` | `#define MTOP_MINFO` |
-| `close` | function | `progs/src/mtop.c:43` | `int close();` |
-| `emit` | function | `progs/src/mtop.c:90` | `static void emit(char *s)` |
-| `fclose` | function | `progs/src/mtop.c:39` | `int fclose();` |
-| `fopen` | function | `progs/src/mtop.c:38` | `void *fopen();` |
-| `fread` | function | `progs/src/mtop.c:40` | `int fread();` |
-| `main` | function | `progs/src/mtop.c:531` | `int main(int argc, char **argv)` |
-| `mtop_atoi` | function | `progs/src/mtop.c:117` | `static int mtop_atoi(char *s)` |
-| `mtop_bar` | function | `progs/src/mtop.c:179` | `static void mtop_bar(long v, long max, int w)` |
-| `mtop_clear` | function | `progs/src/mtop.c:113` | `static void mtop_clear(void)` |
-| `mtop_clear_ansi` | function | `progs/src/mtop.c:103` | `static void mtop_clear_ansi(void)` |
-| `mtop_cpu` | function | `progs/src/mtop.c:253` | `static long mtop_cpu(long *count, long *busy)` |
-| `mtop_disk_open` | function | `progs/src/mtop.c:289` | `static void mtop_disk_open(void)` |
-| `mtop_disk_read` | function | `progs/src/mtop.c:313` | `static long mtop_disk_read(long *bytes)` |
-| `mtop_frame` | function | `progs/src/mtop.c:355` | `static void mtop_frame(int n)` |
-| `mtop_hist_max` | function | `progs/src/mtop.c:194` | `static long mtop_hist_max(long *h, int n)` |
-| `mtop_hist_push` | function | `progs/src/mtop.c:204` | `static void mtop_hist_push(long *h, long v)` |
-| `mtop_key` | function | `progs/src/mtop.c:80` | `static long mtop_key(void)` |
-| `mtop_mem` | function | `progs/src/mtop.c:242` | `static long mtop_mem(long *used, long *freeb, long *total)` |
-| `mtop_minfo` | function | `progs/src/mtop.c:84` | `static long mtop_minfo(long sel, long *o1, long *o2)` |
-| `mtop_net_probe` | function | `progs/src/mtop.c:337` | `static long mtop_net_probe(long *dns_ms, long *sock_ok)` |
-| `mtop_put2` | function | `progs/src/mtop.c:158` | `static void mtop_put2(int v)` |
-| `mtop_put_kb` | function | `progs/src/mtop.c:163` | `static void mtop_put_kb(long kb)` |
-| `mtop_putu` | function | `progs/src/mtop.c:136` | `static void mtop_putu(long v)` |
-| `mtop_quit_key` | function | `progs/src/mtop.c:94` | `static int mtop_quit_key(long k)` |
-| `mtop_rtc` | function | `progs/src/mtop.c:76` | `static long mtop_rtc(int *h, int *m, int *s)` |
-| `mtop_spark` | function | `progs/src/mtop.c:214` | `static void mtop_spark(long *h, int n)` |
-| `mtop_time` | function | `progs/src/mtop.c:72` | `static long mtop_time(void)` |
-| `net_dns_resolve` | function | `progs/src/mtop.c:44` | `int net_dns_resolve();` |
-| `putchar` | function | `progs/src/mtop.c:35` | `int putchar();` |
-| `rewind` | function | `progs/src/mtop.c:41` | `void rewind();` |
-| `sc3` | function | `progs/src/mtop.c:63` | `static long sc3(long n, long a1, long a2, long a3)` |
-| `socket` | function | `progs/src/mtop.c:42` | `int socket();` |
-| `strcmp` | function | `progs/src/mtop.c:37` | `int strcmp();` |
-| `strlen` | function | `progs/src/mtop.c:36` | `int strlen();` |
-| `syscall` | function | `progs/src/mtop.c:12` | `* * All system figures come from the MINFO syscall (251): heap used / * free, ramdisk used / cap, MiniFS free /...` |
-| `lmain` | function | `progs/src/mvrn.c:32` | `int lmain(void)` |
-| `mvrn_exit` | function | `progs/src/mvrn.c:20` | `static void mvrn_exit(long code)` |
-| `mvrn_fail` | function | `progs/src/mvrn.c:24` | `static void mvrn_fail(int step)` |
-| `mvrn_sc3` | function | `progs/src/mvrn.c:9` | `static long mvrn_sc3(long n, long a1, long a2, long a3)` |
-| `mvrn_write` | function | `progs/src/mvrn.c:16` | `static void mvrn_write(const char *s, unsigned long len)` |
-| `_start` | function | `progs/src/nx.c:23` | `void _start(void)` |
-| `exit_now` | function | `progs/src/nx.c:19` | `static void exit_now(long code)` |
-| `write_str` | function | `progs/src/nx.c:11` | `static long write_str(const char *s, long n)` |
-| `BUF_MS` | macro | `progs/src/opl3.c:32` | `#define BUF_MS` |
-| `F_NUM_FACTOR` | macro | `progs/src/opl3.c:34` | `#define F_NUM_FACTOR` |
-| `MONO_BYTES` | macro | `progs/src/opl3.c:30` | `#define MONO_BYTES` |
-| `SAMPLE_RATE` | macro | `progs/src/opl3.c:28` | `#define SAMPLE_RATE` |
-| `STEREO_FRAMES` | macro | `progs/src/opl3.c:29` | `#define STEREO_FRAMES` |
-| `SYS_SB16_OPEN` | macro | `progs/src/opl3.c:22` | `#define SYS_SB16_OPEN` |
-| `SYS_SB16_SUBMIT` | macro | `progs/src/opl3.c:23` | `#define SYS_SB16_SUBMIT` |
-| `SYS_TIME` | macro | `progs/src/opl3.c:21` | `#define SYS_TIME` |
-| `SYS_WRITE` | macro | `progs/src/opl3.c:24` | `#define SYS_WRITE` |
-| `busy_ms` | function | `progs/src/opl3.c:46` | `static void busy_ms(long ms)` |
-| `main` | function | `progs/src/opl3.c:107` | `int main(void)` |
-| `note_t` | struct | `progs/src/opl3.c:102` | `` |
-| `opl3_note` | function | `progs/src/opl3.c:69` | `static void opl3_note(opl3_chip *chip, unsigned block, unsigned fnum, int on)` |
-| `opl3_set_instrument` | function | `progs/src/opl3.c:52` | `static void opl3_set_instrument(opl3_chip *chip)` |
-| `render` | function | `progs/src/opl3.c:77` | `static void render(opl3_chip *chip, long ms, long *fail)` |
-| `sys_open` | function | `progs/src/opl3.c:39` | `static long sys_open(long on)` |
-| `sys_submit` | function | `progs/src/opl3.c:42` | `static long sys_submit(const void *buf, long len)` |
-| `sys_time` | function | `progs/src/opl3.c:36` | `static long sys_time(void)` |
-| `_start` | function | `progs/src/pcmap.c:75` | `void _start(void)` |
-| `sc_exit` | function | `progs/src/pcmap.c:42` | `static void sc_exit(long code)` |
-| `sc_fnv` | function | `progs/src/pcmap.c:46` | `static unsigned long sc_fnv(const char *p, long n)` |
-| `sc_hex8` | function | `progs/src/pcmap.c:56` | `static void sc_hex8(unsigned long v, char *out)` |
-| `sc_mmap` | function | `progs/src/pcmap.c:21` | `static long sc_mmap(long len, long prot, long flags, long fd, long off)` |
-| `sc_munmap` | function | `progs/src/pcmap.c:65` | `static long sc_munmap(long addr, long len)` |
-| `sc_open` | function | `progs/src/pcmap.c:12` | `static long sc_open(const char *p)` |
-| `sc_write` | function | `progs/src/pcmap.c:34` | `static long sc_write(long fd, const char *s, long n)` |
-| `PIP_EXEC_FAILED` | macro | `progs/src/pip.c:26` | `#define PIP_EXEC_FAILED` |
-| `PIP_MODULE_FLAG` | macro | `progs/src/pip.c:21` | `#define PIP_MODULE_FLAG` |
-| `PIP_MODULE_NAME` | macro | `progs/src/pip.c:22` | `#define PIP_MODULE_NAME` |
-| `PIP_PREFIX_WORDS` | macro | `progs/src/pip.c:24` | `#define PIP_PREFIX_WORDS` |
-| `PIP_PYTHON_PATH` | macro | `progs/src/pip.c:19` | `#define PIP_PYTHON_PATH` |
-| `main` | function | `progs/src/pip.c:45` | `int main(int argc, char **argv)` |
-| `pip_note` | struct | `progs/src/pip.c:30` | `` |
-| `lmain` | function | `progs/src/pollready.c:63` | `int lmain(long argc, char **argv)` |
-| `p_atoi` | function | `progs/src/pollready.c:40` | `static int p_atoi(const char *s)` |
-| `p_parse_ip` | function | `progs/src/pollready.c:46` | `static int p_parse_ip(const char *s, unsigned char out[4])` |
-| `p_puts` | function | `progs/src/pollready.c:36` | `static void p_puts(long fd, const char *s)` |
-| `p_strlen` | function | `progs/src/pollready.c:30` | `static unsigned long p_strlen(const char *s)` |
-| `p_write` | function | `progs/src/pollready.c:26` | `static long p_write(long fd, const char *s, long n)` |
-| `BUF` | macro | `progs/src/sbtone.c:26` | `#define BUF` |
-| `RATE` | macro | `progs/src/sbtone.c:25` | `#define RATE` |
-| `SYS_SB16_OPEN` | macro | `progs/src/sbtone.c:21` | `#define SYS_SB16_OPEN` |
-| `SYS_SB16_SUBMIT` | macro | `progs/src/sbtone.c:22` | `#define SYS_SB16_SUBMIT` |
-| `SYS_TIME` | macro | `progs/src/sbtone.c:23` | `#define SYS_TIME` |
-| `WINDOW_MS` | macro | `progs/src/sbtone.c:27` | `#define WINDOW_MS` |
-| `buffers` | function | `progs/src/sbtone.c:14` | `*  * Exit code is the number of submitted buffers (0 on failure to open).  */  #include <stdio.h>...` |
-| `main` | function | `progs/src/sbtone.c:36` | `int main(void)` |
-| `SC_ARENA` | macro | `progs/src/scfuzz.c:16` | `#define SC_ARENA` |
-| `SC_OPS` | macro | `progs/src/scfuzz.c:15` | `#define SC_OPS` |
-| `SC_PAGE` | macro | `progs/src/scfuzz.c:17` | `#define SC_PAGE` |
-| `SC_PAGES` | macro | `progs/src/scfuzz.c:18` | `#define SC_PAGES` |
-| `SC_T0_BASE` | macro | `progs/src/scfuzz.c:19` | `#define SC_T0_BASE` |
-| `SC_T0_N` | macro | `progs/src/scfuzz.c:20` | `#define SC_T0_N` |
-| `SC_T1_BASE` | macro | `progs/src/scfuzz.c:21` | `#define SC_T1_BASE` |
-| `SC_T1_N` | macro | `progs/src/scfuzz.c:22` | `#define SC_T1_N` |
-| `_start` | function | `progs/src/scfuzz.c:167` | `void _start(void)` |
-| `guest` | function | `progs/src/scfuzz.c:7` | `* the guest (the BDD timeout then talks). All fuzz maps stay inside  * one private 4 MB arena (pa...` |
-| `sc_exit` | function | `progs/src/scfuzz.c:61` | `static void sc_exit(long code)` |
-| `sc_fold` | function | `progs/src/scfuzz.c:76` | `static unsigned long sc_fold(unsigned long h, unsigned long v)` |
-| `sc_hex8` | function | `progs/src/scfuzz.c:88` | `static void sc_hex8(unsigned long v, char *out)` |
-| `sc_mprotect` | function | `progs/src/scfuzz.c:38` | `static long sc_mprotect(long addr, long len, long prot)` |
-| `sc_munmap` | function | `progs/src/scfuzz.c:49` | `static long sc_munmap(long addr, long len)` |
-| `sc_rng` | function | `progs/src/scfuzz.c:67` | `static unsigned long sc_rng(unsigned long *s)` |
-| `sc_thread1` | function | `progs/src/scfuzz.c:161` | `static void *sc_thread1(void *arg)` |
-| `sc_worker` | function | `progs/src/scfuzz.c:97` | `static unsigned long sc_worker(int me, unsigned long seed)` |
-| `sc_write` | function | `progs/src/scfuzz.c:53` | `static long sc_write(long fd, const char *s, long n)` |
-| `expand` | function | `progs/src/shell.py:30` | `def expand(line, env)` |
-| `main` | function | `progs/src/shell.py:36` | `def main()` |
-| `run_capture` | function | `progs/src/shell.py:20` | `def run_capture(cmd, args)` |
-| `SIGN_DESC_BYTES` | macro | `progs/src/sign.c:52` | `#define SIGN_DESC_BYTES` |
-| `SIGN_EHDR_SIZE` | macro | `progs/src/sign.c:48` | `#define SIGN_EHDR_SIZE` |
-| `SIGN_EM_X86_64` | macro | `progs/src/sign.c:44` | `#define SIGN_EM_X86_64` |
-| `SIGN_ET_DYN` | macro | `progs/src/sign.c:43` | `#define SIGN_ET_DYN` |
-| `SIGN_ET_EXEC` | macro | `progs/src/sign.c:42` | `#define SIGN_ET_EXEC` |
-| `SIGN_EXIT_FAIL` | macro | `progs/src/sign.c:40` | `#define SIGN_EXIT_FAIL` |
-| `SIGN_KEY_ID` | macro | `progs/src/sign.c:39` | `#define SIGN_KEY_ID` |
-| `SIGN_MAX_FILE` | macro | `progs/src/sign.c:56` | `#define SIGN_MAX_FILE` |
-| `SIGN_NOTE_HDR` | macro | `progs/src/sign.c:51` | `#define SIGN_NOTE_HDR` |
-| `SIGN_NOTE_TOTAL` | macro | `progs/src/sign.c:54` | `#define SIGN_NOTE_TOTAL` |
-| `SIGN_NOTE_TYPE` | macro | `progs/src/sign.c:55` | `#define SIGN_NOTE_TYPE` |
-| `SIGN_PHDR_SIZE` | macro | `progs/src/sign.c:49` | `#define SIGN_PHDR_SIZE` |
-| `SIGN_PT_LOAD` | macro | `progs/src/sign.c:45` | `#define SIGN_PT_LOAD` |
-| `SIGN_PT_NOTE` | macro | `progs/src/sign.c:46` | `#define SIGN_PT_NOTE` |
-| `SIGN_SEEK_END` | macro | `progs/src/sign.c:57` | `#define SIGN_SEEK_END` |
-| `SIGN_SHDR_SIZE` | macro | `progs/src/sign.c:50` | `#define SIGN_SHDR_SIZE` |
-| `SIGN_SHT_NOTE` | macro | `progs/src/sign.c:47` | `#define SIGN_SHT_NOTE` |
-| `SIGN_SIG_BYTES` | macro | `progs/src/sign.c:53` | `#define SIGN_SIG_BYTES` |
-| `below` | function | `progs/src/sign.c:195` | `* every other op below (`\|`, `<<`) is low-32 exact. */ static void sign_rotr(unsigned int *lo, un...` |
 
 Next: [SYMBOLS_p24.md](SYMBOLS_p24.md)

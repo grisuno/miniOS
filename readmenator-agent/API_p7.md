@@ -6,36 +6,35 @@ Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `heade
 - `mm_page_aligned_alloc` (function) `kernel/mm/paging.c:32` `static unsigned char *mm_page_aligned_alloc(unsigned size,
                                       ...` -- Page-align a kmalloc'd region.
 - `mm_setup_protections` (function) `kernel/mm/paging.c:41` `void mm_setup_protections(void)`
-- `kmm_ensure_pt` (function) `kernel/mm/paging.c:235` `static volatile unsigned long *kmm_ensure_pt(unsigned long phys)` -- Docstring: Return the 4 KB page table backing a 2 MB identity slot, splitting the boot leaf if needed.
-- `coherent` (function) `kernel/mm/paging.c:259` `* for memory a device reads and writes by DMA: a controller that is not cache
+- `kmm_ensure_pt` (function) `kernel/mm/paging.c:221` `static volatile unsigned long *kmm_ensure_pt(unsigned long phys)` -- Docstring: Return the 4 KB page table backing a 2 MB identity slot, splitting the boot leaf if needed.
+- `coherent` (function) `kernel/mm/paging.c:245` `* for memory a device reads and writes by DMA: a controller that is not cache
  * coherent (and an...`
-- `kmm_map_device` (function) `kernel/mm/paging.c:296` `unsigned long kmm_map_device(unsigned long phys, unsigned long len)`
-- `mm_user_pte_update` (function) `kernel/mm/paging.c:336` `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3)`
-- `mm_user_set_exec` (function) `kernel/mm/paging.c:356` `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3)`
-- `pt_owned_index` (function) `kernel/mm/paging.c:374` `static int pt_owned_index(unsigned long phys, unsigned long *byte, unsigned *bit)`
-- `pt_page_owned` (function) `kernel/mm/paging.c:385` `int pt_page_owned(unsigned long phys)` -- #define PT_OWNED_BYTES (HEAP_SIZE / 0x1000UL / 8UL) static unsigned char *pt_owned; static int...
-- `pt_page_alloc` (function) `kernel/mm/paging.c:392` `void *pt_page_alloc(void)`
-- `pt_page_free` (function) `kernel/mm/paging.c:411` `void pt_page_free(void *ptr)`
-- `pt_clone_user` (function) `kernel/mm/paging.c:420` `uint64_t pt_clone_user(uint64_t parent_cr3)`
-- `mt_shared_slot` (function) `kernel/mm/paging.c:549` `static int mt_shared_slot(unsigned long pd_idx)` -- The legacy path identity-maps the user window (VA == PA), so every CR3 built by pt_clone_user aliases the same...
-- `pt_clone_user_empty` (function) `kernel/mm/paging.c:568` `unsigned long pt_clone_user_empty(void)` -- Fresh user window: kernel mappings copied, every user PT zeroed, graphics slots re-shared from the boot tables.
-- `mm_user_ensure_page` (function) `kernel/mm/paging.c:625` `int mm_user_ensure_page(unsigned long cr3, unsigned long va)` -- Ensure one 4 KB user page at va inside cr3 exists (heap-owned). * Returns 0 on success, -1 on OOM or when va leaves...
-- `honest` (function) `kernel/mm/paging.c:655` `* and invlpg keeps the local TLB honest (cross-CPU shootdown rides
+- `mm_user_pte_update` (function) `kernel/mm/paging.c:376` `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3)`
+- `mm_user_set_exec` (function) `kernel/mm/paging.c:396` `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3)`
+- `pt_owned_index` (function) `kernel/mm/paging.c:414` `static int pt_owned_index(unsigned long phys, unsigned long *byte, unsigned *bit)`
+- `pt_page_owned` (function) `kernel/mm/paging.c:425` `int pt_page_owned(unsigned long phys)` -- #define PT_OWNED_BYTES (HEAP_SIZE / 0x1000UL / 8UL) static unsigned char *pt_owned; static int...
+- `pt_page_alloc` (function) `kernel/mm/paging.c:432` `void *pt_page_alloc(void)`
+- `pt_page_free` (function) `kernel/mm/paging.c:451` `void pt_page_free(void *ptr)`
+- `pt_clone_user` (function) `kernel/mm/paging.c:460` `uint64_t pt_clone_user(uint64_t parent_cr3)`
+- `mt_shared_slot` (function) `kernel/mm/paging.c:589` `static int mt_shared_slot(unsigned long pd_idx)` -- The legacy path identity-maps the user window (VA == PA), so every CR3 built by pt_clone_user aliases the same...
+- `pt_clone_user_empty` (function) `kernel/mm/paging.c:608` `unsigned long pt_clone_user_empty(void)` -- Fresh user window: kernel mappings copied, every user PT zeroed, graphics slots re-shared from the boot tables.
+- `mm_user_ensure_page` (function) `kernel/mm/paging.c:665` `int mm_user_ensure_page(unsigned long cr3, unsigned long va)` -- Ensure one 4 KB user page at va inside cr3 exists (heap-owned). * Returns 0 on success, -1 on OOM or when va leaves...
+- `honest` (function) `kernel/mm/paging.c:695` `* and invlpg keeps the local TLB honest (cross-CPU shootdown rides
  * the documented T5 follow-up...`
-- `mm_demand_pte` (function) `kernel/mm/paging.c:704` `unsigned long mm_demand_pte(unsigned long prot)` -- Docstring: PTE walker shared by the fault, fork and teardown * paths (forward declaration; documented at the...
-- `mm_anon_frame` (function) `kernel/mm/paging.c:715` `static int mm_anon_frame(unsigned long phys)` -- Heap-owned anonymous frame: the only kind an unmap may free (the shared pid-0 window and graphics slots map fixed...
-- `mm_anon_fault` (function) `kernel/mm/paging.c:779` `int mm_anon_fault(unsigned long cr3, unsigned long va, int write)` -- Resolve a fault on a reservation: map a zeroed page with the reserved protection.
-- `mm_file_page_phys` (function) `kernel/mm/paging.c:861` `unsigned long mm_file_page_phys(unsigned long cr3, unsigned long va)` -- Docstring: Read the mapped phys for va in cr3, 0 when the PTE is absent or non-present.
-- `mm_file_pte` (function) `kernel/mm/paging.c:880` `static volatile unsigned long *mm_file_pte(unsigned long cr3,
+- `mm_demand_pte` (function) `kernel/mm/paging.c:744` `unsigned long mm_demand_pte(unsigned long prot)` -- Docstring: PTE walker shared by the fault, fork and teardown * paths (forward declaration; documented at the...
+- `mm_anon_frame` (function) `kernel/mm/paging.c:755` `static int mm_anon_frame(unsigned long phys)` -- Heap-owned anonymous frame: the only kind an unmap may free (the shared pid-0 window and graphics slots map fixed...
+- `mm_anon_fault` (function) `kernel/mm/paging.c:819` `int mm_anon_fault(unsigned long cr3, unsigned long va, int write)` -- Resolve a fault on a reservation: map a zeroed page with the reserved protection.
+- `mm_file_page_phys` (function) `kernel/mm/paging.c:901` `unsigned long mm_file_page_phys(unsigned long cr3, unsigned long va)` -- Docstring: Read the mapped phys for va in cr3, 0 when the PTE is absent or non-present.
+- `mm_file_pte` (function) `kernel/mm/paging.c:920` `static volatile unsigned long *mm_file_pte(unsigned long cr3,
         unsigned long va)` -- Docstring: Locate the PTE for va in cr3 without allocating.
-- `tables` (function) `kernel/mm/paging.c:1010` `* tables (munmap/mremap in caller context, under their mm_lock);`
-- `explicitly` (function) `kernel/mm/paging.c:1011` `* teardown passes the dying window explicitly (zombie-exclusive, no * lock needed). unmap == 0 drops refs only...`
-- `PTE` (function) `kernel/mm/paging.c:1015` `* PTE (a cache page stays cached, but no stale writer may reach it).
+- `tables` (function) `kernel/mm/paging.c:1050` `* tables (munmap/mremap in caller context, under their mm_lock);`
+- `explicitly` (function) `kernel/mm/paging.c:1051` `* teardown passes the dying window explicitly (zombie-exclusive, no * lock needed). unmap == 0 drops refs only...`
+- `PTE` (function) `kernel/mm/paging.c:1055` `* PTE (a cache page stays cached, but no stale writer may reach it).
  * Never allocates. */
 void ...`
-- `mm_file_break` (function) `kernel/mm/paging.c:1070` `int mm_file_break(unsigned long cr3, unsigned long va)` -- Docstring: Break a write fault on a cache-shared file page into a private copy (fail-closed).
-- `mm_copy_user_page` (function) `kernel/mm/paging.c:1149` `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va)` -- Copy one present user page from src_cr3 to the same VA in dst_cr3, allocating the destination page.
-- `pt_free_user` (function) `kernel/mm/paging.c:1227` `void pt_free_user(uint64_t cr3)`
+- `mm_file_break` (function) `kernel/mm/paging.c:1110` `int mm_file_break(unsigned long cr3, unsigned long va)` -- Docstring: Break a write fault on a cache-shared file page into a private copy (fail-closed).
+- `mm_copy_user_page` (function) `kernel/mm/paging.c:1189` `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va)` -- Copy one present user page from src_cr3 to the same VA in dst_cr3, allocating the destination page.
+- `pt_free_user` (function) `kernel/mm/paging.c:1267` `void pt_free_user(uint64_t cr3)`
 
 ## kernel/mm/swap.c
 Depends on: `headers/ide.h`, `headers/lz4_kernel.h`
@@ -287,107 +286,107 @@ Depends on: `headers/sched.h`
 - `serial_getc` (function) `kernel/serial.c:44` `int serial_getc(void)`
 
 ## kernel/shell.c
-Depends on: `headers/drivers/kbd.h`, `headers/drivers/nvme.h`, `headers/drivers/usbblk.h`, `headers/drivers/usbhid.h`, `headers/drivers/virtio_blk.h`, `headers/drivers/virtio_net.h`, `headers/drivers/xhci.h`, `headers/editor.h`, `headers/ext4.h`, `headers/fat32.h`, `headers/httpd.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/proc_sec.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/spawn.h`, `headers/tlb.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
-- `shell_queue_launch` (function) `kernel/shell.c:87` `void shell_queue_launch(const char *cmd)` -- Queue a desktop-icon command to run after the current user program exits.
-- `shell_readline_active` (function) `kernel/shell.c:115` `int shell_readline_active(void)`
-- `shell_focus_park` (function) `kernel/shell.c:116` `void shell_focus_park(void)`
-- `shell_focus_restore` (function) `kernel/shell.c:121` `void shell_focus_restore(void)`
-- `shell_prompt` (function) `kernel/shell.c:148` `static void shell_prompt(void)`
-- `shell_run_pipeline` (function) `kernel/shell.c:151` `static int shell_run_pipeline(char **argv, int argc, const char *redir_path, int redir_append, int redirected);`
-- `shell_parse_vol` (function) `kernel/shell.c:158` `static int shell_parse_vol(const char *s, unsigned *out)` -- Strict decimal parse for the `vol` builtin: delegates the digit and overflow work to shell_parse_long and clamps the...
-- `shell_readline_buf` (function) `kernel/shell.c:184` `void shell_readline_buf(char *buf, int size)` -- Read one line into buf (at most size-1 chars).
-- `shell_name_base` (function) `kernel/shell.c:213` `static const char *shell_name_base(const char *path)` -- The component of a ramdisk path after the last '/', or the whole path when * there is no '/'.
-- `shell_complete_tier` (function) `kernel/shell.c:238` `static int shell_complete_tier(const char *nm)` -- Runnable tier of a file name for first-word TAB completion: 0=.elf, 1=.cvm, 2=.o, 3=anything else.
-- `shell_complete_replace` (function) `kernel/shell.c:250` `static void shell_complete_replace(char *buf, int size, int *pos,
+Depends on: `headers/drivers/ahci.h`, `headers/drivers/kbd.h`, `headers/drivers/nvme.h`, `headers/drivers/usbblk.h`, `headers/drivers/usbhid.h`, `headers/drivers/virtio_blk.h`, `headers/drivers/virtio_net.h`, `headers/drivers/xhci.h`, `headers/editor.h`, `headers/ext4.h`, `headers/fat32.h`, `headers/httpd.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/proc_sec.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/spawn.h`, `headers/tlb.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
+- `shell_queue_launch` (function) `kernel/shell.c:88` `void shell_queue_launch(const char *cmd)` -- Queue a desktop-icon command to run after the current user program exits.
+- `shell_readline_active` (function) `kernel/shell.c:116` `int shell_readline_active(void)`
+- `shell_focus_park` (function) `kernel/shell.c:117` `void shell_focus_park(void)`
+- `shell_focus_restore` (function) `kernel/shell.c:122` `void shell_focus_restore(void)`
+- `shell_prompt` (function) `kernel/shell.c:149` `static void shell_prompt(void)`
+- `shell_run_pipeline` (function) `kernel/shell.c:152` `static int shell_run_pipeline(char **argv, int argc, const char *redir_path, int redir_append, int redirected);`
+- `shell_parse_vol` (function) `kernel/shell.c:159` `static int shell_parse_vol(const char *s, unsigned *out)` -- Strict decimal parse for the `vol` builtin: delegates the digit and overflow work to shell_parse_long and clamps the...
+- `shell_readline_buf` (function) `kernel/shell.c:185` `void shell_readline_buf(char *buf, int size)` -- Read one line into buf (at most size-1 chars).
+- `shell_name_base` (function) `kernel/shell.c:214` `static const char *shell_name_base(const char *path)` -- The component of a ramdisk path after the last '/', or the whole path when * there is no '/'.
+- `shell_complete_tier` (function) `kernel/shell.c:239` `static int shell_complete_tier(const char *nm)` -- Runnable tier of a file name for first-word TAB completion: 0=.elf, 1=.cvm, 2=.o, 3=anything else.
+- `shell_complete_replace` (function) `kernel/shell.c:251` `static void shell_complete_replace(char *buf, int size, int *pos,
                                ...`
-- `shell_complete_minifs_arg` (function) `kernel/shell.c:271` `static void shell_complete_minifs_arg(const char *word, unsigned long wlen,
+- `shell_complete_minifs_arg` (function) `kernel/shell.c:272` `static void shell_complete_minifs_arg(const char *word, unsigned long wlen,
                      ...` -- Complete an argument word from MiniFS (the ramdisk loop at the call site covers the ramdisk half).
-- `shell_readline` (function) `kernel/shell.c:338` `static void shell_readline(void)`
-- `shell_hist_show` (function) `kernel/shell.c:346` `static void shell_hist_show(char *buf, int size, int *pos, const char *text)` -- Redraw the edit line: erase what is shown, then write `text` into buf and onto the console, leaving the text cursor...
-- `shell_line_repaint` (function) `kernel/shell.c:368` `static void shell_line_repaint(char *buf, int size, int pos)` -- Repaint the edit line after a cursor move or mid-line edit: erase the whole visible line, rewrite buf, then back the...
-- `shell_line_insert` (function) `kernel/shell.c:381` `static void shell_line_insert(char *buf, int size, int *pos, char c)` -- Insert character c into buf at `pos`, shifting the tail right.
-- `shell_line_backspace` (function) `kernel/shell.c:390` `static void shell_line_backspace(char *buf, int size, int *pos)` -- Insert character c into buf at `pos`, shifting the tail right.
-- `shell_line_delete` (function) `kernel/shell.c:398` `static void shell_line_delete(char *buf, int size, int *pos)` -- kmemmove(buf + *pos + 1, buf + *pos, (unsigned long)(len - *pos + 1)); buf[*pos] = c; (*pos)++; } /* Delete the...
-- `shell_line_kill_front` (function) `kernel/shell.c:405` `static void shell_line_kill_front(char *buf, int size, int *pos)` -- int len = (int)kstrlen(buf); if (*pos <= 0) return; kmemmove(buf + *pos - 1, buf + *pos, (unsigned long)(len - *pos...
-- `shell_line_kill_tail` (function) `kernel/shell.c:412` `static void shell_line_kill_tail(char *buf, int size, int *pos)` -- static void shell_line_delete(char *buf, int size, int *pos) { int len = (int)kstrlen(buf); if (*pos >= len) return...
-- `shell_line_kill_word` (function) `kernel/shell.c:417` `static void shell_line_kill_word(char *buf, int size, int *pos)` -- /* Delete from the cursor to the start of the line (Ctrl+U). static void shell_line_kill_front(char *buf, int size...
-- `shell_hist_newest_match` (function) `kernel/shell.c:429` `static int shell_hist_newest_match(const char *prefix, unsigned long plen)` -- Most recent history entry starting with `prefix` (of length plen) that is strictly longer than the prefix, or -1...
-- `line` (function) `kernel/shell.c:446` `* to the live line (handled by the caller resetting shell_hist_idx). */
+- `shell_readline` (function) `kernel/shell.c:339` `static void shell_readline(void)`
+- `shell_hist_show` (function) `kernel/shell.c:347` `static void shell_hist_show(char *buf, int size, int *pos, const char *text)` -- Redraw the edit line: erase what is shown, then write `text` into buf and onto the console, leaving the text cursor...
+- `shell_line_repaint` (function) `kernel/shell.c:369` `static void shell_line_repaint(char *buf, int size, int pos)` -- Repaint the edit line after a cursor move or mid-line edit: erase the whole visible line, rewrite buf, then back the...
+- `shell_line_insert` (function) `kernel/shell.c:382` `static void shell_line_insert(char *buf, int size, int *pos, char c)` -- Insert character c into buf at `pos`, shifting the tail right.
+- `shell_line_backspace` (function) `kernel/shell.c:391` `static void shell_line_backspace(char *buf, int size, int *pos)` -- Insert character c into buf at `pos`, shifting the tail right.
+- `shell_line_delete` (function) `kernel/shell.c:399` `static void shell_line_delete(char *buf, int size, int *pos)` -- kmemmove(buf + *pos + 1, buf + *pos, (unsigned long)(len - *pos + 1)); buf[*pos] = c; (*pos)++; } /* Delete the...
+- `shell_line_kill_front` (function) `kernel/shell.c:406` `static void shell_line_kill_front(char *buf, int size, int *pos)` -- int len = (int)kstrlen(buf); if (*pos <= 0) return; kmemmove(buf + *pos - 1, buf + *pos, (unsigned long)(len - *pos...
+- `shell_line_kill_tail` (function) `kernel/shell.c:413` `static void shell_line_kill_tail(char *buf, int size, int *pos)` -- static void shell_line_delete(char *buf, int size, int *pos) { int len = (int)kstrlen(buf); if (*pos >= len) return...
+- `shell_line_kill_word` (function) `kernel/shell.c:418` `static void shell_line_kill_word(char *buf, int size, int *pos)` -- /* Delete from the cursor to the start of the line (Ctrl+U). static void shell_line_kill_front(char *buf, int size...
+- `shell_hist_newest_match` (function) `kernel/shell.c:430` `static int shell_hist_newest_match(const char *prefix, unsigned long plen)` -- Most recent history entry starting with `prefix` (of length plen) that is strictly longer than the prefix, or -1...
+- `line` (function) `kernel/shell.c:447` `* to the live line (handled by the caller resetting shell_hist_idx). */
 static void shell_hist_na...`
-- `shell_readline_hist` (function) `kernel/shell.c:491` `static void shell_readline_hist(char *buf, int size)` -- Shell prompt readline: like shell_readline_buf plus command history.
-- `text` (function) `kernel/shell.c:594` `* swallowed the sequence as plain text ("5~" in the * line) and the history was unreachable from the * prompt. */...`
-- `root` (function) `kernel/shell.c:665` `* MiniFS root (where the big ELFs live under bare names), * and only the highest-priority non-empty tier is kept. An...`
-- `shell_parse` (function) `kernel/shell.c:826` `int shell_parse(char *line, char **argv, int max_args)`
-- `desktop_unflag` (function) `kernel/shell.c:848` `static void desktop_unflag(const char *name);`
-- `shell_run_init` (function) `kernel/shell.c:855` `static void shell_run_init(void)` -- Startup commands from etc/init: one shell command per line, `#` comments and blank lines skipped.
-- `shell_run` (function) `kernel/shell.c:894` `void shell_run(void)`
-- `shell_load` (function) `kernel/shell.c:966` `static int shell_load(const char *fname, char *progname_out, void **entry_out)`
-- `outw_port` (function) `kernel/shell.c:1029` `static inline void outw_port(unsigned short port, unsigned short val)`
-- `shell_cmd_poweroff` (function) `kernel/shell.c:1035` `static void shell_cmd_poweroff(void)`
-- `shell_run_dir_for` (function) `kernel/shell.c:1051` `static const ShellRunDir *shell_run_dir_for(const char *name)` -- The toolchain directory that owns `name`, chosen by suffix.
-- `shell_file_is_real` (function) `kernel/shell.c:1069` `static int shell_file_is_real(const char *resolved)` -- Is `resolved` (already normalised against the cwd) a real ramdisk file?
-- `shell_resolve_run` (function) `kernel/shell.c:1081` `static int shell_resolve_run(const char *name, char *out, unsigned cap)` -- Resolve `name` to a full ramdisk path suitable for running.
-- `etrel_path_trusted` (function) `kernel/shell.c:1123` `static int etrel_path_trusted(const char *full)` -- ET_REL trust gate (boyscout fix for ring-0 .o without validation): relocatables execute as kernel extensions, so...
-- `shell_run_elf_buf_path` (function) `kernel/shell.c:1163` `static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,
+- `shell_readline_hist` (function) `kernel/shell.c:492` `static void shell_readline_hist(char *buf, int size)` -- Shell prompt readline: like shell_readline_buf plus command history.
+- `text` (function) `kernel/shell.c:595` `* swallowed the sequence as plain text ("5~" in the * line) and the history was unreachable from the * prompt. */...`
+- `root` (function) `kernel/shell.c:666` `* MiniFS root (where the big ELFs live under bare names), * and only the highest-priority non-empty tier is kept. An...`
+- `shell_parse` (function) `kernel/shell.c:827` `int shell_parse(char *line, char **argv, int max_args)`
+- `desktop_unflag` (function) `kernel/shell.c:849` `static void desktop_unflag(const char *name);`
+- `shell_run_init` (function) `kernel/shell.c:856` `static void shell_run_init(void)` -- Startup commands from etc/init: one shell command per line, `#` comments and blank lines skipped.
+- `shell_run` (function) `kernel/shell.c:895` `void shell_run(void)`
+- `shell_load` (function) `kernel/shell.c:967` `static int shell_load(const char *fname, char *progname_out, void **entry_out)`
+- `outw_port` (function) `kernel/shell.c:1030` `static inline void outw_port(unsigned short port, unsigned short val)`
+- `shell_cmd_poweroff` (function) `kernel/shell.c:1036` `static void shell_cmd_poweroff(void)`
+- `shell_run_dir_for` (function) `kernel/shell.c:1052` `static const ShellRunDir *shell_run_dir_for(const char *name)` -- The toolchain directory that owns `name`, chosen by suffix.
+- `shell_file_is_real` (function) `kernel/shell.c:1070` `static int shell_file_is_real(const char *resolved)` -- Is `resolved` (already normalised against the cwd) a real ramdisk file?
+- `shell_resolve_run` (function) `kernel/shell.c:1082` `static int shell_resolve_run(const char *name, char *out, unsigned cap)` -- Resolve `name` to a full ramdisk path suitable for running.
+- `etrel_path_trusted` (function) `kernel/shell.c:1124` `static int etrel_path_trusted(const char *full)` -- ET_REL trust gate (boyscout fix for ring-0 .o without validation): relocatables execute as kernel extensions, so...
+- `shell_run_elf_buf_path` (function) `kernel/shell.c:1164` `static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,
                     ...` -- Run a raw ELF image (ET_REL, ET_EXEC or ET_DYN) already read into `data`. argv[0] is the program name the program sees.
-- `shell_run_elf_file` (function) `kernel/shell.c:1196` `static int shell_run_elf_file(const char *full, int argc, char **argv)` -- Load the ramdisk file at `full` and run it as an ELF.
-- `shell_run_elf_minifs` (function) `kernel/shell.c:1209` `static int shell_run_elf_minifs(const char *name, int argc, char **argv)` -- Load a Linux ELF from the MiniFS disk and run it (preserves the historical * `run` fallback when a name is not on...
-- `shell_run_cvm` (function) `kernel/shell.c:1266` `static int shell_run_cvm(const char *full, int argc, char **argv)` -- Run a `.cvm` module at the resolved path `full`.
-- `shell_run_file` (function) `kernel/shell.c:1302` `static int shell_run_file(const char *name, int argc, char **argv)` -- Run `name` as a ramdisk/MiniFS file: `.cvm` modules through the interpreter, ELF files by content through the...
-- `window` (function) `kernel/shell.c:1339` `* window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so...`
-- `shell_read_elf_bytes` (function) `kernel/shell.c:1346` `static int shell_read_elf_bytes(const char *name, unsigned char **out,
+- `shell_run_elf_file` (function) `kernel/shell.c:1197` `static int shell_run_elf_file(const char *full, int argc, char **argv)` -- Load the ramdisk file at `full` and run it as an ELF.
+- `shell_run_elf_minifs` (function) `kernel/shell.c:1210` `static int shell_run_elf_minifs(const char *name, int argc, char **argv)` -- Load a Linux ELF from the MiniFS disk and run it (preserves the historical * `run` fallback when a name is not on...
+- `shell_run_cvm` (function) `kernel/shell.c:1267` `static int shell_run_cvm(const char *full, int argc, char **argv)` -- Run a `.cvm` module at the resolved path `full`.
+- `shell_run_file` (function) `kernel/shell.c:1303` `static int shell_run_file(const char *name, int argc, char **argv)` -- Run `name` as a ramdisk/MiniFS file: `.cvm` modules through the interpreter, ELF files by content through the...
+- `window` (function) `kernel/shell.c:1340` `* window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so...`
+- `shell_read_elf_bytes` (function) `kernel/shell.c:1347` `static int shell_read_elf_bytes(const char *name, unsigned char **out,
                           ...` -- --- Multitask run (mrun): concurrent isolated ELFs ----  `mrun a.elf b.elf ...` loads each ET_EXEC/ET_DYN into its...
-- `code` (function) `kernel/shell.c:1412` `* the last exit code (130 when interrupted). */
+- `code` (function) `kernel/shell.c:1413` `* the last exit code (130 when interrupted). */
 static int shell_wait_fg(int *pids, int n, int ki...`
-- `shell_cmd_mrun` (function) `kernel/shell.c:1466` `static void shell_cmd_mrun(int argc, char **argv)`
-- `shell_run_bg` (function) `kernel/shell.c:1514` `static void shell_run_bg(const char *name, int argc, char **argv)` -- `run <elf> &`: background a single isolated ELF (same spawn path as mrun).
-- `this` (function) `kernel/shell.c:1544` `* boot into the tiled Wayland desktop: every NK app started after * this (paint, vedit, file, nuklear, doomedit...`
-- `desktop_path` (function) `kernel/shell.c:1557` `static void desktop_path(const char *name, char *dst, unsigned cap)`
-- `desktop_flag` (function) `kernel/shell.c:1566` `static void desktop_flag(const char *name)`
-- `desktop_flag_on` (function) `kernel/shell.c:1576` `static int desktop_flag_on(const char *name)`
-- `flows` (function) `kernel/shell.c:1590` `* and external flows (make wl) set it themselves. */
+- `shell_cmd_mrun` (function) `kernel/shell.c:1467` `static void shell_cmd_mrun(int argc, char **argv)`
+- `shell_run_bg` (function) `kernel/shell.c:1515` `static void shell_run_bg(const char *name, int argc, char **argv)` -- `run <elf> &`: background a single isolated ELF (same spawn path as mrun).
+- `this` (function) `kernel/shell.c:1545` `* boot into the tiled Wayland desktop: every NK app started after * this (paint, vedit, file, nuklear, doomedit...`
+- `desktop_path` (function) `kernel/shell.c:1558` `static void desktop_path(const char *name, char *dst, unsigned cap)`
+- `desktop_flag` (function) `kernel/shell.c:1567` `static void desktop_flag(const char *name)`
+- `desktop_flag_on` (function) `kernel/shell.c:1577` `static int desktop_flag_on(const char *name)`
+- `flows` (function) `kernel/shell.c:1591` `* and external flows (make wl) set it themselves. */
 static void desktop_unflag(const char *name)`
-- `desktop_srv_alive` (function) `kernel/shell.c:1598` `static int desktop_srv_alive(void)`
-- `shell_cmd_desktop` (function) `kernel/shell.c:1614` `static void shell_cmd_desktop(int argc, char **argv)`
-- `shell_run_any` (function) `kernel/shell.c:1678` `int shell_run_any(const char *name, int argc, char **argv)` -- Unified dispatcher used by `run` and by bare commands: a registered program wins, then the runnable-file resolver....
-- `context` (function) `kernel/shell.c:1705` `* ISR context (which corrupts the running program's state) or * nesting a second foreground run inside the wait. */...`
-- `gfx_parse_int` (function) `kernel/shell.c:1751` `static int gfx_parse_int(const char *s, int *out)` -- --- Graphics debugging (`gfx` builtin) ----  The serial console is the observability surface the BDD suite drives...
-- `gfx_read_palette` (function) `kernel/shell.c:1771` `static void gfx_read_palette(unsigned char pal[768])` -- Read the current 256-entry VGA DAC palette (3x6-bit per entry, read at 8-bit precision by the kernel's normalisation).
-- `shell_cmd_gfx` (function) `kernel/shell.c:1778` `static void shell_cmd_gfx(int argc, char **argv)`
-- `shell_cmd_wm` (function) `kernel/shell.c:1930` `static void shell_cmd_wm(int argc, char **argv)` -- `wm <op>` — window-manager operations, exposed as a shell builtin so the tiling-WM behaviour is observable and...
-- `tree` (function) `kernel/shell.c:2075` `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
+- `desktop_srv_alive` (function) `kernel/shell.c:1599` `static int desktop_srv_alive(void)`
+- `shell_cmd_desktop` (function) `kernel/shell.c:1615` `static void shell_cmd_desktop(int argc, char **argv)`
+- `shell_run_any` (function) `kernel/shell.c:1679` `int shell_run_any(const char *name, int argc, char **argv)` -- Unified dispatcher used by `run` and by bare commands: a registered program wins, then the runnable-file resolver....
+- `context` (function) `kernel/shell.c:1706` `* ISR context (which corrupts the running program's state) or * nesting a second foreground run inside the wait. */...`
+- `gfx_parse_int` (function) `kernel/shell.c:1752` `static int gfx_parse_int(const char *s, int *out)` -- --- Graphics debugging (`gfx` builtin) ----  The serial console is the observability surface the BDD suite drives...
+- `gfx_read_palette` (function) `kernel/shell.c:1772` `static void gfx_read_palette(unsigned char pal[768])` -- Read the current 256-entry VGA DAC palette (3x6-bit per entry, read at 8-bit precision by the kernel's normalisation).
+- `shell_cmd_gfx` (function) `kernel/shell.c:1779` `static void shell_cmd_gfx(int argc, char **argv)`
+- `shell_cmd_wm` (function) `kernel/shell.c:1931` `static void shell_cmd_wm(int argc, char **argv)` -- `wm <op>` — window-manager operations, exposed as a shell builtin so the tiling-WM behaviour is observable and...
+- `tree` (function) `kernel/shell.c:2076` `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
  * Ctrl+C (it never poll...`
-- `shell_cmd_jobs` (function) `kernel/shell.c:2088` `static void shell_cmd_jobs(void)`
-- `shell_has_child` (function) `kernel/shell.c:2117` `static int shell_has_child(int pid)` -- Live-child check for one pid: a slot that is neither FREE nor reparented still belongs to this shell.
-- `shell_cmd_wait` (function) `kernel/shell.c:2127` `static void shell_cmd_wait(int argc, char **argv)`
-- `shell_cmd_kill` (function) `kernel/shell.c:2162` `static void shell_cmd_kill(int argc, char **argv)`
-- `shell_cmd_mem` (function) `kernel/shell.c:2185` `static void shell_cmd_mem(void)` -- `mem` — memory and disk pressure in one screenful: kernel heap use (dlmalloc), ramdisk use versus its cap, MiniFS...
-- `VMA` (function) `kernel/shell.c:2218` `* plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit
+- `shell_cmd_jobs` (function) `kernel/shell.c:2089` `static void shell_cmd_jobs(void)`
+- `shell_has_child` (function) `kernel/shell.c:2118` `static int shell_has_child(int pid)` -- Live-child check for one pid: a slot that is neither FREE nor reparented still belongs to this shell.
+- `shell_cmd_wait` (function) `kernel/shell.c:2128` `static void shell_cmd_wait(int argc, char **argv)`
+- `shell_cmd_kill` (function) `kernel/shell.c:2163` `static void shell_cmd_kill(int argc, char **argv)`
+- `shell_cmd_mem` (function) `kernel/shell.c:2186` `static void shell_cmd_mem(void)` -- `mem` — memory and disk pressure in one screenful: kernel heap use (dlmalloc), ramdisk use versus its cap, MiniFS...
+- `VMA` (function) `kernel/shell.c:2219` `* plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit
  * stack, 128 regions prin...`
-- `to` (function) `kernel/shell.c:2291` `* actually trap to (brk/mmap/munmap/mprotect) and says so up front. */
+- `to` (function) `kernel/shell.c:2292` `* actually trap to (brk/mmap/munmap/mprotect) and says so up front. */
 static void shell_cmd_trac...`
-- `shell_parse_u64` (function) `kernel/shell.c:2360` `static int shell_parse_u64(const char *s, unsigned long *out)` -- Strict unsigned parse for debugger/inspector operands: `0x`-prefixed hex or plain decimal, no signs, no trailing...
-- `shell_parse_long` (function) `kernel/shell.c:2376` `int shell_parse_long(const char *s, long *out)` -- Strict signed decimal twin of shell_parse_u64: optional sign, at least one digit, whole string consumed, overflow...
-- `shell_parse_pid` (function) `kernel/shell.c:2397` `int shell_parse_pid(const char *s, int min_pid, int *out)` -- Bounded pid parse shared by wait/kill/vmmap: one range check instead of three open-coded copies. min_pid is 1 for...
-- `shell_cmd_gdb` (function) `kernel/shell.c:2412` `static void shell_cmd_gdb(int argc, char **argv)` -- `gdb <op>` -- in-OS inspector half of the debugger story.
-- `shell_cmd_hash` (function) `kernel/shell.c:2455` `static void shell_cmd_hash(int argc, char **argv)` -- `hash <file>` — XXH64 (64-bit, seed 0) of a ramdisk/MiniFS file, streamed in bounded chunks so a large MiniFS file...
-- `shell_resolve_arg` (function) `kernel/shell.c:2474` `static int shell_resolve_arg(const char *cmd, const char *arg,
+- `shell_parse_u64` (function) `kernel/shell.c:2361` `static int shell_parse_u64(const char *s, unsigned long *out)` -- Strict unsigned parse for debugger/inspector operands: `0x`-prefixed hex or plain decimal, no signs, no trailing...
+- `shell_parse_long` (function) `kernel/shell.c:2377` `int shell_parse_long(const char *s, long *out)` -- Strict signed decimal twin of shell_parse_u64: optional sign, at least one digit, whole string consumed, overflow...
+- `shell_parse_pid` (function) `kernel/shell.c:2398` `int shell_parse_pid(const char *s, int min_pid, int *out)` -- Bounded pid parse shared by wait/kill/vmmap: one range check instead of three open-coded copies. min_pid is 1 for...
+- `shell_cmd_gdb` (function) `kernel/shell.c:2413` `static void shell_cmd_gdb(int argc, char **argv)` -- `gdb <op>` -- in-OS inspector half of the debugger story.
+- `shell_cmd_hash` (function) `kernel/shell.c:2456` `static void shell_cmd_hash(int argc, char **argv)` -- `hash <file>` — XXH64 (64-bit, seed 0) of a ramdisk/MiniFS file, streamed in bounded chunks so a large MiniFS file...
+- `shell_resolve_arg` (function) `kernel/shell.c:2475` `static int shell_resolve_arg(const char *cmd, const char *arg,
                              const...` -- Docstring: Resolve `arg` against the cwd into `out` (`RAMDISK_FNAME_LEN` bytes); on failure print `<cmd>: <arg>...
-- `shell_httpd_one` (function) `kernel/shell.c:2580` `static void shell_httpd_one(int child, const char *root)` -- Serve one accepted connection: read one request, map GET path onto the VFS mounts under root, stream head + body, close.
-- `shell_httpd_serve` (function) `kernel/shell.c:2665` `static void shell_httpd_serve(unsigned short port, const char *root,
+- `shell_httpd_one` (function) `kernel/shell.c:2581` `static void shell_httpd_one(int child, const char *root)` -- Serve one accepted connection: read one request, map GET path onto the VFS mounts under root, stream head + body, close.
+- `shell_httpd_serve` (function) `kernel/shell.c:2666` `static void shell_httpd_serve(unsigned short port, const char *root,
         int max_conn)` -- Accept loop: one connection at a time, Ctrl+C quits.
-- `shell_cross_ls` (function) `kernel/shell.c:2832` `static void shell_cross_ls(const char *drv, const char *imgarg,
+- `shell_cross_ls` (function) `kernel/shell.c:2833` `static void shell_cross_ls(const char *drv, const char *imgarg,
                            const ...` -- List one directory from a cross-filesystem VFS driver (fat:, ext4:) to the console: same "drv:/img:path" addressing...
-- `shell_cross_cat` (function) `kernel/shell.c:2873` `static void shell_cross_cat(const char *drv, const char *imgarg,
+- `shell_cross_cat` (function) `kernel/shell.c:2874` `static void shell_cross_cat(const char *drv, const char *imgarg,
                             cons...` -- Stream one file from a cross-filesystem VFS driver (fat:, ext4:) to the console: "drv:/img:path" per open (the...
-- `shell_exec_builtin` (function) `kernel/shell.c:2915` `void shell_exec_builtin(int argc, char **argv)`
-- `terminal` (function) `kernel/shell.c:2990` `* sequence clears serial consoles and is swallowed without * garbage by the framebuffer terminal (vedit pattern). */...`
-- `driver` (function) `kernel/shell.c:3341` `* stream through the fat: VFS driver ("img:fatpath" per open,
+- `shell_exec_builtin` (function) `kernel/shell.c:2916` `void shell_exec_builtin(int argc, char **argv)`
+- `terminal` (function) `kernel/shell.c:2991` `* sequence clears serial consoles and is swallowed without * garbage by the framebuffer terminal (vedit pattern). */...`
+- `driver` (function) `kernel/shell.c:3342` `* stream through the fat: VFS driver ("img:fatpath" per open,
      * registered at boot beside me...`
-- `frame` (function) `kernel/shell.c:3735` `* not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row...`
-- `stdout` (function) `kernel/shell.c:4104` `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...`
-- `shell_is_pipe_tok` (function) `kernel/shell.c:4116` `static int shell_is_pipe_tok(const char *a)`
-- `shell_run_stage` (function) `kernel/shell.c:4155` `static char *shell_run_stage(char **sargv, int sargc,
+- `frame` (function) `kernel/shell.c:3799` `* not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row...`
+- `stdout` (function) `kernel/shell.c:4168` `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...`
+- `shell_is_pipe_tok` (function) `kernel/shell.c:4180` `static int shell_is_pipe_tok(const char *a)`
+- `shell_run_stage` (function) `kernel/shell.c:4219` `static char *shell_run_stage(char **sargv, int sargc,
         const char *input, unsigned long in...` -- Run one pipeline stage with stdin/out doors installed. input may be 0 (first stage reads the live console).
 
 ## kernel/spawn.c

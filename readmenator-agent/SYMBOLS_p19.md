@@ -1,8 +1,149 @@
-# Symbols (page 19 of 27)
+# Symbols (page 19 of 28)
 Previous: [SYMBOLS_p18.md](SYMBOLS_p18.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `S_ResumeSound` | function | `progs/doomgeneric/s_sound.h:75` | `void S_ResumeSound(void);` |
+| `S_SetMusicVolume` | function | `progs/doomgeneric/s_sound.h:83` | `void S_SetMusicVolume(int volume);` |
+| `S_SetSfxVolume` | function | `progs/doomgeneric/s_sound.h:84` | `void S_SetSfxVolume(int volume);` |
+| `S_Shutdown` | function | `progs/doomgeneric/s_sound.h:37` | `void S_Shutdown(void);` |
+| `S_Start` | function | `progs/doomgeneric/s_sound.h:47` | `void S_Start(void);` |
+| `S_StartMusic` | function | `progs/doomgeneric/s_sound.h:61` | `void S_StartMusic(int music_id);` |
+| `S_StartSound` | function | `progs/doomgeneric/s_sound.h:54` | `void S_StartSound(void *origin, int sound_id);` |
+| `S_StopMusic` | function | `progs/doomgeneric/s_sound.h:71` | `void S_StopMusic(void);` |
+| `S_StopSound` | function | `progs/doomgeneric/s_sound.h:57` | `void S_StopSound(mobj_t *origin);` |
+| `S_UpdateSounds` | function | `progs/doomgeneric/s_sound.h:81` | `void S_UpdateSounds(mobj_t *listener);` |
+| `__S_SOUND__` | macro | `progs/doomgeneric/s_sound.h:21` | `#define __S_SOUND__` |
+| `snd_channels` | variable | `progs/doomgeneric/s_sound.h:86` | `extern int snd_channels;` |
+| `F1` | macro | `progs/doomgeneric/sha1.c:88` | `#define F1(x,y,z)` |
+| `F2` | macro | `progs/doomgeneric/sha1.c:89` | `#define F2(x,y,z)` |
+| `F3` | macro | `progs/doomgeneric/sha1.c:90` | `#define F3(x,y,z)` |
+| `F4` | macro | `progs/doomgeneric/sha1.c:91` | `#define F4(x,y,z)` |
+| `K1` | macro | `progs/doomgeneric/sha1.c:84` | `#define K1` |
+| `K2` | macro | `progs/doomgeneric/sha1.c:85` | `#define K2` |
+| `K3` | macro | `progs/doomgeneric/sha1.c:86` | `#define K3` |
+| `K4` | macro | `progs/doomgeneric/sha1.c:87` | `#define K4` |
+| `M` | macro | `progs/doomgeneric/sha1.c:95` | `#define M(i)` |
+| `R` | macro | `progs/doomgeneric/sha1.c:99` | `#define R(a,b,c,d,e,f,k,m)` |
+| `SHA1_Final` | function | `progs/doomgeneric/sha1.c:238` | `void SHA1_Final(sha1_digest_t digest, sha1_context_t *hd)` |
+| `SHA1_Init` | function | `progs/doomgeneric/sha1.c:40` | `void SHA1_Init(sha1_context_t *hd)` |
+| `SHA1_Update` | function | `progs/doomgeneric/sha1.c:198` | `void SHA1_Update(sha1_context_t *hd, byte *inbuf, size_t inlen)` |
+| `SHA1_UpdateInt32` | function | `progs/doomgeneric/sha1.c:303` | `void SHA1_UpdateInt32(sha1_context_t *context, unsigned int val)` |
+| `SHA1_UpdateString` | function | `progs/doomgeneric/sha1.c:315` | `void SHA1_UpdateString(sha1_context_t *context, char *str)` |
+| `Transform` | function | `progs/doomgeneric/sha1.c:55` | `static void Transform(sha1_context_t *hd, byte *data)` |
+| `X` | macro | `progs/doomgeneric/sha1.c:288` | `#define X(a)` |
+| `X` | macro | `progs/doomgeneric/sha1.c:290` | `#define X(a)` |
+| `rol` | macro | `progs/doomgeneric/sha1.c:93` | `#define rol(x,n)` |
+| `SHA1_Final` | function | `progs/doomgeneric/sha1.h:35` | `void SHA1_Final(sha1_digest_t digest, sha1_context_t *context);` |
+| `SHA1_Init` | function | `progs/doomgeneric/sha1.h:33` | `void SHA1_Init(sha1_context_t *context);` |
+| `SHA1_Update` | function | `progs/doomgeneric/sha1.h:34` | `void SHA1_Update(sha1_context_t *context, byte *buf, size_t len);` |
+| `SHA1_UpdateInt32` | function | `progs/doomgeneric/sha1.h:36` | `void SHA1_UpdateInt32(sha1_context_t *context, unsigned int val);` |
+| `SHA1_UpdateString` | function | `progs/doomgeneric/sha1.h:37` | `void SHA1_UpdateString(sha1_context_t *context, char *str);` |
+| `__SHA1_H__` | macro | `progs/doomgeneric/sha1.h:19` | `#define __SHA1_H__` |
+| `sha1_context_s` | struct | `progs/doomgeneric/sha1.h:26` | `` |
+| `sha1_context_t` | type_alias | `progs/doomgeneric/sha1.h:22` | `typedef struct sha1_context_s sha1_context_t;` |
+| `sha1_digest_t` | type_alias | `progs/doomgeneric/sha1.h:24` | `typedef byte sha1_digest_t[20];` |
+| `MUSIC` | macro | `progs/doomgeneric/sounds.c:31` | `#define MUSIC(name)` |
+| `SOUND` | macro | `progs/doomgeneric/sounds.c:111` | `#define SOUND(name, priority)` |
+| `SOUND_LINK` | macro | `progs/doomgeneric/sounds.c:113` | `#define SOUND_LINK(name, priority, link_id, pitch, volume)` |
+| `S_music` | variable | `progs/doomgeneric/sounds.h:29` | `extern musicinfo_t S_music[];` |
+| `S_sfx` | variable | `progs/doomgeneric/sounds.h:26` | `extern sfxinfo_t S_sfx[];` |
+| `__SOUNDS__` | macro | `progs/doomgeneric/sounds.h:21` | `#define __SOUNDS__` |
+| `STlib_drawNum` | function | `progs/doomgeneric/st_lib.c:84` | `void STlib_drawNum ( st_number_t*	n,   boolean	refresh )` |
+| `STlib_init` | function | `progs/doomgeneric/st_lib.c:51` | `void STlib_init(void)` |
+| `STlib_initBinIcon` | function | `progs/doomgeneric/st_lib.c:236` | `void STlib_initBinIcon ( st_binicon_t*		b,   int			x,   int			y,   patch_t*		i,   boolean*		val, ...` |
+| `STlib_initMultIcon` | function | `progs/doomgeneric/st_lib.c:186` | `void STlib_initMultIcon ( st_multicon_t*	i,   int			x,   int			y,   patch_t**		il,   int*			inum,...` |
+| `STlib_initNum` | function | `progs/doomgeneric/st_lib.c:59` | `void STlib_initNum ( st_number_t*		n,   int			x,   int			y,   patch_t**		pl,   int*			num,   bool...` |
+| `STlib_initPercent` | function | `progs/doomgeneric/st_lib.c:156` | `void STlib_initPercent ( st_percent_t*		p,   int			x,   int			y,   patch_t**		pl,   int*			num,  ...` |
+| `STlib_updateBinIcon` | function | `progs/doomgeneric/st_lib.c:255` | `void STlib_updateBinIcon ( st_binicon_t*		bi,   boolean		refresh )` |
+| `STlib_updateMultIcon` | function | `progs/doomgeneric/st_lib.c:205` | `void STlib_updateMultIcon ( st_multicon_t*	mi,   boolean		refresh )` |
+| `STlib_updateNum` | function | `progs/doomgeneric/st_lib.c:146` | `void STlib_updateNum ( st_number_t*		n,   boolean		refresh )` |
+| `STlib_updatePercent` | function | `progs/doomgeneric/st_lib.c:173` | `void STlib_updatePercent ( st_percent_t*		per,   int			refresh )` |
+| `automapactive` | variable | `progs/doomgeneric/st_lib.c:40` | `extern boolean automapactive;` |
+| `STlib_init` | function | `progs/doomgeneric/st_lib.h:138` | `void STlib_init(void);` |
+| `STlib_initBinIcon` | function | `progs/doomgeneric/st_lib.h:196` | `void STlib_initBinIcon ( st_binicon_t* b, int x, int y, patch_t* i, boolean* val, boolean* on );` |
+| `STlib_initMultIcon` | function | `progs/doomgeneric/st_lib.h:179` | `void STlib_initMultIcon ( st_multicon_t* mi, int x, int y, patch_t** il, int* inum, boolean* on );` |
+| `STlib_initNum` | function | `progs/doomgeneric/st_lib.h:144` | `void STlib_initNum ( st_number_t* n, int x, int y, patch_t** pl, int* num, boolean* on, int width );` |
+| `STlib_initPercent` | function | `progs/doomgeneric/st_lib.h:161` | `void STlib_initPercent ( st_percent_t* p, int x, int y, patch_t** pl, int* num, boolean* on, patch_t* percent );` |
+| `STlib_updateBinIcon` | function | `progs/doomgeneric/st_lib.h:205` | `void STlib_updateBinIcon ( st_binicon_t* bi, boolean refresh );` |
+| `STlib_updateMultIcon` | function | `progs/doomgeneric/st_lib.h:189` | `void STlib_updateMultIcon ( st_multicon_t* mi, boolean refresh );` |
+| `STlib_updateNum` | function | `progs/doomgeneric/st_lib.h:154` | `void STlib_updateNum ( st_number_t* n, boolean refresh );` |
+| `STlib_updatePercent` | function | `progs/doomgeneric/st_lib.h:172` | `void STlib_updatePercent ( st_percent_t* per, int refresh );` |
+| `__STLIB__` | macro | `progs/doomgeneric/st_lib.h:20` | `#define __STLIB__` |
+| `st_binicon_t` | struct | `progs/doomgeneric/st_lib.h:106` | `` |
+| `st_multicon_t` | struct | `progs/doomgeneric/st_lib.h:77` | `` |
+| `st_number_t` | struct | `progs/doomgeneric/st_lib.h:32` | `` |
+| `st_percent_t` | struct | `progs/doomgeneric/st_lib.h:64` | `` |
+| `NUMBONUSPALS` | macro | `progs/doomgeneric/st_stuff.c:71` | `#define NUMBONUSPALS` |
+| `NUMREDPALS` | macro | `progs/doomgeneric/st_stuff.c:70` | `#define NUMREDPALS` |
+| `RADIATIONPAL` | macro | `progs/doomgeneric/st_stuff.c:73` | `#define RADIATIONPAL` |
+| `STARTBONUSPALS` | macro | `progs/doomgeneric/st_stuff.c:69` | `#define STARTBONUSPALS` |
+| `STARTREDPALS` | macro | `progs/doomgeneric/st_stuff.c:68` | `#define STARTREDPALS` |
+| `ST_AMMO0HEIGHT` | macro | `progs/doomgeneric/st_stuff.c:176` | `#define ST_AMMO0HEIGHT` |
+| `ST_AMMO0WIDTH` | macro | `progs/doomgeneric/st_stuff.c:175` | `#define ST_AMMO0WIDTH` |
+| `ST_AMMO0X` | macro | `progs/doomgeneric/st_stuff.c:177` | `#define ST_AMMO0X` |
+| `ST_AMMO0Y` | macro | `progs/doomgeneric/st_stuff.c:178` | `#define ST_AMMO0Y` |
+| `ST_AMMO1WIDTH` | macro | `progs/doomgeneric/st_stuff.c:179` | `#define ST_AMMO1WIDTH` |
+| `ST_AMMO1X` | macro | `progs/doomgeneric/st_stuff.c:180` | `#define ST_AMMO1X` |
+| `ST_AMMO1Y` | macro | `progs/doomgeneric/st_stuff.c:181` | `#define ST_AMMO1Y` |
+| `ST_AMMO2WIDTH` | macro | `progs/doomgeneric/st_stuff.c:182` | `#define ST_AMMO2WIDTH` |
+| `ST_AMMO2X` | macro | `progs/doomgeneric/st_stuff.c:183` | `#define ST_AMMO2X` |
+| `ST_AMMO2Y` | macro | `progs/doomgeneric/st_stuff.c:184` | `#define ST_AMMO2Y` |
+| `ST_AMMO3WIDTH` | macro | `progs/doomgeneric/st_stuff.c:185` | `#define ST_AMMO3WIDTH` |
+| `ST_AMMO3X` | macro | `progs/doomgeneric/st_stuff.c:186` | `#define ST_AMMO3X` |
+| `ST_AMMO3Y` | macro | `progs/doomgeneric/st_stuff.c:187` | `#define ST_AMMO3Y` |
+| `ST_AMMOWIDTH` | macro | `progs/doomgeneric/st_stuff.c:135` | `#define ST_AMMOWIDTH` |
+| `ST_AMMOX` | macro | `progs/doomgeneric/st_stuff.c:136` | `#define ST_AMMOX` |
+| `ST_AMMOY` | macro | `progs/doomgeneric/st_stuff.c:137` | `#define ST_AMMOY` |
+| `ST_ARMORWIDTH` | macro | `progs/doomgeneric/st_stuff.c:158` | `#define ST_ARMORWIDTH` |
+| `ST_ARMORX` | macro | `progs/doomgeneric/st_stuff.c:159` | `#define ST_ARMORX` |
+| `ST_ARMORY` | macro | `progs/doomgeneric/st_stuff.c:160` | `#define ST_ARMORY` |
+| `ST_ARMSBGX` | macro | `progs/doomgeneric/st_stuff.c:147` | `#define ST_ARMSBGX` |
+| `ST_ARMSBGY` | macro | `progs/doomgeneric/st_stuff.c:148` | `#define ST_ARMSBGY` |
+| `ST_ARMSX` | macro | `progs/doomgeneric/st_stuff.c:145` | `#define ST_ARMSX` |
+| `ST_ARMSXSPACE` | macro | `progs/doomgeneric/st_stuff.c:149` | `#define ST_ARMSXSPACE` |
+| `ST_ARMSY` | macro | `progs/doomgeneric/st_stuff.c:146` | `#define ST_ARMSY` |
+| `ST_ARMSYSPACE` | macro | `progs/doomgeneric/st_stuff.c:150` | `#define ST_ARMSYSPACE` |
+| `ST_DEADFACE` | macro | `progs/doomgeneric/st_stuff.c:112` | `#define ST_DEADFACE` |
+| `ST_DETHX` | macro | `progs/doomgeneric/st_stuff.c:234` | `#define ST_DETHX` |
+| `ST_DETHY` | macro | `progs/doomgeneric/st_stuff.c:235` | `#define ST_DETHY` |
+| `ST_Drawer` | function | `progs/doomgeneric/st_stuff.c:1055` | `void ST_Drawer (boolean fullscreen, boolean refresh)` |
+| `ST_EVILGRINCOUNT` | macro | `progs/doomgeneric/st_stuff.c:117` | `#define ST_EVILGRINCOUNT` |
+| `ST_EVILGRINOFFSET` | macro | `progs/doomgeneric/st_stuff.c:109` | `#define ST_EVILGRINOFFSET` |
+| `ST_FACEPROBABILITY` | macro | `progs/doomgeneric/st_stuff.c:77` | `#define ST_FACEPROBABILITY` |
+| `ST_FACESTRIDE` | macro | `progs/doomgeneric/st_stuff.c:99` | `#define ST_FACESTRIDE` |
+| `ST_FACESX` | macro | `progs/doomgeneric/st_stuff.c:114` | `#define ST_FACESX` |
+| `ST_FACESY` | macro | `progs/doomgeneric/st_stuff.c:115` | `#define ST_FACESY` |
+| `ST_FRAGSWIDTH` | macro | `progs/doomgeneric/st_stuff.c:155` | `#define ST_FRAGSWIDTH` |
+| `ST_FRAGSX` | macro | `progs/doomgeneric/st_stuff.c:153` | `#define ST_FRAGSX` |
+| `ST_FRAGSY` | macro | `progs/doomgeneric/st_stuff.c:154` | `#define ST_FRAGSY` |
+| `ST_FX` | macro | `progs/doomgeneric/st_stuff.c:86` | `#define ST_FX` |
+| `ST_FY` | macro | `progs/doomgeneric/st_stuff.c:87` | `#define ST_FY` |
+| `ST_GODFACE` | macro | `progs/doomgeneric/st_stuff.c:111` | `#define ST_GODFACE` |
+| `ST_HEALTHWIDTH` | macro | `progs/doomgeneric/st_stuff.c:140` | `#define ST_HEALTHWIDTH` |
+| `ST_HEALTHX` | macro | `progs/doomgeneric/st_stuff.c:141` | `#define ST_HEALTHX` |
+| `ST_HEALTHY` | macro | `progs/doomgeneric/st_stuff.c:142` | `#define ST_HEALTHY` |
+| `ST_Init` | function | `progs/doomgeneric/st_stuff.c:1411` | `void ST_Init (void)` |
+| `ST_KEY0HEIGHT` | macro | `progs/doomgeneric/st_stuff.c:164` | `#define ST_KEY0HEIGHT` |
+| `ST_KEY0WIDTH` | macro | `progs/doomgeneric/st_stuff.c:163` | `#define ST_KEY0WIDTH` |
+| `ST_KEY0X` | macro | `progs/doomgeneric/st_stuff.c:165` | `#define ST_KEY0X` |
+| `ST_KEY0Y` | macro | `progs/doomgeneric/st_stuff.c:166` | `#define ST_KEY0Y` |
+| `ST_KEY1WIDTH` | macro | `progs/doomgeneric/st_stuff.c:167` | `#define ST_KEY1WIDTH` |
+| `ST_KEY1X` | macro | `progs/doomgeneric/st_stuff.c:168` | `#define ST_KEY1X` |
+| `ST_KEY1Y` | macro | `progs/doomgeneric/st_stuff.c:169` | `#define ST_KEY1Y` |
+| `ST_KEY2WIDTH` | macro | `progs/doomgeneric/st_stuff.c:170` | `#define ST_KEY2WIDTH` |
+| `ST_KEY2X` | macro | `progs/doomgeneric/st_stuff.c:171` | `#define ST_KEY2X` |
+| `ST_KEY2Y` | macro | `progs/doomgeneric/st_stuff.c:172` | `#define ST_KEY2Y` |
+| `ST_MAPHEIGHT` | macro | `progs/doomgeneric/st_stuff.c:260` | `#define ST_MAPHEIGHT` |
+| `ST_MAPTITLEX` | macro | `progs/doomgeneric/st_stuff.c:256` | `#define ST_MAPTITLEX` |
+| `ST_MAPTITLEY` | macro | `progs/doomgeneric/st_stuff.c:259` | `#define ST_MAPTITLEY` |
+| `ST_MAXAMMO0HEIGHT` | macro | `progs/doomgeneric/st_stuff.c:192` | `#define ST_MAXAMMO0HEIGHT` |
+| `ST_MAXAMMO0WIDTH` | macro | `progs/doomgeneric/st_stuff.c:191` | `#define ST_MAXAMMO0WIDTH` |
+| `ST_MAXAMMO0X` | macro | `progs/doomgeneric/st_stuff.c:193` | `#define ST_MAXAMMO0X` |
+| `ST_MAXAMMO0Y` | macro | `progs/doomgeneric/st_stuff.c:194` | `#define ST_MAXAMMO0Y` |
+| `ST_MAXAMMO1WIDTH` | macro | `progs/doomgeneric/st_stuff.c:195` | `#define ST_MAXAMMO1WIDTH` |
+| `ST_MAXAMMO1X` | macro | `progs/doomgeneric/st_stuff.c:196` | `#define ST_MAXAMMO1X` |
+| `ST_MAXAMMO1Y` | macro | `progs/doomgeneric/st_stuff.c:197` | `#define ST_MAXAMMO1Y` |
 | `ST_MAXAMMO2WIDTH` | macro | `progs/doomgeneric/st_stuff.c:198` | `#define ST_MAXAMMO2WIDTH` |
 | `ST_MAXAMMO2X` | macro | `progs/doomgeneric/st_stuff.c:199` | `#define ST_MAXAMMO2X` |
 | `ST_MAXAMMO2Y` | macro | `progs/doomgeneric/st_stuff.c:200` | `#define ST_MAXAMMO2Y` |
@@ -355,146 +496,5 @@ Previous: [SYMBOLS_p18.md](SYMBOLS_p18.md)
 | `Z_Malloc` | function | `progs/doomgeneric/z_zone.h:54` | `void* Z_Malloc (int size, int tag, void *ptr);` |
 | `Z_ZoneSize` | function | `progs/doomgeneric/z_zone.h:63` | `unsigned int Z_ZoneSize(void);` |
 | `__Z_ZONE__` | macro | `progs/doomgeneric/z_zone.h:25` | `#define __Z_ZONE__` |
-| `FILE_ACTION_INTERNAL` | macro | `progs/file/file.c:49` | `#define FILE_ACTION_INTERNAL` |
-| `FILE_ACTION_SHELL` | macro | `progs/file/file.c:48` | `#define FILE_ACTION_SHELL` |
-| `FILE_ACT_INTERNAL` | macro | `progs/file/file.c:73` | `#define FILE_ACT_INTERNAL` |
-| `FILE_ACT_SHELL` | macro | `progs/file/file.c:72` | `#define FILE_ACT_SHELL` |
-| `FILE_ACT_TEXT` | macro | `progs/file/file.c:71` | `#define FILE_ACT_TEXT` |
-| `FILE_ACT_UNKNOWN` | macro | `progs/file/file.c:74` | `#define FILE_ACT_UNKNOWN` |
-| `FILE_ASSOC_PATH` | macro | `progs/file/file.c:37` | `#define FILE_ASSOC_PATH` |
-| `FILE_EXT_MAX` | macro | `progs/file/file.c:38` | `#define FILE_EXT_MAX` |
-| `FILE_ICON_BIG` | macro | `progs/file/file.c:58` | `#define FILE_ICON_BIG` |
-| `FILE_ICON_FILES` | macro | `progs/file/file.c:62` | `#define FILE_ICON_FILES` |
-| `FILE_ICON_FOLDER` | macro | `progs/file/file.c:61` | `#define FILE_ICON_FOLDER` |
-| `FILE_ICON_IMAGE` | macro | `progs/file/file.c:63` | `#define FILE_ICON_IMAGE` |
-| `FILE_ICON_MAX` | macro | `progs/file/file.c:59` | `#define FILE_ICON_MAX` |
-| `FILE_ICON_N` | macro | `progs/file/file.c:60` | `#define FILE_ICON_N` |
-| `FILE_ICON_OBJECT` | macro | `progs/file/file.c:64` | `#define FILE_ICON_OBJECT` |
-| `FILE_ICON_PATH_FILES` | macro | `progs/file/file.c:66` | `#define FILE_ICON_PATH_FILES` |
-| `FILE_ICON_PATH_FOLDER` | macro | `progs/file/file.c:65` | `#define FILE_ICON_PATH_FOLDER` |
-| `FILE_ICON_PATH_IMAGE` | macro | `progs/file/file.c:67` | `#define FILE_ICON_PATH_IMAGE` |
-| `FILE_ICON_PATH_OBJECT` | macro | `progs/file/file.c:68` | `#define FILE_ICON_PATH_OBJECT` |
-| `FILE_ICON_SMALL` | macro | `progs/file/file.c:57` | `#define FILE_ICON_SMALL` |
-| `FILE_LIST_CAP` | macro | `progs/file/file.c:36` | `#define FILE_LIST_CAP` |
-| `FILE_LOG_LINE` | macro | `progs/file/file.c:50` | `#define FILE_LOG_LINE` |
-| `FILE_MAX_ENTRIES` | macro | `progs/file/file.c:34` | `#define FILE_MAX_ENTRIES` |
-| `FILE_MAX_PATH` | macro | `progs/file/file.c:33` | `#define FILE_MAX_PATH` |
-| `FILE_NAME_MAX` | macro | `progs/file/file.c:35` | `#define FILE_NAME_MAX` |
-| `FILE_PREVIEW_FILE_MAX` | macro | `progs/file/file.c:46` | `#define FILE_PREVIEW_FILE_MAX` |
-| `FILE_PREVIEW_H` | macro | `progs/file/file.c:45` | `#define FILE_PREVIEW_H` |
-| `FILE_PREVIEW_W` | macro | `progs/file/file.c:44` | `#define FILE_PREVIEW_W` |
-| `FILE_PROG_MAX` | macro | `progs/file/file.c:39` | `#define FILE_PROG_MAX` |
-| `FILE_STATUS_MAX` | macro | `progs/file/file.c:42` | `#define FILE_STATUS_MAX` |
-| `FILE_TITLE` | macro | `progs/file/file.c:47` | `#define FILE_TITLE` |
-| `FILE_TOOL_CVM` | macro | `progs/file/file.c:41` | `#define FILE_TOOL_CVM` |
-| `FILE_TOOL_VEDIT` | macro | `progs/file/file.c:40` | `#define FILE_TOOL_VEDIT` |
-| `FILE_UI_MEMORY` | macro | `progs/file/file.c:43` | `#define FILE_UI_MEMORY` |
-| `MINIOS_LEAKCHECK_IMPL` | macro | `progs/file/file.c:28` | `#define MINIOS_LEAKCHECK_IMPL` |
-| `MINIOS_LK_ENABLE` | macro | `progs/file/file.c:29` | `#define MINIOS_LK_ENABLE` |
-| `STBI_NO_STDIO` | macro | `progs/file/file.c:26` | `#define STBI_NO_STDIO` |
-| `STBI_ONLY_PNG` | macro | `progs/file/file.c:25` | `#define STBI_ONLY_PNG` |
-| `STB_IMAGE_IMPLEMENTATION` | macro | `progs/file/file.c:24` | `#define STB_IMAGE_IMPLEMENTATION` |
-| `file_action_of` | function | `progs/file/file.c:323` | `static int file_action_of(const char *fname, const char **prog_out)` |
-| `file_activate` | function | `progs/file/file.c:480` | `static void file_activate(const char *dir, const char *name)` |
-| `file_assoc` | struct | `progs/file/file.c:76` | `` |
-| `file_assoc_line` | function | `progs/file/file.c:269` | `static int file_assoc_line(const char *line, char *ext, char *prog)` |
-| `file_assoc_load` | function | `progs/file/file.c:302` | `static void file_assoc_load(void)` |
-| `file_assoc_lookup` | function | `progs/file/file.c:318` | `static const char *file_assoc_lookup(const char *ext)` |
-| `file_ext_of` | function | `progs/file/file.c:122` | `static void file_ext_of(const char *fname, char *dst, unsigned cap)` |
-| `file_gui_run` | function | `progs/file/file.c:779` | `static void file_gui_run(void)` |
-| `file_icon_decode` | function | `progs/file/file.c:165` | `static int file_icon_decode(const char *path, unsigned char *px,                             unsi...` |
-| `file_icon_kind` | function | `progs/file/file.c:146` | `static int file_icon_kind(const char *fname, int isdir)` |
-| `file_icon_sz` | function | `progs/file/file.c:158` | `static int file_icon_sz(void)` |
-| `file_icons_load` | function | `progs/file/file.c:213` | `static int file_icons_load(void)` |
-| `file_join` | function | `progs/file/file.c:245` | `static int file_join(const char *dir, const char *name, char *dst, unsigned cap)` |
-| `file_open_text` | function | `progs/file/file.c:430` | `static void file_open_text(const char *path)` |
-| `file_parent` | function | `progs/file/file.c:259` | `static void file_parent(char *path)` |
-| `file_preview_blit` | function | `progs/file/file.c:385` | `static void file_preview_blit(int ox, int oy)` |
-| `file_preview_load` | function | `progs/file/file.c:351` | `static int file_preview_load(const char *path)` |
-| `file_refresh` | function | `progs/file/file.c:336` | `static void file_refresh(void)` |
-| `file_run_shell` | function | `progs/file/file.c:441` | `static void file_run_shell(const char *path)` |
-| `file_selftest` | function | `progs/file/file.c:613` | `static int file_selftest(void)` |
-| `file_spawn_visible` | function | `progs/file/file.c:407` | `static long file_spawn_visible(const char *tool, int argc, const char **argv,                    ...` |
-| `file_sys_dir_list` | function | `progs/file/file.c:101` | `static long file_sys_dir_list(const char *path, char *buf, long cap)` |
-| `file_sys_spawn` | function | `progs/file/file.c:111` | `static long file_sys_spawn(const char *path, int argc, const char **argv)` |
-| `file_toggle_icons` | function | `progs/file/file.c:238` | `static int file_toggle_icons(void)` |
-| `file_ui_build` | function | `progs/file/file.c:511` | `static void file_ui_build(struct nk_context *ctx)` |
-| `main` | function | `progs/file/file.c:838` | `int main(int argc, char **argv)` |
-| `FASSOC_EXT_MAX` | macro | `progs/file/file_assoc.h:22` | `#define FASSOC_EXT_MAX` |
-| `FASSOC_GROW_DEN` | macro | `progs/file/file_assoc.h:42` | `#define FASSOC_GROW_DEN` |
-| `FASSOC_GROW_NUM` | macro | `progs/file/file_assoc.h:38` | `#define FASSOC_GROW_NUM` |
-| `FASSOC_HARD_MAX` | macro | `progs/file/file_assoc.h:34` | `#define FASSOC_HARD_MAX` |
-| `FASSOC_INIT_CAP` | macro | `progs/file/file_assoc.h:30` | `#define FASSOC_INIT_CAP` |
-| `FASSOC_PROG_MAX` | macro | `progs/file/file_assoc.h:26` | `#define FASSOC_PROG_MAX` |
-| `MINIOS_FILE_ASSOC_H` | macro | `progs/file/file_assoc.h:15` | `#define MINIOS_FILE_ASSOC_H` |
-| `fassoc_clear` | function | `progs/file/file_assoc.h:89` | `static void fassoc_clear(struct fassoc_table *t)` |
-| `fassoc_count` | function | `progs/file/file_assoc.h:150` | `static size_t fassoc_count(const struct fassoc_table *t)` |
-| `fassoc_entry` | struct | `progs/file/file_assoc.h:46` | `` |
-| `fassoc_ext_ok` | function | `progs/file/file_assoc.h:59` | `static int fassoc_ext_ok(const char *ext)` |
-| `fassoc_free` | function | `progs/file/file_assoc.h:95` | `static void fassoc_free(struct fassoc_table *t)` |
-| `fassoc_lookup` | function | `progs/file/file_assoc.h:140` | `static const char *fassoc_lookup(const struct fassoc_table *t, const char *ext)` |
-| `fassoc_prog_ok` | function | `progs/file/file_assoc.h:73` | `static int fassoc_prog_ok(const char *prog)` |
-| `fassoc_push` | function | `progs/file/file_assoc.h:125` | `static int fassoc_push(struct fassoc_table *t, const char *ext, const char *prog)` |
-| `fassoc_reserve` | function | `progs/file/file_assoc.h:104` | `static int fassoc_reserve(struct fassoc_table *t, size_t want)` |
-| `fassoc_table` | struct | `progs/file/file_assoc.h:52` | `` |
-| `FUI_BODY_CAP` | macro | `progs/freedomui/freedomui_minios.c:53` | `#define FUI_BODY_CAP` |
-| `FUI_COLS` | macro | `progs/freedomui/freedomui_minios.c:51` | `#define FUI_COLS` |
-| `FUI_FONT_H` | macro | `progs/freedomui/freedomui_minios.c:62` | `#define FUI_FONT_H` |
-| `FUI_FONT_W` | macro | `progs/freedomui/freedomui_minios.c:61` | `#define FUI_FONT_W` |
-| `FUI_HDR_MAX` | macro | `progs/freedomui/freedomui_minios.c:54` | `#define FUI_HDR_MAX` |
-| `FUI_HOPS_MAX` | macro | `progs/freedomui/freedomui_minios.c:60` | `#define FUI_HOPS_MAX` |
-| `FUI_HOST_MAX` | macro | `progs/freedomui/freedomui_minios.c:57` | `#define FUI_HOST_MAX` |
-| `FUI_NET_BUF` | macro | `progs/freedomui/freedomui_minios.c:55` | `#define FUI_NET_BUF` |
-| `FUI_PATH_MAX` | macro | `progs/freedomui/freedomui_minios.c:58` | `#define FUI_PATH_MAX` |
-| `FUI_REQ_MAX` | macro | `progs/freedomui/freedomui_minios.c:56` | `#define FUI_REQ_MAX` |
-| `FUI_TEXT_ROWS` | macro | `progs/freedomui/freedomui_minios.c:52` | `#define FUI_TEXT_ROWS` |
-| `FUI_TITLE_MAX` | macro | `progs/freedomui/freedomui_minios.c:63` | `#define FUI_TITLE_MAX` |
-| `FUI_URL_MAX` | macro | `progs/freedomui/freedomui_minios.c:59` | `#define FUI_URL_MAX` |
-| `FreedomUiConfig` | struct | `progs/freedomui/freedomui_minios.c:69` | `` |
-| `freedomui_build_palette` | function | `progs/freedomui/freedomui_minios.c:130` | `static long freedomui_build_palette(unsigned char *pal, long cap)` |
-| `freedomui_default` | function | `progs/freedomui/freedomui_minios.c:97` | `static FreedomUiConfig freedomui_default(void)` |
-| `freedomui_engine_text` | function | `progs/freedomui/freedomui_minios.c:145` | `static long freedomui_engine_text(char *body, long n, char **title, char **text)` |
-| `freedomui_host_entry` | function | `progs/freedomui/freedomui_minios.c:1098` | `int freedomui_host_entry(FreedomUiConfig *c)` |
-| `freedomui_host_probe` | function | `progs/freedomui/freedomui_minios.c:1015` | `static long freedomui_host_probe(FreedomUiConfig *c)` |
-| `freedomui_selftest` | function | `progs/freedomui/freedomui_minios.c:927` | `static long freedomui_selftest(void)` |
-| `freedomui_sys_kbd` | function | `progs/freedomui/freedomui_minios.c:221` | `static long freedomui_sys_kbd(void)` |
-| `freedomui_sys_kbd_raw` | function | `progs/freedomui/freedomui_minios.c:235` | `static long freedomui_sys_kbd_raw(long on)` |
-| `freedomui_sys_mouse` | function | `progs/freedomui/freedomui_minios.c:214` | `static long freedomui_sys_mouse(long *m)` |
-| `freedomui_sys_palette` | function | `progs/freedomui/freedomui_minios.c:207` | `static long freedomui_sys_palette(unsigned char *pal)` |
-| `freedomui_sys_present` | function | `progs/freedomui/freedomui_minios.c:193` | `static long freedomui_sys_present(long buf, long origin)` |
-| `freedomui_sys_title` | function | `progs/freedomui/freedomui_minios.c:200` | `static long freedomui_sys_title(char *t)` |
-| `freedomui_sys_vga_mode` | function | `progs/freedomui/freedomui_minios.c:228` | `static long freedomui_sys_vga_mode(long on)` |
-| `freedomui_sys_yield` | function | `progs/freedomui/freedomui_minios.c:242` | `static long freedomui_sys_yield(void)` |
-| `fui_append` | function | `progs/freedomui/freedomui_minios.c:249` | `static long fui_append(char *dst, long pos, char *src, long cap)` |
-| `fui_browse` | function | `progs/freedomui/freedomui_minios.c:848` | `static long fui_browse(FreedomUiConfig *c)` |
-| `fui_fetch_raw` | function | `progs/freedomui/freedomui_minios.c:501` | `static long fui_fetch_raw(FreedomUiConfig *c, char *host, char *path, long port, long secure)` |
-| `fui_has_scheme` | function | `progs/freedomui/freedomui_minios.c:285` | `static int fui_has_scheme(const char *s, const char *scheme)` |
-| `fui_is_http_scheme` | function | `progs/freedomui/freedomui_minios.c:309` | `static int fui_is_http_scheme(const char *s)` |
-| `fui_parse_headers` | function | `progs/freedomui/freedomui_minios.c:383` | `static long fui_parse_headers(FreedomUiConfig *c, char *hdr, long *status, long *clen, long *hasc...` |
-| `fui_render` | function | `progs/freedomui/freedomui_minios.c:729` | `static long fui_render(FreedomUiConfig *c, size_t off)` |
-| `fui_split_url` | function | `progs/freedomui/freedomui_minios.c:314` | `static long fui_split_url(FreedomUiConfig *c, char *url, char *host, char *path, long *port, long...` |
-| `fui_strlen` | function | `progs/freedomui/freedomui_minios.c:267` | `static long fui_strlen(char *s, long cap)` |
-| `main` | function | `progs/freedomui/freedomui_minios.c:1103` | `int main(int argc, char **argv)` |
-| `net_dns_resolve` | function | `progs/freedomui/freedomui_minios.c:44` | `int net_dns_resolve(const char *host);` |
-| `present_buf` | type_alias | `progs/freedomui/freedomui_minios.c:69` | `typedef struct FreedomUiConfig { long present_buf;` |
-| `tls_close` | function | `progs/freedomui/freedomui_minios.c:48` | `void tls_close(int fd);` |
-| `tls_handshake` | function | `progs/freedomui/freedomui_minios.c:45` | `int tls_handshake(int fd, char *host);` |
-| `tls_recv` | function | `progs/freedomui/freedomui_minios.c:47` | `int tls_recv(int fd, char *buf, int len);` |
-| `tls_send` | function | `progs/freedomui/freedomui_minios.c:46` | `int tls_send(int fd, char *buf, int len);` |
-| `media_decoder_run` | function | `progs/freedomui/media_unavailable.c:41` | `void media_decoder_run(int out_fd, int cmd_fd)` |
-| `write_all` | function | `progs/freedomui/media_unavailable.c:20` | `static void write_all(int fd, const void *buf, size_t len)` |
-| `FREEDOM_GUI_BUTTONS` | macro | `progs/freedomui/platform_minios.c:44` | `#define FREEDOM_GUI_BUTTONS` |
-| `FREEDOM_GUI_CLIP_MAX` | macro | `progs/freedomui/platform_minios.c:33` | `#define FREEDOM_GUI_CLIP_MAX` |
-| `FREEDOM_GUI_KBD_DRAIN_MAX` | macro | `progs/freedomui/platform_minios.c:29` | `#define FREEDOM_GUI_KBD_DRAIN_MAX` |
-| `FREEDOM_GUI_KEY_F4` | macro | `progs/freedomui/platform_minios.c:46` | `#define FREEDOM_GUI_KEY_F4` |
-| `FREEDOM_GUI_MALLOC_ARENAS` | macro | `progs/freedomui/platform_minios.c:35` | `#define FREEDOM_GUI_MALLOC_ARENAS` |
-| `FREEDOM_GUI_MOUSE_BUTTONS` | macro | `progs/freedomui/platform_minios.c:41` | `#define FREEDOM_GUI_MOUSE_BUTTONS` |
-| `FREEDOM_GUI_MOUSE_WHEEL` | macro | `progs/freedomui/platform_minios.c:42` | `#define FREEDOM_GUI_MOUSE_WHEEL` |
-| `FREEDOM_GUI_MOUSE_WORDS` | macro | `progs/freedomui/platform_minios.c:38` | `#define FREEDOM_GUI_MOUSE_WORDS` |
-| `FREEDOM_GUI_MOUSE_X` | macro | `progs/freedomui/platform_minios.c:39` | `#define FREEDOM_GUI_MOUSE_X` |
-| `FREEDOM_GUI_MOUSE_Y` | macro | `progs/freedomui/platform_minios.c:40` | `#define FREEDOM_GUI_MOUSE_Y` |
-| `FREEDOM_GUI_RGB_BPP` | macro | `progs/freedomui/platform_minios.c:48` | `#define FREEDOM_GUI_RGB_BPP` |
-| `FREEDOM_GUI_RGB_PRESENT` | macro | `progs/freedomui/platform_minios.c:50` | `#define FREEDOM_GUI_RGB_PRESENT` |
-| `FREEDOM_GUI_TICK_MS` | macro | `progs/freedomui/platform_minios.c:27` | `#define FREEDOM_GUI_TICK_MS` |
 
 Next: [SYMBOLS_p20.md](SYMBOLS_p20.md)

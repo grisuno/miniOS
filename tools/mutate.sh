@@ -82,7 +82,7 @@ if [ "$RESET" = "1" ]; then
     rm -f "$STATE_FILE"
 fi
 
-SOURCES="kernel.c headers/arch/x86/boot/bootdefs.h net/net.c net/tls.c net/tls_x509.c net/rtl8139.c drivers/virtio_net.c drivers/pcspk.c drivers/rtc.c fs/zip.c fs/ramdisk.c fs/vfs.c fs/kfile.c kernel/redirect.c kernel/syscalls.c kernel/mm/paging.c kernel/shell.c kernel/editor.c vma.c headers/pipe.h headers/panic.h kernel/clip.c kernel/mm/cow.c arch/x86/ctx_sw.S drivers/virtio_blk.c drivers/nvme.c drivers/block.c headers/drivers/pci.h boot/uefi_stub.c"
+SOURCES="kernel.c headers/arch/x86/boot/bootdefs.h net/net.c net/tls.c net/tls_x509.c net/rtl8139.c drivers/virtio_net.c drivers/pcspk.c drivers/rtc.c fs/zip.c fs/ramdisk.c fs/vfs.c fs/kfile.c kernel/redirect.c kernel/syscalls.c kernel/mm/paging.c kernel/shell.c kernel/editor.c vma.c headers/pipe.h headers/panic.h kernel/clip.c kernel/mm/cow.c arch/x86/ctx_sw.S drivers/virtio_blk.c drivers/nvme.c drivers/ahci.c drivers/block.c headers/drivers/pci.h boot/uefi_stub.c"
 SOURCES="$SOURCES smp.c kernel/sched.c fs/minifs.c kernel/console.c headers/rtc.h headers/sanitize.h"
 # Every file a MUTATIONS entry touches MUST be listed here: restore_sources
 # backs these up before the run and restores after each mutant. A file
@@ -267,6 +267,15 @@ fork-resolve-never | s/            resolved = cow_resolve(cur_cr3, fault_addr);/
 fd-fork-shares-view | s/    if (!kfd_view_copy(child, cur)) {/    kfd_view_share(child); if (0) {/ | kernel/sched.c
 pci-find-first-only | s/    for (dev = 0; dev < PCI_MAX_DEV; dev++)/    for (dev = 0; dev < 1; dev++)/ | headers/drivers/pci.h
 vblk-status-unchecked | s/statusp != 0/statusp == 0/ | drivers/virtio_blk.c
+pci-multifunc-wrong-byte | s/    unsigned char ht = pci_cfg_read8(bus, dev, 0, PCI_REG_HEADER_TYPE,/    unsigned char ht = pci_cfg_read8(bus, dev, 0, PCI_REG_HEADER_TYPE - 2u,/ | headers/drivers/pci.h
+pci-bridge-func0-only | s/                    if (pci_class_matches(bus, dev, func, PCI_CLASS_BRIDGE,/                    if (func == 0u \&\& pci_class_matches(bus, dev, func, PCI_CLASS_BRIDGE,/ | headers/drivers/pci.h
+ahci-class-wrong | s/#define AHCI_CLASS_PI 0x01u/#define AHCI_CLASS_PI 0x00u/ | drivers/ahci.c
+ahci-sig-wrong | s/#define AHCI_SIG_ATA 0x00000101u/#define AHCI_SIG_ATA 0xEB140101u/ | drivers/ahci.c
+ahci-count-dropped | s/    fis\[12\] = (unsigned char)(count \& 0xFFu);/    fis[12] = 1u;/ | drivers/ahci.c
+ahci-write-as-read | s/#define ATA_CMD_WRITE_DMA_EXT 0x35u/#define ATA_CMD_WRITE_DMA_EXT 0x25u/ | drivers/ahci.c
+ahci-identify-capacity-word | s/#define ATA_ID_LBA48_SECTORS 100u/#define ATA_ID_LBA48_SECTORS 101u/ | drivers/ahci.c
+ahci-never-preferred | s/            block_use_ahci = 1;/            block_use_ahci = 0;/ | drivers/block.c
+ahci-kmm-single-window | s/    if (kmm_dev_next >= KMM_DEVICE_WINDOWS) {/    if (kmm_dev_next >= 1u) {/ | kernel/mm/paging.c
 nvme-class-wrong | s/#define NVME_CLASS_PI 0x02u/#define NVME_CLASS_PI 0x03u/ | drivers/nvme.c
 nvme-present-inverted | s/return xnv_on;/return !xnv_on;/ | drivers/nvme.c
 nvme-nsid-zero | s/#define NVME_NSID 1u/#define NVME_NSID 0u/ | drivers/nvme.c
@@ -811,6 +820,9 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
         drivers/nvme.c)
             MATCH="nvme" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             ;;
+        drivers/ahci.c)
+            MATCH="ahci" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            ;;
         drivers/virtio_net.c)
             MATCH="vnet" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             ;;
@@ -825,7 +837,13 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             fi
             ;;
         drivers/block.c)
-            MATCH="virtio" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            # ahci-* rows break the SATA backend preference proved by the
+            # q35 slice; every other block.c mutant runs the virtio slice.
+            if [[ "$name" == ahci-* ]]; then
+                MATCH="ahci" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            else
+                MATCH="virtio" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            fi
             ;;
         boot/uefi_stub.c)
             make -C "$HERE" uefi.img > "$BACKUP/suite.log" 2>&1 && \
@@ -932,6 +950,8 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             # the full suite.
             if [[ "$name" == pcache-* ]]; then
                 MATCH="pcache" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            elif [[ "$name" == ahci-* ]]; then
+                MATCH="ahci" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             else
                 FAIL_FAST=1 MATCH="" "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             fi

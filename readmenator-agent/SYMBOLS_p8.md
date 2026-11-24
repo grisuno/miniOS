@@ -1,8 +1,149 @@
-# Symbols (page 8 of 27)
+# Symbols (page 8 of 28)
 Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `VGA_FX_PROG_ONE` | macro | `headers/vga_fx.h:136` | `#define VGA_FX_PROG_ONE` |
+| `longer` | function | `headers/vga_fx.h:353` | `* longer (the lag), every row follows the same smoothstep toward the  * target and narrows to gen...` |
+| `vga_fx_advance` | function | `headers/vga_fx.h:71` | `static inline int vga_fx_advance(const vga_fx_config_t *cfg, int *cols, int w, int h)` |
+| `vga_fx_burn_compose` | function | `headers/vga_fx.h:340` | `static inline unsigned int vga_fx_burn_compose(unsigned int base, int heat)` |
+| `vga_fx_burn_pixel` | function | `headers/vga_fx.h:260` | `static inline int vga_fx_burn_pixel(const vga_fx_motion_t *cfg, int thr, int prog, int *heat)` |
+| `vga_fx_burn_span` | function | `headers/vga_fx.h:230` | `static inline int vga_fx_burn_span(const vga_fx_motion_t *cfg)` |
+| `vga_fx_burn_threshold` | function | `headers/vga_fx.h:241` | `static inline int vga_fx_burn_threshold(const vga_fx_motion_t *cfg, int lx, int ly, int w, int h)` |
+| `vga_fx_clamp_rect` | function | `headers/vga_fx.h:109` | `static inline int vga_fx_clamp_rect(int *x, int *y, int *w, int *h, int fb_w, int fb_h)` |
+| `vga_fx_config_t` | struct | `headers/vga_fx.h:16` | `` |
+| `vga_fx_fire_color` | function | `headers/vga_fx.h:289` | `static inline unsigned int vga_fx_fire_color(int heat)` |
+| `vga_fx_front` | function | `headers/vga_fx.h:97` | `static inline int vga_fx_front(int col_y, int h)` |
+| `vga_fx_hash2` | function | `headers/vga_fx.h:191` | `static inline unsigned long vga_fx_hash2(int x, int y, unsigned long seed)` |
+| `vga_fx_init_cols` | function | `headers/vga_fx.h:47` | `static inline int vga_fx_init_cols(const vga_fx_config_t *cfg, int *cols, int w)` |
+| `vga_fx_mix` | function | `headers/vga_fx.h:319` | `static inline unsigned int vga_fx_mix(unsigned int a, unsigned int b, int alpha)` |
+| `vga_fx_motion_t` | struct | `headers/vga_fx.h:155` | `` |
+| `vga_fx_noise` | function | `headers/vga_fx.h:204` | `static inline int vga_fx_noise(int x, int y, int cell, unsigned long seed)` |
+| `vga_fx_rand` | function | `headers/vga_fx.h:30` | `static inline unsigned long vga_fx_rand(unsigned long *s)` |
+| `vga_fx_smooth` | function | `headers/vga_fx.h:177` | `static inline int vga_fx_smooth(int q)` |
+| `VMA_H` | macro | `headers/vma.h:2` | `#define VMA_H` |
+| `VMA_MAX` | macro | `headers/vma.h:31` | `#define VMA_MAX` |
+| `VMA_NIL` | variable | `headers/vma.h:55` | `extern vma_node_t *VMA_NIL;` |
+| `base` | type_alias | `headers/vma.h:20` | `typedef struct vma_node { unsigned long base;` |
+| `vma_ctx_alloc` | function | `headers/vma.h:90` | `vma_ctx_t *vma_ctx_alloc(void);` |
+| `vma_ctx_bind` | function | `headers/vma.h:70` | `void vma_ctx_bind(vma_ctx_t *c);` |
+| `vma_ctx_free` | function | `headers/vma.h:91` | `void vma_ctx_free(vma_ctx_t *c);` |
+| `vma_ctx_init` | function | `headers/vma.h:69` | `void vma_ctx_init(vma_ctx_t *c, vma_node_t *pool);` |
+| `vma_ctx_save` | function | `headers/vma.h:71` | `void vma_ctx_save(vma_ctx_t *c);` |
+| `vma_ctx_t` | struct | `headers/vma.h:44` | `` |
+| `vma_free_root` | variable | `headers/vma.h:57` | `extern vma_node_t *vma_free_root;` |
+| `vma_legacy` | variable | `headers/vma.h:62` | `extern vma_ctx_t vma_legacy;` |
+| `vma_live_root` | variable | `headers/vma.h:56` | `extern vma_node_t *vma_live_root;` |
+| `vma_node` | struct | `headers/vma.h:21` | `` |
+| `vma_pool` | variable | `headers/vma.h:58` | `extern vma_node_t vma_pool[VMA_MAX];` |
+| `vma_pool_n` | variable | `headers/vma.h:59` | `extern int vma_pool_n;` |
+| `vma_pool_ptr` | variable | `headers/vma.h:61` | `extern vma_node_t *vma_pool_ptr;` |
+| `vma_spare` | variable | `headers/vma.h:60` | `extern vma_node_t *vma_spare;` |
+| `vma_tree_delete` | function | `headers/vma.h:68` | `int vma_tree_delete(vma_node_t **root, unsigned long base);` |
+| `vma_tree_find` | function | `headers/vma.h:66` | `vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base);` |
+| `vma_tree_find_containing` | function | `headers/vma.h:67` | `vma_node_t *vma_tree_find_containing(vma_node_t *root, unsigned long va);` |
+| `vma_tree_init` | function | `headers/vma.h:64` | `void vma_tree_init(void);` |
+| `vma_tree_insert` | function | `headers/vma.h:65` | `vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long len);` |
+| `vma_view_load` | function | `headers/vma.h:87` | `void vma_view_load(const vma_view_t *v);` |
+| `vma_view_save` | function | `headers/vma.h:86` | `void vma_view_save(vma_view_t *v);` |
+| `vma_view_t` | struct | `headers/vma.h:76` | `` |
+| `WM_BLUR_CHANNEL_MASK` | macro | `headers/wm_blur.h:36` | `#define WM_BLUR_CHANNEL_MASK` |
+| `WM_BLUR_CONFIG_DEFAULT` | macro | `headers/wm_blur.h:47` | `#define WM_BLUR_CONFIG_DEFAULT` |
+| `WM_BLUR_H` | macro | `headers/wm_blur.h:21` | `#define WM_BLUR_H` |
+| `WM_BLUR_PASSES_MAX` | macro | `headers/wm_blur.h:28` | `#define WM_BLUR_PASSES_MAX` |
+| `WM_BLUR_RADIUS_MAX` | macro | `headers/wm_blur.h:25` | `#define WM_BLUR_RADIUS_MAX` |
+| `WM_BLUR_RECIP_SHIFT` | macro | `headers/wm_blur.h:33` | `#define WM_BLUR_RECIP_SHIFT` |
+| `wm_blur_config_t` | struct | `headers/wm_blur.h:39` | `` |
+| `wm_blur_config_valid` | function | `headers/wm_blur.h:50` | `static inline int wm_blur_config_valid(const wm_blur_config_t *cfg)` |
+| `wm_blur_edge` | function | `headers/wm_blur.h:84` | `static inline int wm_blur_edge(int i, int n)` |
+| `wm_blur_line` | function | `headers/wm_blur.h:93` | `static inline void wm_blur_line(unsigned int *px, long stride, int n, int radius,                ...` |
+| `wm_blur_line_len` | function | `headers/wm_blur.h:58` | `static inline unsigned long wm_blur_line_len(int w, int h)` |
+| `wm_blur_recip` | function | `headers/wm_blur.h:68` | `static inline unsigned long wm_blur_recip(int win)` |
+| `WM_CHROME_ALPHA_OPAQUE` | macro | `headers/wm_chrome.h:15` | `#define WM_CHROME_ALPHA_OPAQUE` |
+| `WM_CHROME_CONFIG_DEFAULT` | macro | `headers/wm_chrome.h:35` | `#define WM_CHROME_CONFIG_DEFAULT` |
+| `WM_CHROME_H` | macro | `headers/wm_chrome.h:12` | `#define WM_CHROME_H` |
+| `WM_CHROME_RADIUS_MAX` | macro | `headers/wm_chrome.h:38` | `#define WM_CHROME_RADIUS_MAX` |
+| `by` | function | `headers/wm_chrome.h:107` | `* The shadow is the window rect shifted by (dx,dy);` |
+| `wm_chrome_blend` | function | `headers/wm_chrome.h:76` | `static inline unsigned long wm_chrome_blend(unsigned long dst, unsigned long src, int alpha)` |
+| `wm_chrome_blend_channel` | function | `headers/wm_chrome.h:67` | `static inline int wm_chrome_blend_channel(int dst, int src, int alpha)` |
+| `wm_chrome_clamp` | function | `headers/wm_chrome.h:61` | `static inline int wm_chrome_clamp(int v)` |
+| `wm_chrome_config_t` | struct | `headers/wm_chrome.h:18` | `` |
+| `wm_chrome_corner_coverage` | function | `headers/wm_chrome.h:141` | `static inline int wm_chrome_corner_coverage(int radius, int x, int y)` |
+| `wm_chrome_disc_coverage` | function | `headers/wm_chrome.h:162` | `static inline int wm_chrome_disc_coverage(int radius, int x, int y)` |
+| `wm_chrome_gradient` | function | `headers/wm_chrome.h:95` | `static inline unsigned long wm_chrome_gradient(unsigned long base, int row, int span,            ...` |
+| `wm_chrome_isqrt` | function | `headers/wm_chrome.h:41` | `static inline unsigned long wm_chrome_isqrt(unsigned long v)` |
+| `wm_chrome_shadow_alpha` | function | `headers/wm_chrome.h:110` | `static inline int wm_chrome_shadow_alpha(const wm_chrome_config_t *cfg, int px, int py,          ...` |
+| `wm_chrome_shift` | function | `headers/wm_chrome.h:85` | `static inline unsigned long wm_chrome_shift(unsigned long px, int delta)` |
+| `WM_DOCK_ALPHA_OPAQUE` | macro | `headers/wm_dock.h:34` | `#define WM_DOCK_ALPHA_OPAQUE` |
+| `WM_DOCK_FRAC_ONE` | macro | `headers/wm_dock.h:31` | `#define WM_DOCK_FRAC_ONE` |
+| `WM_DOCK_H` | macro | `headers/wm_dock.h:18` | `#define WM_DOCK_H` |
+| `WM_DOCK_LEVEL_ONE` | macro | `headers/wm_dock.h:21` | `#define WM_DOCK_LEVEL_ONE` |
+| `WM_DOCK_REACH_MAX` | macro | `headers/wm_dock.h:25` | `#define WM_DOCK_REACH_MAX` |
+| `WM_DOCK_SIZE_MAX` | macro | `headers/wm_dock.h:28` | `#define WM_DOCK_SIZE_MAX` |
+| `wm_dock_abs` | function | `headers/wm_dock.h:46` | `static inline long wm_dock_abs(long v)` |
+| `wm_dock_config_t` | struct | `headers/wm_dock.h:39` | `` |
+| `wm_dock_level` | function | `headers/wm_dock.h:61` | `static inline int wm_dock_level(int from, int rising, unsigned long elapsed,                     ...` |
+| `wm_dock_level_clamp` | function | `headers/wm_dock.h:52` | `static inline int wm_dock_level_clamp(long level)` |
+| `wm_dock_mag_size` | function | `headers/wm_dock.h:78` | `static inline int wm_dock_mag_size(const wm_dock_config_t *cfg, long dist, int level)` |
+| `wm_dock_sample` | function | `headers/wm_dock.h:120` | `static inline unsigned long wm_dock_sample(const unsigned char *rgba, int sw, int sh,            ...` |
+| `wm_dock_src_coord` | function | `headers/wm_dock.h:104` | `static inline long wm_dock_src_coord(int o, int d, int s)` |
+| `WM_COMBOS_N` | macro | `headers/wm_events.h:198` | `#define WM_COMBOS_N` |
+| `WM_EVENTS_H` | macro | `headers/wm_events.h:11` | `#define WM_EVENTS_H` |
+| `WM_EVENT_CONFIG_DEFAULT` | macro | `headers/wm_events.h:49` | `#define WM_EVENT_CONFIG_DEFAULT` |
+| `WM_PATH_COOKED` | macro | `headers/wm_events.h:138` | `#define WM_PATH_COOKED` |
+| `WM_PATH_RAW` | macro | `headers/wm_events.h:139` | `#define WM_PATH_RAW` |
+| `WM_SC_DOWN` | macro | `headers/wm_events.h:121` | `#define WM_SC_DOWN` |
+| `WM_SC_END` | macro | `headers/wm_events.h:125` | `#define WM_SC_END` |
+| `WM_SC_ENTER` | macro | `headers/wm_events.h:111` | `#define WM_SC_ENTER` |
+| `WM_SC_EQUAL` | macro | `headers/wm_events.h:113` | `#define WM_SC_EQUAL` |
+| `WM_SC_HOME` | macro | `headers/wm_events.h:124` | `#define WM_SC_HOME` |
+| `WM_SC_LBRACKET` | macro | `headers/wm_events.h:116` | `#define WM_SC_LBRACKET` |
+| `WM_SC_LEFT` | macro | `headers/wm_events.h:122` | `#define WM_SC_LEFT` |
+| `WM_SC_M` | macro | `headers/wm_events.h:118` | `#define WM_SC_M` |
+| `WM_SC_MINUS` | macro | `headers/wm_events.h:112` | `#define WM_SC_MINUS` |
+| `WM_SC_Q` | macro | `headers/wm_events.h:115` | `#define WM_SC_Q` |
+| `WM_SC_RBRACKET` | macro | `headers/wm_events.h:117` | `#define WM_SC_RBRACKET` |
+| `WM_SC_RIGHT` | macro | `headers/wm_events.h:123` | `#define WM_SC_RIGHT` |
+| `WM_SC_TAB` | macro | `headers/wm_events.h:110` | `#define WM_SC_TAB` |
+| `WM_SC_UP` | macro | `headers/wm_events.h:120` | `#define WM_SC_UP` |
+| `WM_SC_X` | macro | `headers/wm_events.h:119` | `#define WM_SC_X` |
+| `WM_SC_ZERO` | macro | `headers/wm_events.h:114` | `#define WM_SC_ZERO` |
+| `WM_SNAP_BOTTOM` | macro | `headers/wm_events.h:131` | `#define WM_SNAP_BOTTOM` |
+| `WM_SNAP_BOTTOM_LEFT` | macro | `headers/wm_events.h:134` | `#define WM_SNAP_BOTTOM_LEFT` |
+| `WM_SNAP_BOTTOM_RIGHT` | macro | `headers/wm_events.h:135` | `#define WM_SNAP_BOTTOM_RIGHT` |
+| `WM_SNAP_LEFT` | macro | `headers/wm_events.h:128` | `#define WM_SNAP_LEFT` |
+| `WM_SNAP_RIGHT` | macro | `headers/wm_events.h:129` | `#define WM_SNAP_RIGHT` |
+| `WM_SNAP_TOP` | macro | `headers/wm_events.h:130` | `#define WM_SNAP_TOP` |
+| `WM_SNAP_TOP_LEFT` | macro | `headers/wm_events.h:132` | `#define WM_SNAP_TOP_LEFT` |
+| `WM_SNAP_TOP_RIGHT` | macro | `headers/wm_events.h:133` | `#define WM_SNAP_TOP_RIGHT` |
+| `wm_combo_lookup` | function | `headers/wm_events.h:201` | `static inline int wm_combo_lookup(int alt, int altgr, int sup, int e0, int sc, int path, int *zon...` |
+| `wm_combo_lookup_mods` | function | `headers/wm_events.h:238` | `static inline int wm_combo_lookup_mods(const modifier_state_t *st, int e0, int sc, int path, int ...` |
+| `wm_combo_t` | struct | `headers/wm_events.h:158` | `` |
+| `wm_event_config_t` | struct | `headers/wm_events.h:43` | `` |
+| `wm_event_suppresses_drag` | function | `headers/wm_events.h:104` | `static inline int wm_event_suppresses_drag(const wm_event_t *evt)` |
+| `wm_event_t` | struct | `headers/wm_events.h:34` | `` |
+| `wm_is_click_edge` | function | `headers/wm_events.h:52` | `static inline int wm_is_click_edge(const wm_event_config_t *cfg, int prev_buttons, int curr_buttons)` |
+| `wm_is_release_edge` | function | `headers/wm_events.h:59` | `static inline int wm_is_release_edge(const wm_event_config_t *cfg, int prev_buttons, int curr_but...` |
+| `wm_mouse_t` | struct | `headers/wm_events.h:25` | `` |
+| `wm_translate_event` | function | `headers/wm_events.h:66` | `static inline wm_event_t wm_translate_event(const wm_event_config_t *cfg, const wm_mouse_t *prev,...` |
+| `WM_FOCUS_H` | macro | `headers/wm_focus.h:10` | `#define WM_FOCUS_H` |
+| `wm_focus_next` | function | `headers/wm_focus.h:38` | `static inline int wm_focus_next(const wm_focus_state_t *st)` |
+| `wm_focus_selectable` | function | `headers/wm_focus.h:23` | `static inline int wm_focus_selectable(const wm_focus_state_t *st, int id)` |
+| `wm_focus_set` | function | `headers/wm_focus.h:55` | `static inline int wm_focus_set(const wm_focus_state_t *st, int id)` |
+| `wm_focus_state_t` | struct | `headers/wm_focus.h:15` | `` |
+| `WM_GEOM_CONFIG_DEFAULT` | macro | `headers/wm_geom.h:22` | `#define WM_GEOM_CONFIG_DEFAULT` |
+| `WM_GEOM_H` | macro | `headers/wm_geom.h:11` | `#define WM_GEOM_H` |
+| `wm_clamp_point` | function | `headers/wm_geom.h:91` | `static inline void wm_clamp_point(int *px, int *py, int fb_w, int fb_h)` |
+| `wm_content_rect` | function | `headers/wm_geom.h:59` | `static inline wm_rect_t wm_content_rect(const wm_geom_config_t *cfg, int px, int py, int w, int h)` |
+| `wm_geom_config_t` | struct | `headers/wm_geom.h:14` | `` |
+| `wm_hit_title_bar` | function | `headers/wm_geom.h:84` | `static inline int wm_hit_title_bar(const wm_geom_config_t *cfg, int wx, int wy, int w, int px, in...` |
+| `wm_rect_contains` | function | `headers/wm_geom.h:39` | `static inline int wm_rect_contains(const wm_rect_t *r, int px, int py)` |
+| `wm_rect_t` | struct | `headers/wm_geom.h:25` | `` |
+| `wm_rect_valid` | function | `headers/wm_geom.h:33` | `static inline int wm_rect_valid(const wm_rect_t *r)` |
+| `wm_scrollbar_rect` | function | `headers/wm_geom.h:71` | `static inline wm_rect_t wm_scrollbar_rect(const wm_geom_config_t *cfg, int px, int py, int conten...` |
+| `wm_title_bar_rect` | function | `headers/wm_geom.h:48` | `static inline wm_rect_t wm_title_bar_rect(const wm_geom_config_t *cfg, int px, int py, int w)` |
+| `Downscale` | function | `headers/wm_gfxview.h:88` | `* Downscale (fit below 1x) always takes the exact fit. Returns 1 on  * success, 0 on degenerate i...` |
+| `WM_GFXVIEW_CONFIG_DEFAULT` | macro | `headers/wm_gfxview.h:41` | `#define WM_GFXVIEW_CONFIG_DEFAULT` |
 | `WM_GFXVIEW_DIM_MAX` | macro | `headers/wm_gfxview.h:44` | `#define WM_GFXVIEW_DIM_MAX` |
 | `WM_GFXVIEW_H` | macro | `headers/wm_gfxview.h:21` | `#define WM_GFXVIEW_H` |
 | `wm_gfxview_clamp` | function | `headers/wm_gfxview.h:134` | `static inline void wm_gfxview_clamp(wm_gfxview_rect_t *r, int fb_w, int fb_h)` |
@@ -76,21 +217,21 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 | `ZIP_H` | macro | `headers/zip.h:2` | `#define ZIP_H` |
 | `miniz` | function | `headers/zip.h:6` | `* * The shell builtins over miniz (see zip.c) are declared here so kernel.c's * shell dispatcher can route the...` |
 | `shell_cmd_zip` | function | `headers/zip.h:15` | `void shell_cmd_zip(int argc, char **argv);` |
-| `BOOTLOG_MAX` | macro | `kernel.c:188` | `#define BOOTLOG_MAX` |
-| `KSYM_MAX` | macro | `kernel.c:107` | `#define KSYM_MAX` |
-| `__attribute__` | function | `kernel.c:207` | `__attribute__((section(".init.text"))) void kmain(void)` |
-| `bootlog_mark` | function | `kernel.c:192` | `void bootlog_mark(const char *name)` |
-| `bootlog_report` | function | `kernel.c:199` | `void bootlog_report(void)` |
-| `kstack` | function | `kernel.c:146` | `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...` |
-| `ksyscall` | function | `kernel.c:130` | `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);` |
-| `ms` | function | `kernel.c:185` | `* 0 ms (TSC ticks since power-on divided down, still monotonic);` |
-| `ramdisk_end` | variable | `kernel.c:180` | `extern char ramdisk_end[];` |
-| `ramdisk_start` | variable | `kernel.c:179` | `extern char ramdisk_start[];` |
-| `size` | function | `kernel.c:257` | `* image size (see kernel.ld);` |
-| `syscall_init` | function | `kernel.c:117` | `void syscall_init(void)` |
-| `syscall_kstack` | variable | `kernel.c:115` | `extern unsigned long syscall_kstack;` |
-| `table` | function | `kernel.c:104` | `* Symbol table (for resolving program references) * ================================================================...` |
-| `tables` | function | `kernel.c:279` | `* tables (already built above) for its uncached register window and the      * heap for its rings...` |
+| `BOOTLOG_MAX` | macro | `kernel.c:189` | `#define BOOTLOG_MAX` |
+| `KSYM_MAX` | macro | `kernel.c:108` | `#define KSYM_MAX` |
+| `__attribute__` | function | `kernel.c:208` | `__attribute__((section(".init.text"))) void kmain(void)` |
+| `bootlog_mark` | function | `kernel.c:193` | `void bootlog_mark(const char *name)` |
+| `bootlog_report` | function | `kernel.c:200` | `void bootlog_report(void)` |
+| `kstack` | function | `kernel.c:147` | `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...` |
+| `ksyscall` | function | `kernel.c:131` | `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `ms` | function | `kernel.c:186` | `* 0 ms (TSC ticks since power-on divided down, still monotonic);` |
+| `ramdisk_end` | variable | `kernel.c:181` | `extern char ramdisk_end[];` |
+| `ramdisk_start` | variable | `kernel.c:180` | `extern char ramdisk_start[];` |
+| `size` | function | `kernel.c:258` | `* image size (see kernel.ld);` |
+| `syscall_init` | function | `kernel.c:118` | `void syscall_init(void)` |
+| `syscall_kstack` | variable | `kernel.c:116` | `extern unsigned long syscall_kstack;` |
+| `table` | function | `kernel.c:105` | `* Symbol table (for resolving program references) * ================================================================...` |
+| `tables` | function | `kernel.c:280` | `* tables (already built above) for its uncached register window and the      * heap for its rings...` |
 | `abi_check_manifest` | function | `kernel/abi.c:74` | `int abi_check_manifest(void)` |
 | `abi_parse_num` | function | `kernel/abi.c:20` | `static int abi_parse_num(const char **pp, const char *end, unsigned long *out)` |
 | `abi_verify` | function | `kernel/abi.c:38` | `int abi_verify(const char *text, long version, unsigned long checksum)` |
@@ -355,146 +496,5 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 | `elf_sign_note_span` | function | `kernel/loader.c:1083` | `static int elf_sign_note_span(const unsigned char *img, unsigned long off,                       ...` |
 | `elf_sign_section_find` | function | `kernel/loader.c:1132` | `static int elf_sign_section_find(const unsigned char *img, unsigned size,                        ...` |
 | `elf_sign_u32` | function | `kernel/loader.c:1181` | `static void elf_sign_u32(ed_sha *c, unsigned v)` |
-| `elf_sign_u64` | function | `kernel/loader.c:1172` | `static void elf_sign_u64(ed_sha *c, unsigned long v)` |
-| `elf_wants_process` | function | `kernel/loader.c:1432` | `int elf_wants_process(const void *data, unsigned size)` |
-| `exec_range` | struct | `kernel/loader.c:104` | `` |
-| `images` | function | `kernel/loader.c:790` | `* Static images (no dynamic section, or none needed) return 0 at * once, so the legacy paths never observe a...` |
-| `inodes` | function | `kernel/loader.c:381` | `* Pseudo inodes (LDSO_INO_BASE + slot) keep registry pages apart from * MiniFS inodes in the shared cache. No unload...` |
-| `ldso_bind_into` | function | `kernel/loader.c:794` | `int ldso_bind_into(void *data, unsigned size, unsigned long base,         unsigned long cr3, vma_...` |
-| `ldso_ensure_slot` | function | `kernel/loader.c:483` | `static int ldso_ensure_slot(const char *needed, int *slot_out)` |
-| `ldso_pseudo_read` | function | `kernel/loader.c:416` | `int ldso_pseudo_read(int ino, void *dst, unsigned long off, unsigned len)` |
-| `ldso_pseudo_stat` | function | `kernel/loader.c:402` | `int ldso_pseudo_stat(int ino, unsigned long *size_out)` |
-| `ldso_read_file` | function | `kernel/loader.c:441` | `static int ldso_read_file(const char *name, unsigned char **out,         unsigned *size_out)` |
-| `load_exec_elf` | function | `kernel/loader.c:1262` | `void *load_exec_elf(void *data, unsigned size)` |
-| `load_exec_elf_into` | function | `kernel/loader.c:1456` | `void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3,                          u...` |
-| `process` | function | `kernel/loader.c:1288` | `* atomic section: a 100 Hz tick between two segments would switch * CR3 into another process (copies landing in its...` |
-| `time` | function | `kernel/loader.c:1520` | `* time (with the failing offset);` |
-| `HASH_BITS` | macro | `kernel/lz4_kernel.c:4` | `#define HASH_BITS` |
-| `HASH_SIZE` | macro | `kernel/lz4_kernel.c:5` | `#define HASH_SIZE` |
-| `LZ4_compressBound` | function | `kernel/lz4_kernel.c:33` | `int LZ4_compressBound(int inputSize)` |
-| `LZ4_compress_default` | function | `kernel/lz4_kernel.c:40` | `int LZ4_compress_default(const char *src, char *dst, int srcSize, int dstCapacity)` |
-| `LZ4_decompress_safe` | function | `kernel/lz4_kernel.c:176` | `int LZ4_decompress_safe(const char *src, char *dst, int compressedSize, int dstCapacity)` |
-| `LZ4_hash` | function | `kernel/lz4_kernel.c:26` | `static unsigned int LZ4_hash(const unsigned char *p)` |
-| `LZ4_read16` | function | `kernel/lz4_kernel.c:14` | `static inline unsigned int LZ4_read16(const unsigned char *p)` |
-| `LZ4_read32` | function | `kernel/lz4_kernel.c:7` | `static inline unsigned int LZ4_read32(const unsigned char *p)` |
-| `LZ4_write16` | function | `kernel/lz4_kernel.c:21` | `static inline void LZ4_write16(unsigned char *dst, unsigned short v)` |
-| `slots` | function | `kernel/lz4_kernel.c:43` | `* runs from file writes on 16 KB proc slots (stack discipline, * CLAUDE.md). OOM returns 0 and the caller stores...` |
-| `frame` | function | `kernel/minifetch.c:159` | `* frame (stack discipline, CLAUDE.md). Fail-closed on OOM. */ char (*specs)[96] = (char (*)[96])kmalloc(20 * 96);` |
-| `minifetch_cfg` | struct | `kernel/minifetch.c:21` | `` |
-| `minifetch_logo` | function | `kernel/minifetch.c:81` | `static void minifetch_logo(char rows[16][33])` |
-| `minifetch_row` | function | `kernel/minifetch.c:57` | `static void minifetch_row(const unsigned char *img, int w, int h, int row,                       ...` |
-| `minifetch_specs` | function | `kernel/minifetch.c:101` | `static int minifetch_specs(char lines[20][96])` |
-| `shell_cmd_minifetch` | function | `kernel/minifetch.c:156` | `void shell_cmd_minifetch(void)` |
-| `KMALLOC_REPORT_EVERY` | macro | `kernel/mm.c:50` | `#define KMALLOC_REPORT_EVERY` |
-| `kallocator_init` | function | `kernel/mm.c:32` | `void kallocator_init(void)` |
-| `kcalloc` | function | `kernel/mm.c:111` | `void *kcalloc(unsigned long nmemb, unsigned long size)` |
-| `kfree` | function | `kernel/mm.c:90` | `void kfree(void *ptr)` |
-| `kfree_aligned` | function | `kernel/mm.c:143` | `void kfree_aligned(void *ptr)` |
-| `kheap_ram_top` | function | `kernel/mm.c:19` | `static unsigned long kheap_ram_top(void)` |
-| `kmalloc` | function | `kernel/mm.c:66` | `void *kmalloc(unsigned long size)` |
-| `kmalloc_aligned` | function | `kernel/mm.c:127` | `void *kmalloc_aligned(unsigned long size, unsigned long align)` |
-| `kmalloc_page` | function | `kernel/mm.c:81` | `void *kmalloc_page(void)` |
-| `kmalloc_report_failure` | function | `kernel/mm.c:53` | `static void kmalloc_report_failure(unsigned long size)` |
-| `krealloc` | function | `kernel/mm.c:115` | `void *krealloc(void *ptr, unsigned long size)` |
-| `COW_BITS` | macro | `kernel/mm/cow.c:34` | `#define COW_BITS` |
-| `COW_CAP` | macro | `kernel/mm/cow.c:35` | `#define COW_CAP` |
-| `COW_EMPTY` | macro | `kernel/mm/cow.c:39` | `#define COW_EMPTY` |
-| `COW_HASH_MUL` | macro | `kernel/mm/cow.c:41` | `#define COW_HASH_MUL` |
-| `COW_LOAD_MAX` | macro | `kernel/mm/cow.c:37` | `#define COW_LOAD_MAX` |
-| `COW_MASK` | macro | `kernel/mm/cow.c:36` | `#define COW_MASK` |
-| `COW_TOMB` | macro | `kernel/mm/cow.c:40` | `#define COW_TOMB` |
-| `COW_TOMB_MAX` | macro | `kernel/mm/cow.c:38` | `#define COW_TOMB_MAX` |
-| `CPU` | function | `kernel/mm/cow.c:287` | `* address space down on every other CPU (tlb_shootdown in do_fork_ex). */ unsigned long cow_fork_...` |
-| `PT_PTE_RW` | macro | `kernel/mm/cow.c:48` | `#define PT_PTE_RW` |
-| `PT_USER_RO` | macro | `kernel/mm/cow.c:46` | `#define PT_USER_RO` |
-| `PT_USER_RW_ENTRY` | macro | `kernel/mm/cow.c:47` | `#define PT_USER_RW_ENTRY` |
-| `alternative` | function | `kernel/mm/cow.c:20` | `* window is one instruction wide and the alternative (no CoW) is * documented, so the trade stands. */ #include...` |
-| `cow_copy_demand` | function | `kernel/mm/cow.c:166` | `static void cow_copy_demand(unsigned long pcr3, unsigned long ccr3)` |
-| `cow_entry_t` | struct | `kernel/mm/cow.c:58` | `` |
-| `cow_find` | function | `kernel/mm/cow.c:73` | `static int cow_find(unsigned long phys)` |
-| `cow_fork_one` | function | `kernel/mm/cow.c:255` | `static void cow_fork_one(unsigned long pcr3, unsigned long va,         volatile unsigned long *ppte)` |
-| `cow_page_shared` | function | `kernel/mm/cow.c:132` | `int cow_page_shared(unsigned long phys)` |
-| `cow_rehash` | function | `kernel/mm/cow.c:110` | `static void cow_rehash(void)` |
-| `cow_release_window` | function | `kernel/mm/cow.c:421` | `void cow_release_window(unsigned long cr3)` |
-| `cow_remove` | function | `kernel/mm/cow.c:85` | `static void cow_remove(int idx)` |
-| `cow_resolve` | function | `kernel/mm/cow.c:356` | `int cow_resolve(unsigned long cr3, unsigned long va)` |
-| `cow_shared` | function | `kernel/mm/cow.c:464` | `int cow_shared(void)` |
-| `cow_slot` | function | `kernel/mm/cow.c:68` | `static unsigned long cow_slot(unsigned long phys)` |
-| `cow_table_ensure` | function | `kernel/mm/cow.c:98` | `static void cow_table_ensure(void)` |
-| `cow_track` | function | `kernel/mm/cow.c:191` | `static int cow_track(unsigned long phys)` |
-| `cow_walk` | function | `kernel/mm/cow.c:221` | `static void cow_walk(unsigned long cr3, cow_walk_fn fn)` |
-| `private` | function | `kernel/mm/cow.c:217` | `* for every present page in a private (non-graphics) slot. Shared * graphics slots are never CoW: the compositor...` |
-| `KMM_DEVICE_FLAGS` | macro | `kernel/mm/paging.c:211` | `#define KMM_DEVICE_FLAGS` |
-| `KMM_DEVICE_MAX` | macro | `kernel/mm/paging.c:200` | `#define KMM_DEVICE_MAX` |
-| `KMM_MAX_IDENTITY` | macro | `kernel/mm/paging.c:204` | `#define KMM_MAX_IDENTITY` |
-| `PTE` | function | `kernel/mm/paging.c:1015` | `* PTE (a cache page stays cached, but no stale writer may reach it).  * Never allocates. */ void ...` |
-| `PT_OWNED_BYTES` | macro | `kernel/mm/paging.c:371` | `#define PT_OWNED_BYTES` |
-| `_kernel_end` | variable | `kernel/mm/paging.c:49` | `extern char _kernel_end[];` |
-| `coherent` | function | `kernel/mm/paging.c:259` | `* for memory a device reads and writes by DMA: a controller that is not cache  * coherent (and an...` |
-| `explicitly` | function | `kernel/mm/paging.c:1011` | `* teardown passes the dying window explicitly (zombie-exclusive, no * lock needed). unmap == 0 drops refs only...` |
-| `honest` | function | `kernel/mm/paging.c:655` | `* and invlpg keeps the local TLB honest (cross-CPU shootdown rides  * the documented T5 follow-up...` |
-| `kmm_ensure_pt` | function | `kernel/mm/paging.c:235` | `static volatile unsigned long *kmm_ensure_pt(unsigned long phys)` |
-| `kmm_map_device` | function | `kernel/mm/paging.c:296` | `unsigned long kmm_map_device(unsigned long phys, unsigned long len)` |
-| `mm_anon_fault` | function | `kernel/mm/paging.c:779` | `int mm_anon_fault(unsigned long cr3, unsigned long va, int write)` |
-| `mm_anon_frame` | function | `kernel/mm/paging.c:715` | `static int mm_anon_frame(unsigned long phys)` |
-| `mm_copy_user_page` | function | `kernel/mm/paging.c:1149` | `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va)` |
-| `mm_demand_pte` | function | `kernel/mm/paging.c:704` | `unsigned long mm_demand_pte(unsigned long prot)` |
-| `mm_file_break` | function | `kernel/mm/paging.c:1070` | `int mm_file_break(unsigned long cr3, unsigned long va)` |
-| `mm_file_page_phys` | function | `kernel/mm/paging.c:861` | `unsigned long mm_file_page_phys(unsigned long cr3, unsigned long va)` |
-| `mm_file_pte` | function | `kernel/mm/paging.c:880` | `static volatile unsigned long *mm_file_pte(unsigned long cr3,         unsigned long va)` |
-| `mm_lock` | variable | `kernel/mm/paging.c:696` | `extern spinlock_t mm_lock;` |
-| `mm_page_aligned_alloc` | function | `kernel/mm/paging.c:32` | `static unsigned char *mm_page_aligned_alloc(unsigned size,                                       ...` |
-| `mm_setup_protections` | function | `kernel/mm/paging.c:41` | `void mm_setup_protections(void)` |
-| `mm_user_ensure_page` | function | `kernel/mm/paging.c:625` | `int mm_user_ensure_page(unsigned long cr3, unsigned long va)` |
-| `mm_user_pte_update` | function | `kernel/mm/paging.c:336` | `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3)` |
-| `mm_user_set_exec` | function | `kernel/mm/paging.c:356` | `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3)` |
-| `mt_shared_slot` | function | `kernel/mm/paging.c:549` | `static int mt_shared_slot(unsigned long pd_idx)` |
-| `pt_clone_user` | function | `kernel/mm/paging.c:420` | `uint64_t pt_clone_user(uint64_t parent_cr3)` |
-| `pt_clone_user_empty` | function | `kernel/mm/paging.c:568` | `unsigned long pt_clone_user_empty(void)` |
-| `pt_free_user` | function | `kernel/mm/paging.c:1227` | `void pt_free_user(uint64_t cr3)` |
-| `pt_owned_index` | function | `kernel/mm/paging.c:374` | `static int pt_owned_index(unsigned long phys, unsigned long *byte, unsigned *bit)` |
-| `pt_page_alloc` | function | `kernel/mm/paging.c:392` | `void *pt_page_alloc(void)` |
-| `pt_page_free` | function | `kernel/mm/paging.c:411` | `void pt_page_free(void *ptr)` |
-| `pt_page_owned` | function | `kernel/mm/paging.c:385` | `int pt_page_owned(unsigned long phys)` |
-| `tables` | function | `kernel/mm/paging.c:1010` | `* tables (munmap/mremap in caller context, under their mm_lock);` |
-| `SWAP_CHUNK_CMP` | macro | `kernel/mm/swap.c:18` | `#define SWAP_CHUNK_CMP` |
-| `SWAP_CHUNK_RAW` | macro | `kernel/mm/swap.c:17` | `#define SWAP_CHUNK_RAW` |
-| `SWAP_CHUNK_SECTORS` | macro | `kernel/mm/swap.c:19` | `#define SWAP_CHUNK_SECTORS` |
-| `SWAP_HDR_SECTORS` | macro | `kernel/mm/swap.c:20` | `#define SWAP_HDR_SECTORS` |
-| `SWAP_MAGIC` | macro | `kernel/mm/swap.c:22` | `#define SWAP_MAGIC` |
-| `SWAP_MAX_SECTORS` | macro | `kernel/mm/swap.c:21` | `#define SWAP_MAX_SECTORS` |
-| `swap_ensure` | function | `kernel/mm/swap.c:28` | `static int swap_ensure(void)` |
-| `swap_in` | function | `kernel/mm/swap.c:97` | `int swap_in(void)` |
-| `swap_lba` | function | `kernel/mm/swap.c:41` | `static unsigned long swap_lba(void)` |
-| `swap_out` | function | `kernel/mm/swap.c:47` | `int swap_out(unsigned long window_sz)` |
-| `unwired` | function | `kernel/mm/swap.c:7` | `* * Currently unwired (the isolated-window spawn path superseded the * swap-out design);` |
-| `TLB_SHOOT_SPIN_MAX` | macro | `kernel/mm/tlb.c:24` | `#define TLB_SHOOT_SPIN_MAX` |
-| `tlb_others_on` | function | `kernel/mm/tlb.c:36` | `static int tlb_others_on(unsigned long cr3)` |
-| `tlb_shootdown` | function | `kernel/mm/tlb.c:49` | `void tlb_shootdown(unsigned long cr3)` |
-| `tlb_shootdown_count` | function | `kernel/mm/tlb.c:71` | `unsigned long tlb_shootdown_count(void)` |
-| `tlb_shootdown_timeouts` | function | `kernel/mm/tlb.c:75` | `unsigned long tlb_shootdown_timeouts(void)` |
-| `panic_fb_hex` | function | `kernel/panic.c:61` | `static void panic_fb_hex(unsigned long v, int digits)` |
-| `panic_fb_puts` | function | `kernel/panic.c:30` | `static void panic_fb_puts(const char *s)` |
-| `panic_hex` | function | `kernel/panic.c:23` | `static void panic_hex(unsigned long v, int digits)` |
-| `panic_screen` | function | `kernel/panic.c:98` | `void panic_screen(unsigned long vector, unsigned long err,         unsigned long rip, unsigned lo...` |
-| `rq_cpu_valid` | function | `kernel/percpu_rq.c:14` | `static int rq_cpu_valid(int cpu)` |
-| `rq_empty` | function | `kernel/percpu_rq.c:115` | `int rq_empty(int cpu)` |
-| `rq_enqueue` | function | `kernel/percpu_rq.c:41` | `void rq_enqueue(int cpu, int pid)` |
-| `rq_init` | function | `kernel/percpu_rq.c:19` | `void rq_init(void)` |
-| `rq_note_poll` | function | `kernel/percpu_rq.c:127` | `void rq_note_poll(int cpu)` |
-| `rq_pop_local` | function | `kernel/percpu_rq.c:61` | `int rq_pop_local(int cpu)` |
-| `rq_should_rescan` | function | `kernel/percpu_rq.c:137` | `int rq_should_rescan(int cpu)` |
-| `rq_stats` | function | `kernel/percpu_rq.c:152` | `void rq_stats(int cpu, unsigned long *hits, unsigned long *steals,               unsigned long *d...` |
-| `rq_steal_once` | function | `kernel/percpu_rq.c:89` | `int rq_steal_once(int self_cpu, int *from_cpu)` |
-| `emit_num` | function | `kernel/printf.c:26` | `static void emit_num(void (*emit)(char, void *, int *), void *ctx, int *written,                 ...` |
-| `kformat` | function | `kernel/printf.c:44` | `static void kformat(void (*emit)(char, void *, int *), void *ctx,                     int *writte...` |
-| `kfprintf` | function | `kernel/printf.c:157` | `int kfprintf(KFILE *f, const char *fmt, ...)` |
-| `ksnprintf` | function | `kernel/printf.c:184` | `int ksnprintf(char *buf, unsigned long size, const char *fmt, ...)` |
-| `ksprintf` | function | `kernel/printf.c:166` | `int ksprintf(char *buf, const char *fmt, ...)` |
-| `putc_buf` | function | `kernel/printf.c:7` | `static void putc_buf(char c, void *ctx, int *written)` |
-| `putc_file` | function | `kernel/printf.c:13` | `static void putc_file(char c, void *ctx, int *written)` |
-| `putc_snbuf` | function | `kernel/printf.c:178` | `static void putc_snbuf(char c, void *ctx, int *written)` |
-| `putc_str` | function | `kernel/printf.c:19` | `static void putc_str(char c, void *ctx, int *written)` |
-| `snctx` | struct | `kernel/printf.c:177` | `` |
 
 Next: [SYMBOLS_p9.md](SYMBOLS_p9.md)

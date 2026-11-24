@@ -94,24 +94,63 @@ Depends on: `headers/syscall_asm.h`
 ## bootloader.c
 - `main` (function) `bootloader.c:21` `void main(void)`
 
+## drivers/ahci.c
+Depends on: `headers/arch/x86/hal_io.h`, `headers/driver.h`, `headers/drivers/ahci.h`, `headers/drivers/pci.h`
+- `ahc_outl` (function) `drivers/ahci.c:171` `static void ahc_outl(unsigned short port, unsigned val)` -- Docstring: Serializes slot 0 and the staging buffer. irqsave because the * block cache calls in with its own irqsave...
+- `ahc_inl` (function) `drivers/ahci.c:176` `static unsigned ahc_inl(unsigned short port)` -- Docstring: Serializes slot 0 and the staging buffer. irqsave because the * block cache calls in with its own irqsave...
+- `ahc_r32` (function) `drivers/ahci.c:183` `static unsigned ahc_r32(unsigned off)` -- /** Docstring: Port I/O used for PCI configuration access. static void ahc_outl(unsigned short port, unsigned val) {...
+- `ahc_w32` (function) `drivers/ahci.c:188` `static void ahc_w32(unsigned off, unsigned val)` -- /** Docstring: Port I/O used for PCI configuration access. static unsigned ahc_inl(unsigned short port) { unsigned...
+- `ahc_pr32` (function) `drivers/ahci.c:193` `static unsigned ahc_pr32(volatile unsigned char *px, unsigned off)` -- return v; } /** Docstring: Read an HBA global register. static unsigned ahc_r32(unsigned off) { return...
+- `ahc_pw32` (function) `drivers/ahci.c:198` `static void ahc_pw32(volatile unsigned char *px, unsigned off, unsigned val)` -- return hal_mmio_read32((const volatile unsigned *)(ahc_mmio + off)); } /** Docstring: Write an HBA global register....
+- `ahc_put32` (function) `drivers/ahci.c:203` `static void ahc_put32(unsigned char *p, unsigned v)` -- hal_mmio_write32((volatile unsigned *)(ahc_mmio + off), val); } /** Docstring: Read a register of the port block at...
+- `ahc_id_word` (function) `drivers/ahci.c:211` `static unsigned ahc_id_word(const unsigned char *id, unsigned idx)` -- /** Docstring: Write a register of the port block at px. static void ahc_pw32(volatile unsigned char *px, unsigned...
+- `ahci_present` (function) `drivers/ahci.c:215` `int ahci_present(void)`
+- `ahci_version` (function) `drivers/ahci.c:219` `unsigned ahci_version(void)`
+- `ahci_port` (function) `drivers/ahci.c:223` `int ahci_port(void)`
+- `ahci_ports_implemented` (function) `drivers/ahci.c:227` `unsigned ahci_ports_implemented(void)`
+- `ahci_note` (function) `drivers/ahci.c:231` `const char *ahci_note(void)`
+- `ahci_sectors` (function) `drivers/ahci.c:235` `unsigned long ahci_sectors(void)`
+- `ahc_wait_port` (function) `drivers/ahci.c:241` `static int ahc_wait_port(volatile unsigned char *px, unsigned off,
+                         unsig...` -- Docstring: Wait until (reg & mask) == want on the port block, within * budget_ms.
+- `ahc_handoff` (function) `drivers/ahci.c:255` `static int ahc_handoff(void)` -- Docstring: Take the HBA from firmware.
+- `ahc_port_stop` (function) `drivers/ahci.c:270` `static int ahc_port_stop(volatile unsigned char *px)` -- Docstring: Stop a port's command and FIS engines, as the spec requires * before CLB/FB may change.
+- `ahc_link_up` (function) `drivers/ahci.c:285` `static int ahc_link_up(volatile unsigned char *px)` -- Docstring: True when SSTS reports a device with phy communication in * the active power state.
+- `ahc_port_link` (function) `drivers/ahci.c:296` `static int ahc_port_link(volatile unsigned char *px)` -- Docstring: Bring a port's link up: spin up and power on the device when staggered spin-up is supported, then, if a...
+- `ahc_dma_ok` (function) `drivers/ahci.c:321` `static int ahc_dma_ok(const void *p, unsigned long len)` -- Docstring: True when a heap address can be handed to the HBA: always * with CAP.S64A, below 4 GB otherwise.
+- `ahc_port_start` (function) `drivers/ahci.c:330` `static int ahc_port_start(volatile unsigned char *px)` -- Docstring: Point the stopped port at the command list and FIS area, clear stale status, and start the FIS then the...
+- `ahc_identify` (function) `drivers/ahci.c:417` `static int ahc_identify(void)` -- Docstring: IDENTIFY the claimed disk and record its capacity.
+- `ahc_alloc` (function) `drivers/ahci.c:452` `static int ahc_alloc(void)` -- Docstring: Allocate the DMA structures once, aligned as the spec requires, and make the control structures uncached.
+- `ahc_claim_port` (function) `drivers/ahci.c:480` `static int ahc_claim_port(void)` -- Docstring: Walk the implemented ports and claim the first ATA disk with * an established link that starts and...
+- `ahci_init` (function) `drivers/ahci.c:507` `int ahci_init(void)`
+- `ahc_range_ok` (function) `drivers/ahci.c:580` `static int ahc_range_ok(unsigned lba, unsigned count, const void *buf)` -- ahc_pi = ahc_r32(AHCI_REG_PI); ahc_w32(AHCI_REG_IS, AHCI_ALL_ONES); if (ahc_pi == 0) { ahc_note = "HBA implements no...
+- `ahci_read_sectors` (function) `drivers/ahci.c:587` `int ahci_read_sectors(unsigned lba, unsigned count, void *buf)`
+- `ahci_write_sectors` (function) `drivers/ahci.c:607` `int ahci_write_sectors(unsigned lba, unsigned count, const void *buf)`
+- `ahc_ops_read` (function) `drivers/ahci.c:631` `static int ahc_ops_read(device_t *dev, unsigned lba, unsigned count,
+                        void...` -- r = ahc_exec(ATA_CMD_WRITE_DMA_EXT, lba, n, bytes, 1); spin_unlock_irqrestore(&ahc_lock, flags); if (r != 0) return...
+- `ahc_ops_write` (function) `drivers/ahci.c:638` `static int ahc_ops_write(device_t *dev, unsigned lba, unsigned count,
+                         co...` -- spin_lock_irqsave(&ahc_lock, &flags); r = ahc_exec(ATA_CMD_FLUSH_EXT, 0u, 0u, 0u, 0)...
+- `ahc_ops_total` (function) `drivers/ahci.c:645` `static unsigned ahc_ops_total(device_t *dev)` -- static int ahc_ops_read(device_t *dev, unsigned lba, unsigned count, void *buf) { (void)dev; return...
+- `ahc_ops_present` (function) `drivers/ahci.c:651` `static int ahc_ops_present(device_t *dev)` -- /** Docstring: Registry write op. static int ahc_ops_write(device_t *dev, unsigned lba, unsigned count, const void...
+- `ahci_register_device` (function) `drivers/ahci.c:673` `void ahci_register_device(void)`
+
 ## drivers/block.c
-Depends on: `headers/block.h`, `headers/driver.h`, `headers/drivers/nvme.h`, `headers/drivers/usbblk.h`, `headers/drivers/virtio_blk.h`, `headers/ide.h`
-- `bc_index` (function) `drivers/block.c:64` `static unsigned int bc_index(unsigned int block_num)`
-- `bc_invalidate_locked` (function) `drivers/block.c:68` `static void bc_invalidate_locked(unsigned int block_num)`
-- `bc_invalidate` (function) `drivers/block.c:73` `static void bc_invalidate(unsigned int block_num)`
-- `block_init` (function) `drivers/block.c:80` `void block_init(void)`
-- `block_set_base` (function) `drivers/block.c:113` `void block_set_base(unsigned int lba_base)`
-- `table` (function) `drivers/block.c:122` `* ops table (dev->ops->read/write), never straight at the hardware. The * virtio queue wins when block_init...`
-- `block_dev_read` (function) `drivers/block.c:128` `static int block_dev_read(unsigned lba, unsigned count, void *buf)` -- Strategy consumer: sector I/O goes through the registered block device's ops table (dev->ops->read/write), never...
-- `block_dev_write` (function) `drivers/block.c:146` `static int block_dev_write(unsigned lba, unsigned count, const void *buf)`
-- `block_read` (function) `drivers/block.c:164` `int block_read(unsigned int block_num, void *buf)`
-- `block_write` (function) `drivers/block.c:205` `int block_write(unsigned int block_num, const void *buf)`
-- `block_read_multi` (function) `drivers/block.c:214` `int block_read_multi(unsigned int block_num, unsigned int count, void *buf)`
-- `block_write_multi` (function) `drivers/block.c:219` `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf)`
-- `block_flush` (function) `drivers/block.c:234` `void block_flush(void)`
-- `block_total` (function) `drivers/block.c:236` `unsigned int block_total(void)`
-- `block_read_sectors` (function) `drivers/block.c:244` `int block_read_sectors(unsigned lba, unsigned count, void *buf)` -- Docstring: Absolute sector read on the active backend, with no cache and no base offset: partition tables and...
-- `block_disk_sectors` (function) `drivers/block.c:255` `unsigned long block_disk_sectors(void)` -- Docstring: Size of the active backend in sectors, so scanners fence to * the USB stick when it is the backend and...
+Depends on: `headers/block.h`, `headers/driver.h`, `headers/drivers/ahci.h`, `headers/drivers/nvme.h`, `headers/drivers/usbblk.h`, `headers/drivers/virtio_blk.h`, `headers/ide.h`
+- `bc_index` (function) `drivers/block.c:70` `static unsigned int bc_index(unsigned int block_num)`
+- `bc_invalidate_locked` (function) `drivers/block.c:74` `static void bc_invalidate_locked(unsigned int block_num)`
+- `bc_invalidate` (function) `drivers/block.c:79` `static void bc_invalidate(unsigned int block_num)`
+- `block_init` (function) `drivers/block.c:86` `void block_init(void)`
+- `block_set_base` (function) `drivers/block.c:132` `void block_set_base(unsigned int lba_base)`
+- `table` (function) `drivers/block.c:141` `* ops table (dev->ops->read/write), never straight at the hardware. The * virtio queue wins when block_init...`
+- `block_dev_read` (function) `drivers/block.c:147` `static int block_dev_read(unsigned lba, unsigned count, void *buf)` -- Strategy consumer: sector I/O goes through the registered block device's ops table (dev->ops->read/write), never...
+- `block_dev_write` (function) `drivers/block.c:170` `static int block_dev_write(unsigned lba, unsigned count, const void *buf)`
+- `block_read` (function) `drivers/block.c:193` `int block_read(unsigned int block_num, void *buf)`
+- `block_write` (function) `drivers/block.c:234` `int block_write(unsigned int block_num, const void *buf)`
+- `block_read_multi` (function) `drivers/block.c:243` `int block_read_multi(unsigned int block_num, unsigned int count, void *buf)`
+- `block_write_multi` (function) `drivers/block.c:248` `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf)`
+- `block_flush` (function) `drivers/block.c:263` `void block_flush(void)`
+- `block_total` (function) `drivers/block.c:265` `unsigned int block_total(void)`
+- `block_read_sectors` (function) `drivers/block.c:273` `int block_read_sectors(unsigned lba, unsigned count, void *buf)` -- Docstring: Absolute sector read on the active backend, with no cache and no base offset: partition tables and...
+- `block_disk_sectors` (function) `drivers/block.c:284` `unsigned long block_disk_sectors(void)` -- Docstring: Size of the active backend in sectors, so scanners fence to * the USB stick when it is the backend and...
 
 ## drivers/driver.c
 Depends on: `headers/driver.h`

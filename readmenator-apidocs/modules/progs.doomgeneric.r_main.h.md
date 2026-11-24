@@ -34,7 +34,7 @@ Used to select shadow mode etc.
 |---|---|---|---|
 | `colfunc` |  |  |  |
 
-*Called by:* [`pci_bar_base`](headers.drivers.pci.h.md#pci_bar_base), [`pci_bar_count`](headers.drivers.pci.h.md#pci_bar_count), [`pci_bar_is_64bit`](headers.drivers.pci.h.md#pci_bar_is_64bit), [`pci_bar_is_io`](headers.drivers.pci.h.md#pci_bar_is_io), [`pci_bar_relocate`](headers.drivers.pci.h.md#pci_bar_relocate), [`pci_bar_restore`](headers.drivers.pci.h.md#pci_bar_restore), [`pci_bar_size`](headers.drivers.pci.h.md#pci_bar_size), [`pci_cfg_read`](headers.drivers.pci.h.md#pci_cfg_read), [`pci_cfg_read8`](headers.drivers.pci.h.md#pci_cfg_read8), [`pci_cfg_write`](headers.drivers.pci.h.md#pci_cfg_write), [`pci_cfg_write8`](headers.drivers.pci.h.md#pci_cfg_write8), [`pci_find`](headers.drivers.pci.h.md#pci_find) and 5 more
+*Called by:* [`pci_bar_base`](headers.drivers.pci.h.md#pci_bar_base), [`pci_bar_count`](headers.drivers.pci.h.md#pci_bar_count), [`pci_bar_is_64bit`](headers.drivers.pci.h.md#pci_bar_is_64bit), [`pci_bar_is_io`](headers.drivers.pci.h.md#pci_bar_is_io), [`pci_bar_relocate`](headers.drivers.pci.h.md#pci_bar_relocate), [`pci_bar_restore`](headers.drivers.pci.h.md#pci_bar_restore), [`pci_bar_size`](headers.drivers.pci.h.md#pci_bar_size), [`pci_cfg_read`](headers.drivers.pci.h.md#pci_cfg_read), [`pci_cfg_read8`](headers.drivers.pci.h.md#pci_cfg_read8), [`pci_cfg_write`](headers.drivers.pci.h.md#pci_cfg_write), [`pci_cfg_write8`](headers.drivers.pci.h.md#pci_cfg_write8), [`pci_find`](headers.drivers.pci.h.md#pci_find) and 4 more
 
 ---
 

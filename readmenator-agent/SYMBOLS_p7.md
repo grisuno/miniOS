@@ -1,8 +1,149 @@
-# Symbols (page 7 of 27)
+# Symbols (page 7 of 28)
 Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `SBPF_MISC` | macro | `headers/seccomp_bpf.h:60` | `#define SBPF_MISC` |
+| `SBPF_MOD` | macro | `headers/seccomp_bpf.h:75` | `#define SBPF_MOD` |
+| `SBPF_MUL` | macro | `headers/seccomp_bpf.h:68` | `#define SBPF_MUL` |
+| `SBPF_NEG` | macro | `headers/seccomp_bpf.h:74` | `#define SBPF_NEG` |
+| `SBPF_OR` | macro | `headers/seccomp_bpf.h:70` | `#define SBPF_OR` |
+| `SBPF_RET` | macro | `headers/seccomp_bpf.h:59` | `#define SBPF_RET` |
+| `SBPF_RET_ACTION_FULL` | macro | `headers/seccomp_bpf.h:46` | `#define SBPF_RET_ACTION_FULL` |
+| `SBPF_RET_ALLOW` | macro | `headers/seccomp_bpf.h:45` | `#define SBPF_RET_ALLOW` |
+| `SBPF_RET_DATA` | macro | `headers/seccomp_bpf.h:47` | `#define SBPF_RET_DATA` |
+| `SBPF_RET_ERRNO` | macro | `headers/seccomp_bpf.h:41` | `#define SBPF_RET_ERRNO` |
+| `SBPF_RET_KILL_PROCESS` | macro | `headers/seccomp_bpf.h:38` | `#define SBPF_RET_KILL_PROCESS` |
+| `SBPF_RET_KILL_THREAD` | macro | `headers/seccomp_bpf.h:39` | `#define SBPF_RET_KILL_THREAD` |
+| `SBPF_RET_LOG` | macro | `headers/seccomp_bpf.h:44` | `#define SBPF_RET_LOG` |
+| `SBPF_RET_TRACE` | macro | `headers/seccomp_bpf.h:43` | `#define SBPF_RET_TRACE` |
+| `SBPF_RET_TRAP` | macro | `headers/seccomp_bpf.h:40` | `#define SBPF_RET_TRAP` |
+| `SBPF_RET_USER_NOTIF` | macro | `headers/seccomp_bpf.h:42` | `#define SBPF_RET_USER_NOTIF` |
+| `SBPF_RSH` | macro | `headers/seccomp_bpf.h:73` | `#define SBPF_RSH` |
+| `SBPF_SHIFT_MAX` | macro | `headers/seccomp_bpf.h:34` | `#define SBPF_SHIFT_MAX` |
+| `SBPF_ST` | macro | `headers/seccomp_bpf.h:55` | `#define SBPF_ST` |
+| `SBPF_STX` | macro | `headers/seccomp_bpf.h:56` | `#define SBPF_STX` |
+| `SBPF_SUB` | macro | `headers/seccomp_bpf.h:67` | `#define SBPF_SUB` |
+| `SBPF_TAX` | macro | `headers/seccomp_bpf.h:85` | `#define SBPF_TAX` |
+| `SBPF_TXA` | macro | `headers/seccomp_bpf.h:86` | `#define SBPF_TXA` |
+| `SBPF_W` | macro | `headers/seccomp_bpf.h:61` | `#define SBPF_W` |
+| `SBPF_WORD` | macro | `headers/seccomp_bpf.h:33` | `#define SBPF_WORD` |
+| `SBPF_X` | macro | `headers/seccomp_bpf.h:83` | `#define SBPF_X` |
+| `SBPF_XOR` | macro | `headers/seccomp_bpf.h:76` | `#define SBPF_XOR` |
+| `SECCOMP_BPF_H` | macro | `headers/seccomp_bpf.h:12` | `#define SECCOMP_BPF_H` |
+| `sbpf_action_rank` | function | `headers/seccomp_bpf.h:104` | `int sbpf_action_rank(unsigned int action);` |
+| `sbpf_check` | function | `headers/seccomp_bpf.h:95` | `int sbpf_check(const sbpf_insn *prog, unsigned len, unsigned short *scratch);` |
+| `sbpf_data` | struct | `headers/seccomp_bpf.h:23` | `` |
+| `sbpf_insn` | struct | `headers/seccomp_bpf.h:15` | `` |
+| `sbpf_run` | function | `headers/seccomp_bpf.h:100` | `unsigned int sbpf_run(const sbpf_insn *prog, unsigned len, const sbpf_data *d);` |
+| `SELECT_FD_SETSIZE` | macro | `headers/select_map.h:20` | `#define SELECT_FD_SETSIZE` |
+| `SELECT_FD_SET_BYTES` | macro | `headers/select_map.h:21` | `#define SELECT_FD_SET_BYTES` |
+| `SELECT_MAP_H` | macro | `headers/select_map.h:2` | `#define SELECT_MAP_H` |
+| `SELECT_POLLERR` | macro | `headers/select_map.h:27` | `#define SELECT_POLLERR` |
+| `SELECT_POLLHUP` | macro | `headers/select_map.h:28` | `#define SELECT_POLLHUP` |
+| `SELECT_POLLIN` | macro | `headers/select_map.h:24` | `#define SELECT_POLLIN` |
+| `SELECT_POLLNVAL` | macro | `headers/select_map.h:29` | `#define SELECT_POLLNVAL` |
+| `SELECT_POLLOUT` | macro | `headers/select_map.h:26` | `#define SELECT_POLLOUT` |
+| `SELECT_POLLPRI` | macro | `headers/select_map.h:25` | `#define SELECT_POLLPRI` |
+| `select_fd_isset` | function | `headers/select_map.h:37` | `static inline int select_fd_isset(const unsigned char *set, int fd)` |
+| `select_fd_put` | function | `headers/select_map.h:41` | `static inline void select_fd_put(unsigned char *set, int fd)` |
+| `select_poll_badfd` | function | `headers/select_map.h:131` | `static inline int select_poll_badfd(const select_pollfd_t *pfd,                                  ...` |
+| `select_poll_build` | function | `headers/select_map.h:66` | `static inline unsigned select_poll_build(select_pollfd_t *pfd,                                   ...` |
+| `select_poll_count` | function | `headers/select_map.h:46` | `static inline unsigned select_poll_count(const unsigned char *r,                                 ...` |
+| `select_poll_result` | function | `headers/select_map.h:95` | `static inline unsigned select_poll_result(unsigned char *rout,                                   ...` |
+| `select_pollfd_t` | struct | `headers/select_map.h:31` | `` |
+| `CMD_BUF_SZ` | macro | `headers/shell.h:13` | `#define CMD_BUF_SZ` |
+| `MAX_ARGS` | macro | `headers/shell.h:14` | `#define MAX_ARGS` |
+| `SHELL_H` | macro | `headers/shell.h:2` | `#define SHELL_H` |
+| `shell_cmd_sh` | function | `headers/shell.h:39` | `int shell_cmd_sh(int argc, char **argv);` |
+| `shell_parse` | function | `headers/shell.h:21` | `int shell_parse(char *line, char **argv, int max_args);` |
+| `shell_parse_long` | function | `headers/shell.h:29` | `int shell_parse_long(const char *s, long *out);` |
+| `shell_parse_pid` | function | `headers/shell.h:34` | `int shell_parse_pid(const char *s, int min_pid, int *out);` |
+| `shell_readline_buf` | function | `headers/shell.h:18` | `void shell_readline_buf(char *buf, int size);` |
+| `SIGN_DESC_BYTES` | macro | `headers/sign.h:24` | `#define SIGN_DESC_BYTES` |
+| `SIGN_H` | macro | `headers/sign.h:17` | `#define SIGN_H` |
+| `SIGN_KEYS` | macro | `headers/sign.h:21` | `#define SIGN_KEYS` |
+| `SIGN_KEY_DEV` | macro | `headers/sign.h:19` | `#define SIGN_KEY_DEV` |
+| `SIGN_KEY_PROD` | macro | `headers/sign.h:20` | `#define SIGN_KEY_PROD` |
+| `SIGN_NOTE_TYPE` | macro | `headers/sign.h:25` | `#define SIGN_NOTE_TYPE` |
+| `SIGN_PUB_BYTES` | macro | `headers/sign.h:22` | `#define SIGN_PUB_BYTES` |
+| `SIGN_SIG_BYTES` | macro | `headers/sign.h:23` | `#define SIGN_SIG_BYTES` |
+| `ed25519_verify` | function | `headers/sign.h:75` | `int ed25519_verify(const unsigned char sig[64], const unsigned char *msg, unsigned long msglen, const unsigned char...` |
+| `ed_sha` | struct | `headers/sign.h:61` | `` |
+| `ed_sha512_final` | function | `headers/sign.h:71` | `void ed_sha512_final(ed_sha *c, unsigned char out[64]);` |
+| `ed_sha512_init` | function | `headers/sign.h:69` | `void ed_sha512_init(ed_sha *c);` |
+| `ed_sha512_update` | function | `headers/sign.h:70` | `void ed_sha512_update(ed_sha *c, const unsigned char *data, unsigned long len);` |
+| `sign_pubkey` | function | `headers/sign.h:47` | `static inline const unsigned char *sign_pubkey(unsigned id)` |
+| `SMP_H` | macro | `headers/smp.h:2` | `#define SMP_H` |
+| `lapic_cal_10ms` | variable | `headers/smp.h:38` | `extern unsigned lapic_cal_10ms;` |
+| `lapic_cal_valid` | variable | `headers/smp.h:39` | `extern int lapic_cal_valid;` |
+| `smp_ap_entry` | function | `headers/smp.h:42` | `void smp_ap_entry(void);` |
+| `smp_dbg_ipis` | variable | `headers/smp.h:32` | `extern volatile unsigned smp_dbg_ipis;` |
+| `smp_dbg_lvt` | variable | `headers/smp.h:31` | `extern volatile unsigned smp_dbg_lvt;` |
+| `smp_dbg_sent` | variable | `headers/smp.h:33` | `extern volatile unsigned smp_dbg_sent;` |
+| `smp_dbg_svr` | variable | `headers/smp.h:30` | `extern volatile unsigned smp_dbg_svr;` |
+| `smp_init` | function | `headers/smp.h:41` | `void smp_init(void);` |
+| `smp_ipi_broadcast` | function | `headers/smp.h:43` | `void smp_ipi_broadcast(int vector);` |
+| `smp_lock` | variable | `headers/smp.h:25` | `extern spinlock_t smp_lock;` |
+| `smp_nmi_broadcast` | function | `headers/smp.h:44` | `void smp_nmi_broadcast(void);` |
+| `SPAWN_H` | macro | `headers/spawn.h:2` | `#define SPAWN_H` |
+| `spawn_backup` | function | `headers/spawn.h:28` | `int spawn_backup(spawn_ctx_t *ctx);` |
+| `spawn_copy_argv` | function | `headers/spawn.h:39` | `char **spawn_copy_argv(int argc, const char **uargv);` |
+| `spawn_ctx_t` | struct | `headers/spawn.h:9` | `` |
+| `spawn_execute` | function | `headers/spawn.h:48` | `int spawn_execute(const char *resolved, const char *redirect, unsigned char *data, unsigned data_size, int argc...` |
+| `spawn_free_argv` | function | `headers/spawn.h:42` | `void spawn_free_argv(char **kargv, int argc);` |
+| `spawn_load_image` | function | `headers/spawn.h:45` | `unsigned char *spawn_load_image(const char *resolved, unsigned *size_out);` |
+| `spawn_restore` | function | `headers/spawn.h:31` | `void spawn_restore(spawn_ctx_t *ctx);` |
+| `spawn_validate_argv` | function | `headers/spawn.h:34` | `int spawn_validate_argv(int argc, const char **uargv);` |
+| `SPINLOCK_H` | macro | `headers/spinlock.h:2` | `#define SPINLOCK_H` |
+| `SPINLOCK_INIT` | macro | `headers/spinlock.h:44` | `#define SPINLOCK_INIT` |
+| `irqflags_t` | type_alias | `headers/spinlock.h:41` | `typedef unsigned long irqflags_t;` |
+| `spin_init` | function | `headers/spinlock.h:46` | `static inline void spin_init(spinlock_t *lock)` |
+| `spin_lock` | function | `headers/spinlock.h:58` | `static inline void spin_lock(spinlock_t *lock)` |
+| `spin_lock` | function | `headers/spinlock.h:107` | `static inline void spin_lock(spinlock_t *lock)` |
+| `spin_lock_irqsave` | function | `headers/spinlock.h:68` | `static inline void spin_lock_irqsave(spinlock_t *lock, irqflags_t *flags)` |
+| `spin_restore_irq` | function | `headers/spinlock.h:57` | `static inline void spin_restore_irq(irqflags_t flags)` |
+| `spin_restore_irq` | function | `headers/spinlock.h:99` | `static inline void spin_restore_irq(irqflags_t flags)` |
+| `spin_save_irq` | function | `headers/spinlock.h:56` | `static inline irqflags_t spin_save_irq(void)` |
+| `spin_save_irq` | function | `headers/spinlock.h:92` | `static inline irqflags_t spin_save_irq(void)` |
+| `spin_trylock` | function | `headers/spinlock.h:84` | `static inline int spin_trylock(spinlock_t *lock)` |
+| `spin_unlock` | function | `headers/spinlock.h:64` | `static inline void spin_unlock(spinlock_t *lock)` |
+| `spin_unlock` | function | `headers/spinlock.h:118` | `static inline void spin_unlock(spinlock_t *lock)` |
+| `spin_unlock_irqrestore` | function | `headers/spinlock.h:75` | `static inline void spin_unlock_irqrestore(spinlock_t *lock, irqflags_t flags)` |
+| `spin_unlock_irqrestore` | function | `headers/spinlock.h:150` | `static inline void spin_unlock_irqrestore(spinlock_t *lock, irqflags_t flags)` |
+| `spin_unlock_keep_irq` | function | `headers/spinlock.h:80` | `static inline void spin_unlock_keep_irq(spinlock_t *lock)` |
+| `spin_unlock_keep_irq` | function | `headers/spinlock.h:130` | `static inline void spin_unlock_keep_irq(spinlock_t *lock)` |
+| `spinlock_t` | struct | `headers/spinlock.h:38` | `` |
+| `COND_INIT` | macro | `headers/sync.h:101` | `#define COND_INIT` |
+| `MUTEX_INIT` | macro | `headers/sync.h:70` | `#define MUTEX_INIT` |
+| `RWLOCK_INIT` | macro | `headers/sync.h:122` | `#define RWLOCK_INIT` |
+| `SEM_INIT` | macro | `headers/sync.h:87` | `#define SEM_INIT(n)` |
+| `SYNC_H` | macro | `headers/sync.h:2` | `#define SYNC_H` |
+| `WAIT_QUEUE_INIT` | macro | `headers/sync.h:48` | `#define WAIT_QUEUE_INIT` |
+| `WQ_NONE` | macro | `headers/sync.h:39` | `#define WQ_NONE` |
+| `cond_broadcast` | function | `headers/sync.h:106` | `void cond_broadcast(cond_t *c);` |
+| `cond_init` | function | `headers/sync.h:103` | `void cond_init(cond_t *c);` |
+| `cond_signal` | function | `headers/sync.h:105` | `void cond_signal(cond_t *c);` |
+| `cond_t` | struct | `headers/sync.h:97` | `` |
+| `cond_wait` | function | `headers/sync.h:104` | `void cond_wait(cond_t *c, mutex_t *m);` |
+| `inheritance` | function | `headers/sync.h:56` | `* Priority inheritance (thesis correction 3): a low-priority holder that * blocks a high-priority waiter is boosted...` |
+| `mutex_init` | function | `headers/sync.h:72` | `void mutex_init(mutex_t *m);` |
+| `mutex_lock` | function | `headers/sync.h:73` | `void mutex_lock(mutex_t *m);` |
+| `mutex_note_waiter` | function | `headers/sync.h:76` | `void mutex_note_waiter(mutex_t *m, int waiter);` |
+| `mutex_t` | struct | `headers/sync.h:63` | `` |
+| `mutex_trylock` | function | `headers/sync.h:75` | `int mutex_trylock(mutex_t *m);` |
+| `mutex_unlock` | function | `headers/sync.h:74` | `void mutex_unlock(mutex_t *m);` |
+| `now` | function | `headers/sync.h:130` | `* available right now (a reader never takes it while a writer waits). */ int rwlock_read_trylock(rwlock_t *rw);` |
+| `pi_get_eff` | function | `headers/sync.h:78` | `int pi_get_eff(int pid);` |
+| `pi_set_base` | function | `headers/sync.h:77` | `void pi_set_base(int pid, int prio);` |
+| `rwlock_init` | function | `headers/sync.h:124` | `void rwlock_init(rwlock_t *rw);` |
+| `rwlock_read_lock` | function | `headers/sync.h:125` | `void rwlock_read_lock(rwlock_t *rw);` |
+| `rwlock_read_unlock` | function | `headers/sync.h:126` | `void rwlock_read_unlock(rwlock_t *rw);` |
+| `rwlock_t` | struct | `headers/sync.h:114` | `` |
+| `rwlock_write_lock` | function | `headers/sync.h:127` | `void rwlock_write_lock(rwlock_t *rw);` |
+| `rwlock_write_trylock` | function | `headers/sync.h:132` | `int rwlock_write_trylock(rwlock_t *rw);` |
+| `rwlock_write_unlock` | function | `headers/sync.h:128` | `void rwlock_write_unlock(rwlock_t *rw);` |
+| `sem_init` | function | `headers/sync.h:89` | `void sem_init(sem_t *s, int value);` |
 | `sem_post` | function | `headers/sync.h:91` | `void sem_post(sem_t *s);` |
 | `sem_t` | struct | `headers/sync.h:81` | `` |
 | `sem_wait` | function | `headers/sync.h:90` | `void sem_wait(sem_t *s);` |
@@ -355,146 +496,5 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `VGA_FX_HEAT_MAX` | macro | `headers/vga_fx.h:146` | `#define VGA_FX_HEAT_MAX` |
 | `VGA_FX_HEAT_STEP` | macro | `headers/vga_fx.h:143` | `#define VGA_FX_HEAT_STEP` |
 | `VGA_FX_MOTION_DEFAULT` | macro | `headers/vga_fx.h:173` | `#define VGA_FX_MOTION_DEFAULT` |
-| `VGA_FX_PROG_ONE` | macro | `headers/vga_fx.h:136` | `#define VGA_FX_PROG_ONE` |
-| `longer` | function | `headers/vga_fx.h:353` | `* longer (the lag), every row follows the same smoothstep toward the  * target and narrows to gen...` |
-| `vga_fx_advance` | function | `headers/vga_fx.h:71` | `static inline int vga_fx_advance(const vga_fx_config_t *cfg, int *cols, int w, int h)` |
-| `vga_fx_burn_compose` | function | `headers/vga_fx.h:340` | `static inline unsigned int vga_fx_burn_compose(unsigned int base, int heat)` |
-| `vga_fx_burn_pixel` | function | `headers/vga_fx.h:260` | `static inline int vga_fx_burn_pixel(const vga_fx_motion_t *cfg, int thr, int prog, int *heat)` |
-| `vga_fx_burn_span` | function | `headers/vga_fx.h:230` | `static inline int vga_fx_burn_span(const vga_fx_motion_t *cfg)` |
-| `vga_fx_burn_threshold` | function | `headers/vga_fx.h:241` | `static inline int vga_fx_burn_threshold(const vga_fx_motion_t *cfg, int lx, int ly, int w, int h)` |
-| `vga_fx_clamp_rect` | function | `headers/vga_fx.h:109` | `static inline int vga_fx_clamp_rect(int *x, int *y, int *w, int *h, int fb_w, int fb_h)` |
-| `vga_fx_config_t` | struct | `headers/vga_fx.h:16` | `` |
-| `vga_fx_fire_color` | function | `headers/vga_fx.h:289` | `static inline unsigned int vga_fx_fire_color(int heat)` |
-| `vga_fx_front` | function | `headers/vga_fx.h:97` | `static inline int vga_fx_front(int col_y, int h)` |
-| `vga_fx_hash2` | function | `headers/vga_fx.h:191` | `static inline unsigned long vga_fx_hash2(int x, int y, unsigned long seed)` |
-| `vga_fx_init_cols` | function | `headers/vga_fx.h:47` | `static inline int vga_fx_init_cols(const vga_fx_config_t *cfg, int *cols, int w)` |
-| `vga_fx_mix` | function | `headers/vga_fx.h:319` | `static inline unsigned int vga_fx_mix(unsigned int a, unsigned int b, int alpha)` |
-| `vga_fx_motion_t` | struct | `headers/vga_fx.h:155` | `` |
-| `vga_fx_noise` | function | `headers/vga_fx.h:204` | `static inline int vga_fx_noise(int x, int y, int cell, unsigned long seed)` |
-| `vga_fx_rand` | function | `headers/vga_fx.h:30` | `static inline unsigned long vga_fx_rand(unsigned long *s)` |
-| `vga_fx_smooth` | function | `headers/vga_fx.h:177` | `static inline int vga_fx_smooth(int q)` |
-| `VMA_H` | macro | `headers/vma.h:2` | `#define VMA_H` |
-| `VMA_MAX` | macro | `headers/vma.h:31` | `#define VMA_MAX` |
-| `VMA_NIL` | variable | `headers/vma.h:55` | `extern vma_node_t *VMA_NIL;` |
-| `base` | type_alias | `headers/vma.h:20` | `typedef struct vma_node { unsigned long base;` |
-| `vma_ctx_alloc` | function | `headers/vma.h:90` | `vma_ctx_t *vma_ctx_alloc(void);` |
-| `vma_ctx_bind` | function | `headers/vma.h:70` | `void vma_ctx_bind(vma_ctx_t *c);` |
-| `vma_ctx_free` | function | `headers/vma.h:91` | `void vma_ctx_free(vma_ctx_t *c);` |
-| `vma_ctx_init` | function | `headers/vma.h:69` | `void vma_ctx_init(vma_ctx_t *c, vma_node_t *pool);` |
-| `vma_ctx_save` | function | `headers/vma.h:71` | `void vma_ctx_save(vma_ctx_t *c);` |
-| `vma_ctx_t` | struct | `headers/vma.h:44` | `` |
-| `vma_free_root` | variable | `headers/vma.h:57` | `extern vma_node_t *vma_free_root;` |
-| `vma_legacy` | variable | `headers/vma.h:62` | `extern vma_ctx_t vma_legacy;` |
-| `vma_live_root` | variable | `headers/vma.h:56` | `extern vma_node_t *vma_live_root;` |
-| `vma_node` | struct | `headers/vma.h:21` | `` |
-| `vma_pool` | variable | `headers/vma.h:58` | `extern vma_node_t vma_pool[VMA_MAX];` |
-| `vma_pool_n` | variable | `headers/vma.h:59` | `extern int vma_pool_n;` |
-| `vma_pool_ptr` | variable | `headers/vma.h:61` | `extern vma_node_t *vma_pool_ptr;` |
-| `vma_spare` | variable | `headers/vma.h:60` | `extern vma_node_t *vma_spare;` |
-| `vma_tree_delete` | function | `headers/vma.h:68` | `int vma_tree_delete(vma_node_t **root, unsigned long base);` |
-| `vma_tree_find` | function | `headers/vma.h:66` | `vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base);` |
-| `vma_tree_find_containing` | function | `headers/vma.h:67` | `vma_node_t *vma_tree_find_containing(vma_node_t *root, unsigned long va);` |
-| `vma_tree_init` | function | `headers/vma.h:64` | `void vma_tree_init(void);` |
-| `vma_tree_insert` | function | `headers/vma.h:65` | `vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long len);` |
-| `vma_view_load` | function | `headers/vma.h:87` | `void vma_view_load(const vma_view_t *v);` |
-| `vma_view_save` | function | `headers/vma.h:86` | `void vma_view_save(vma_view_t *v);` |
-| `vma_view_t` | struct | `headers/vma.h:76` | `` |
-| `WM_BLUR_CHANNEL_MASK` | macro | `headers/wm_blur.h:36` | `#define WM_BLUR_CHANNEL_MASK` |
-| `WM_BLUR_CONFIG_DEFAULT` | macro | `headers/wm_blur.h:47` | `#define WM_BLUR_CONFIG_DEFAULT` |
-| `WM_BLUR_H` | macro | `headers/wm_blur.h:21` | `#define WM_BLUR_H` |
-| `WM_BLUR_PASSES_MAX` | macro | `headers/wm_blur.h:28` | `#define WM_BLUR_PASSES_MAX` |
-| `WM_BLUR_RADIUS_MAX` | macro | `headers/wm_blur.h:25` | `#define WM_BLUR_RADIUS_MAX` |
-| `WM_BLUR_RECIP_SHIFT` | macro | `headers/wm_blur.h:33` | `#define WM_BLUR_RECIP_SHIFT` |
-| `wm_blur_config_t` | struct | `headers/wm_blur.h:39` | `` |
-| `wm_blur_config_valid` | function | `headers/wm_blur.h:50` | `static inline int wm_blur_config_valid(const wm_blur_config_t *cfg)` |
-| `wm_blur_edge` | function | `headers/wm_blur.h:84` | `static inline int wm_blur_edge(int i, int n)` |
-| `wm_blur_line` | function | `headers/wm_blur.h:93` | `static inline void wm_blur_line(unsigned int *px, long stride, int n, int radius,                ...` |
-| `wm_blur_line_len` | function | `headers/wm_blur.h:58` | `static inline unsigned long wm_blur_line_len(int w, int h)` |
-| `wm_blur_recip` | function | `headers/wm_blur.h:68` | `static inline unsigned long wm_blur_recip(int win)` |
-| `WM_CHROME_ALPHA_OPAQUE` | macro | `headers/wm_chrome.h:15` | `#define WM_CHROME_ALPHA_OPAQUE` |
-| `WM_CHROME_CONFIG_DEFAULT` | macro | `headers/wm_chrome.h:35` | `#define WM_CHROME_CONFIG_DEFAULT` |
-| `WM_CHROME_H` | macro | `headers/wm_chrome.h:12` | `#define WM_CHROME_H` |
-| `WM_CHROME_RADIUS_MAX` | macro | `headers/wm_chrome.h:38` | `#define WM_CHROME_RADIUS_MAX` |
-| `by` | function | `headers/wm_chrome.h:107` | `* The shadow is the window rect shifted by (dx,dy);` |
-| `wm_chrome_blend` | function | `headers/wm_chrome.h:76` | `static inline unsigned long wm_chrome_blend(unsigned long dst, unsigned long src, int alpha)` |
-| `wm_chrome_blend_channel` | function | `headers/wm_chrome.h:67` | `static inline int wm_chrome_blend_channel(int dst, int src, int alpha)` |
-| `wm_chrome_clamp` | function | `headers/wm_chrome.h:61` | `static inline int wm_chrome_clamp(int v)` |
-| `wm_chrome_config_t` | struct | `headers/wm_chrome.h:18` | `` |
-| `wm_chrome_corner_coverage` | function | `headers/wm_chrome.h:141` | `static inline int wm_chrome_corner_coverage(int radius, int x, int y)` |
-| `wm_chrome_disc_coverage` | function | `headers/wm_chrome.h:162` | `static inline int wm_chrome_disc_coverage(int radius, int x, int y)` |
-| `wm_chrome_gradient` | function | `headers/wm_chrome.h:95` | `static inline unsigned long wm_chrome_gradient(unsigned long base, int row, int span,            ...` |
-| `wm_chrome_isqrt` | function | `headers/wm_chrome.h:41` | `static inline unsigned long wm_chrome_isqrt(unsigned long v)` |
-| `wm_chrome_shadow_alpha` | function | `headers/wm_chrome.h:110` | `static inline int wm_chrome_shadow_alpha(const wm_chrome_config_t *cfg, int px, int py,          ...` |
-| `wm_chrome_shift` | function | `headers/wm_chrome.h:85` | `static inline unsigned long wm_chrome_shift(unsigned long px, int delta)` |
-| `WM_DOCK_ALPHA_OPAQUE` | macro | `headers/wm_dock.h:34` | `#define WM_DOCK_ALPHA_OPAQUE` |
-| `WM_DOCK_FRAC_ONE` | macro | `headers/wm_dock.h:31` | `#define WM_DOCK_FRAC_ONE` |
-| `WM_DOCK_H` | macro | `headers/wm_dock.h:18` | `#define WM_DOCK_H` |
-| `WM_DOCK_LEVEL_ONE` | macro | `headers/wm_dock.h:21` | `#define WM_DOCK_LEVEL_ONE` |
-| `WM_DOCK_REACH_MAX` | macro | `headers/wm_dock.h:25` | `#define WM_DOCK_REACH_MAX` |
-| `WM_DOCK_SIZE_MAX` | macro | `headers/wm_dock.h:28` | `#define WM_DOCK_SIZE_MAX` |
-| `wm_dock_abs` | function | `headers/wm_dock.h:46` | `static inline long wm_dock_abs(long v)` |
-| `wm_dock_config_t` | struct | `headers/wm_dock.h:39` | `` |
-| `wm_dock_level` | function | `headers/wm_dock.h:61` | `static inline int wm_dock_level(int from, int rising, unsigned long elapsed,                     ...` |
-| `wm_dock_level_clamp` | function | `headers/wm_dock.h:52` | `static inline int wm_dock_level_clamp(long level)` |
-| `wm_dock_mag_size` | function | `headers/wm_dock.h:78` | `static inline int wm_dock_mag_size(const wm_dock_config_t *cfg, long dist, int level)` |
-| `wm_dock_sample` | function | `headers/wm_dock.h:120` | `static inline unsigned long wm_dock_sample(const unsigned char *rgba, int sw, int sh,            ...` |
-| `wm_dock_src_coord` | function | `headers/wm_dock.h:104` | `static inline long wm_dock_src_coord(int o, int d, int s)` |
-| `WM_COMBOS_N` | macro | `headers/wm_events.h:198` | `#define WM_COMBOS_N` |
-| `WM_EVENTS_H` | macro | `headers/wm_events.h:11` | `#define WM_EVENTS_H` |
-| `WM_EVENT_CONFIG_DEFAULT` | macro | `headers/wm_events.h:49` | `#define WM_EVENT_CONFIG_DEFAULT` |
-| `WM_PATH_COOKED` | macro | `headers/wm_events.h:138` | `#define WM_PATH_COOKED` |
-| `WM_PATH_RAW` | macro | `headers/wm_events.h:139` | `#define WM_PATH_RAW` |
-| `WM_SC_DOWN` | macro | `headers/wm_events.h:121` | `#define WM_SC_DOWN` |
-| `WM_SC_END` | macro | `headers/wm_events.h:125` | `#define WM_SC_END` |
-| `WM_SC_ENTER` | macro | `headers/wm_events.h:111` | `#define WM_SC_ENTER` |
-| `WM_SC_EQUAL` | macro | `headers/wm_events.h:113` | `#define WM_SC_EQUAL` |
-| `WM_SC_HOME` | macro | `headers/wm_events.h:124` | `#define WM_SC_HOME` |
-| `WM_SC_LBRACKET` | macro | `headers/wm_events.h:116` | `#define WM_SC_LBRACKET` |
-| `WM_SC_LEFT` | macro | `headers/wm_events.h:122` | `#define WM_SC_LEFT` |
-| `WM_SC_M` | macro | `headers/wm_events.h:118` | `#define WM_SC_M` |
-| `WM_SC_MINUS` | macro | `headers/wm_events.h:112` | `#define WM_SC_MINUS` |
-| `WM_SC_Q` | macro | `headers/wm_events.h:115` | `#define WM_SC_Q` |
-| `WM_SC_RBRACKET` | macro | `headers/wm_events.h:117` | `#define WM_SC_RBRACKET` |
-| `WM_SC_RIGHT` | macro | `headers/wm_events.h:123` | `#define WM_SC_RIGHT` |
-| `WM_SC_TAB` | macro | `headers/wm_events.h:110` | `#define WM_SC_TAB` |
-| `WM_SC_UP` | macro | `headers/wm_events.h:120` | `#define WM_SC_UP` |
-| `WM_SC_X` | macro | `headers/wm_events.h:119` | `#define WM_SC_X` |
-| `WM_SC_ZERO` | macro | `headers/wm_events.h:114` | `#define WM_SC_ZERO` |
-| `WM_SNAP_BOTTOM` | macro | `headers/wm_events.h:131` | `#define WM_SNAP_BOTTOM` |
-| `WM_SNAP_BOTTOM_LEFT` | macro | `headers/wm_events.h:134` | `#define WM_SNAP_BOTTOM_LEFT` |
-| `WM_SNAP_BOTTOM_RIGHT` | macro | `headers/wm_events.h:135` | `#define WM_SNAP_BOTTOM_RIGHT` |
-| `WM_SNAP_LEFT` | macro | `headers/wm_events.h:128` | `#define WM_SNAP_LEFT` |
-| `WM_SNAP_RIGHT` | macro | `headers/wm_events.h:129` | `#define WM_SNAP_RIGHT` |
-| `WM_SNAP_TOP` | macro | `headers/wm_events.h:130` | `#define WM_SNAP_TOP` |
-| `WM_SNAP_TOP_LEFT` | macro | `headers/wm_events.h:132` | `#define WM_SNAP_TOP_LEFT` |
-| `WM_SNAP_TOP_RIGHT` | macro | `headers/wm_events.h:133` | `#define WM_SNAP_TOP_RIGHT` |
-| `wm_combo_lookup` | function | `headers/wm_events.h:201` | `static inline int wm_combo_lookup(int alt, int altgr, int sup, int e0, int sc, int path, int *zon...` |
-| `wm_combo_lookup_mods` | function | `headers/wm_events.h:238` | `static inline int wm_combo_lookup_mods(const modifier_state_t *st, int e0, int sc, int path, int ...` |
-| `wm_combo_t` | struct | `headers/wm_events.h:158` | `` |
-| `wm_event_config_t` | struct | `headers/wm_events.h:43` | `` |
-| `wm_event_suppresses_drag` | function | `headers/wm_events.h:104` | `static inline int wm_event_suppresses_drag(const wm_event_t *evt)` |
-| `wm_event_t` | struct | `headers/wm_events.h:34` | `` |
-| `wm_is_click_edge` | function | `headers/wm_events.h:52` | `static inline int wm_is_click_edge(const wm_event_config_t *cfg, int prev_buttons, int curr_buttons)` |
-| `wm_is_release_edge` | function | `headers/wm_events.h:59` | `static inline int wm_is_release_edge(const wm_event_config_t *cfg, int prev_buttons, int curr_but...` |
-| `wm_mouse_t` | struct | `headers/wm_events.h:25` | `` |
-| `wm_translate_event` | function | `headers/wm_events.h:66` | `static inline wm_event_t wm_translate_event(const wm_event_config_t *cfg, const wm_mouse_t *prev,...` |
-| `WM_FOCUS_H` | macro | `headers/wm_focus.h:10` | `#define WM_FOCUS_H` |
-| `wm_focus_next` | function | `headers/wm_focus.h:38` | `static inline int wm_focus_next(const wm_focus_state_t *st)` |
-| `wm_focus_selectable` | function | `headers/wm_focus.h:23` | `static inline int wm_focus_selectable(const wm_focus_state_t *st, int id)` |
-| `wm_focus_set` | function | `headers/wm_focus.h:55` | `static inline int wm_focus_set(const wm_focus_state_t *st, int id)` |
-| `wm_focus_state_t` | struct | `headers/wm_focus.h:15` | `` |
-| `WM_GEOM_CONFIG_DEFAULT` | macro | `headers/wm_geom.h:22` | `#define WM_GEOM_CONFIG_DEFAULT` |
-| `WM_GEOM_H` | macro | `headers/wm_geom.h:11` | `#define WM_GEOM_H` |
-| `wm_clamp_point` | function | `headers/wm_geom.h:91` | `static inline void wm_clamp_point(int *px, int *py, int fb_w, int fb_h)` |
-| `wm_content_rect` | function | `headers/wm_geom.h:59` | `static inline wm_rect_t wm_content_rect(const wm_geom_config_t *cfg, int px, int py, int w, int h)` |
-| `wm_geom_config_t` | struct | `headers/wm_geom.h:14` | `` |
-| `wm_hit_title_bar` | function | `headers/wm_geom.h:84` | `static inline int wm_hit_title_bar(const wm_geom_config_t *cfg, int wx, int wy, int w, int px, in...` |
-| `wm_rect_contains` | function | `headers/wm_geom.h:39` | `static inline int wm_rect_contains(const wm_rect_t *r, int px, int py)` |
-| `wm_rect_t` | struct | `headers/wm_geom.h:25` | `` |
-| `wm_rect_valid` | function | `headers/wm_geom.h:33` | `static inline int wm_rect_valid(const wm_rect_t *r)` |
-| `wm_scrollbar_rect` | function | `headers/wm_geom.h:71` | `static inline wm_rect_t wm_scrollbar_rect(const wm_geom_config_t *cfg, int px, int py, int conten...` |
-| `wm_title_bar_rect` | function | `headers/wm_geom.h:48` | `static inline wm_rect_t wm_title_bar_rect(const wm_geom_config_t *cfg, int px, int py, int w)` |
-| `Downscale` | function | `headers/wm_gfxview.h:88` | `* Downscale (fit below 1x) always takes the exact fit. Returns 1 on  * success, 0 on degenerate i...` |
-| `WM_GFXVIEW_CONFIG_DEFAULT` | macro | `headers/wm_gfxview.h:41` | `#define WM_GFXVIEW_CONFIG_DEFAULT` |
 
 Next: [SYMBOLS_p8.md](SYMBOLS_p8.md)

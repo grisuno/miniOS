@@ -20,16 +20,12 @@ flowchart LR
     n_headers_drivers_pci_h__pci_bar_size["pci.pci_bar_size"]
     n_headers_drivers_pci_h__pci_cfg_read["pci.pci_cfg_read"]
     n_headers_drivers_pci_h__pci_cfg_write["pci.pci_cfg_write"]
-    n_headers_drivers_pci_h__pci_find_class["pci.pci_find_class"]
-    n_kernel_mm_paging_c__kmm_map_device["paging.kmm_map_device"]
     n_drivers_nvme_c__nvme_init -.-> n_headers_drivers_pci_h__pci_bar_base
     n_drivers_nvme_c__nvme_init -.-> n_headers_drivers_pci_h__pci_bar_is_io
     n_drivers_nvme_c__nvme_init -.-> n_headers_drivers_pci_h__pci_bar_restore
     n_drivers_nvme_c__nvme_init -.-> n_headers_drivers_pci_h__pci_bar_size
     n_drivers_nvme_c__nvme_init -.-> n_headers_drivers_pci_h__pci_cfg_read
     n_drivers_nvme_c__nvme_init -.-> n_headers_drivers_pci_h__pci_cfg_write
-    n_drivers_nvme_c__nvme_init -.-> n_headers_drivers_pci_h__pci_find_class
-    n_drivers_nvme_c__nvme_init -.-> n_kernel_mm_paging_c__kmm_map_device
 ```
 
 ## Functions
@@ -124,7 +120,7 @@ int nvme_init(void)
 
 **Returns:** `int`
 
-*Calls:* [`pci_bar_base`](headers.drivers.pci.h.md#pci_bar_base), [`pci_bar_is_io`](headers.drivers.pci.h.md#pci_bar_is_io), [`pci_bar_restore`](headers.drivers.pci.h.md#pci_bar_restore), [`pci_bar_size`](headers.drivers.pci.h.md#pci_bar_size), [`pci_cfg_read`](headers.drivers.pci.h.md#pci_cfg_read), [`pci_cfg_write`](headers.drivers.pci.h.md#pci_cfg_write), [`pci_find_class`](headers.drivers.pci.h.md#pci_find_class), [`kmm_map_device`](kernel.mm.paging.c.md#kmm_map_device)
+*Calls:* [`pci_bar_base`](headers.drivers.pci.h.md#pci_bar_base), [`pci_bar_is_io`](headers.drivers.pci.h.md#pci_bar_is_io), [`pci_bar_restore`](headers.drivers.pci.h.md#pci_bar_restore), [`pci_bar_size`](headers.drivers.pci.h.md#pci_bar_size), [`pci_cfg_read`](headers.drivers.pci.h.md#pci_cfg_read), [`pci_cfg_write`](headers.drivers.pci.h.md#pci_cfg_write)
 
 ---
 

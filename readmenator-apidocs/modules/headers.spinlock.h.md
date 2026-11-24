@@ -196,7 +196,7 @@ static inline void spin_lock_irqsave(spinlock_t *lock, irqflags_t *flags)
 | `lock` | `spinlock_t *` |  |  |
 | `flags` | `irqflags_t *` |  |  |
 
-*Called by:* [`block_read`](drivers.block.c.md#block_read), [`block_write_multi`](drivers.block.c.md#block_write_multi), [`pcm2_close`](drivers.pcm2.c.md#pcm2_close), [`pcm2_irq`](drivers.pcm2.c.md#pcm2_irq), [`pcm2_open`](drivers.pcm2.c.md#pcm2_open), [`pcm2_poll`](drivers.pcm2.c.md#pcm2_poll), [`pcm2_write`](drivers.pcm2.c.md#pcm2_write), [`match`](fs.pcache.c.md#match), [`pcache_get`](fs.pcache.c.md#pcache_get), [`pcache_invalidate_ino`](fs.pcache.c.md#pcache_invalidate_ino), [`pcache_lookup`](fs.pcache.c.md#pcache_lookup), [`pcache_mark_dirty`](fs.pcache.c.md#pcache_mark_dirty) and 57 more
+*Called by:* [`ahci_read_sectors`](drivers.ahci.c.md#ahci_read_sectors), [`ahci_write_sectors`](drivers.ahci.c.md#ahci_write_sectors), [`block_read`](drivers.block.c.md#block_read), [`block_write_multi`](drivers.block.c.md#block_write_multi), [`pcm2_close`](drivers.pcm2.c.md#pcm2_close), [`pcm2_irq`](drivers.pcm2.c.md#pcm2_irq), [`pcm2_open`](drivers.pcm2.c.md#pcm2_open), [`pcm2_poll`](drivers.pcm2.c.md#pcm2_poll), [`pcm2_write`](drivers.pcm2.c.md#pcm2_write), [`match`](fs.pcache.c.md#match), [`pcache_get`](fs.pcache.c.md#pcache_get), [`pcache_invalidate_ino`](fs.pcache.c.md#pcache_invalidate_ino) and 59 more
 
 ---
 
@@ -223,7 +223,7 @@ If the caller's interrupts were enabled before spin_lock_irqsave, they are re-en
 
 > **Inherited:** Documentation from [`spin_unlock_irqrestore`](#spin_unlock_irqrestore) (headers/spinlock.h:150).
 
-*Called by:* [`block_read`](drivers.block.c.md#block_read), [`block_write_multi`](drivers.block.c.md#block_write_multi), [`pcm2_close`](drivers.pcm2.c.md#pcm2_close), [`pcm2_irq`](drivers.pcm2.c.md#pcm2_irq), [`pcm2_open`](drivers.pcm2.c.md#pcm2_open), [`pcm2_poll`](drivers.pcm2.c.md#pcm2_poll), [`pcm2_write`](drivers.pcm2.c.md#pcm2_write), [`match`](fs.pcache.c.md#match), [`pcache_get`](fs.pcache.c.md#pcache_get), [`pcache_invalidate_ino`](fs.pcache.c.md#pcache_invalidate_ino), [`pcache_lookup`](fs.pcache.c.md#pcache_lookup), [`pcache_mark_dirty`](fs.pcache.c.md#pcache_mark_dirty) and 57 more
+*Called by:* [`ahci_read_sectors`](drivers.ahci.c.md#ahci_read_sectors), [`ahci_write_sectors`](drivers.ahci.c.md#ahci_write_sectors), [`block_read`](drivers.block.c.md#block_read), [`block_write_multi`](drivers.block.c.md#block_write_multi), [`pcm2_close`](drivers.pcm2.c.md#pcm2_close), [`pcm2_irq`](drivers.pcm2.c.md#pcm2_irq), [`pcm2_open`](drivers.pcm2.c.md#pcm2_open), [`pcm2_poll`](drivers.pcm2.c.md#pcm2_poll), [`pcm2_write`](drivers.pcm2.c.md#pcm2_write), [`match`](fs.pcache.c.md#match), [`pcache_get`](fs.pcache.c.md#pcache_get), [`pcache_invalidate_ino`](fs.pcache.c.md#pcache_invalidate_ino) and 59 more
 
 ---
 

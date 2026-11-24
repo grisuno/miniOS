@@ -148,11 +148,16 @@ static inline int pci_class_matches(unsigned bus, unsigned dev,
 }
 
 /** Docstring: True when a function advertises more than one function in its
- * slot, so the walk must visit every function number, not just function 0. */
+ * slot, so the walk must visit every function number, not just function 0.
+ * The flag is bit 7 of the header-type byte at 0x0E, which is bits 23:16 of
+ * the 0x0C dword: testing bit 7 of the dword reads cache line size instead,
+ * and every chipset function past 0 (the PCH SATA HBA at 00:1f.2, the PCIe
+ * root ports at 00:1c.x) silently vanishes from the walk. */
 static inline int pci_is_multifunction(unsigned bus, unsigned dev,
         void (*outl)(unsigned short, unsigned),
         unsigned (*inl)(unsigned short)) {
-    unsigned ht = pci_cfg_read(bus, dev, 0, PCI_REG_HEADER_TYPE, outl, inl);
+    unsigned char ht = pci_cfg_read8(bus, dev, 0, PCI_REG_HEADER_TYPE,
+                                     outl, inl);
     return (ht & PCI_HEADER_MULTIFUNC) != 0;
 }
 
@@ -178,7 +183,8 @@ static inline int pci_find(unsigned vendor, unsigned device,
  * class triple, and report its bus/device/function.
  *
  * The walk starts at bus 0 and follows each PCI-to-PCI bridge's secondary
- * bus number, so a controller behind a chipset bridge on real hardware is
+ * bus number (a bridge on any function, since PCIe root ports are functions
+ * of one multifunction device), so a controller behind a chipset bridge on real hardware is
  * found exactly as one on QEMU's bus 0. Two 256-bit masks, 32 bytes of stack
  * each: "reachable" (a bridge leads here) and "scanned" (already looked at).
  * Reachability and scanning are separate so a bus numbered *below* the bridge
@@ -228,15 +234,15 @@ static inline int pci_find_class(pci_bdf_t *out,
                         }
                         return 1;
                     }
-                }
-                if (pci_class_matches(bus, dev, 0, PCI_CLASS_BRIDGE,
-                                      PCI_SUBCLASS_PCI_BRIDGE, PCI_CLASS_ANY,
-                                      outl, inl)) {
-                    unsigned sec = pci_cfg_read8(bus, dev, 0,
-                        PCI_REG_BRIDGE_SECONDARY, outl, inl);
-                    if (sec != 0u && sec < PCI_MAX_BUS &&
-                        !(seen[sec >> 6] & (1ULL << (sec & 63u))))
-                        reach[sec >> 6] |= 1ULL << (sec & 63u);
+                    if (pci_class_matches(bus, dev, func, PCI_CLASS_BRIDGE,
+                                          PCI_SUBCLASS_PCI_BRIDGE,
+                                          PCI_CLASS_ANY, outl, inl)) {
+                        unsigned sec = pci_cfg_read8(bus, dev, func,
+                            PCI_REG_BRIDGE_SECONDARY, outl, inl);
+                        if (sec != 0u && sec < PCI_MAX_BUS &&
+                            !(seen[sec >> 6] & (1ULL << (sec & 63u))))
+                            reach[sec >> 6] |= 1ULL << (sec & 63u);
+                    }
                 }
             }
         }

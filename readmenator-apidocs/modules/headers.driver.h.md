@@ -100,7 +100,7 @@ int device_register(device_t *dev);
 
 **Returns:** `int`
 
-*Called by:* [`ide_register_device`](drivers.ide.c.md#ide_register_device), [`pcspk_init`](drivers.pcspk.c.md#pcspk_init), [`sb16_init`](drivers.sb16.c.md#sb16_init), [`ubk_init`](drivers.usbblk.c.md#ubk_init), [`vblk_register_device`](drivers.virtio_blk.c.md#vblk_register_device)
+*Called by:* [`ahci_register_device`](drivers.ahci.c.md#ahci_register_device), [`ide_register_device`](drivers.ide.c.md#ide_register_device), [`pcspk_init`](drivers.pcspk.c.md#pcspk_init), [`sb16_init`](drivers.sb16.c.md#sb16_init), [`ubk_init`](drivers.usbblk.c.md#ubk_init), [`vblk_register_device`](drivers.virtio_blk.c.md#vblk_register_device)
 
 ---
 

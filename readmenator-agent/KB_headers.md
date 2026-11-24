@@ -185,7 +185,7 @@ Pages: [KB_headers.md](KB_headers.md), [KB_headers_p2.md](KB_headers_p2.md), [KB
   - `DEV_TYPE_AUDIO` (macro, line 22) `#define DEV_TYPE_AUDIO`
   - `DEV_TYPE_NET` (macro, line 23) `#define DEV_TYPE_NET`
   - `DEV_TYPE_CHAR` (macro, line 24) `#define DEV_TYPE_CHAR`
-- Imported by: `drivers/block.c`, `drivers/driver.c`, `drivers/ide.c`, `drivers/pcspk.c`, `drivers/sb16.c`, `drivers/usbblk.c`, `drivers/virtio_blk.c`, `kernel/syscalls.c`, `tests/test_driver.c`, `tests/test_usbblk.c`
+- Imported by: `drivers/ahci.c`, `drivers/block.c`, `drivers/driver.c`, `drivers/ide.c`, `drivers/pcspk.c`, `drivers/sb16.c`, `drivers/usbblk.c`, `drivers/virtio_blk.c`, `kernel/syscalls.c`, `tests/test_driver.c`, `tests/test_usbblk.c`
 
 ## headers/editor.h
 - Doc: the built-in line editor contract.

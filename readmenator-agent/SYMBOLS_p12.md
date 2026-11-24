@@ -1,8 +1,149 @@
-# Symbols (page 12 of 27)
+# Symbols (page 12 of 28)
 Previous: [SYMBOLS_p11.md](SYMBOLS_p11.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `rtl_find` | function | `net/rtl8139.c:58` | `static unsigned short rtl_find(void)` |
+| `rtl_get_mac` | function | `net/rtl8139.c:205` | `void rtl_get_mac(unsigned char out[NET_ETH_ALEN])` |
+| `rtl_init` | function | `net/rtl8139.c:120` | `void rtl_init(void)` |
+| `rtl_iobase` | function | `net/rtl8139.c:210` | `unsigned short rtl_iobase(void)` |
+| `rtl_poll` | function | `net/rtl8139.c:238` | `void rtl_poll(void)` |
+| `rtl_present` | function | `net/rtl8139.c:107` | `int rtl_present(void)` |
+| `rtl_reg16` | function | `net/rtl8139.c:41` | `static unsigned short rtl_reg16(unsigned short off)` |
+| `rtl_reg16_w` | function | `net/rtl8139.c:42` | `static void rtl_reg16_w(unsigned short off, unsigned short v)` |
+| `rtl_reg32` | function | `net/rtl8139.c:43` | `static unsigned int rtl_reg32(unsigned short off)` |
+| `rtl_reg32_w` | function | `net/rtl8139.c:44` | `static void rtl_reg32_w(unsigned short off, unsigned int v)` |
+| `rtl_reg8` | function | `net/rtl8139.c:39` | `static unsigned char rtl_reg8(unsigned short off)` |
+| `rtl_reg8_w` | function | `net/rtl8139.c:40` | `static void rtl_reg8_w(unsigned short off, unsigned char v)` |
+| `rtl_reset` | function | `net/rtl8139.c:111` | `static void rtl_reset(void)` |
+| `rtl_send` | function | `net/rtl8139.c:177` | `int rtl_send(const unsigned char *frame, unsigned len)` |
+| `rtl_tx_wait` | function | `net/rtl8139.c:168` | `static int rtl_tx_wait(unsigned slot, unsigned long deadline)` |
+| `PORT_IO_DEFINED` | macro | `net/tls.c:809` | `#define PORT_IO_DEFINED` |
+| `build_client_hello` | function | `net/tls.c:190` | `static int build_client_hello(struct tls_session *s, unsigned char *out)` |
+| `client_finish_flight` | function | `net/tls.c:244` | `static int client_finish_flight(struct tls_session *s)` |
+| `cmos_read` | function | `net/tls.c:821` | `static inline unsigned char cmos_read(unsigned char reg)` |
+| `exchange` | function | `net/tls.c:173` | `* key exchange (ClientHello, ClientKeyExchange) go out in plaintext  * records, as TLS 1.2 requir...` |
+| `inb` | function | `net/tls.c:813` | `static inline unsigned char inb(unsigned short port)` |
+| `number` | function | `net/tls.c:64` | `* The nonce_explicit is the sequence number (RFC 5288 allows it and * OpenSSL uses it);` |
+| `outb` | function | `net/tls.c:810` | `static inline void outb(unsigned short port, unsigned char v)` |
+| `parse_certificate` | function | `net/tls.c:370` | `static int parse_certificate(struct tls_session *s,                              const unsigned c...` |
+| `parse_server_hello` | function | `net/tls.c:340` | `static int parse_server_hello(struct tls_session *s,                               const unsigned...` |
+| `parse_server_key_exchange` | function | `net/tls.c:401` | `static int parse_server_key_exchange(struct tls_session *s,                                      ...` |
+| `tls_aad` | function | `net/tls.c:52` | `static void tls_aad(unsigned char aad[13], int type, unsigned long long seq,                     ...` |
+| `tls_fail` | function | `net/tls.c:25` | `static void tls_fail(struct tls_session *s, const char *stage, const char *reason)` |
+| `tls_fd_of` | function | `net/tls.c:33` | `static int tls_fd_of(const struct tls_session *s)` |
+| `tls_free_fd` | function | `net/tls.c:40` | `void tls_free_fd(int fd)` |
+| `tls_handshake` | function | `net/tls.c:466` | `int tls_handshake(int fd, const char *host)` |
+| `tls_now_days` | function | `net/tls.c:826` | `long tls_now_days(void)` |
+| `tls_random` | function | `net/tls.c:795` | `void tls_random(unsigned char *out, unsigned len)` |
+| `tls_rdtsc` | function | `net/tls.c:789` | `static inline unsigned long long tls_rdtsc(void)` |
+| `tls_read_record` | function | `net/tls.c:114` | `static int tls_read_record(struct tls_session *s, int fd, int deadline_ms)` |
+| `tls_recv` | function | `net/tls.c:696` | `int tls_recv(int fd, char *buf, int len)` |
+| `tls_send` | function | `net/tls.c:687` | `int tls_send(int fd, const char *buf, int len)` |
+| `tls_send_raw_record` | function | `net/tls.c:95` | `static int tls_send_raw_record(struct tls_session *s, int type,                                co...` |
+| `tls_send_record` | function | `net/tls.c:66` | `static int tls_send_record(struct tls_session *s, int type,                            const unsi...` |
+| `tls_sys_handshake` | function | `net/tls.c:772` | `long tls_sys_handshake(long fd, long host)` |
+| `tls_sys_recv` | function | `net/tls.c:782` | `long tls_sys_recv(long fd, long buf, long len)` |
+| `tls_sys_send` | function | `net/tls.c:777` | `long tls_sys_send(long fd, long buf, long len)` |
+| `TLS_BN_WORDS` | macro | `net/tls_crypto.c:535` | `#define TLS_BN_WORDS` |
+| `aes128_encrypt_block` | function | `net/tls_crypto.c:263` | `void aes128_encrypt_block(const unsigned char key[16],                           const unsigned c...` |
+| `aes128_gcm_open` | function | `net/tls_crypto.c:487` | `int aes128_gcm_open(const unsigned char key[16],                     const unsigned char salt[4],...` |
+| `aes128_gcm_open_core` | function | `net/tls_crypto.c:516` | `int aes128_gcm_open_core(const unsigned char key[16],                          const unsigned cha...` |
+| `aes128_gcm_seal` | function | `net/tls_crypto.c:475` | `int aes128_gcm_seal(const unsigned char key[16],                     const unsigned char salt[4],...` |
+| `aes128_gcm_seal_core` | function | `net/tls_crypto.c:505` | `int aes128_gcm_seal_core(const unsigned char key[16],                          const unsigned cha...` |
+| `aes_key_expand` | function | `net/tls_crypto.c:235` | `static void aes_key_expand(const unsigned char key[16], unsigned rk[44])` |
+| `aes_mixcol` | function | `net/tls_crypto.c:253` | `static void aes_mixcol(unsigned a0, unsigned a1, unsigned a2, unsigned a3,                       ...` |
+| `aes_xtime` | function | `net/tls_crypto.c:230` | `static unsigned aes_xtime(unsigned x)` |
+| `bn_add` | function | `net/tls_crypto.c:559` | `static unsigned bn_add(const unsigned *a, const unsigned *b, unsigned *r, int nw)` |
+| `bn_cmp` | function | `net/tls_crypto.c:549` | `static int bn_cmp(const unsigned *a, const unsigned *b, int nw)` |
+| `bn_dbl_mod` | function | `net/tls_crypto.c:584` | `static void bn_dbl_mod(const unsigned *a, const unsigned *n, const unsigned *v,                  ...` |
+| `bn_from_be` | function | `net/tls_crypto.c:663` | `static void bn_from_be(const unsigned char *bytes, unsigned len,                        unsigned ...` |
+| `bn_is_zero` | function | `net/tls_crypto.c:542` | `static int bn_is_zero(const unsigned *a, int nw)` |
+| `bn_mont_mul` | function | `net/tls_crypto.c:596` | `static void bn_mont_mul(const unsigned *a, const unsigned *b, const unsigned *n,                 ...` |
+| `bn_mont_n0inv` | function | `net/tls_crypto.c:635` | `static unsigned bn_mont_n0inv(unsigned n0)` |
+| `bn_mont_r2` | function | `net/tls_crypto.c:643` | `static void bn_mont_r2(const unsigned *n, const unsigned *v, int nw,                        unsig...` |
+| `bn_sub` | function | `net/tls_crypto.c:571` | `static unsigned bn_sub(const unsigned *a, const unsigned *b, unsigned *r, int nw)` |
+| `bn_to_be` | function | `net/tls_crypto.c:671` | `static void bn_to_be(const unsigned *a, unsigned char *out, unsigned len)` |
+| `bn_zero` | function | `net/tls_crypto.c:537` | `static void bn_zero(unsigned *a, int nw)` |
+| `der_parse_sig` | function | `net/tls_crypto.c:1129` | `static int der_parse_sig(const unsigned char *sig, unsigned sig_len,                          con...` |
+| `ec_boot` | function | `net/tls_crypto.c:1080` | `static void ec_boot(void)` |
+| `ec_curve` | struct | `net/tls_crypto.c:838` | `` |
+| `ec_curve_by_id` | function | `net/tls_crypto.c:1076` | `static struct ec_curve *ec_curve_by_id(int curve)` |
+| `ec_init` | function | `net/tls_crypto.c:848` | `static void ec_init(struct ec_curve *c, const unsigned char *p,                     const unsigne...` |
+| `ecdsa_verify` | function | `net/tls_crypto.c:1163` | `int ecdsa_verify(int curve, const unsigned char pub_x[], const unsigned char pub_y[],            ...` |
+| `gcm_ctr` | function | `net/tls_crypto.c:467` | `static void gcm_ctr(const unsigned char key[16], const unsigned char salt[4],                    ...` |
+| `gcm_ctr_core` | function | `net/tls_crypto.c:427` | `static void gcm_ctr_core(const unsigned char key[16],                          const unsigned cha...` |
+| `gcm_tag` | function | `net/tls_crypto.c:457` | `static void gcm_tag(const unsigned char key[16], const unsigned char salt[4],                    ...` |
+| `gcm_tag_core` | function | `net/tls_crypto.c:384` | `static void gcm_tag_core(const unsigned char key[16],                          const unsigned cha...` |
+| `gf128` | struct | `net/tls_crypto.c:316` | `` |
+| `gf_mul` | function | `net/tls_crypto.c:334` | `static gf128 gf_mul(gf128 z, gf128 h)` |
+| `gf_put` | function | `net/tls_crypto.c:351` | `static gf128 gf_put(const unsigned char *p)` |
+| `gf_shift_right` | function | `net/tls_crypto.c:321` | `static gf128 gf_shift_right(gf128 v)` |
+| `ghash_blocks` | function | `net/tls_crypto.c:361` | `static gf128 ghash_blocks(gf128 z, gf128 h, const unsigned char *data, unsigned len)` |
+| `hmac_sha256` | function | `net/tls_crypto.c:135` | `void hmac_sha256(const unsigned char *key, unsigned klen,                  const unsigned char *d...` |
+| `jpt` | struct | `net/tls_crypto.c:859` | `` |
+| `jpt_add` | function | `net/tls_crypto.c:936` | `static void jpt_add(struct ec_curve *c, const struct jpt *p1, const struct jpt *p2,              ...` |
+| `jpt_copy` | function | `net/tls_crypto.c:875` | `static void jpt_copy(struct jpt *d, const struct jpt *s, int nw)` |
+| `jpt_cswap` | function | `net/tls_crypto.c:885` | `static void jpt_cswap(struct jpt *a, struct jpt *b, unsigned mask, int nw)` |
+| `jpt_dbl` | function | `net/tls_crypto.c:896` | `static void jpt_dbl(struct ec_curve *c, const struct jpt *p1, struct jpt *p3)` |
+| `jpt_from_affine` | function | `net/tls_crypto.c:1032` | `static int jpt_from_affine(struct ec_curve *c, const unsigned char *x_bytes,                     ...` |
+| `jpt_is_inf` | function | `net/tls_crypto.c:865` | `static int jpt_is_inf(const struct jpt *p, int nw)` |
+| `jpt_scalar_mult` | function | `net/tls_crypto.c:980` | `static void jpt_scalar_mult(struct ec_curve *c, const struct jpt *base,                          ...` |
+| `jpt_set_inf` | function | `net/tls_crypto.c:869` | `static void jpt_set_inf(struct jpt *p, int nw)` |
+| `jpt_to_affine` | function | `net/tls_crypto.c:1007` | `static void jpt_to_affine(struct ec_curve *c, const struct jpt *p,                           unsi...` |
+| `mont_add` | function | `net/tls_crypto.c:712` | `static void mont_add(struct mont_ctx *m, const unsigned *a, const unsigned *b,                   ...` |
+| `mont_ctx` | struct | `net/tls_crypto.c:655` | `` |
+| `mont_from` | function | `net/tls_crypto.c:693` | `static void mont_from(struct mont_ctx *m, const unsigned *a, unsigned *r)` |
+| `mont_init` | function | `net/tls_crypto.c:677` | `static void mont_init(struct mont_ctx *m, const unsigned char *p_bytes,                       uns...` |
+| `mont_inv` | function | `net/tls_crypto.c:736` | `static void mont_inv(struct mont_ctx *m, const unsigned *a, unsigned *r)` |
+| `mont_mul` | function | `net/tls_crypto.c:700` | `static void mont_mul(struct mont_ctx *m, const unsigned *a, const unsigned *b,                   ...` |
+| `mont_sqr` | function | `net/tls_crypto.c:705` | `static void mont_sqr(struct mont_ctx *m, const unsigned *a, unsigned *r)` |
+| `mont_sub` | function | `net/tls_crypto.c:721` | `static void mont_sub(struct mont_ctx *m, const unsigned *a, const unsigned *b,                   ...` |
+| `mont_to` | function | `net/tls_crypto.c:689` | `static void mont_to(struct mont_ctx *m, const unsigned *a, unsigned *r)` |
+| `p256_ecdh` | function | `net/tls_crypto.c:1114` | `int p256_ecdh(const unsigned char priv[32],               const unsigned char peer_x[32], const u...` |
+| `p256_point_valid` | function | `net/tls_crypto.c:1512` | `int p256_point_valid(const unsigned char x[32], const unsigned char y[32])` |
+| `p256_pub` | function | `net/tls_crypto.c:1520` | `int p256_pub(const unsigned char priv[32],              unsigned char x[32], unsigned char y[32])` |
+| `p256_scalar_mult` | function | `net/tls_crypto.c:1088` | `int p256_scalar_mult(const unsigned char scalar[32],                      const unsigned char qx[...` |
+| `p256_scalar_valid` | function | `net/tls_crypto.c:1539` | `int p256_scalar_valid(const unsigned char scalar[32])` |
+| `p384_scalar_mult` | function | `net/tls_crypto.c:1101` | `int p384_scalar_mult(const unsigned char scalar[48],                      const unsigned char qx[...` |
+| `p_hash` | function | `net/tls_crypto.c:165` | `static void p_hash(const unsigned char *secret, unsigned secret_len,                    const uns...` |
+| `rsa_pkcs1_verify_raw` | function | `net/tls_crypto.c:1285` | `static int rsa_pkcs1_verify_raw(const unsigned char *n, unsigned n_len,                          ...` |
+| `rsa_pkcs1_verify_sha256` | function | `net/tls_crypto.c:1326` | `int rsa_pkcs1_verify_sha256(const unsigned char *n, unsigned n_len,                             c...` |
+| `rsa_pkcs1_verify_sha384` | function | `net/tls_crypto.c:1340` | `int rsa_pkcs1_verify_sha384(const unsigned char *n, unsigned n_len,                             c...` |
+| `rsa_verify_digestinfo` | function | `net/tls_crypto.c:1261` | `static int rsa_verify_digestinfo(const unsigned char *em, unsigned em_len,                       ...` |
+| `sha256` | function | `net/tls_crypto.c:126` | `void sha256(const unsigned char *data, unsigned len, unsigned char out[32])` |
+| `sha256_block` | function | `net/tls_crypto.c:50` | `static void sha256_block(struct sha256_ctx *c, const unsigned char *p)` |
+| `sha256_final` | function | `net/tls_crypto.c:105` | `void sha256_final(struct sha256_ctx *c, unsigned char out[32])` |
+| `sha256_init` | function | `net/tls_crypto.c:37` | `void sha256_init(struct sha256_ctx *c)` |
+| `sha256_rotr` | function | `net/tls_crypto.c:33` | `static unsigned sha256_rotr(unsigned x, unsigned n)` |
+| `sha256_update` | function | `net/tls_crypto.c:80` | `void sha256_update(struct sha256_ctx *c, const unsigned char *data, unsigned len)` |
+| `sha384` | function | `net/tls_crypto.c:1506` | `void sha384(const unsigned char *data, unsigned len, unsigned char out[48])` |
+| `sha384_raw` | function | `net/tls_crypto.c:1390` | `static void sha384_raw(const unsigned char *data, unsigned len,                        unsigned c...` |
+| `sha384_rotr` | function | `net/tls_crypto.c:1386` | `static unsigned long long sha384_rotr(unsigned long long x, unsigned n)` |
+| `tls_nonce` | function | `net/tls_crypto.c:450` | `static void tls_nonce(const unsigned char salt[4], unsigned long long seq,                       ...` |
+| `tls_prf` | function | `net/tls_crypto.c:188` | `void tls_prf(const unsigned char *secret, unsigned secret_len,              const char *label, co...` |
+| `word` | function | `net/tls_crypto.c:326` | `* of the low word (hi holds bits 64..127, lo bits 0..63). Masked in, * so the shift never branches on key bits. */...` |
+| `TLS_SAN_MAX` | macro | `net/tls_x509.c:170` | `#define TLS_SAN_MAX` |
+| `ascii_lower` | function | `net/tls_x509.c:392` | `static int ascii_lower(int c)` |
+| `cert_parse` | function | `net/tls_x509.c:279` | `static int cert_parse(const unsigned char *der, unsigned len,                       struct x509_c...` |
+| `cert_verify_signature` | function | `net/tls_x509.c:479` | `static int cert_verify_signature(const struct x509_cert *cert,                                  c...` |
+| `days_from_civil` | function | `net/tls_x509.c:94` | `static long days_from_civil(int y, int m, int d)` |
+| `der_container` | function | `net/tls_x509.c:82` | `static int der_container(const unsigned char *p, unsigned limit, unsigned *pos,                  ...` |
+| `der_next` | function | `net/tls_x509.c:51` | `static int der_next(const unsigned char *p, unsigned limit, unsigned *pos,                     st...` |
+| `der_time_to_days` | function | `net/tls_x509.c:106` | `static long der_time_to_days(const struct der_tlv *t)` |
+| `der_tlv` | struct | `net/tls_x509.c:43` | `` |
+| `host_match_exact` | function | `net/tls_x509.c:397` | `static int host_match_exact(const char *host, const unsigned char *name,                         ...` |
+| `host_match_wildcard` | function | `net/tls_x509.c:410` | `static int host_match_wildcard(const char *host, const unsigned char *name,                      ...` |
+| `host_matches` | function | `net/tls_x509.c:431` | `static int host_matches(const char *host, const struct x509_cert *leaf)` |
+| `name_find_cn` | function | `net/tls_x509.c:135` | `static int name_find_cn(const unsigned char *p, unsigned limit,                         struct x5...` |
+| `oid_eq` | function | `net/tls_x509.c:36` | `static int oid_eq(const unsigned char *bytes, unsigned len,                   const unsigned char...` |
+| `pubkey_equal` | function | `net/tls_x509.c:468` | `static int pubkey_equal(const struct tls_pubkey *a, const struct tls_pubkey *b)` |
+| `san_add` | function | `net/tls_x509.c:178` | `static void san_add(struct x509_sans *out, const unsigned char *v, unsigned len)` |
+| `san_parse` | function | `net/tls_x509.c:186` | `static void san_parse(const unsigned char *p, unsigned limit,                       struct x509_s...` |
+| `spki_parse` | function | `net/tls_x509.c:203` | `static int spki_parse(const unsigned char *p, unsigned limit,                       struct tls_pu...` |
+| `tls_x509_parse_pubkey` | function | `net/tls_x509.c:452` | `int tls_x509_parse_pubkey(const unsigned char *der, unsigned len,                           struc...` |
+| `tls_x509_verify_chain` | function | `net/tls_x509.c:521` | `int tls_x509_verify_chain(const unsigned char *chain, unsigned chain_len,                        ...` |
+| `x509_cert` | struct | `net/tls_x509.c:265` | `` |
 | `x509_name` | struct | `net/tls_x509.c:129` | `` |
 | `x509_sans` | struct | `net/tls_x509.c:172` | `` |
 | `__sl_3` | function | `progs/asm/aes.s:3087` | `` |
@@ -355,146 +496,5 @@ Previous: [SYMBOLS_p11.md](SYMBOLS_p11.md)
 | `DMAP_FNAME_MAX` | macro | `progs/doomedit/doomedit.c:67` | `#define DMAP_FNAME_MAX` |
 | `DMAP_FOV_PLANE` | macro | `progs/doomedit/doomedit.c:78` | `#define DMAP_FOV_PLANE` |
 | `DMAP_FRAME_MS` | macro | `progs/doomedit/doomedit.c:75` | `#define DMAP_FRAME_MS` |
-| `DMAP_HISTORY` | macro | `progs/doomedit/doomedit.c:111` | `#define DMAP_HISTORY` |
-| `DMAP_LEVEL_COUNT` | macro | `progs/doomedit/doomedit.c:70` | `#define DMAP_LEVEL_COUNT` |
-| `DMAP_LIGHT` | macro | `progs/doomedit/doomedit.c:102` | `#define DMAP_LIGHT` |
-| `DMAP_MAX_H` | macro | `progs/doomedit/doomedit.c:56` | `#define DMAP_MAX_H` |
-| `DMAP_MAX_LINES` | macro | `progs/doomedit/doomedit.c:79` | `#define DMAP_MAX_LINES` |
-| `DMAP_MAX_SECTORS` | macro | `progs/doomedit/doomedit.c:72` | `#define DMAP_MAX_SECTORS` |
-| `DMAP_MAX_THINGS` | macro | `progs/doomedit/doomedit.c:81` | `#define DMAP_MAX_THINGS` |
-| `DMAP_MAX_VERTS` | macro | `progs/doomedit/doomedit.c:80` | `#define DMAP_MAX_VERTS` |
-| `DMAP_MAX_W` | macro | `progs/doomedit/doomedit.c:55` | `#define DMAP_MAX_W` |
-| `DMAP_MOVE_STEP` | macro | `progs/doomedit/doomedit.c:77` | `#define DMAP_MOVE_STEP` |
-| `DMAP_NODE_LEAF` | macro | `progs/doomedit/doomedit.c:106` | `#define DMAP_NODE_LEAF` |
-| `DMAP_NO_SIDE` | macro | `progs/doomedit/doomedit.c:88` | `#define DMAP_NO_SIDE` |
-| `DMAP_NUKE_FLAT` | macro | `progs/doomedit/doomedit.c:96` | `#define DMAP_NUKE_FLAT` |
-| `DMAP_NUKE_FLOOR` | macro | `progs/doomedit/doomedit.c:99` | `#define DMAP_NUKE_FLOOR` |
-| `DMAP_NUKE_MID` | macro | `progs/doomedit/doomedit.c:93` | `#define DMAP_NUKE_MID` |
-| `DMAP_NUKE_SPECIAL` | macro | `progs/doomedit/doomedit.c:105` | `#define DMAP_NUKE_SPECIAL` |
-| `DMAP_PANEL_MIN_H` | macro | `progs/doomedit/doomedit.c:62` | `#define DMAP_PANEL_MIN_H` |
-| `DMAP_PLAYER_TYPE` | macro | `progs/doomedit/doomedit.c:82` | `#define DMAP_PLAYER_TYPE` |
-| `DMAP_PREV_H` | macro | `progs/doomedit/doomedit.c:64` | `#define DMAP_PREV_H` |
-| `DMAP_PREV_W` | macro | `progs/doomedit/doomedit.c:63` | `#define DMAP_PREV_W` |
-| `DMAP_RANDOM_ATTEMPTS` | macro | `progs/doomedit/doomedit.c:71` | `#define DMAP_RANDOM_ATTEMPTS` |
-| `DMAP_ROOM_MAX` | macro | `progs/doomedit/doomedit.c:73` | `#define DMAP_ROOM_MAX` |
-| `DMAP_ROOM_TRIES` | macro | `progs/doomedit/doomedit.c:74` | `#define DMAP_ROOM_TRIES` |
-| `DMAP_SAVE_TXT` | macro | `progs/doomedit/doomedit.c:108` | `#define DMAP_SAVE_TXT` |
-| `DMAP_SAVE_WAD` | macro | `progs/doomedit/doomedit.c:109` | `#define DMAP_SAVE_WAD` |
-| `DMAP_SLOTS` | macro | `progs/doomedit/doomedit.c:69` | `#define DMAP_SLOTS` |
-| `DMAP_STATUS_MAX` | macro | `progs/doomedit/doomedit.c:68` | `#define DMAP_STATUS_MAX` |
-| `DMAP_THING_OPT` | macro | `progs/doomedit/doomedit.c:83` | `#define DMAP_THING_OPT` |
-| `DMAP_TILE` | macro | `progs/doomedit/doomedit.c:59` | `#define DMAP_TILE` |
-| `DMAP_TITLE` | macro | `progs/doomedit/doomedit.c:110` | `#define DMAP_TITLE` |
-| `DMAP_TOOL_DOOM` | macro | `progs/doomedit/doomedit.c:107` | `#define DMAP_TOOL_DOOM` |
-| `DMAP_TOOL_FILL` | macro | `progs/doomedit/doomedit.c:115` | `#define DMAP_TOOL_FILL` |
-| `DMAP_TOOL_LINE` | macro | `progs/doomedit/doomedit.c:113` | `#define DMAP_TOOL_LINE` |
-| `DMAP_TOOL_PAINT` | macro | `progs/doomedit/doomedit.c:112` | `#define DMAP_TOOL_PAINT` |
-| `DMAP_TOOL_RECT` | macro | `progs/doomedit/doomedit.c:114` | `#define DMAP_TOOL_RECT` |
-| `DMAP_TURN_STEP` | macro | `progs/doomedit/doomedit.c:76` | `#define DMAP_TURN_STEP` |
-| `DMAP_UI_MEMORY` | macro | `progs/doomedit/doomedit.c:65` | `#define DMAP_UI_MEMORY` |
-| `DMAP_UNUSED_TEX` | macro | `progs/doomedit/doomedit.c:94` | `#define DMAP_UNUSED_TEX` |
-| `DMAP_WAD_MAX` | macro | `progs/doomedit/doomedit.c:66` | `#define DMAP_WAD_MAX` |
-| `DMAP_WALL_MID` | macro | `progs/doomedit/doomedit.c:89` | `#define DMAP_WALL_MID` |
-| `areas` | function | `progs/doomedit/doomedit.c:1150` | `* floor areas (doors stand alone, dark and nukage never merge);` |
-| `dmap_apply_cell` | function | `progs/doomedit/doomedit.c:326` | `static void dmap_apply_cell(int r, int c, int brush)` |
-| `dmap_brush_combo` | function | `progs/doomedit/doomedit.c:1760` | `static void dmap_brush_combo(struct nk_context *ctx)` |
-| `dmap_build_wad` | function | `progs/doomedit/doomedit.c:1343` | `static int dmap_build_wad(int *size_out)` |
-| `dmap_canvas` | function | `progs/doomedit/doomedit.c:1773` | `static void dmap_canvas(struct nk_context *ctx)` |
-| `dmap_cell_class` | function | `progs/doomedit/doomedit.c:583` | `static int dmap_cell_class(int cell)` |
-| `dmap_cell_color` | function | `progs/doomedit/doomedit.c:594` | `static struct nk_color dmap_cell_color(int cell)` |
-| `dmap_check_wad` | function | `progs/doomedit/doomedit.c:1675` | `static int dmap_check_wad(const char *path)` |
-| `dmap_demo_room` | function | `progs/doomedit/doomedit.c:2110` | `static void dmap_demo_room(void)` |
-| `dmap_draw_line` | function | `progs/doomedit/doomedit.c:383` | `static void dmap_draw_line(int r0, int c0, int r1, int c1, int cell)` |
-| `dmap_draw_rect` | function | `progs/doomedit/doomedit.c:411` | `static void dmap_draw_rect(int r0, int c0, int r1, int c1, int cell)` |
-| `dmap_export_wad` | function | `progs/doomedit/doomedit.c:1660` | `static int dmap_export_wad(const char *path)` |
-| `dmap_flood_fill` | function | `progs/doomedit/doomedit.c:344` | `static void dmap_flood_fill(int sr, int sc, int new_cell)` |
-| `dmap_free_cell` | function | `progs/doomedit/doomedit.c:857` | `static int dmap_free_cell(int *r, int *c)` |
-| `dmap_gui_run` | function | `progs/doomedit/doomedit.c:2056` | `static void dmap_gui_run(void)` |
-| `dmap_is_wall` | function | `progs/doomedit/doomedit.c:570` | `static int dmap_is_wall(int row, int col)` |
-| `dmap_label_regions` | function | `progs/doomedit/doomedit.c:1163` | `static int dmap_label_regions(void)` |
-| `dmap_load` | function | `progs/doomedit/doomedit.c:1077` | `static int dmap_load(const char *path)` |
-| `dmap_load_preset` | function | `progs/doomedit/doomedit.c:816` | `static int dmap_load_preset(int idx)` |
-| `dmap_new` | function | `progs/doomedit/doomedit.c:639` | `static void dmap_new(void)` |
-| `dmap_path_len` | function | `progs/doomedit/doomedit.c:480` | `static int dmap_path_len(void)` |
-| `dmap_preview` | function | `progs/doomedit/doomedit.c:1693` | `static void dmap_preview(struct nk_command_buffer *canvas, struct nk_rect area)` |
-| `dmap_preview_row` | function | `progs/doomedit/doomedit.c:1863` | `static void dmap_preview_row(struct nk_context *ctx)` |
-| `dmap_push_history` | function | `progs/doomedit/doomedit.c:272` | `static void dmap_push_history(void)` |
-| `dmap_rand` | function | `progs/doomedit/doomedit.c:849` | `static unsigned dmap_rand(void)` |
-| `dmap_random_map` | function | `progs/doomedit/doomedit.c:871` | `static void dmap_random_map(unsigned seed)` |
-| `dmap_reach_map` | function | `progs/doomedit/doomedit.c:440` | `static void dmap_reach_map(int seen[DMAP_MAX_H][DMAP_MAX_W])` |
-| `dmap_recenter` | function | `progs/doomedit/doomedit.c:804` | `static void dmap_recenter(void)` |
-| `dmap_redo` | function | `progs/doomedit/doomedit.c:307` | `static int dmap_redo(void)` |
-| `dmap_run_map` | function | `progs/doomedit/doomedit.c:1898` | `static void dmap_run_map(void)` |
-| `dmap_save_txt` | function | `progs/doomedit/doomedit.c:1129` | `static int dmap_save_txt(const char *path)` |
-| `dmap_scancode` | function | `progs/doomedit/doomedit.c:2037` | `static void dmap_scancode(int code, int make, int e0, void *ud)` |
-| `dmap_seg_angle` | function | `progs/doomedit/doomedit.c:1333` | `static int dmap_seg_angle(int dx, int dy)` |
-| `dmap_selftest` | function | `progs/doomedit/doomedit.c:2122` | `static int dmap_selftest(void)` |
-| `dmap_spawn` | function | `progs/doomedit/doomedit.c:550` | `static long dmap_spawn(const char *path, int argc, const char **argv)` |
-| `dmap_stats` | function | `progs/doomedit/doomedit.c:522` | `static void dmap_stats(char *out, int max)` |
-| `dmap_thing_type` | function | `progs/doomedit/doomedit.c:165` | `static int dmap_thing_type(int cell)` |
-| `dmap_undo` | function | `progs/doomedit/doomedit.c:289` | `static int dmap_undo(void)` |
-| `dmap_validate` | function | `progs/doomedit/doomedit.c:1244` | `static int dmap_validate(char *msg, int max)` |
-| `dmap_vga` | function | `progs/doomedit/doomedit.c:561` | `static long dmap_vga(int on)` |
-| `dmap_w16` | function | `progs/doomedit/doomedit.c:1318` | `static void dmap_w16(int v)` |
-| `dmap_w32` | function | `progs/doomedit/doomedit.c:1322` | `static void dmap_w32(int v)` |
-| `dmap_w8` | function | `progs/doomedit/doomedit.c:1317` | `static void dmap_w8(unsigned v)` |
-| `dmap_walkable` | function | `progs/doomedit/doomedit.c:577` | `static int dmap_walkable(int cell)` |
-| `dmap_wtex` | function | `progs/doomedit/doomedit.c:1326` | `static void dmap_wtex(const char *name)` |
-| `main` | function | `progs/doomedit/doomedit.c:2246` | `int main(int argc, char **argv)` |
-| `AM_Drawer` | function | `progs/doomgeneric/am_map.c:1338` | `void AM_Drawer (void)` |
-| `AM_LevelInit` | function | `progs/doomgeneric/am_map.c:518` | `void AM_LevelInit(void)` |
-| `AM_NUMMARKPOINTS` | macro | `progs/doomgeneric/am_map.c:87` | `#define AM_NUMMARKPOINTS` |
-| `AM_Responder` | function | `progs/doomgeneric/am_map.c:595` | `boolean AM_Responder ( event_t*	ev )` |
-| `AM_Start` | function | `progs/doomgeneric/am_map.c:554` | `void AM_Start (void)` |
-| `AM_Stop` | function | `progs/doomgeneric/am_map.c:541` | `void AM_Stop (void)` |
-| `AM_Ticker` | function | `progs/doomgeneric/am_map.c:806` | `void AM_Ticker (void)` |
-| `AM_activateNewScale` | function | `progs/doomgeneric/am_map.c:293` | `void AM_activateNewScale(void)` |
-| `AM_addMark` | function | `progs/doomgeneric/am_map.c:343` | `void AM_addMark(void)` |
-| `AM_changeWindowLoc` | function | `progs/doomgeneric/am_map.c:395` | `void AM_changeWindowLoc(void)` |
-| `AM_changeWindowScale` | function | `progs/doomgeneric/am_map.c:742` | `void AM_changeWindowScale(void)` |
-| `AM_clearFB` | function | `progs/doomgeneric/am_map.c:834` | `void AM_clearFB(int color)` |
-| `AM_clearMarks` | function | `progs/doomgeneric/am_map.c:505` | `void AM_clearMarks(void)` |
-| `AM_clipMline` | function | `progs/doomgeneric/am_map.c:848` | `boolean AM_clipMline ( mline_t*	ml,   fline_t*	fl )` |
-| `AM_doFollowPlayer` | function | `progs/doomgeneric/am_map.c:761` | `void AM_doFollowPlayer(void)` |
-| `AM_drawCrosshair` | function | `progs/doomgeneric/am_map.c:1332` | `void AM_drawCrosshair(int color)` |
-| `AM_drawFline` | function | `progs/doomgeneric/am_map.c:984` | `void AM_drawFline ( fline_t*	fl,   int		color )` |
-| `AM_drawGrid` | function | `progs/doomgeneric/am_map.c:1077` | `void AM_drawGrid(int color)` |
-| `AM_drawLineCharacter` | function | `progs/doomgeneric/am_map.c:1198` | `void AM_drawLineCharacter ( mline_t*	lineguy,   int		lineguylines,   fixed_t	scale,   angle_t	ang...` |
-| `AM_drawMarks` | function | `progs/doomgeneric/am_map.c:1311` | `void AM_drawMarks(void)` |
-| `AM_drawMline` | function | `progs/doomgeneric/am_map.c:1062` | `void AM_drawMline ( mline_t*	ml,   int		color )` |
-| `AM_drawPlayers` | function | `progs/doomgeneric/am_map.c:1246` | `void AM_drawPlayers(void)` |
-| `AM_drawThings` | function | `progs/doomgeneric/am_map.c:1291` | `void AM_drawThings ( int	colors,   int 	colorrange)` |
-| `AM_drawWalls` | function | `progs/doomgeneric/am_map.c:1123` | `void AM_drawWalls(void)` |
-| `AM_findMinMaxBoundaries` | function | `progs/doomgeneric/am_map.c:355` | `void AM_findMinMaxBoundaries(void)` |
-| `AM_getIslope` | function | `progs/doomgeneric/am_map.c:275` | `void AM_getIslope ( mline_t*	ml,   islope_t*	is )` |
-| `AM_initVariables` | function | `progs/doomgeneric/am_map.c:424` | `void AM_initVariables(void)` |
-| `AM_loadPics` | function | `progs/doomgeneric/am_map.c:480` | `void AM_loadPics(void)` |
-| `AM_maxOutWindowScale` | function | `progs/doomgeneric/am_map.c:583` | `void AM_maxOutWindowScale(void)` |
-| `AM_minOutWindowScale` | function | `progs/doomgeneric/am_map.c:573` | `void AM_minOutWindowScale(void)` |
-| `AM_restoreScaleAndLoc` | function | `progs/doomgeneric/am_map.c:319` | `void AM_restoreScaleAndLoc(void)` |
-| `AM_rotate` | function | `progs/doomgeneric/am_map.c:1179` | `void AM_rotate ( fixed_t*	x,   fixed_t*	y,   angle_t	a )` |
-| `AM_saveScaleAndLoc` | function | `progs/doomgeneric/am_map.c:308` | `void AM_saveScaleAndLoc(void)` |
-| `AM_unloadPics` | function | `progs/doomgeneric/am_map.c:493` | `void AM_unloadPics(void)` |
-| `AM_updateLightLev` | function | `progs/doomgeneric/am_map.c:785` | `void AM_updateLightLev(void)` |
-| `BACKGROUND` | macro | `progs/doomgeneric/am_map.c:66` | `#define BACKGROUND` |
-| `BLACK` | macro | `progs/doomgeneric/am_map.c:62` | `#define BLACK` |
-| `BLUERANGE` | macro | `progs/doomgeneric/am_map.c:53` | `#define BLUERANGE` |
-| `BLUES` | macro | `progs/doomgeneric/am_map.c:52` | `#define BLUES` |
-| `BROWNRANGE` | macro | `progs/doomgeneric/am_map.c:59` | `#define BROWNRANGE` |
-| `BROWNS` | macro | `progs/doomgeneric/am_map.c:58` | `#define BROWNS` |
-| `CDWALLCOLORS` | macro | `progs/doomgeneric/am_map.c:75` | `#define CDWALLCOLORS` |
-| `CDWALLRANGE` | macro | `progs/doomgeneric/am_map.c:76` | `#define CDWALLRANGE` |
-| `CXMTOF` | macro | `progs/doomgeneric/am_map.c:105` | `#define CXMTOF(x)` |
-| `CYMTOF` | macro | `progs/doomgeneric/am_map.c:106` | `#define CYMTOF(y)` |
-| `DOOUTCODE` | macro | `progs/doomgeneric/am_map.c:869` | `#define DOOUTCODE(oc, mx, my)` |
-| `FDWALLCOLORS` | macro | `progs/doomgeneric/am_map.c:73` | `#define FDWALLCOLORS` |
-| `FDWALLRANGE` | macro | `progs/doomgeneric/am_map.c:74` | `#define FDWALLRANGE` |
-| `FTOM` | macro | `progs/doomgeneric/am_map.c:102` | `#define FTOM(x)` |
-| `F_PANINC` | macro | `progs/doomgeneric/am_map.c:93` | `#define F_PANINC` |
-| `GRAYS` | macro | `progs/doomgeneric/am_map.c:56` | `#define GRAYS` |
-| `GRAYSRANGE` | macro | `progs/doomgeneric/am_map.c:57` | `#define GRAYSRANGE` |
-| `GREENRANGE` | macro | `progs/doomgeneric/am_map.c:55` | `#define GREENRANGE` |
-| `GREENS` | macro | `progs/doomgeneric/am_map.c:54` | `#define GREENS` |
-| `GRIDCOLORS` | macro | `progs/doomgeneric/am_map.c:81` | `#define GRIDCOLORS` |
 
 Next: [SYMBOLS_p13.md](SYMBOLS_p13.md)

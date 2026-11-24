@@ -2,12 +2,25 @@
 Previous: [API_p2.md](API_p2.md)
 
 ## headers/driver.h
-Imported by: `drivers/block.c`, `drivers/driver.c`, `drivers/ide.c`, `drivers/pcspk.c`, `drivers/sb16.c`, `drivers/usbblk.c`, `drivers/virtio_blk.c`, `kernel/syscalls.c`, `tests/test_driver.c`, `tests/test_usbblk.c`
+Imported by: `drivers/ahci.c`, `drivers/block.c`, `drivers/driver.c`, `drivers/ide.c`, `drivers/pcspk.c`, `drivers/sb16.c`, `drivers/usbblk.c`, `drivers/virtio_blk.c`, `kernel/syscalls.c`, `tests/test_driver.c`, `tests/test_usbblk.c`
 - `device_register` (function) `headers/driver.h:56` `int device_register(device_t *dev);`
 - `device_find` (function) `headers/driver.h:57` `device_t *device_find(const char *name);`
 - `device_find_by_type` (function) `headers/driver.h:58` `device_t *device_find_by_type(int type);`
 - `device_count` (function) `headers/driver.h:59` `int device_count(void);`
 - `device_reset` (function) `headers/driver.h:60` `void device_reset(void);`
+
+## headers/drivers/ahci.h
+Imported by: `drivers/ahci.c`, `drivers/block.c`, `kernel.c`, `kernel/shell.c`
+- `ahci_init` (function) `headers/drivers/ahci.h:16` `int ahci_init(void);` -- Docstring: Probe PCI for an AHCI function and bring up the first ATA disk.
+- `ahci_present` (function) `headers/drivers/ahci.h:19` `int ahci_present(void);` -- Docstring: Probe PCI for an AHCI function and bring up the first ATA disk.
+- `ahci_version` (function) `headers/drivers/ahci.h:22` `unsigned ahci_version(void);` -- Docstring: Probe PCI for an AHCI function and bring up the first ATA disk.
+- `ahci_port` (function) `headers/drivers/ahci.h:25` `int ahci_port(void);` -- Docstring: Probe PCI for an AHCI function and bring up the first ATA disk.
+- `ahci_ports_implemented` (function) `headers/drivers/ahci.h:28` `unsigned ahci_ports_implemented(void);` -- disk.
+- `ahci_note` (function) `headers/drivers/ahci.h:31` `const char *ahci_note(void);` -- /** Docstring: True once ahci_init brought a disk up. int ahci_present(void); /** Docstring: HBA version register...
+- `ahci_sectors` (function) `headers/drivers/ahci.h:34` `unsigned long ahci_sectors(void);` -- /** Docstring: HBA version register (major in bits 31:16, minor 15:0). unsigned ahci_version(void); /** Docstring...
+- `ahci_read_sectors` (function) `headers/drivers/ahci.h:40` `int ahci_read_sectors(unsigned lba, unsigned count, void *buf);` -- Docstring: Read count sectors starting at lba into buf.
+- `ahci_write_sectors` (function) `headers/drivers/ahci.h:45` `int ahci_write_sectors(unsigned lba, unsigned count, const void *buf);` -- Docstring: Write count sectors starting at lba from buf, followed by FLUSH CACHE EXT so the data survives a power cut.
+- `ahci_register_device` (function) `headers/drivers/ahci.h:48` `void ahci_register_device(void);` -- Docstring: Write count sectors starting at lba from buf, followed by FLUSH CACHE EXT so the data survives a power cut.
 
 ## headers/drivers/kbd.h
 Imported by: `drivers/kbd.c`, `drivers/usbhid.c`, `kernel/console_in.c`, `kernel/exec.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`
@@ -56,7 +69,7 @@ Imported by: `drivers/block.c`, `drivers/nvme.c`, `kernel/shell.c`
 - `nvme_read_sectors` (function) `headers/drivers/nvme.h:9` `int nvme_read_sectors(unsigned lba, unsigned count, void *buf);`
 
 ## headers/drivers/pci.h
-Imported by: `drivers/nvme.c`, `drivers/virtio_blk.c`, `drivers/virtio_net.c`, `drivers/xhci.c`, `net/rtl8139.c`, `tests/test_pci.c`
+Imported by: `drivers/ahci.c`, `drivers/nvme.c`, `drivers/virtio_blk.c`, `drivers/virtio_net.c`, `drivers/xhci.c`, `net/rtl8139.c`, `tests/test_pci.c`
 - `pci_cfg_read` (function) `headers/drivers/pci.h:80` `static inline unsigned pci_cfg_read(unsigned bus, unsigned dev,
         unsigned func, unsigned r...` -- Docstring: Read one config dword.
 - `pci_cfg_write` (function) `headers/drivers/pci.h:90` `static inline void pci_cfg_write(unsigned bus, unsigned dev,
@@ -69,28 +82,28 @@ Imported by: `drivers/nvme.c`, `drivers/virtio_blk.c`, `drivers/virtio_net.c`, `
         void (*outl)(uns...` -- Docstring: True when a function is populated.
 - `xHCI` (function) `headers/drivers/pci.h:134` `* base class: an xHCI (0x0C/0x03/0x30) would look for class 0x03, and a PCI
  * bridge (0x06/0x04)...`
-- `pci_is_multifunction` (function) `headers/drivers/pci.h:152` `static inline int pci_is_multifunction(unsigned bus, unsigned dev,
-        void (*outl)(unsigned ...` -- Docstring: True when a function advertises more than one function in its * slot, so the walk must visit every...
-- `pci_find` (function) `headers/drivers/pci.h:165` `static inline int pci_find(unsigned vendor, unsigned device,
+- `pci_is_multifunction` (function) `headers/drivers/pci.h:156` `static inline int pci_is_multifunction(unsigned bus, unsigned dev,
+        void (*outl)(unsigned ...` -- Docstring: True when a function advertises more than one function in its slot, so the walk must visit every function...
+- `pci_find` (function) `headers/drivers/pci.h:170` `static inline int pci_find(unsigned vendor, unsigned device,
         unsigned (*inl)(unsigned sho...` -- Docstring: Find a device by vendor/device ID on bus 0.
-- `pci_find_class` (function) `headers/drivers/pci.h:193` `static inline int pci_find_class(pci_bdf_t *out,
-        unsigned cls, unsigned subclass, unsigne...` -- The walk starts at bus 0 and follows each PCI-to-PCI bridge's secondary bus number, so a controller behind a chipset...
-- `pci_bar_count` (function) `headers/drivers/pci.h:248` `static inline unsigned pci_bar_count(unsigned bus, unsigned dev, unsigned func,
-        void (*ou...` -- outl, inl)) { unsigned sec = pci_cfg_read8(bus, dev, 0, PCI_REG_BRIDGE_SECONDARY, outl, inl); if (sec != 0u && sec <...
-- `pci_bar_is_io` (function) `headers/drivers/pci.h:263` `static inline int pci_bar_is_io(unsigned bus, unsigned dev, unsigned func,
+- `number` (function) `headers/drivers/pci.h:186` `* bus number (a bridge on any function, since PCIe root ports are functions
+ * of one multifuncti...`
+- `pci_bar_count` (function) `headers/drivers/pci.h:254` `static inline unsigned pci_bar_count(unsigned bus, unsigned dev, unsigned func,
+        void (*ou...` -- unsigned sec = pci_cfg_read8(bus, dev, func, PCI_REG_BRIDGE_SECONDARY, outl, inl); if (sec != 0u && sec <...
+- `pci_bar_is_io` (function) `headers/drivers/pci.h:269` `static inline int pci_bar_is_io(unsigned bus, unsigned dev, unsigned func,
         unsigned bar,
 ...` -- void (*outl)(unsigned short, unsigned), unsigned (*inl)(unsigned short)) { unsigned n = 0; while (n <...
-- `pci_bar_is_64bit` (function) `headers/drivers/pci.h:274` `static inline int pci_bar_is_64bit(unsigned bus, unsigned dev, unsigned func,
+- `pci_bar_is_64bit` (function) `headers/drivers/pci.h:280` `static inline int pci_bar_is_64bit(unsigned bus, unsigned dev, unsigned func,
         unsigned ba...` -- Docstring: True when a BAR is a 64-bit memory BAR, so its high dword is * the next BAR slot and must be programmed...
-- `pci_bar_ctz32` (function) `headers/drivers/pci.h:284` `static inline unsigned pci_bar_ctz32(unsigned val)` -- Docstring: True when a BAR is a 64-bit memory BAR, so its high dword is * the next BAR slot and must be programmed...
-- `pci_bar_size_from_mask` (function) `headers/drivers/pci.h:315` `static inline unsigned long long pci_bar_size_from_mask(unsigned long long mask)` -- A BAR that fits below 4 GB has its unimplemented lines in the low half and an all-ones high half.
-- `pci_bar_size` (function) `headers/drivers/pci.h:346` `static inline unsigned long long pci_bar_size(unsigned bus, unsigned dev,
+- `pci_bar_ctz32` (function) `headers/drivers/pci.h:290` `static inline unsigned pci_bar_ctz32(unsigned val)` -- Docstring: True when a BAR is a 64-bit memory BAR, so its high dword is * the next BAR slot and must be programmed...
+- `pci_bar_size_from_mask` (function) `headers/drivers/pci.h:321` `static inline unsigned long long pci_bar_size_from_mask(unsigned long long mask)` -- A BAR that fits below 4 GB has its unimplemented lines in the low half and an all-ones high half.
+- `pci_bar_size` (function) `headers/drivers/pci.h:352` `static inline unsigned long long pci_bar_size(unsigned bus, unsigned dev,
         unsigned func, ...` -- The mask is what proves the region is big enough; a size is never assumed from a spec table because a wrong answer...
-- `pci_bar_relocate` (function) `headers/drivers/pci.h:382` `static inline int pci_bar_relocate(unsigned bus, unsigned dev, unsigned func,
+- `pci_bar_relocate` (function) `headers/drivers/pci.h:388` `static inline int pci_bar_relocate(unsigned bus, unsigned dev, unsigned func,
         unsigned ba...` -- Docstring: Program a memory BAR with a physical base address.
-- `pci_bar_base` (function) `headers/drivers/pci.h:406` `static inline unsigned long long pci_bar_base(unsigned bus, unsigned dev,
+- `pci_bar_base` (function) `headers/drivers/pci.h:412` `static inline unsigned long long pci_bar_base(unsigned bus, unsigned dev,
         unsigned func, ...` -- Docstring: Physical base a memory BAR is programmed with, read back from the device.
-- `pci_bar_restore` (function) `headers/drivers/pci.h:424` `static inline void pci_bar_restore(unsigned bus, unsigned dev,
+- `pci_bar_restore` (function) `headers/drivers/pci.h:430` `static inline void pci_bar_restore(unsigned bus, unsigned dev,
         unsigned func, unsigned ba...` -- Docstring: Restore a BAR pair to previously saved raw values.
 
 ## headers/drivers/usbblk.h

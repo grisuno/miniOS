@@ -2,6 +2,13 @@
 Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 
 ## Internal Dependencies (continued)
+- `progs/doomgeneric/r_main.c` -> `progs/doomgeneric/d_loop.h`
+- `progs/doomgeneric/r_main.c` -> `progs/doomgeneric/doomdef.h`
+- `progs/doomgeneric/r_main.c` -> `progs/doomgeneric/m_bbox.h`
+- `progs/doomgeneric/r_main.c` -> `progs/doomgeneric/m_menu.h`
+- `progs/doomgeneric/r_main.c` -> `progs/doomgeneric/r_local.h`
+- `progs/doomgeneric/r_main.c` -> `progs/doomgeneric/r_sky.h`
+- `progs/doomgeneric/r_main.h` -> `progs/doomgeneric/d_player.h`
 - `progs/doomgeneric/r_main.h` -> `progs/doomgeneric/r_data.h`
 - `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/doomdef.h`
 - `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/doomstat.h`

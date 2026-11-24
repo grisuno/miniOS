@@ -1,8 +1,149 @@
-# Symbols (page 10 of 27)
+# Symbols (page 10 of 28)
 Previous: [SYMBOLS_p9.md](SYMBOLS_p9.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `k_register_program` | function | `kernel/symtab.c:49` | `void k_register_program(const char *name, prog_entry_t entry)` |
+| `k_register_symbol` | function | `kernel/symtab.c:10` | `void k_register_symbol(const char *name, void *addr)` |
+| `k_spawn` | function | `kernel/symtab.c:65` | `int k_spawn(const char *name, int argc, char **argv)` |
+| `kprog_lookup` | function | `kernel/symtab.c:42` | `KProg *kprog_lookup(const char *name)` |
+| `kprog_slot` | function | `kernel/symtab.c:34` | `KProg *kprog_slot(const char *name)` |
+| `ksym_resolve` | function | `kernel/symtab.c:18` | `void *ksym_resolve(const char *name)` |
+| `cond_broadcast` | function | `kernel/sync.c:251` | `void cond_broadcast(cond_t *c)` |
+| `cond_init` | function | `kernel/sync.c:237` | `void cond_init(cond_t *c)` |
+| `cond_signal` | function | `kernel/sync.c:247` | `void cond_signal(cond_t *c)` |
+| `cond_wait` | function | `kernel/sync.c:241` | `void cond_wait(cond_t *c, mutex_t *m)` |
+| `mutex_init` | function | `kernel/sync.c:78` | `void mutex_init(mutex_t *m)` |
+| `mutex_lock` | function | `kernel/sync.c:152` | `void mutex_lock(mutex_t *m)` |
+| `mutex_trylock` | function | `kernel/sync.c:172` | `int mutex_trylock(mutex_t *m)` |
+| `mutex_unlock` | function | `kernel/sync.c:188` | `void mutex_unlock(mutex_t *m)` |
+| `pi_boost` | function | `kernel/sync.c:126` | `static void pi_boost(int waiter, int owner)` |
+| `pi_get_eff` | function | `kernel/sync.c:110` | `int pi_get_eff(int pid)` |
+| `pi_recompute` | function | `kernel/sync.c:115` | `static void pi_recompute(int pid)` |
+| `pi_set_base` | function | `kernel/sync.c:101` | `void pi_set_base(int pid, int prio)` |
+| `pi_valid` | function | `kernel/sync.c:95` | `static int pi_valid(int pid)` |
+| `rwlock_init` | function | `kernel/sync.c:255` | `void rwlock_init(rwlock_t *rw)` |
+| `rwlock_read_lock` | function | `kernel/sync.c:289` | `void rwlock_read_lock(rwlock_t *rw)` |
+| `rwlock_read_trylock` | function | `kernel/sync.c:263` | `int rwlock_read_trylock(rwlock_t *rw)` |
+| `rwlock_read_unlock` | function | `kernel/sync.c:296` | `void rwlock_read_unlock(rwlock_t *rw)` |
+| `rwlock_write_lock` | function | `kernel/sync.c:306` | `void rwlock_write_lock(rwlock_t *rw)` |
+| `rwlock_write_trylock` | function | `kernel/sync.c:277` | `int rwlock_write_trylock(rwlock_t *rw)` |
+| `rwlock_write_unlock` | function | `kernel/sync.c:328` | `void rwlock_write_unlock(rwlock_t *rw)` |
+| `sem_init` | function | `kernel/sync.c:209` | `void sem_init(sem_t *s, int value)` |
+| `sem_post` | function | `kernel/sync.c:229` | `void sem_post(sem_t *s)` |
+| `sem_wait` | function | `kernel/sync.c:215` | `void sem_wait(sem_t *s)` |
+| `sleep_on` | function | `kernel/sync.c:35` | `void sleep_on(wait_queue_t *q)` |
+| `t_cur_pid` | variable | `kernel/sync.c:26` | `extern int t_cur_pid;` |
+| `wake_up` | function | `kernel/sync.c:56` | `int wake_up(wait_queue_t *q)` |
+| `wake_up_all` | function | `kernel/sync.c:72` | `int wake_up_all(wait_queue_t *q)` |
+| `wq_init` | function | `kernel/sync.c:29` | `void wq_init(wait_queue_t *q)` |
+| `DOOM_FRAME` | function | `kernel/syscalls.c:829` | `* DOOM_FRAME (211) and NK_FRAME (220) stay as compat aliases. */ static long sys_minios_gfx_prese...` |
+| `Discipline` | function | `kernel/syscalls.c:3637` | `* * Discipline (audit 2026-09, kept as comment, not a deprecation: both * primitives are legitimate): user_range_ok...` |
+| `EAGAIN` | function | `kernel/syscalls.c:1287` | `* writer open is EAGAIN (-11, retry);` |
+| `EOF` | function | `kernel/syscalls.c:1288` | `* is EOF (0). */ KFILE *o = kfd_get(0);` |
+| `FD_STD_COUNT` | macro | `kernel/syscalls.c:1523` | `#define FD_STD_COUNT` |
+| `FIONREAD` | function | `kernel/syscalls.c:2633` | `* descriptor answers FIONREAD (bytes readable now), FIONBIO (O_NONBLOCK),  * FIOCLEX/FIONCLEX (FD...` |
+| `GETDENTS64_ALIGN` | macro | `kernel/syscalls.c:950` | `#define GETDENTS64_ALIGN` |
+| `GETDENTS64_NAME_OFF` | macro | `kernel/syscalls.c:949` | `#define GETDENTS64_NAME_OFF` |
+| `KFD_MAX` | macro | `kernel/syscalls.c:52` | `#define KFD_MAX` |
+| `LINUX_AT_FDCWD` | macro | `kernel/syscalls.c:1468` | `#define LINUX_AT_FDCWD` |
+| `LINUX_CLOCK_BOOTTIME` | macro | `kernel/syscalls.c:2814` | `#define LINUX_CLOCK_BOOTTIME` |
+| `LINUX_CLOCK_MONOTONIC` | macro | `kernel/syscalls.c:2813` | `#define LINUX_CLOCK_MONOTONIC` |
+| `LINUX_CLOCK_REALTIME` | macro | `kernel/syscalls.c:2812` | `#define LINUX_CLOCK_REALTIME` |
+| `LINUX_CLOSE_RANGE_CLOEXEC` | macro | `kernel/syscalls.c:1518` | `#define LINUX_CLOSE_RANGE_CLOEXEC` |
+| `LINUX_CLOSE_RANGE_UNSHARE` | macro | `kernel/syscalls.c:1517` | `#define LINUX_CLOSE_RANGE_UNSHARE` |
+| `LINUX_CPUMASK_BYTES` | macro | `kernel/syscalls.c:2747` | `#define LINUX_CPUMASK_BYTES` |
+| `LINUX_DT_DIR` | macro | `kernel/syscalls.c:947` | `#define LINUX_DT_DIR` |
+| `LINUX_DT_REG` | macro | `kernel/syscalls.c:948` | `#define LINUX_DT_REG` |
+| `LINUX_EFD_CLOEXEC` | macro | `kernel/syscalls.c:1521` | `#define LINUX_EFD_CLOEXEC` |
+| `LINUX_EFD_NONBLOCK` | macro | `kernel/syscalls.c:1520` | `#define LINUX_EFD_NONBLOCK` |
+| `LINUX_EFD_SEMAPHORE` | macro | `kernel/syscalls.c:1519` | `#define LINUX_EFD_SEMAPHORE` |
+| `LINUX_ENOTTY` | macro | `kernel/syscalls.c:2610` | `#define LINUX_ENOTTY` |
+| `LINUX_EVENTFD_WORD` | macro | `kernel/syscalls.c:1522` | `#define LINUX_EVENTFD_WORD` |
+| `LINUX_FD_CLOEXEC` | macro | `kernel/syscalls.c:1510` | `#define LINUX_FD_CLOEXEC` |
+| `LINUX_FIOCLEX` | macro | `kernel/syscalls.c:2608` | `#define LINUX_FIOCLEX` |
+| `LINUX_FIONBIO` | macro | `kernel/syscalls.c:2606` | `#define LINUX_FIONBIO` |
+| `LINUX_FIONCLEX` | macro | `kernel/syscalls.c:2607` | `#define LINUX_FIONCLEX` |
+| `LINUX_FIONREAD` | macro | `kernel/syscalls.c:2605` | `#define LINUX_FIONREAD` |
+| `LINUX_F_DUPFD` | macro | `kernel/syscalls.c:1511` | `#define LINUX_F_DUPFD` |
+| `LINUX_F_DUPFD_CLOEXEC` | macro | `kernel/syscalls.c:1516` | `#define LINUX_F_DUPFD_CLOEXEC` |
+| `LINUX_F_GETFD` | macro | `kernel/syscalls.c:1512` | `#define LINUX_F_GETFD` |
+| `LINUX_F_GETFL` | macro | `kernel/syscalls.c:1514` | `#define LINUX_F_GETFL` |
+| `LINUX_F_SETFD` | macro | `kernel/syscalls.c:1513` | `#define LINUX_F_SETFD` |
+| `LINUX_F_SETFL` | macro | `kernel/syscalls.c:1515` | `#define LINUX_F_SETFL` |
+| `LINUX_IOCTL_INT` | macro | `kernel/syscalls.c:2614` | `#define LINUX_IOCTL_INT` |
+| `LINUX_MAP_ANONYMOUS` | macro | `kernel/syscalls.c:1968` | `#define LINUX_MAP_ANONYMOUS` |
+| `LINUX_MAP_FIXED` | macro | `kernel/syscalls.c:1967` | `#define LINUX_MAP_FIXED` |
+| `LINUX_MAP_PRIVATE` | macro | `kernel/syscalls.c:1966` | `#define LINUX_MAP_PRIVATE` |
+| `LINUX_MAP_SHARED` | macro | `kernel/syscalls.c:1965` | `#define LINUX_MAP_SHARED` |
+| `LINUX_MREMAP_FIXED` | macro | `kernel/syscalls.c:2277` | `#define LINUX_MREMAP_FIXED` |
+| `LINUX_MREMAP_MAYMOVE` | macro | `kernel/syscalls.c:2276` | `#define LINUX_MREMAP_MAYMOVE` |
+| `LINUX_NS_PER_S` | macro | `kernel/syscalls.c:2818` | `#define LINUX_NS_PER_S` |
+| `LINUX_NS_PER_US` | macro | `kernel/syscalls.c:2816` | `#define LINUX_NS_PER_US` |
+| `LINUX_O_APPEND` | macro | `kernel/syscalls.c:1506` | `#define LINUX_O_APPEND` |
+| `LINUX_O_CLOEXEC` | macro | `kernel/syscalls.c:1509` | `#define LINUX_O_CLOEXEC` |
+| `LINUX_O_DIRECT` | macro | `kernel/syscalls.c:1508` | `#define LINUX_O_DIRECT` |
+| `LINUX_O_NONBLOCK` | macro | `kernel/syscalls.c:1507` | `#define LINUX_O_NONBLOCK` |
+| `LINUX_O_RDONLY` | macro | `kernel/syscalls.c:1503` | `#define LINUX_O_RDONLY` |
+| `LINUX_O_RDWR` | macro | `kernel/syscalls.c:1505` | `#define LINUX_O_RDWR` |
+| `LINUX_O_WRONLY` | macro | `kernel/syscalls.c:1504` | `#define LINUX_O_WRONLY` |
+| `LINUX_RLIMIT_AS` | macro | `kernel/syscalls.c:2741` | `#define LINUX_RLIMIT_AS` |
+| `LINUX_RLIMIT_CPU` | macro | `kernel/syscalls.c:2738` | `#define LINUX_RLIMIT_CPU` |
+| `LINUX_RLIMIT_NLIMITS` | macro | `kernel/syscalls.c:2742` | `#define LINUX_RLIMIT_NLIMITS` |
+| `LINUX_RLIMIT_NOFILE` | macro | `kernel/syscalls.c:2740` | `#define LINUX_RLIMIT_NOFILE` |
+| `LINUX_RLIMIT_PAIR` | macro | `kernel/syscalls.c:2744` | `#define LINUX_RLIMIT_PAIR` |
+| `LINUX_RLIMIT_STACK` | macro | `kernel/syscalls.c:2739` | `#define LINUX_RLIMIT_STACK` |
+| `LINUX_RLIMIT_TICKS_PER_S` | macro | `kernel/syscalls.c:2746` | `#define LINUX_RLIMIT_TICKS_PER_S` |
+| `LINUX_RLIM_INFINITY` | macro | `kernel/syscalls.c:2743` | `#define LINUX_RLIM_INFINITY` |
+| `LINUX_SLEEP_MAX_S` | macro | `kernel/syscalls.c:2819` | `#define LINUX_SLEEP_MAX_S` |
+| `LINUX_SYSCALL_COUNT` | macro | `kernel/syscalls.c:3368` | `#define LINUX_SYSCALL_COUNT` |
+| `LINUX_TCGETS` | macro | `kernel/syscalls.c:2603` | `#define LINUX_TCGETS` |
+| `LINUX_TCGETS2` | macro | `kernel/syscalls.c:2609` | `#define LINUX_TCGETS2` |
+| `LINUX_TERMIOS2_LEN` | macro | `kernel/syscalls.c:2613` | `#define LINUX_TERMIOS2_LEN` |
+| `LINUX_TERMIOS_LEN` | macro | `kernel/syscalls.c:2612` | `#define LINUX_TERMIOS_LEN` |
+| `LINUX_TIMER_ABSTIME` | macro | `kernel/syscalls.c:2815` | `#define LINUX_TIMER_ABSTIME` |
+| `LINUX_TIOCGWINSZ` | macro | `kernel/syscalls.c:2604` | `#define LINUX_TIOCGWINSZ` |
+| `LINUX_UID_GID_ROOT` | macro | `kernel/syscalls.c:3231` | `#define LINUX_UID_GID_ROOT` |
+| `LINUX_US_PER_S` | macro | `kernel/syscalls.c:2817` | `#define LINUX_US_PER_S` |
+| `LINUX_WINSIZE_LEN` | macro | `kernel/syscalls.c:2611` | `#define LINUX_WINSIZE_LEN` |
+| `MINIOS_SYSCALL_BASE` | macro | `kernel/syscalls.c:243` | `#define MINIOS_SYSCALL_BASE` |
+| `MINIOS_SYSCALL_COUNT` | macro | `kernel/syscalls.c:244` | `#define MINIOS_SYSCALL_COUNT` |
+| `NULL` | function | `kernel/syscalls.c:166` | `* on NULL (already released or never owned). */ void kfd_view_release(proc_t *p)` |
+| `PROC_SELF_EXE` | macro | `kernel/syscalls.c:3096` | `#define PROC_SELF_EXE` |
+| `SC_EXTRA_COUNT` | macro | `kernel/syscalls.c:3471` | `#define SC_EXTRA_COUNT` |
+| `SC_RECORD_LEN` | macro | `kernel/syscalls.c:3532` | `#define SC_RECORD_LEN` |
+| `SELECT_NFDS_MAX` | macro | `kernel/syscalls.c:2935` | `#define SELECT_NFDS_MAX` |
+| `SELECT_TIMEOUT_MS_MAX` | macro | `kernel/syscalls.c:2940` | `#define SELECT_TIMEOUT_MS_MAX` |
+| `SELECT_TIMESPEC_BYTES` | macro | `kernel/syscalls.c:2937` | `#define SELECT_TIMESPEC_BYTES` |
+| `SELECT_TIMEVAL_BYTES` | macro | `kernel/syscalls.c:2936` | `#define SELECT_TIMEVAL_BYTES` |
+| `SYSCALL_TRACE` | macro | `kernel/syscalls.c:1231` | `#define SYSCALL_TRACE` |
+| `SYS_NOISY_GETC_RAW` | macro | `kernel/syscalls.c:1254` | `#define SYS_NOISY_GETC_RAW` |
+| `SYS_NOISY_KBD` | macro | `kernel/syscalls.c:1252` | `#define SYS_NOISY_KBD` |
+| `SYS_NOISY_MOUSE` | macro | `kernel/syscalls.c:1253` | `#define SYS_NOISY_MOUSE` |
+| `SYS_NOISY_TIME` | macro | `kernel/syscalls.c:1251` | `#define SYS_NOISY_TIME` |
+| `TRACE_HINT_NONE` | macro | `kernel/syscalls.c:3493` | `#define TRACE_HINT_NONE` |
+| `TRACE_HINT_PATH` | macro | `kernel/syscalls.c:3494` | `#define TRACE_HINT_PATH` |
+| `answer` | function | `kernel/syscalls.c:3230` | `* made glibc answer (uid_t)-1, which CPython's startup reads. */ #define LINUX_UID_GID_ROOT 0  st...` |
+| `batch_kdispatch` | function | `kernel/syscalls.c:814` | `static long batch_kdispatch(uint32_t opcode)` |
+| `boot` | function | `kernel/syscalls.c:479` | `* boot (minfo_sleep_init from sched_init);` |
+| `by` | function | `kernel/syscalls.c:225` | `* is indexed by (syscall_number - 200). New syscalls are added by: * 1. Adding a MINIOS_SYS_* constant to...` |
+| `clock` | function | `kernel/syscalls.c:2859` | `* clock (the monotonic TSC clock times it, as Linux does: glibc sends * every nanosleep here as a relative...` |
+| `clock_gettime` | function | `kernel/syscalls.c:2863` | `* clock_gettime(1) reads. */ static long sys_linux_clock_nanosleep(long a1, long a2, long a3, lon...` |
+| `cwd` | function | `kernel/syscalls.c:1466` | `* ENAMETOOLONG instead of silently resolving against the cwd (the bug  * that broke shutil.rmtree...` |
+| `do_open_kpath` | function | `kernel/syscalls.c:1426` | `static long do_open_kpath(const char *path, long flags)` |
+| `do_open_path` | function | `kernel/syscalls.c:1452` | `static long do_open_path(const char *path, long flags)` |
+| `fd_write` | function | `kernel/syscalls.c:1327` | `static long fd_write(long fd, const char *buf, long cnt)` |
+| `first` | function | `kernel/syscalls.c:2200` | `* passes under mm_lock: validate every page first (present, user,  * private), then apply, so a h...` |
+| `gfx_win_title` | variable | `kernel/syscalls.c:703` | `extern const char *gfx_win_title;` |
+| `gfx_zoom_2x` | variable | `kernel/syscalls.c:422` | `extern int gfx_zoom_2x;` |
+| `k_syscall_spawn` | function | `kernel/syscalls.c:3932` | `static int k_syscall_spawn(const char *path, const char *redirect,                              i...` |
+| `kfd_claim` | function | `kernel/syscalls.c:1554` | `static long kfd_claim(KFILE *f)` |
+| `kfd_claim_from` | function | `kernel/syscalls.c:1529` | `static long kfd_claim_from(KFILE *f, long minfd, int cloexec)` |
+| `kfd_cloexec_get` | function | `kernel/syscalls.c:1612` | `static int kfd_cloexec_get(long fd)` |
+| `kfd_cloexec_set` | function | `kernel/syscalls.c:1622` | `static void kfd_cloexec_set(long fd, int on)` |
+| `kfd_get` | function | `kernel/syscalls.c:90` | `KFILE *kfd_get(int fd)` |
+| `kfd_install` | function | `kernel/syscalls.c:1403` | `static long kfd_install(KFILE *f, int cloexec)` |
+| `kfd_poll_revents` | function | `kernel/syscalls.c:1739` | `int kfd_poll_revents(int fd)` |
 | `kfd_put` | function | `kernel/syscalls.c:103` | `void kfd_put(KFILE *f)` |
 | `kfd_view_cloexec` | function | `kernel/syscalls.c:197` | `void kfd_view_cloexec(void)` |
 | `kfd_view_count` | function | `kernel/syscalls.c:115` | `static int kfd_view_count(kfd_view_t *v)` |
@@ -355,146 +496,5 @@ Previous: [SYMBOLS_p9.md](SYMBOLS_p9.md)
 | `letterbox` | function | `kernel/vga_fb.c:612` | `* present to repaint chrome plus letterbox (after a desktop redraw or a * view change);` |
 | `lg_alloc` | function | `kernel/vga_fb.c:349` | `static void lg_alloc(void)` |
 | `lg_get` | function | `kernel/vga_fb.c:321` | `static const char *lg_get(int i)` |
-| `lg_push` | function | `kernel/vga_fb.c:328` | `static void lg_push(const char *line, int len)` |
-| `line` | function | `kernel/vga_fb.c:3533` | `* display stale bytes left over from a longer previous line (e.g. the prompt  * would show the ta...` |
-| `line_at` | function | `kernel/vga_fb.c:416` | `static const char *line_at(int abs, int *off)` |
-| `line_nrows` | function | `kernel/vga_fb.c:380` | `static int line_nrows(int len)` |
-| `mouse_apply_wheel` | function | `kernel/vga_fb.c:5251` | `static void mouse_apply_wheel(int wheel, int step)` |
-| `mouse_drag_gfx` | function | `kernel/vga_fb.c:5275` | `static void mouse_drag_gfx(const wm_geom_config_t *gcfg, int mx, int my)` |
-| `mouse_drag_term` | function | `kernel/vga_fb.c:5332` | `static void mouse_drag_term(const wm_geom_config_t *gcfg, int win_w, int mx, int my, int gfx_cursor)` |
-| `mouse_focus_topmost` | function | `kernel/vga_fb.c:5225` | `static int mouse_focus_topmost(int mx, int my)` |
-| `mouse_scrollbar` | function | `kernel/vga_fb.c:5355` | `static void mouse_scrollbar(const wm_geom_config_t *gcfg, int mx, int my)` |
-| `path` | function | `kernel/vga_fb.c:5404` | `* present path (blit_gfx_buf) is the sole cursor painter. The tick * used to share the sprite state with it and...` |
-| `pipe_field` | function | `kernel/vga_fb.c:4597` | `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)` |
-| `pointer` | function | `kernel/vga_fb.c:5272` | `* tiled window floats it at native size under the pointer (the grab point * keeps its relative position along the...` |
-| `render_blank_row` | function | `kernel/vga_fb.c:3412` | `static void render_blank_row(int vrow)` |
-| `render_row` | function | `kernel/vga_fb.c:3422` | `static void render_row(int vrow, int abs)` |
-| `shcmd_base` | function | `kernel/vga_fb.c:707` | `static void shcmd_base(const char *cmd, char *out, unsigned long cap)` |
-| `shortcut_cell_left` | function | `kernel/vga_fb.c:4740` | `static int shortcut_cell_left(int i)` |
-| `shortcut_draw_scaled` | function | `kernel/vga_fb.c:4803` | `static void shortcut_draw_scaled(const struct desktop_shortcut *sc,                              ...` |
-| `shortcuts_layout` | function | `kernel/vga_fb.c:4722` | `static void shortcuts_layout(void)` |
-| `state` | function | `kernel/vga_fb.c:5518` | `* ignores the button state (the arming press is consumed) and settles      * once on expiry, so t...` |
-| `strip_compose_begin` | function | `kernel/vga_fb.c:5120` | `static int strip_compose_begin(void)` |
-| `strip_compose_end` | function | `kernel/vga_fb.c:5131` | `static void strip_compose_end(int owner, int x, int y, int w, int h)` |
-| `taskbar` | function | `kernel/vga_fb.c:2754` | `* minimize hides the app to the taskbar (it never closes it), maximize  * toggles true fullscreen...` |
-| `taskbar_handle_click` | function | `kernel/vga_fb.c:3316` | `static void taskbar_handle_click(int mx, int my)` |
-| `taskbar_layout` | function | `kernel/vga_fb.c:3120` | `static void taskbar_layout(void)` |
-| `taskbar_render` | function | `kernel/vga_fb.c:3160` | `static void taskbar_render(void)` |
-| `taskbar_theme_cycle` | function | `kernel/vga_fb.c:3276` | `static void taskbar_theme_cycle(void)` |
-| `taskbar_tick` | function | `kernel/vga_fb.c:3239` | `static void taskbar_tick(void)` |
-| `term_close_default` | function | `kernel/vga_fb.c:4307` | `static void term_close_default(void)` |
-| `term_finish_layout` | function | `kernel/vga_fb.c:4391` | `static void term_finish_layout(void)` |
-| `term_max_cols` | function | `kernel/vga_fb.c:4382` | `static int term_max_cols(void)` |
-| `term_max_rows` | function | `kernel/vga_fb.c:4386` | `static int term_max_rows(void)` |
-| `term_recalc` | function | `kernel/vga_fb.c:3061` | `static void term_recalc(void)` |
-| `term_render` | function | `kernel/vga_fb.c:3457` | `static void term_render(void)` |
-| `term_render_active` | function | `kernel/vga_fb.c:3490` | `static void term_render_active(void)` |
-| `term_toggle_fullscreen` | function | `kernel/vga_fb.c:4215` | `static void term_toggle_fullscreen(void)` |
-| `term_toggle_minimize` | function | `kernel/vga_fb.c:4238` | `static void term_toggle_minimize(void)` |
-| `termwin_t` | struct | `kernel/vga_fb.c:1061` | `` |
-| `text_px` | function | `kernel/vga_fb.c:2171` | `static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg)` |
-| `title` | function | `kernel/vga_fb.c:3170` | `* 8px row plus its title (bright when focused). The hint line * starts after it instead of underneath. */ const...` |
-| `total_rows` | function | `kernel/vga_fb.c:390` | `static int total_rows(void)` |
-| `tw_hit` | function | `kernel/vga_fb.c:1732` | `static int tw_hit(int i, int mx, int my)` |
-| `tw_park` | function | `kernel/vga_fb.c:1118` | `static void tw_park(int i)` |
-| `tw_select` | function | `kernel/vga_fb.c:1208` | `static void tw_select(int i)` |
-| `tw_unpark` | function | `kernel/vga_fb.c:1148` | `static void tw_unpark(int i)` |
-| `vga_fb_act_empty` | function | `kernel/vga_fb.c:1672` | `int vga_fb_act_empty(void)` |
-| `vga_fb_blit_gfx_window` | function | `kernel/vga_fb.c:3037` | `void vga_fb_blit_gfx_window(void)` |
-| `vga_fb_blit_nk_rgb_window` | function | `kernel/vga_fb.c:3052` | `void vga_fb_blit_nk_rgb_window(void)` |
-| `vga_fb_blit_nk_window` | function | `kernel/vga_fb.c:3046` | `void vga_fb_blit_nk_window(void)` |
-| `vga_fb_boot_config` | function | `kernel/vga_fb.c:98` | `void vga_fb_boot_config(void)` |
-| `vga_fb_boot_history_to_active` | function | `kernel/vga_fb.c:1337` | `static void vga_fb_boot_history_to_active(void)` |
-| `vga_fb_char` | function | `kernel/vga_fb.c:2130` | `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg)` |
-| `vga_fb_clear` | function | `kernel/vga_fb.c:2089` | `void vga_fb_clear(void)` |
-| `vga_fb_clear_prompt` | function | `kernel/vga_fb.c:1681` | `void vga_fb_clear_prompt(void)` |
-| `vga_fb_close_active` | function | `kernel/vga_fb.c:4323` | `int vga_fb_close_active(void)` |
-| `vga_fb_draw_desktop` | function | `kernel/vga_fb.c:3889` | `void vga_fb_draw_desktop(void)` |
-| `vga_fb_focus_event` | function | `kernel/vga_fb.c:1103` | `const wm_notify_event_t *vga_fb_focus_event(void)` |
-| `vga_fb_focus_get` | function | `kernel/vga_fb.c:1220` | `int vga_fb_focus_get(void)` |
-| `vga_fb_focus_id` | function | `kernel/vga_fb.c:1302` | `int vga_fb_focus_id(int id)` |
-| `vga_fb_focus_next` | function | `kernel/vga_fb.c:1237` | `void vga_fb_focus_next(void)` |
-| `vga_fb_focus_report` | function | `kernel/vga_fb.c:1109` | `void vga_fb_focus_report(int before, int source)` |
-| `vga_fb_gfx_cursor_draw` | function | `kernel/vga_fb.c:892` | `static void vga_fb_gfx_cursor_draw(void)` |
-| `vga_fb_gfx_cursor_erase` | function | `kernel/vga_fb.c:882` | `static void vga_fb_gfx_cursor_erase(void)` |
-| `vga_fb_gfx_map_mouse` | function | `kernel/vga_fb.c:867` | `void vga_fb_gfx_map_mouse(int *x, int *y)` |
-| `vga_fb_gfx_origin` | function | `kernel/vga_fb.c:850` | `void vga_fb_gfx_origin(int *x, int *y)` |
-| `vga_fb_gfx_set_hidden` | function | `kernel/vga_fb.c:4153` | `int vga_fb_gfx_set_hidden(int hide)` |
-| `vga_fb_gfx_view_name` | function | `kernel/vga_fb.c:4203` | `const char *vga_fb_gfx_view_name(void)` |
-| `vga_fb_hide_text_cursor` | function | `kernel/vga_fb.c:3613` | `void vga_fb_hide_text_cursor(void)` |
-| `vga_fb_history_page` | function | `kernel/vga_fb.c:5658` | `void vga_fb_history_page(int dir)` |
-| `vga_fb_init` | function | `kernel/vga_fb.c:5670` | `void vga_fb_init(void)` |
-| `vga_fb_is_fullscreen` | function | `kernel/vga_fb.c:4269` | `int vga_fb_is_fullscreen(void)` |
-| `vga_fb_is_minimized` | function | `kernel/vga_fb.c:4268` | `int vga_fb_is_minimized(void)` |
-| `vga_fb_layout_cycle` | function | `kernel/vga_fb.c:1453` | `void vga_fb_layout_cycle(void)` |
-| `vga_fb_layout_get` | function | `kernel/vga_fb.c:1469` | `int vga_fb_layout_get(void)` |
-| `vga_fb_layout_name` | function | `kernel/vga_fb.c:1475` | `const char *vga_fb_layout_name(void)` |
-| `vga_fb_layout_set` | function | `kernel/vga_fb.c:1442` | `int vga_fb_layout_set(int mode)` |
-| `vga_fb_list_windows` | function | `kernel/vga_fb.c:1614` | `void vga_fb_list_windows(void)` |
-| `vga_fb_mouse_init` | function | `kernel/vga_fb.c:5599` | `void vga_fb_mouse_init(void)` |
-| `vga_fb_mouse_tick` | function | `kernel/vga_fb.c:5393` | `void vga_fb_mouse_tick(void)` |
-| `vga_fb_move_terminal` | function | `kernel/vga_fb.c:4337` | `void vga_fb_move_terminal(int dx, int dy)` |
-| `vga_fb_note_prompt` | function | `kernel/vga_fb.c:1676` | `void vga_fb_note_prompt(void)` |
-| `vga_fb_nterms_get` | function | `kernel/vga_fb.c:1221` | `int vga_fb_nterms_get(void)` |
-| `vga_fb_park_line` | function | `kernel/vga_fb.c:1702` | `void vga_fb_park_line(const char *b, int p)` |
-| `vga_fb_pixel` | function | `kernel/vga_fb.c:2079` | `void vga_fb_pixel(int x, int y, uint8_t color)` |
-| `vga_fb_pixel_rgb` | function | `kernel/vga_fb.c:2114` | `void vga_fb_pixel_rgb(int x, int y, uint8_t r, uint8_t g, uint8_t b)` |
-| `vga_fb_prompt_live` | function | `kernel/vga_fb.c:1695` | `int vga_fb_prompt_live(void)` |
-| `vga_fb_prompted` | function | `kernel/vga_fb.c:1686` | `int vga_fb_prompted(void)` |
-| `vga_fb_ps2_owner` | function | `kernel/vga_fb.c:2734` | `int vga_fb_ps2_owner(int pid)` |
-| `vga_fb_puts_term` | function | `kernel/vga_fb.c:3599` | `void vga_fb_puts_term(const char *s)` |
-| `vga_fb_read_rgb` | function | `kernel/vga_fb.c:1913` | `unsigned long vga_fb_read_rgb(int x, int y)` |
-| `vga_fb_rect` | function | `kernel/vga_fb.c:2099` | `void vga_fb_rect(int x, int y, int w, int h, uint8_t color)` |
-| `vga_fb_rect_rgb` | function | `kernel/vga_fb.c:2123` | `void vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b)` |
-| `vga_fb_reset_default` | function | `kernel/vga_fb.c:4445` | `void vga_fb_reset_default(void)` |
-| `vga_fb_resize` | function | `kernel/vga_fb.c:4425` | `void vga_fb_resize(int dcols, int drows)` |
-| `vga_fb_set_gfx_mode` | function | `kernel/vga_fb.c:750` | `void vga_fb_set_gfx_mode(int on)` |
-| `vga_fb_set_gfx_palette` | function | `kernel/vga_fb.c:1838` | `void vga_fb_set_gfx_palette(const unsigned char *pal)` |
-| `vga_fb_set_gfx_program` | function | `kernel/vga_fb.c:688` | `void vga_fb_set_gfx_program(const char *name)` |
-| `vga_fb_set_palette` | function | `kernel/vga_fb.c:2005` | `static void vga_fb_set_palette(void)` |
-| `vga_fb_snap_window` | function | `kernel/vga_fb.c:4397` | `void vga_fb_snap_window(int zone)` |
-| `vga_fb_str` | function | `kernel/vga_fb.c:2156` | `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg)` |
-| `vga_fb_term_feed` | function | `kernel/vga_fb.c:373` | `void vga_fb_term_feed(const char *line, int len)` |
-| `vga_fb_term_ring_init` | function | `kernel/vga_fb.c:365` | `void vga_fb_term_ring_init(void)` |
-| `vga_fb_text_cursor` | function | `kernel/vga_fb.c:3605` | `void vga_fb_text_cursor(int col)` |
-| `vga_fb_theme_name` | function | `kernel/vga_fb.c:3255` | `int vga_fb_theme_name(char *dst, int cap)` |
-| `vga_fb_toggle_fullscreen` | function | `kernel/vga_fb.c:4227` | `void vga_fb_toggle_fullscreen(void)` |
-| `vga_fb_toggle_minimize` | function | `kernel/vga_fb.c:4260` | `void vga_fb_toggle_minimize(void)` |
-| `vga_fb_unpark_line` | function | `kernel/vga_fb.c:1717` | `int vga_fb_unpark_line(char *b, int *p)` |
-| `vga_fb_wait_tick` | function | `kernel/vga_fb.c:5384` | `void vga_fb_wait_tick(void)` |
-| `wall_level` | function | `kernel/vga_fb.c:1996` | `static int wall_level(int v)` |
-| `wallpaper_draw` | function | `kernel/vga_fb.c:4559` | `static void wallpaper_draw(void)` |
-| `wallpaper_ensure` | function | `kernel/vga_fb.c:4502` | `static void wallpaper_ensure(void)` |
-| `wallpaper_packed` | function | `kernel/vga_fb.c:4575` | `static int wallpaper_packed(int x, int y, unsigned int *out)` |
-| `wallpaper_rect` | function | `kernel/vga_fb.c:5093` | `static void wallpaper_rect(int x0, int y0, int w, int h)` |
-| `wallpaper_usable` | function | `kernel/vga_fb.c:4554` | `static int wallpaper_usable(void)` |
-| `wm_buttons_hit` | function | `kernel/vga_fb.c:2714` | `static int wm_buttons_hit(int mx, int my, int win_x, int win_y, int win_w)` |
-| `wm_clear_close` | function | `kernel/vga_fb.c:2730` | `void wm_clear_close(void)` |
-| `wm_close_pending` | function | `kernel/vga_fb.c:2729` | `int wm_close_pending(void)` |
-| `wm_drag_reset` | function | `kernel/vga_fb.c:76` | `static void wm_drag_reset(void)` |
-| `wm_draw_buttons` | function | `kernel/vga_fb.c:2200` | `static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg)` |
-| `wm_emit_focus_moved` | function | `kernel/vga_fb.c:1091` | `static void wm_emit_focus_moved(int before, int source)` |
-| `wm_event_cfg` | function | `kernel/vga_fb.c:67` | `static wm_event_config_t wm_event_cfg(void)` |
-| `wm_focus_cursor_sync` | function | `kernel/vga_fb.c:1084` | `static void wm_focus_cursor_sync(const wm_notify_event_t *e)` |
-| `wm_geom_cfg` | function | `kernel/vga_fb.c:56` | `static wm_geom_config_t wm_geom_cfg(void)` |
-| `wm_gfx_focus_sync` | function | `kernel/vga_fb.c:1283` | `static void wm_gfx_focus_sync(int on)` |
-| `wm_gfx_mode_active` | function | `kernel/vga_fb.c:2731` | `int wm_gfx_mode_active(void)` |
-| `wm_init_once` | function | `kernel/vga_fb.c:1183` | `static void wm_init_once(void)` |
-| `wm_snapshot_state` | function | `kernel/vga_fb.c:1224` | `static void wm_snapshot_state(wm_focus_state_t *st)` |
-| `fx_wait_until` | function | `kernel/vga_fx.c:40` | `static void fx_wait_until(unsigned long deadline)` |
-| `once` | function | `kernel/vga_fx.c:95` | `* once (prev[] tracks the revealed frontier per column), then the final  * restore guarantees the...` |
-| `vga_fx_enabled` | function | `kernel/vga_fx.c:32` | `int vga_fx_enabled(void)` |
-| `vga_fx_free` | function | `kernel/vga_fx.c:82` | `void vga_fx_free(unsigned int *buf)` |
-| `vga_fx_melt_from_black` | function | `kernel/vga_fx.c:164` | `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb)` |
-| `vga_fx_melt_rect` | function | `kernel/vga_fx.c:155` | `void vga_fx_melt_rect(int x, int y, int w, int h,     const unsigned int *oldb, const unsigned in...` |
-| `vga_fx_restore_rect` | function | `kernel/vga_fx.c:68` | `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf)` |
-| `vga_fx_set_enabled` | function | `kernel/vga_fx.c:27` | `void vga_fx_set_enabled(int on)` |
-| `vga_fx_snap_rect` | function | `kernel/vga_fx.c:46` | `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h)` |
-| `Client` | class | `mcp/mcp_dbg_driver.py:15` | `class Client` |
-| `__init__` | method | `mcp/mcp_dbg_driver.py:16` | `def __init__(self)` |
-| `close` | method | `mcp/mcp_dbg_driver.py:54` | `def close(self)` |
-| `main` | function | `mcp/mcp_dbg_driver.py:64` | `def main()` |
-| `request` | method | `mcp/mcp_dbg_driver.py:28` | `def request(self, method, params)` |
-| `tool` | method | `mcp/mcp_dbg_driver.py:46` | `def tool(self, name, params)` |
 
 Next: [SYMBOLS_p11.md](SYMBOLS_p11.md)

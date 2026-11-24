@@ -2,6 +2,13 @@
 Previous: [ARCHITECTURE.md](ARCHITECTURE.md)
 
 ## Internal Dependencies (continued)
+- `progs/doomgeneric/doomgeneric_soso.c` -> `progs/doomgeneric/doomkeys.h`
+- `progs/doomgeneric/doomgeneric_soso.c` -> `progs/doomgeneric/m_argv.h`
+- `progs/doomgeneric/doomgeneric_sosox.c` -> `kernel/string.c`
+- `progs/doomgeneric/doomgeneric_sosox.c` -> `progs/doomgeneric/doomgeneric.h`
+- `progs/doomgeneric/doomgeneric_sosox.c` -> `progs/doomgeneric/doomkeys.h`
+- `progs/doomgeneric/doomgeneric_sosox.c` -> `progs/doomgeneric/m_argv.h`
+- `progs/doomgeneric/doomgeneric_win.c` -> `progs/doomgeneric/doomgeneric.h`
 - `progs/doomgeneric/doomgeneric_win.c` -> `progs/doomgeneric/doomkeys.h`
 - `progs/doomgeneric/doomgeneric_xlib.c` -> `kernel/string.c`
 - `progs/doomgeneric/doomgeneric_xlib.c` -> `kernel/time.c`
@@ -489,12 +496,5 @@ Previous: [ARCHITECTURE.md](ARCHITECTURE.md)
 - `progs/doomgeneric/r_local.h` -> `progs/doomgeneric/r_segs.h`
 - `progs/doomgeneric/r_local.h` -> `progs/doomgeneric/r_things.h`
 - `progs/doomgeneric/r_local.h` -> `progs/doomgeneric/tables.h`
-- `progs/doomgeneric/r_main.c` -> `progs/doomgeneric/d_loop.h`
-- `progs/doomgeneric/r_main.c` -> `progs/doomgeneric/doomdef.h`
-- `progs/doomgeneric/r_main.c` -> `progs/doomgeneric/m_bbox.h`
-- `progs/doomgeneric/r_main.c` -> `progs/doomgeneric/m_menu.h`
-- `progs/doomgeneric/r_main.c` -> `progs/doomgeneric/r_local.h`
-- `progs/doomgeneric/r_main.c` -> `progs/doomgeneric/r_sky.h`
-- `progs/doomgeneric/r_main.h` -> `progs/doomgeneric/d_player.h`
 
 Next: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)

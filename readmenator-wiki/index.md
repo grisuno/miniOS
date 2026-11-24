@@ -1,15 +1,15 @@
 # Second Brain
 
-*Last synthesized: 2026-11-12 | 600 files | 11 concept pages | offline, zero tokens*
+*Last synthesized: 2026-11-24 | 602 files | 10 concept pages | offline, zero tokens*
 
 > Raw sources -> readmenator wiki -> links (Karpathy LLM Wiki Pattern, deterministic).
 > Start here, then open one community page. Prefer grep over full reads.
 
 ## Vault Overview
 
-The codebase centres on `string.c`, `doomtype.h`, `doomdef.h`. Architecturally it is 5 layers, dominant utility (463 files) across 11 import-based communities. Recorded risk surface: 0 security findings and 1 dependency cycles.
+The codebase centres on `string.c`, `doomtype.h`, `doomdef.h`. Architecturally it is 5 layers, dominant utility (463 files) across 10 import-based communities. Recorded risk surface: 0 security findings and 1 dependency cycles.
 
-Surprising tissue lives between headers: kernel, progs/doomgeneric: d_englsh, progs/src: 14 extracted cross-community imports and 6 inferred bridges. Follow `connections.json` sorted by strength before refactoring.
+Surprising tissue lives between headers: kernel, progs/doomgeneric: d_englsh, progs/src: 15 extracted cross-community imports and 5 inferred bridges. Follow `connections.json` sorted by strength before refactoring.
 
 Open work clusters around documentation (89% file coverage), 0 security findings, 20 taint paths, and 5 suggested exploration questions in `queries.md`.
 
@@ -17,14 +17,14 @@ Open work clusters around documentation (89% file coverage), 0 security findings
 
 | Metric | Value |
 |--------|-------|
-| Files | 600 |
-| Symbols | 13210 |
-| Resolved imports | 1406 |
+| Files | 602 |
+| Symbols | 13351 |
+| Resolved imports | 1413 |
 | Languages | S, c, h, lua, py, s, sh |
-| Communities | 11 |
-| Doc coverage | 89% (534/600 files) |
+| Communities | 10 |
+| Doc coverage | 89% (536/602 files) |
 | Security findings | 0 |
-| Estimated read cost | ~245588 tokens (chars/4, offline so $0) |
+| Estimated read cost | ~248486 tokens (chars/4, offline so $0) |
 | Large files (>256KB, maybe generated) | 1: `sign.s` |
 
 ## Reading Order
@@ -40,17 +40,16 @@ readmenator query "<question>" --target miniOS
 
 ## Concept Wiki
 
-- [headers: kernel (137 files, cohesion 0.90)](./community_0_headers_kernel.md)
+- [headers: kernel (146 files, cohesion 0.88)](./community_0_headers_kernel.md)
 - [progs/doomgeneric: d_englsh (99 files, cohesion 0.66)](./community_1_progs_doomgeneric_d_englsh.md)
-- [progs/src (86 files, cohesion 0.71)](./community_2_progs_src.md)
+- [progs/src (77 files, cohesion 0.70)](./community_2_progs_src.md)
 - [progs/doomgeneric: p_spec (69 files, cohesion 0.56)](./community_3_progs_doomgeneric_p_spec.md)
-- [tools: tls_crypto (44 files, cohesion 0.78)](./community_4_tools_tls_crypto.md)
-- [headers: vga_fb (26 files, cohesion 0.76)](./community_5_headers_vga_fb.md)
-- [progs/doomgeneric: net_defs (13 files, cohesion 0.42)](./community_6_progs_doomgeneric_net_defs.md)
-- [headers: batch (3 files, cohesion 0.67)](./community_7_headers_batch.md)
-- [headers: tick (3 files, cohesion 0.67)](./community_8_headers_tick.md)
-- [tools: doom_pwad (2 files, cohesion 1.00)](./community_9_tools_doom_pwad.md)
-- [orphans (118 files, cohesion 0.00)](./community_10_orphans.md)
+- [tools: lxabi (37 files, cohesion 0.80)](./community_4_tools_lxabi.md)
+- [headers: vga_fb (27 files, cohesion 0.74)](./community_5_headers_vga_fb.md)
+- [net (14 files, cohesion 0.60)](./community_6_net.md)
+- [progs/doomgeneric: net_defs (13 files, cohesion 0.42)](./community_7_progs_doomgeneric_net_defs.md)
+- [tools: doom_pwad (2 files, cohesion 1.00)](./community_8_tools_doom_pwad.md)
+- [orphans (118 files, cohesion 0.00)](./community_9_orphans.md)
 
 ## God Nodes
 
@@ -64,16 +63,16 @@ readmenator query "<question>" --target miniOS
 
 ## Strongest Connections
 
-- 0 -> 5: depends_on (strength 0.9, EXTRACTED)
 - 0 -> 2: depends_on (strength 0.9, EXTRACTED)
-- 4 -> 2: depends_on (strength 0.9, EXTRACTED)
-- 4 -> 0: depends_on (strength 0.9, EXTRACTED)
-- 0 -> 8: depends_on (strength 0.9, EXTRACTED)
-- 0 -> 7: depends_on (strength 0.9, EXTRACTED)
+- 6 -> 0: depends_on (strength 0.9, EXTRACTED)
+- 6 -> 2: depends_on (strength 0.9, EXTRACTED)
+- 6 -> 4: depends_on (strength 0.9, EXTRACTED)
+- 0 -> 5: depends_on (strength 0.9, EXTRACTED)
+- 0 -> 4: depends_on (strength 0.9, EXTRACTED)
 - 1 -> 3: depends_on (strength 0.9, EXTRACTED)
 - 1 -> 2: depends_on (strength 0.9, EXTRACTED)
-- 6 -> 2: depends_on (strength 0.9, EXTRACTED)
-- 6 -> 1: depends_on (strength 0.9, EXTRACTED)
+- 7 -> 2: depends_on (strength 0.9, EXTRACTED)
+- 7 -> 1: depends_on (strength 0.9, EXTRACTED)
 
 ## Navigation Tips
 

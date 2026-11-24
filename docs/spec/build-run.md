@@ -166,6 +166,86 @@ MiniFS, audio, graphics) is unchanged.
 Results from each platform will be recorded here as they land: what
 booted, what failed, and which driver gap it maps to.
 
+### SATA (AHCI) backend
+
+`drivers/ahci.c` is the disk driver of UEFI-era PCs, whose firmware rarely
+offers the IDE compatibility mode `drivers/ide.c` needs.
+
+- Found by PCI class 01:06:01 through `pci_find_class` (never a vendor
+  table); registers are ABAR (BAR5), mapped through `kmm_map_device`.
+- Firmware ownership is released with the BIOS/OS handoff when CAP2.BOH
+  is set; GHC.AE is set and GHC.IE cleared (polled, no vector, no IDT
+  entry, no PIC mask, the same doctrine as xHCI).
+- The first implemented port with an established link (SSTS.DET=3,
+  IPM=1) and an ATA signature (0x00000101) is claimed. A device with no
+  phy communication gets one COMRESET; staggered spin-up is honoured;
+  ATAPI and port multipliers are skipped.
+- IDENTIFY DEVICE must report 48-bit LBA and 512-byte logical sectors
+  (4Kn drives are refused, the block layer addresses 512-byte LBAs).
+- I/O is READ/WRITE DMA EXT on command slot 0, `AHCI_MAX_SECTORS` (64 KB)
+  per command through one heap staging buffer; every write is followed
+  by FLUSH CACHE EXT because a real disk acknowledges into volatile cache.
+  Heap addresses are bus addresses (identity map); an address above 4 GB
+  on an HBA without CAP.S64A is refused, never truncated.
+- Every wait is bounded by a named `AHCI_TMO_*` budget on `ktime_ms`
+  (TSC, so it advances with interrupts masked). A task-file error, TFES
+  or a timeout fails the request closed.
+- Selection: AHCI becomes the backend when neither virtio nor USB won and
+  either no legacy IDE disk answered or the IDE disk has the same sector
+  count (the same drive seen through a compatibility window).
+- Shell probe: `ahci` prints port/PI/VS/capacity, checks the LBA 0 boot
+  signature and the LBA 2048 MiniFS superblock, and rewrites LBA 2048
+  with its own bytes to prove the write + flush path.
+- Known limit: with several ATA disks the first linked port wins; the
+  boot disk is not yet identified by content.
+
+BDD: `MATCH=ahci` boots the stock image on `-machine q35,smm=off` (disk on
+the ICH9 HBA at 00:1f.2, no IDE ports, an xHCI alongside so the HBA is the
+second device window) and proves the probe plus a MiniFS write that
+survives a reboot. `smm=off` is a TCG artifact: SeaBIOS serves INT 13h
+from its own AHCI driver through an SMI call32 trampoline that TCG
+emulates too slowly for stage 2 to finish; KVM and real firmware are not
+affected. Mutants: `ahci-*` (class, signature, FIS count, write opcode,
+IDENTIFY capacity word, backend preference, single device window).
+
+Two defects this slice found on the way, both of which made real
+hardware invisible:
+
+- `pci_is_multifunction` tested bit 7 of the 0x0C dword (cache line
+  size) instead of bit 7 of the header-type byte at 0x0E, so functions
+  1..7 of every chipset device were never walked: the PCH SATA HBA at
+  00:1f.2 and the PCIe root ports at 00:1c.x did not exist. Bridges are
+  now also followed on any function, not just function 0. Pinned by
+  `make test-pci` (Intel PCH fixture) and the `pci-multifunc-wrong-byte`
+  / `pci-bridge-func0-only` mutants.
+- `kmm_map_device` owned a single 2 MB window and refused a second
+  mapping, so on a machine with xHCI plus a disk controller the second
+  driver failed closed. It now hands out one window per call (512 per
+  device PDPT slot, never reused). Pinned by `ahci-kmm-single-window`.
+
+### Road to real hardware
+
+Status of each gap between QEMU and a physical PC, in the order they
+block a boot. A slice lands with its spec here, a BDD proof under QEMU
+and mutants, before the next one starts.
+
+| # | Gap | Why it blocks | Plan | Status |
+|---|-----|---------------|------|--------|
+| 1 | PCI multifunction walk | SATA, root ports and everything behind them invisible | header-type byte, bridges on any function | landed |
+| 2 | One MMIO window | second controller refused | per-call 2 MB windows | landed |
+| 3 | SATA disk | no IDE mode on UEFI-era firmware | `drivers/ahci.c` backend | landed |
+| 4 | One image, both firmwares | `uefi.img` and `os.img` are separate, so a stick boots only one way | GPT/MBR hybrid `os.img`: stage1 in the MBR boot code, an ESP partition carrying `BOOTX64.EFI` + `kernel.bin`, MiniFS located by the existing superblock probe | open |
+| 5 | GOP framebuffer | UEFI has no VBE; the desktop needs a linear framebuffer | handoff block carries GOP base/pitch/geometry, `vga_fb` accepts it (ABI bump), VGA text stays the fallback | written, unproven (OVMF here reports no GOP) |
+| 6 | ACPI | CPU count, IOAPIC, HPET and PM timer live in MADT/HPET/FADT; poweroff and reboot need FADT/`_S5` | RSDP from the EFI config table or the BIOS EBDA scan, validated (checksums, lengths) before use | open |
+| 7 | Timers | the 8254 PIT is clock-gated on recent Intel PCHs, which breaks TSC calibration and the 100 Hz tick | calibrate against HPET or the ACPI PM timer, tick from the LAPIC timer | open |
+| 8 | NVMe as a backend | many laptops have NVMe only | write path, multi-PRP transfers, registry entry, preference after AHCI | open |
+| 9 | Console without COM1 | most laptops have no serial port | framebuffer console is the primary console; serial stays optional | open |
+| 10 | NIC | rtl8139/virtio do not exist on hardware | e1000e / r8169 (Realtek 8111 is the common desktop NIC) | open |
+| 11 | Input without PS/2 emulation | some firmware drops legacy USB emulation after ExitBootServices | already covered by xHCI HID; verify on hardware | verify |
+
+Real-hardware results land in the platform table above, each with the
+exact failure and the gap it maps to.
+
 ### Known constraints off QEMU
 
 - Boot is legacy MBR only (INT 13h LBA). Neither `os.img` nor `os.usb.img`
@@ -174,13 +254,13 @@ booted, what failed, and which driver gap it maps to.
   a different image: `make uefi` builds `uefi.img` (a FAT image carrying
   `BOOTX64.EFI` from `boot/uefi_stub.c` plus `kernel.bin`), which reaches
   the kernel shell under OVMF (`docs/spec/boot-memory.md`).
-- Disk drivers are IDE PIO (`drivers/ide.c`), virtio-blk and USB mass
-  storage over xHCI (`drivers/usbblk.c`). A machine or VM exposing the
-  disk exclusively through AHCI/SATA or NVMe will boot stage 1 and stage
-  2 (BIOS reads) but the kernel will not find its MiniFS partition: the
-  block-layer preference stays virtio > USB > IDE and the NVMe driver is
-  probe plus read-only queues, not a backend yet. Keep an IDE/compatibility
-  mode available where possible.
+- Disk drivers are IDE PIO (`drivers/ide.c`), virtio-blk, USB mass
+  storage over xHCI (`drivers/usbblk.c`) and AHCI/SATA
+  (`drivers/ahci.c`, below). Block backend preference is
+  virtio > USB > AHCI > IDE, frozen at boot (`block: backend=...`). NVMe
+  is still probe plus read-only queues, not a backend: a machine whose
+  only disk is NVMe boots stage 1/2 through the firmware but the kernel
+  will not find its MiniFS partition.
 - The NIC backends are rtl8139 (the QEMU user-networking default) and a
   polled legacy virtio-net (`drivers/virtio_net.c`), which `net/net.c`
   prefers when present (`net: backend=virtio`). Other hypervisors need

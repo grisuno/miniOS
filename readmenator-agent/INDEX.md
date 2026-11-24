@@ -12,6 +12,7 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `arch/x86/tlb_nmi.S` | - | x86 | 1 | 0 |
 | `boot/uefi_stub.c` | Docstring: boot/uefi_stub.c -- Minimal MiniOS UEFI stub (Phase 1). | misc | 50 | 0 |
 | `bootloader.c` | - | root | 2 | 0 |
+| `drivers/ahci.c` | Docstring: drivers/ahci.c -- Polled AHCI (SATA) disk driver. | drivers | 130 | 0 |
 | `drivers/block.c` | Block device layer for MiniFS. | drivers | 19 | 0 |
 | `drivers/driver.c` | Device registry for the Strategy-pattern driver layer. | drivers | 8 | 0 |
 | `drivers/ide.c` | IDE/ATA PIO driver for MiniOS. | drivers | 19 | 0 |
@@ -40,7 +41,7 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `headers/ap_stub.h` | generated from ap_stub.bin - do not edit | headers | 0 | 1 |
 | `headers/arch/x86/boot/bootdefs.h` | centralized configuration for the MiniOS two-stage boot path. | misc | 157 | 14 |
 | `headers/arch/x86/cpu_setup.h` | per-CPU control-register setup shared by the BSP (kmain) | headers_arch_x86 | 2 | 2 |
-| `headers/arch/x86/hal_io.h` | Docstring: x86 port I/O hardware abstraction contract. | headers_arch_x86 | 69 | 8 |
+| `headers/arch/x86/hal_io.h` | Docstring: x86 port I/O hardware abstraction contract. | headers_arch_x86 | 69 | 9 |
 | `headers/arch/x86/msr.h` | Model-Specific Register access for x86-64. | headers_arch_x86 | 9 | 7 |
 | `headers/arena.h` | Docstring: bump arena for MiniOS, kernel and ring-3 alike. | headers | 15 | 2 |
 | `headers/audio.h` | Unified audio API for MiniOS. | headers | 18 | 1 |
@@ -49,12 +50,13 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `headers/block.h` | Block device abstraction for MiniFS. | headers | 14 | 7 |
 | `headers/desktop_icons.h` | embedded icon pixel data for desktop shortcuts. | headers | 3 | 1 |
 | `headers/desktop_shortcuts.h` | configurable desktop icon shortcuts. | headers | 27 | 1 |
-| `headers/driver.h` | Strategy pattern for hardware drivers (thesis correction 2). | headers | 16 | 10 |
+| `headers/driver.h` | Strategy pattern for hardware drivers (thesis correction 2). | headers | 16 | 11 |
+| `headers/drivers/ahci.h` | Docstring: drivers/ahci.h -- AHCI (SATA) host controller, polled. | headers_drivers | 11 | 4 |
 | `headers/drivers/kbd.h` | Keyboard layout: US qwerty (default) or Spanish (Spain) qwerty. | headers_drivers | 24 | 7 |
 | `headers/drivers/modifiers.h` | Docstring: Unified modifier tracking for cooked and raw paths. | headers_drivers | 11 | 4 |
 | `headers/drivers/mouse.h` | Docstring: mouse.h -- boundary of the PS/2 mouse device driver | headers_drivers | 4 | 2 |
 | `headers/drivers/nvme.h` | - | headers_drivers | 7 | 3 |
-| `headers/drivers/pci.h` | Docstring: drivers/pci.h -- PCI configuration-space access. | headers_drivers | 54 | 6 |
+| `headers/drivers/pci.h` | Docstring: drivers/pci.h -- PCI configuration-space access. | headers_drivers | 54 | 7 |
 | `headers/drivers/usbblk.h` | Docstring: drivers/usbblk.h -- boundary of the USB mass-storage driver. | headers_drivers | 13 | 5 |
 | `headers/drivers/usbhid.h` | Docstring: drivers/usbhid.h -- boundary of the USB HID boot-protocol driver. | headers_drivers | 33 | 5 |
 | `headers/drivers/virtio_blk.h` | Docstring: drivers/virtio_blk.h -- virtio-blk boundary. | headers_drivers | 7 | 4 |
@@ -494,7 +496,5 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `tests/test_ext4.c` | Docstring: Host test for the ext4 loopback driver (make test-ext4). | tests | 31 | 0 |
 | `tests/test_fat32.c` | Docstring: Host test for the FAT32 loopback driver (make test-fat). | tests | 29 | 0 |
 | `tests/test_fault.c` | fault-injection suite (boyscout gap #10). | tests | 11 | 0 |
-| `tests/test_file_assoc.c` | Docstring: host test for the file browser assoc contract (make test-file). | tests | 10 | 0 |
-| `tests/test_freedom_wl.c` | test_freedom_wl - host suite for the Wayland to MiniOS mapping. | tests | 3 | 0 |
 
 Next: [INDEX_p2.md](INDEX_p2.md)

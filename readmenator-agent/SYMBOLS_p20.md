@@ -1,8 +1,149 @@
-# Symbols (page 20 of 27)
+# Symbols (page 20 of 28)
 Previous: [SYMBOLS_p19.md](SYMBOLS_p19.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `FILE_ACTION_INTERNAL` | macro | `progs/file/file.c:49` | `#define FILE_ACTION_INTERNAL` |
+| `FILE_ACTION_SHELL` | macro | `progs/file/file.c:48` | `#define FILE_ACTION_SHELL` |
+| `FILE_ACT_INTERNAL` | macro | `progs/file/file.c:73` | `#define FILE_ACT_INTERNAL` |
+| `FILE_ACT_SHELL` | macro | `progs/file/file.c:72` | `#define FILE_ACT_SHELL` |
+| `FILE_ACT_TEXT` | macro | `progs/file/file.c:71` | `#define FILE_ACT_TEXT` |
+| `FILE_ACT_UNKNOWN` | macro | `progs/file/file.c:74` | `#define FILE_ACT_UNKNOWN` |
+| `FILE_ASSOC_PATH` | macro | `progs/file/file.c:37` | `#define FILE_ASSOC_PATH` |
+| `FILE_EXT_MAX` | macro | `progs/file/file.c:38` | `#define FILE_EXT_MAX` |
+| `FILE_ICON_BIG` | macro | `progs/file/file.c:58` | `#define FILE_ICON_BIG` |
+| `FILE_ICON_FILES` | macro | `progs/file/file.c:62` | `#define FILE_ICON_FILES` |
+| `FILE_ICON_FOLDER` | macro | `progs/file/file.c:61` | `#define FILE_ICON_FOLDER` |
+| `FILE_ICON_IMAGE` | macro | `progs/file/file.c:63` | `#define FILE_ICON_IMAGE` |
+| `FILE_ICON_MAX` | macro | `progs/file/file.c:59` | `#define FILE_ICON_MAX` |
+| `FILE_ICON_N` | macro | `progs/file/file.c:60` | `#define FILE_ICON_N` |
+| `FILE_ICON_OBJECT` | macro | `progs/file/file.c:64` | `#define FILE_ICON_OBJECT` |
+| `FILE_ICON_PATH_FILES` | macro | `progs/file/file.c:66` | `#define FILE_ICON_PATH_FILES` |
+| `FILE_ICON_PATH_FOLDER` | macro | `progs/file/file.c:65` | `#define FILE_ICON_PATH_FOLDER` |
+| `FILE_ICON_PATH_IMAGE` | macro | `progs/file/file.c:67` | `#define FILE_ICON_PATH_IMAGE` |
+| `FILE_ICON_PATH_OBJECT` | macro | `progs/file/file.c:68` | `#define FILE_ICON_PATH_OBJECT` |
+| `FILE_ICON_SMALL` | macro | `progs/file/file.c:57` | `#define FILE_ICON_SMALL` |
+| `FILE_LIST_CAP` | macro | `progs/file/file.c:36` | `#define FILE_LIST_CAP` |
+| `FILE_LOG_LINE` | macro | `progs/file/file.c:50` | `#define FILE_LOG_LINE` |
+| `FILE_MAX_ENTRIES` | macro | `progs/file/file.c:34` | `#define FILE_MAX_ENTRIES` |
+| `FILE_MAX_PATH` | macro | `progs/file/file.c:33` | `#define FILE_MAX_PATH` |
+| `FILE_NAME_MAX` | macro | `progs/file/file.c:35` | `#define FILE_NAME_MAX` |
+| `FILE_PREVIEW_FILE_MAX` | macro | `progs/file/file.c:46` | `#define FILE_PREVIEW_FILE_MAX` |
+| `FILE_PREVIEW_H` | macro | `progs/file/file.c:45` | `#define FILE_PREVIEW_H` |
+| `FILE_PREVIEW_W` | macro | `progs/file/file.c:44` | `#define FILE_PREVIEW_W` |
+| `FILE_PROG_MAX` | macro | `progs/file/file.c:39` | `#define FILE_PROG_MAX` |
+| `FILE_STATUS_MAX` | macro | `progs/file/file.c:42` | `#define FILE_STATUS_MAX` |
+| `FILE_TITLE` | macro | `progs/file/file.c:47` | `#define FILE_TITLE` |
+| `FILE_TOOL_CVM` | macro | `progs/file/file.c:41` | `#define FILE_TOOL_CVM` |
+| `FILE_TOOL_VEDIT` | macro | `progs/file/file.c:40` | `#define FILE_TOOL_VEDIT` |
+| `FILE_UI_MEMORY` | macro | `progs/file/file.c:43` | `#define FILE_UI_MEMORY` |
+| `MINIOS_LEAKCHECK_IMPL` | macro | `progs/file/file.c:28` | `#define MINIOS_LEAKCHECK_IMPL` |
+| `MINIOS_LK_ENABLE` | macro | `progs/file/file.c:29` | `#define MINIOS_LK_ENABLE` |
+| `STBI_NO_STDIO` | macro | `progs/file/file.c:26` | `#define STBI_NO_STDIO` |
+| `STBI_ONLY_PNG` | macro | `progs/file/file.c:25` | `#define STBI_ONLY_PNG` |
+| `STB_IMAGE_IMPLEMENTATION` | macro | `progs/file/file.c:24` | `#define STB_IMAGE_IMPLEMENTATION` |
+| `file_action_of` | function | `progs/file/file.c:323` | `static int file_action_of(const char *fname, const char **prog_out)` |
+| `file_activate` | function | `progs/file/file.c:480` | `static void file_activate(const char *dir, const char *name)` |
+| `file_assoc` | struct | `progs/file/file.c:76` | `` |
+| `file_assoc_line` | function | `progs/file/file.c:269` | `static int file_assoc_line(const char *line, char *ext, char *prog)` |
+| `file_assoc_load` | function | `progs/file/file.c:302` | `static void file_assoc_load(void)` |
+| `file_assoc_lookup` | function | `progs/file/file.c:318` | `static const char *file_assoc_lookup(const char *ext)` |
+| `file_ext_of` | function | `progs/file/file.c:122` | `static void file_ext_of(const char *fname, char *dst, unsigned cap)` |
+| `file_gui_run` | function | `progs/file/file.c:779` | `static void file_gui_run(void)` |
+| `file_icon_decode` | function | `progs/file/file.c:165` | `static int file_icon_decode(const char *path, unsigned char *px,                             unsi...` |
+| `file_icon_kind` | function | `progs/file/file.c:146` | `static int file_icon_kind(const char *fname, int isdir)` |
+| `file_icon_sz` | function | `progs/file/file.c:158` | `static int file_icon_sz(void)` |
+| `file_icons_load` | function | `progs/file/file.c:213` | `static int file_icons_load(void)` |
+| `file_join` | function | `progs/file/file.c:245` | `static int file_join(const char *dir, const char *name, char *dst, unsigned cap)` |
+| `file_open_text` | function | `progs/file/file.c:430` | `static void file_open_text(const char *path)` |
+| `file_parent` | function | `progs/file/file.c:259` | `static void file_parent(char *path)` |
+| `file_preview_blit` | function | `progs/file/file.c:385` | `static void file_preview_blit(int ox, int oy)` |
+| `file_preview_load` | function | `progs/file/file.c:351` | `static int file_preview_load(const char *path)` |
+| `file_refresh` | function | `progs/file/file.c:336` | `static void file_refresh(void)` |
+| `file_run_shell` | function | `progs/file/file.c:441` | `static void file_run_shell(const char *path)` |
+| `file_selftest` | function | `progs/file/file.c:613` | `static int file_selftest(void)` |
+| `file_spawn_visible` | function | `progs/file/file.c:407` | `static long file_spawn_visible(const char *tool, int argc, const char **argv,                    ...` |
+| `file_sys_dir_list` | function | `progs/file/file.c:101` | `static long file_sys_dir_list(const char *path, char *buf, long cap)` |
+| `file_sys_spawn` | function | `progs/file/file.c:111` | `static long file_sys_spawn(const char *path, int argc, const char **argv)` |
+| `file_toggle_icons` | function | `progs/file/file.c:238` | `static int file_toggle_icons(void)` |
+| `file_ui_build` | function | `progs/file/file.c:511` | `static void file_ui_build(struct nk_context *ctx)` |
+| `main` | function | `progs/file/file.c:838` | `int main(int argc, char **argv)` |
+| `FASSOC_EXT_MAX` | macro | `progs/file/file_assoc.h:22` | `#define FASSOC_EXT_MAX` |
+| `FASSOC_GROW_DEN` | macro | `progs/file/file_assoc.h:42` | `#define FASSOC_GROW_DEN` |
+| `FASSOC_GROW_NUM` | macro | `progs/file/file_assoc.h:38` | `#define FASSOC_GROW_NUM` |
+| `FASSOC_HARD_MAX` | macro | `progs/file/file_assoc.h:34` | `#define FASSOC_HARD_MAX` |
+| `FASSOC_INIT_CAP` | macro | `progs/file/file_assoc.h:30` | `#define FASSOC_INIT_CAP` |
+| `FASSOC_PROG_MAX` | macro | `progs/file/file_assoc.h:26` | `#define FASSOC_PROG_MAX` |
+| `MINIOS_FILE_ASSOC_H` | macro | `progs/file/file_assoc.h:15` | `#define MINIOS_FILE_ASSOC_H` |
+| `fassoc_clear` | function | `progs/file/file_assoc.h:89` | `static void fassoc_clear(struct fassoc_table *t)` |
+| `fassoc_count` | function | `progs/file/file_assoc.h:150` | `static size_t fassoc_count(const struct fassoc_table *t)` |
+| `fassoc_entry` | struct | `progs/file/file_assoc.h:46` | `` |
+| `fassoc_ext_ok` | function | `progs/file/file_assoc.h:59` | `static int fassoc_ext_ok(const char *ext)` |
+| `fassoc_free` | function | `progs/file/file_assoc.h:95` | `static void fassoc_free(struct fassoc_table *t)` |
+| `fassoc_lookup` | function | `progs/file/file_assoc.h:140` | `static const char *fassoc_lookup(const struct fassoc_table *t, const char *ext)` |
+| `fassoc_prog_ok` | function | `progs/file/file_assoc.h:73` | `static int fassoc_prog_ok(const char *prog)` |
+| `fassoc_push` | function | `progs/file/file_assoc.h:125` | `static int fassoc_push(struct fassoc_table *t, const char *ext, const char *prog)` |
+| `fassoc_reserve` | function | `progs/file/file_assoc.h:104` | `static int fassoc_reserve(struct fassoc_table *t, size_t want)` |
+| `fassoc_table` | struct | `progs/file/file_assoc.h:52` | `` |
+| `FUI_BODY_CAP` | macro | `progs/freedomui/freedomui_minios.c:53` | `#define FUI_BODY_CAP` |
+| `FUI_COLS` | macro | `progs/freedomui/freedomui_minios.c:51` | `#define FUI_COLS` |
+| `FUI_FONT_H` | macro | `progs/freedomui/freedomui_minios.c:62` | `#define FUI_FONT_H` |
+| `FUI_FONT_W` | macro | `progs/freedomui/freedomui_minios.c:61` | `#define FUI_FONT_W` |
+| `FUI_HDR_MAX` | macro | `progs/freedomui/freedomui_minios.c:54` | `#define FUI_HDR_MAX` |
+| `FUI_HOPS_MAX` | macro | `progs/freedomui/freedomui_minios.c:60` | `#define FUI_HOPS_MAX` |
+| `FUI_HOST_MAX` | macro | `progs/freedomui/freedomui_minios.c:57` | `#define FUI_HOST_MAX` |
+| `FUI_NET_BUF` | macro | `progs/freedomui/freedomui_minios.c:55` | `#define FUI_NET_BUF` |
+| `FUI_PATH_MAX` | macro | `progs/freedomui/freedomui_minios.c:58` | `#define FUI_PATH_MAX` |
+| `FUI_REQ_MAX` | macro | `progs/freedomui/freedomui_minios.c:56` | `#define FUI_REQ_MAX` |
+| `FUI_TEXT_ROWS` | macro | `progs/freedomui/freedomui_minios.c:52` | `#define FUI_TEXT_ROWS` |
+| `FUI_TITLE_MAX` | macro | `progs/freedomui/freedomui_minios.c:63` | `#define FUI_TITLE_MAX` |
+| `FUI_URL_MAX` | macro | `progs/freedomui/freedomui_minios.c:59` | `#define FUI_URL_MAX` |
+| `FreedomUiConfig` | struct | `progs/freedomui/freedomui_minios.c:69` | `` |
+| `freedomui_build_palette` | function | `progs/freedomui/freedomui_minios.c:130` | `static long freedomui_build_palette(unsigned char *pal, long cap)` |
+| `freedomui_default` | function | `progs/freedomui/freedomui_minios.c:97` | `static FreedomUiConfig freedomui_default(void)` |
+| `freedomui_engine_text` | function | `progs/freedomui/freedomui_minios.c:145` | `static long freedomui_engine_text(char *body, long n, char **title, char **text)` |
+| `freedomui_host_entry` | function | `progs/freedomui/freedomui_minios.c:1098` | `int freedomui_host_entry(FreedomUiConfig *c)` |
+| `freedomui_host_probe` | function | `progs/freedomui/freedomui_minios.c:1015` | `static long freedomui_host_probe(FreedomUiConfig *c)` |
+| `freedomui_selftest` | function | `progs/freedomui/freedomui_minios.c:927` | `static long freedomui_selftest(void)` |
+| `freedomui_sys_kbd` | function | `progs/freedomui/freedomui_minios.c:221` | `static long freedomui_sys_kbd(void)` |
+| `freedomui_sys_kbd_raw` | function | `progs/freedomui/freedomui_minios.c:235` | `static long freedomui_sys_kbd_raw(long on)` |
+| `freedomui_sys_mouse` | function | `progs/freedomui/freedomui_minios.c:214` | `static long freedomui_sys_mouse(long *m)` |
+| `freedomui_sys_palette` | function | `progs/freedomui/freedomui_minios.c:207` | `static long freedomui_sys_palette(unsigned char *pal)` |
+| `freedomui_sys_present` | function | `progs/freedomui/freedomui_minios.c:193` | `static long freedomui_sys_present(long buf, long origin)` |
+| `freedomui_sys_title` | function | `progs/freedomui/freedomui_minios.c:200` | `static long freedomui_sys_title(char *t)` |
+| `freedomui_sys_vga_mode` | function | `progs/freedomui/freedomui_minios.c:228` | `static long freedomui_sys_vga_mode(long on)` |
+| `freedomui_sys_yield` | function | `progs/freedomui/freedomui_minios.c:242` | `static long freedomui_sys_yield(void)` |
+| `fui_append` | function | `progs/freedomui/freedomui_minios.c:249` | `static long fui_append(char *dst, long pos, char *src, long cap)` |
+| `fui_browse` | function | `progs/freedomui/freedomui_minios.c:848` | `static long fui_browse(FreedomUiConfig *c)` |
+| `fui_fetch_raw` | function | `progs/freedomui/freedomui_minios.c:501` | `static long fui_fetch_raw(FreedomUiConfig *c, char *host, char *path, long port, long secure)` |
+| `fui_has_scheme` | function | `progs/freedomui/freedomui_minios.c:285` | `static int fui_has_scheme(const char *s, const char *scheme)` |
+| `fui_is_http_scheme` | function | `progs/freedomui/freedomui_minios.c:309` | `static int fui_is_http_scheme(const char *s)` |
+| `fui_parse_headers` | function | `progs/freedomui/freedomui_minios.c:383` | `static long fui_parse_headers(FreedomUiConfig *c, char *hdr, long *status, long *clen, long *hasc...` |
+| `fui_render` | function | `progs/freedomui/freedomui_minios.c:729` | `static long fui_render(FreedomUiConfig *c, size_t off)` |
+| `fui_split_url` | function | `progs/freedomui/freedomui_minios.c:314` | `static long fui_split_url(FreedomUiConfig *c, char *url, char *host, char *path, long *port, long...` |
+| `fui_strlen` | function | `progs/freedomui/freedomui_minios.c:267` | `static long fui_strlen(char *s, long cap)` |
+| `main` | function | `progs/freedomui/freedomui_minios.c:1103` | `int main(int argc, char **argv)` |
+| `net_dns_resolve` | function | `progs/freedomui/freedomui_minios.c:44` | `int net_dns_resolve(const char *host);` |
+| `present_buf` | type_alias | `progs/freedomui/freedomui_minios.c:69` | `typedef struct FreedomUiConfig { long present_buf;` |
+| `tls_close` | function | `progs/freedomui/freedomui_minios.c:48` | `void tls_close(int fd);` |
+| `tls_handshake` | function | `progs/freedomui/freedomui_minios.c:45` | `int tls_handshake(int fd, char *host);` |
+| `tls_recv` | function | `progs/freedomui/freedomui_minios.c:47` | `int tls_recv(int fd, char *buf, int len);` |
+| `tls_send` | function | `progs/freedomui/freedomui_minios.c:46` | `int tls_send(int fd, char *buf, int len);` |
+| `media_decoder_run` | function | `progs/freedomui/media_unavailable.c:41` | `void media_decoder_run(int out_fd, int cmd_fd)` |
+| `write_all` | function | `progs/freedomui/media_unavailable.c:20` | `static void write_all(int fd, const void *buf, size_t len)` |
+| `FREEDOM_GUI_BUTTONS` | macro | `progs/freedomui/platform_minios.c:44` | `#define FREEDOM_GUI_BUTTONS` |
+| `FREEDOM_GUI_CLIP_MAX` | macro | `progs/freedomui/platform_minios.c:33` | `#define FREEDOM_GUI_CLIP_MAX` |
+| `FREEDOM_GUI_KBD_DRAIN_MAX` | macro | `progs/freedomui/platform_minios.c:29` | `#define FREEDOM_GUI_KBD_DRAIN_MAX` |
+| `FREEDOM_GUI_KEY_F4` | macro | `progs/freedomui/platform_minios.c:46` | `#define FREEDOM_GUI_KEY_F4` |
+| `FREEDOM_GUI_MALLOC_ARENAS` | macro | `progs/freedomui/platform_minios.c:35` | `#define FREEDOM_GUI_MALLOC_ARENAS` |
+| `FREEDOM_GUI_MOUSE_BUTTONS` | macro | `progs/freedomui/platform_minios.c:41` | `#define FREEDOM_GUI_MOUSE_BUTTONS` |
+| `FREEDOM_GUI_MOUSE_WHEEL` | macro | `progs/freedomui/platform_minios.c:42` | `#define FREEDOM_GUI_MOUSE_WHEEL` |
+| `FREEDOM_GUI_MOUSE_WORDS` | macro | `progs/freedomui/platform_minios.c:38` | `#define FREEDOM_GUI_MOUSE_WORDS` |
+| `FREEDOM_GUI_MOUSE_X` | macro | `progs/freedomui/platform_minios.c:39` | `#define FREEDOM_GUI_MOUSE_X` |
+| `FREEDOM_GUI_MOUSE_Y` | macro | `progs/freedomui/platform_minios.c:40` | `#define FREEDOM_GUI_MOUSE_Y` |
+| `FREEDOM_GUI_RGB_BPP` | macro | `progs/freedomui/platform_minios.c:48` | `#define FREEDOM_GUI_RGB_BPP` |
+| `FREEDOM_GUI_RGB_PRESENT` | macro | `progs/freedomui/platform_minios.c:50` | `#define FREEDOM_GUI_RGB_PRESENT` |
+| `FREEDOM_GUI_TICK_MS` | macro | `progs/freedomui/platform_minios.c:27` | `#define FREEDOM_GUI_TICK_MS` |
 | `FREEDOM_GUI_TITLE_MAX` | macro | `progs/freedomui/platform_minios.c:31` | `#define FREEDOM_GUI_TITLE_MAX` |
 | `_GNU_SOURCE` | macro | `progs/freedomui/platform_minios.c:11` | `#define _GNU_SOURCE` |
 | `deliver_pending` | function | `progs/freedomui/platform_minios.c:173` | `static int deliver_pending(pf_display *d)` |
@@ -355,146 +496,5 @@ Previous: [SYMBOLS_p19.md](SYMBOLS_p19.md)
 | `MC_BAYER_N` | macro | `progs/minicraft/minicraft.c:110` | `#define MC_BAYER_N` |
 | `MC_BOOM_R` | macro | `progs/minicraft/minicraft.c:85` | `#define MC_BOOM_R` |
 | `MC_BREAK_GRACE_MS` | macro | `progs/minicraft/minicraft.c:71` | `#define MC_BREAK_GRACE_MS` |
-| `MC_BREAK_MS` | macro | `progs/minicraft/minicraft.c:70` | `#define MC_BREAK_MS` |
-| `MC_CHUNK` | macro | `progs/minicraft/minicraft.c:35` | `#define MC_CHUNK` |
-| `MC_CHUNKS` | macro | `progs/minicraft/minicraft.c:37` | `#define MC_CHUNKS` |
-| `MC_CHUNK_MAGIC` | macro | `progs/minicraft/minicraft.c:55` | `#define MC_CHUNK_MAGIC` |
-| `MC_CHUNK_VERSION` | macro | `progs/minicraft/minicraft.c:56` | `#define MC_CHUNK_VERSION` |
-| `MC_COLS` | macro | `progs/minicraft/minicraft.c:39` | `#define MC_COLS` |
-| `MC_CREEPS_DEF` | macro | `progs/minicraft/minicraft.c:82` | `#define MC_CREEPS_DEF` |
-| `MC_CREEPS_MAX` | macro | `progs/minicraft/minicraft.c:81` | `#define MC_CREEPS_MAX` |
-| `MC_CREEP_DEFUSE_D` | macro | `progs/minicraft/minicraft.c:91` | `#define MC_CREEP_DEFUSE_D` |
-| `MC_CREEP_DZ_MAX` | macro | `progs/minicraft/minicraft.c:89` | `#define MC_CREEP_DZ_MAX` |
-| `MC_CREEP_FUSE_D` | macro | `progs/minicraft/minicraft.c:90` | `#define MC_CREEP_FUSE_D` |
-| `MC_CREEP_HP` | macro | `progs/minicraft/minicraft.c:83` | `#define MC_CREEP_HP` |
-| `MC_CREEP_NIGHT_MS` | macro | `progs/minicraft/minicraft.c:99` | `#define MC_CREEP_NIGHT_MS` |
-| `MC_CREEP_SENSE` | macro | `progs/minicraft/minicraft.c:88` | `#define MC_CREEP_SENSE` |
-| `MC_CREEP_SEP_D` | macro | `progs/minicraft/minicraft.c:102` | `#define MC_CREEP_SEP_D` |
-| `MC_CVOL` | macro | `progs/minicraft/minicraft.c:38` | `#define MC_CVOL` |
-| `MC_DAY_MS` | macro | `progs/minicraft/minicraft.c:108` | `#define MC_DAY_MS` |
-| `MC_DDA_STEPS` | macro | `progs/minicraft/minicraft.c:69` | `#define MC_DDA_STEPS` |
-| `MC_EYE` | macro | `progs/minicraft/minicraft.c:59` | `#define MC_EYE` |
-| `MC_FLY_SPEED` | macro | `progs/minicraft/minicraft.c:64` | `#define MC_FLY_SPEED` |
-| `MC_FUSE_MS` | macro | `progs/minicraft/minicraft.c:84` | `#define MC_FUSE_MS` |
-| `MC_GRAV` | macro | `progs/minicraft/minicraft.c:60` | `#define MC_GRAV` |
-| `MC_H` | macro | `progs/minicraft/minicraft.c:34` | `#define MC_H` |
-| `MC_HP_MAX` | macro | `progs/minicraft/minicraft.c:79` | `#define MC_HP_MAX` |
-| `MC_HUNGER_MAX` | macro | `progs/minicraft/minicraft.c:104` | `#define MC_HUNGER_MAX` |
-| `MC_HUNGER_MS` | macro | `progs/minicraft/minicraft.c:105` | `#define MC_HUNGER_MS` |
-| `MC_H_BASE` | macro | `progs/minicraft/minicraft.c:111` | `#define MC_H_BASE` |
-| `MC_H_WT_COARSE` | macro | `progs/minicraft/minicraft.c:114` | `#define MC_H_WT_COARSE` |
-| `MC_H_WT_DET` | macro | `progs/minicraft/minicraft.c:112` | `#define MC_H_WT_DET` |
-| `MC_H_WT_MID` | macro | `progs/minicraft/minicraft.c:113` | `#define MC_H_WT_MID` |
-| `MC_INV_MAX` | macro | `progs/minicraft/minicraft.c:76` | `#define MC_INV_MAX` |
-| `MC_JUMP` | macro | `progs/minicraft/minicraft.c:61` | `#define MC_JUMP` |
-| `MC_KBD_SEQ_SPINS` | macro | `progs/minicraft/minicraft.c:145` | `#define MC_KBD_SEQ_SPINS` |
-| `MC_LEGACY_WORLD` | macro | `progs/minicraft/minicraft.c:2916` | `#define MC_LEGACY_WORLD` |
-| `MC_LOAD_R` | macro | `progs/minicraft/minicraft.c:36` | `#define MC_LOAD_R` |
-| `MC_MAXFALL` | macro | `progs/minicraft/minicraft.c:62` | `#define MC_MAXFALL` |
-| `MC_MOUSE` | macro | `progs/minicraft/minicraft.c:66` | `#define MC_MOUSE` |
-| `MC_NIGHT_LIGHT` | macro | `progs/minicraft/minicraft.c:101` | `#define MC_NIGHT_LIGHT` |
-| `MC_PIGS` | macro | `progs/minicraft/minicraft.c:80` | `#define MC_PIGS` |
-| `MC_PIG_DAY_MS` | macro | `progs/minicraft/minicraft.c:100` | `#define MC_PIG_DAY_MS` |
-| `MC_PIG_HP` | macro | `progs/minicraft/minicraft.c:106` | `#define MC_PIG_HP` |
-| `MC_PIG_HURT_MS` | macro | `progs/minicraft/minicraft.c:107` | `#define MC_PIG_HURT_MS` |
-| `MC_PITCH_MAX` | macro | `progs/minicraft/minicraft.c:77` | `#define MC_PITCH_MAX` |
-| `MC_PLACE_MS` | macro | `progs/minicraft/minicraft.c:72` | `#define MC_PLACE_MS` |
-| `MC_PORK_HEAL` | macro | `progs/minicraft/minicraft.c:103` | `#define MC_PORK_HEAL` |
-| `MC_REACH` | macro | `progs/minicraft/minicraft.c:67` | `#define MC_REACH` |
-| `MC_RESPAWN_MS` | macro | `progs/minicraft/minicraft.c:98` | `#define MC_RESPAWN_MS` |
-| `MC_SAVE_CRC_SEED` | macro | `progs/minicraft/minicraft.c:54` | `#define MC_SAVE_CRC_SEED` |
-| `MC_SAVE_MAGIC` | macro | `progs/minicraft/minicraft.c:52` | `#define MC_SAVE_MAGIC` |
-| `MC_SAVE_SECS` | macro | `progs/minicraft/minicraft.c:109` | `#define MC_SAVE_SECS` |
-| `MC_SAVE_VERSION` | macro | `progs/minicraft/minicraft.c:53` | `#define MC_SAVE_VERSION` |
-| `MC_SEED_MAX` | macro | `progs/minicraft/minicraft.c:144` | `#define MC_SEED_MAX` |
-| `MC_SPEED` | macro | `progs/minicraft/minicraft.c:63` | `#define MC_SPEED` |
-| `MC_SPRINT` | macro | `progs/minicraft/minicraft.c:65` | `#define MC_SPRINT` |
-| `MC_VIEW` | macro | `progs/minicraft/minicraft.c:68` | `#define MC_VIEW` |
-| `MC_VORO_DESERT_CELL` | macro | `progs/minicraft/minicraft.c:858` | `#define MC_VORO_DESERT_CELL` |
-| `MC_VORO_SNOW_CELL` | macro | `progs/minicraft/minicraft.c:859` | `#define MC_VORO_SNOW_CELL` |
-| `MC_WATER_GRAV` | macro | `progs/minicraft/minicraft.c:73` | `#define MC_WATER_GRAV` |
-| `MC_WATER_SINK` | macro | `progs/minicraft/minicraft.c:74` | `#define MC_WATER_SINK` |
-| `MC_WATER_SWIM` | macro | `progs/minicraft/minicraft.c:75` | `#define MC_WATER_SWIM` |
-| `MOB_CREEP` | macro | `progs/minicraft/minicraft.c:309` | `#define MOB_CREEP` |
-| `MOB_PIG` | macro | `progs/minicraft/minicraft.c:308` | `#define MOB_PIG` |
-| `Pig` | struct | `progs/minicraft/minicraft.c:295` | `` |
-| `RayHit` | struct | `progs/minicraft/minicraft.c:1650` | `` |
-| `Recipe` | struct | `progs/minicraft/minicraft.c:216` | `` |
-| `SAVE_PATH` | macro | `progs/minicraft/minicraft.c:50` | `#define SAVE_PATH` |
-| `SAVE_TMP_PATH` | macro | `progs/minicraft/minicraft.c:51` | `#define SAVE_TMP_PATH` |
-| `SC_0` | macro | `progs/minicraft/minicraft.c:143` | `#define SC_0` |
-| `SC_1` | macro | `progs/minicraft/minicraft.c:118` | `#define SC_1` |
-| `SC_9` | macro | `progs/minicraft/minicraft.c:119` | `#define SC_9` |
-| `SC_A` | macro | `progs/minicraft/minicraft.c:130` | `#define SC_A` |
-| `SC_B` | macro | `progs/minicraft/minicraft.c:139` | `#define SC_B` |
-| `SC_BACK` | macro | `progs/minicraft/minicraft.c:142` | `#define SC_BACK` |
-| `SC_C` | macro | `progs/minicraft/minicraft.c:137` | `#define SC_C` |
-| `SC_CTRL` | macro | `progs/minicraft/minicraft.c:149` | `#define SC_CTRL` |
-| `SC_D` | macro | `progs/minicraft/minicraft.c:132` | `#define SC_D` |
-| `SC_E` | macro | `progs/minicraft/minicraft.c:122` | `#define SC_E` |
-| `SC_ENTER` | macro | `progs/minicraft/minicraft.c:141` | `#define SC_ENTER` |
-| `SC_ESC` | macro | `progs/minicraft/minicraft.c:117` | `#define SC_ESC` |
-| `SC_F` | macro | `progs/minicraft/minicraft.c:133` | `#define SC_F` |
-| `SC_G` | macro | `progs/minicraft/minicraft.c:134` | `#define SC_G` |
-| `SC_I` | macro | `progs/minicraft/minicraft.c:126` | `#define SC_I` |
-| `SC_J` | macro | `progs/minicraft/minicraft.c:129` | `#define SC_J` |
-| `SC_K` | macro | `progs/minicraft/minicraft.c:135` | `#define SC_K` |
-| `SC_L` | macro | `progs/minicraft/minicraft.c:136` | `#define SC_L` |
-| `SC_LSHIFT` | macro | `progs/minicraft/minicraft.c:147` | `#define SC_LSHIFT` |
-| `SC_N` | macro | `progs/minicraft/minicraft.c:140` | `#define SC_N` |
-| `SC_O` | macro | `progs/minicraft/minicraft.c:127` | `#define SC_O` |
-| `SC_P` | macro | `progs/minicraft/minicraft.c:128` | `#define SC_P` |
-| `SC_Q` | macro | `progs/minicraft/minicraft.c:120` | `#define SC_Q` |
-| `SC_R` | macro | `progs/minicraft/minicraft.c:123` | `#define SC_R` |
-| `SC_RSHIFT` | macro | `progs/minicraft/minicraft.c:148` | `#define SC_RSHIFT` |
-| `SC_S` | macro | `progs/minicraft/minicraft.c:131` | `#define SC_S` |
-| `SC_SPACE` | macro | `progs/minicraft/minicraft.c:146` | `#define SC_SPACE` |
-| `SC_T` | macro | `progs/minicraft/minicraft.c:124` | `#define SC_T` |
-| `SC_U` | macro | `progs/minicraft/minicraft.c:125` | `#define SC_U` |
-| `SC_V` | macro | `progs/minicraft/minicraft.c:138` | `#define SC_V` |
-| `SC_W` | macro | `progs/minicraft/minicraft.c:121` | `#define SC_W` |
-| `SER_STASH_CAP` | macro | `progs/minicraft/minicraft.c:369` | `#define SER_STASH_CAP` |
-| `SaveHeader` | struct | `progs/minicraft/minicraft.c:2892` | `` |
-| `SaveHeaderV3` | struct | `progs/minicraft/minicraft.c:2878` | `` |
-| `__attribute__` | function | `progs/minicraft/minicraft.c:473` | `static long __attribute__((unused)) s_tone(long f)` |
-| `beep` | function | `progs/minicraft/minicraft.c:478` | `static void beep(long freq, long dur_ms)` |
-| `best_tool_for` | function | `progs/minicraft/minicraft.c:231` | `static int best_tool_for(unsigned char b)` |
-| `biome_desert` | function | `progs/minicraft/minicraft.c:893` | `static int biome_desert(int x, int y, unsigned int seed)` |
-| `biome_fdiv` | function | `progs/minicraft/minicraft.c:846` | `static int biome_fdiv(int v, int c)` |
-| `biome_snow` | function | `progs/minicraft/minicraft.c:897` | `static int biome_snow(int x, int y, unsigned int seed)` |
-| `biome_voro` | function | `progs/minicraft/minicraft.c:869` | `static int biome_voro(int x, int y, unsigned int seed, int cell,     int ox, int oy, unsigned int...` |
-| `block_intersects_player` | function | `progs/minicraft/minicraft.c:2404` | `static int block_intersects_player(int bx, int by, int bz)` |
-| `break_beep_for` | function | `progs/minicraft/minicraft.c:275` | `static long break_beep_for(unsigned char b)` |
-| `break_time_ms` | function | `progs/minicraft/minicraft.c:250` | `static long break_time_ms(unsigned char b, int tool)` |
-| `build_palette` | function | `progs/minicraft/minicraft.c:503` | `static void build_palette(void)` |
-| `cam_build` | function | `progs/minicraft/minicraft.c:1892` | `static void cam_build(void)` |
-| `carve_blob` | function | `progs/minicraft/minicraft.c:3108` | `static void carve_blob(const unsigned char *blob)` |
-| `cast_ray` | function | `progs/minicraft/minicraft.c:1659` | `static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float dz, float maxd)` |
-| `census` | function | `progs/minicraft/minicraft.c:3606` | `static int census(void)` |
-| `chunk_build_meta` | function | `progs/minicraft/minicraft.c:658` | `static void chunk_build_meta(int slot)` |
-| `chunk_ensure` | function | `progs/minicraft/minicraft.c:635` | `static int chunk_ensure(int cx, int cy)` |
-| `chunk_evict_slot` | function | `progs/minicraft/minicraft.c:615` | `static int chunk_evict_slot(int cx, int cy)` |
-| `chunk_find` | function | `progs/minicraft/minicraft.c:592` | `static int chunk_find(int cx, int cy)` |
-| `chunk_lidx` | function | `progs/minicraft/minicraft.c:586` | `static int chunk_lidx(int lx, int ly, int z)` |
-| `chunk_local` | function | `progs/minicraft/minicraft.c:581` | `static int chunk_local(int v)` |
-| `chunk_of` | function | `progs/minicraft/minicraft.c:577` | `static int chunk_of(int v)` |
-| `chunk_path` | function | `progs/minicraft/minicraft.c:2938` | `static void chunk_path(int cx, int cy, char *out, size_t n)` |
-| `col_recompute` | function | `progs/minicraft/minicraft.c:703` | `static void col_recompute(int x, int y)` |
-| `col_top_at` | function | `progs/minicraft/minicraft.c:728` | `static int col_top_at(int x, int y)` |
-| `creep_has_los` | function | `progs/minicraft/minicraft.c:1337` | `static int creep_has_los(Pig *c)` |
-| `creep_sense` | function | `progs/minicraft/minicraft.c:1325` | `static void creep_sense(Pig *c, float *pdx, float *pdy, float *pdz, float *pd3)` |
-| `creep_separate` | function | `progs/minicraft/minicraft.c:1361` | `static void creep_separate(Pig *p, int id, float dt)` |
-| `creeper_explode` | function | `progs/minicraft/minicraft.c:1257` | `static void creeper_explode(Pig *c, long now)` |
-| `decorate_chunk` | function | `progs/minicraft/minicraft.c:1043` | `static void decorate_chunk(int slot)` |
-| `decorate_column` | function | `progs/minicraft/minicraft.c:995` | `static void decorate_column(int x, int y, unsigned int seed)` |
-| `dumpstats` | function | `progs/minicraft/minicraft.c:3670` | `static int dumpstats(void)` |
-| `ensure_around` | function | `progs/minicraft/minicraft.c:1090` | `static void ensure_around(void)` |
-| `ensure_around_px` | function | `progs/minicraft/minicraft.c:1056` | `static void ensure_around_px(float px, float py)` |
-| `eye_z` | function | `progs/minicraft/minicraft.c:1750` | `static float eye_z(void)` |
-| `face_color` | function | `progs/minicraft/minicraft.c:1520` | `static unsigned char face_color(unsigned char b, int face)` |
-| `gen_terrain_chunk` | function | `progs/minicraft/minicraft.c:1034` | `static void gen_terrain_chunk(int slot)` |
-| `get_b` | function | `progs/minicraft/minicraft.c:764` | `static unsigned char get_b(int x, int y, int z)` |
-| `goal_text` | function | `progs/minicraft/minicraft.c:2608` | `static const char *goal_text(void)` |
-| `ground_h_seed` | function | `progs/minicraft/minicraft.c:909` | `static int ground_h_seed(int x, int y, unsigned int seed)` |
 
 Next: [SYMBOLS_p21.md](SYMBOLS_p21.md)

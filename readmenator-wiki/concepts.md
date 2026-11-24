@@ -5,15 +5,15 @@ Second-brain semantic layer: nouns map atomically to file sets (EXTRACTED); verb
 | Concept | Files | Mentions | Top Files |
 |---------|-------|----------|-----------|
 | `progs` | 319 | 335 | `headers/vga_fb.h`, `headers/vga_fx.h`, `progs/asm/aes.s`, `progs/asm/cp.s`, `progs/asm/cvmfmt.s` |
+| `any` | 242 | 478 | `arch/x86/boot/stage2.S`, `drivers/usbhid.c`, `drivers/xhci.c`, `fs/ext4.c`, `fs/kfile.c` |
 | `free` | 241 | 524 | `drivers/sb16.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `fs/minifs.c`, `fs/pcache.c` |
-| `any` | 241 | 479 | `arch/x86/boot/stage2.S`, `drivers/usbhid.c`, `drivers/xhci.c`, `fs/ext4.c`, `fs/kfile.c` |
-| `without` | 233 | 462 | `arch/x86/ctx_sw.S`, `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `fs/pcache.c` |
+| `without` | 234 | 465 | `arch/x86/ctx_sw.S`, `drivers/ahci.c`, `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/xhci.c` |
+| `can` | 222 | 283 | `arch/x86/boot/stage2.S`, `drivers/ahci.c`, `drivers/sb16.c`, `drivers/usbhid.c`, `drivers/xhci.c` |
 | `program` | 221 | 447 | `drivers/pcm2.c`, `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `headers/drivers/pci.h` |
-| `can` | 221 | 282 | `arch/x86/boot/stage2.S`, `drivers/sb16.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `fs/fat32.c` |
 | `under` | 217 | 242 | `drivers/pcm2.c`, `drivers/usbblk.c`, `drivers/usbhid.c`, `fs/kfile.c`, `fs/pcache.c` |
 | `see` | 192 | 201 | `drivers/xhci.c`, `fs/kfile.c`, `fs/pcache.c`, `headers/arch/x86/hal_io.h`, `headers/ext4.h` |
+| `version` | 188 | 389 | `drivers/ahci.c`, `drivers/nvme.c`, `headers/abi.h`, `headers/drivers/ahci.h`, `headers/drivers/nvme.h` |
 | `doomgeneric` | 188 | 211 | `headers/vga_fx.h`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_englsh.h` |
-| `version` | 186 | 378 | `drivers/nvme.c`, `headers/abi.h`, `headers/drivers/nvme.h`, `headers/drivers/xhci.h`, `headers/httpd.h` |
 | `but` | 186 | 198 | `drivers/usbhid.c`, `fs/ext4.c`, `headers/net.h`, `kernel/console.c`, `kernel/console_in.c` |
 | `later` | 184 | 198 | `drivers/usbblk.c`, `drivers/usbhid.c`, `fs/ext4.c`, `fs/kfile.c`, `headers/arch/x86/hal_io.h` |
 | `either` | 184 | 189 | `drivers/usbhid.c`, `drivers/xhci.c`, `fs/pcache.c`, `headers/drivers/pci.h`, `headers/drivers/xhci.h` |
@@ -43,17 +43,17 @@ Second-brain semantic layer: nouns map atomically to file sets (EXTRACTED); verb
 | `redistribute` | 170 | 170 | `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h` |
 | `howard` | 168 | 168 | `headers/rtc.h`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c` |
 | `simon` | 167 | 167 | `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h` |
-| `one` | 163 | 664 | `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/kbd.c`, `drivers/pcm2.c`, `drivers/usbblk.c` |
+| `one` | 164 | 664 | `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/ahci.c`, `drivers/kbd.c`, `drivers/pcm2.c` |
 | `description` | 159 | 169 | `fs/kfile.c`, `kernel/syscalls.c`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h` |
 | `kernel` | 155 | 380 | `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/sb16.c`, `drivers/xhci.c`, `fs/kfile.c` |
-| `docstring` | 149 | 1286 | `boot/uefi_stub.c`, `drivers/block.c`, `drivers/kbd.c`, `drivers/mouse.c`, `drivers/sb16.c` |
-| `read` | 149 | 456 | `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/block.c`, `drivers/ide.c` |
+| `docstring` | 151 | 1358 | `boot/uefi_stub.c`, `drivers/ahci.c`, `drivers/block.c`, `drivers/kbd.c`, `drivers/mouse.c` |
+| `read` | 151 | 476 | `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/ahci.c`, `drivers/block.c` |
 | `inc` | 146 | 147 | `headers/wm_events.h`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c` |
 | `mini` | 141 | 258 | `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/block.c`, `drivers/ide.c` |
-| `every` | 136 | 319 | `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/virtio_blk.c`, `drivers/virtio_net.c`, `drivers/xhci.c` |
-| `max` | 135 | 613 | `boot/uefi_stub.c`, `drivers/nvme.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/usbblk.c` |
-| `when` | 134 | 437 | `drivers/block.c`, `drivers/kbd.c`, `drivers/sb16.c`, `drivers/usbblk.c`, `drivers/usbhid.c` |
-| `file` | 131 | 605 | `boot/uefi_stub.c`, `fs/ext4.c`, `fs/fat32.c`, `fs/fsimg.c`, `fs/kfile.c` |
+| `max` | 137 | 615 | `boot/uefi_stub.c`, `drivers/ahci.c`, `drivers/nvme.c`, `drivers/pcspk.c`, `drivers/rtc.c` |
+| `when` | 136 | 453 | `drivers/ahci.c`, `drivers/block.c`, `drivers/kbd.c`, `drivers/sb16.c`, `drivers/usbblk.c` |
+| `every` | 136 | 320 | `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/virtio_blk.c`, `drivers/virtio_net.c`, `drivers/xhci.c` |
+| `int` | 131 | 1387 | `boot/uefi_stub.c`, `drivers/ahci.c`, `drivers/kbd.c`, `drivers/sb16.c`, `drivers/virtio_blk.c` |
 
 ## Verb Edges
 
@@ -112,13 +112,13 @@ Second-brain semantic layer: nouns map atomically to file sets (EXTRACTED); verb
 
 ## Dialectic Prompts
 
-- Thesis: `any` centralizes 241 files; Antithesis: `but` pulls 186 files with 181 shared (Jaccard 0.74); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
-- Thesis: `any` centralizes 241 files; Antithesis: `can` pulls 221 files with 196 shared (Jaccard 0.74); Synthesis: should they merge, split by layer, or keep `depends_on` explicit?
-- Thesis: `any` centralizes 241 files; Antithesis: `copyright` pulls 170 files with 170 shared (Jaccard 0.71); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
-- Thesis: `any` centralizes 241 files; Antithesis: `description` pulls 159 files with 159 shared (Jaccard 0.66); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
-- Thesis: `any` centralizes 241 files; Antithesis: `details` pulls 170 files with 170 shared (Jaccard 0.71); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
-- Thesis: `any` centralizes 241 files; Antithesis: `distributed` pulls 170 files with 170 shared (Jaccard 0.71); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
-- Thesis: `any` centralizes 241 files; Antithesis: `doomgeneric` pulls 188 files with 170 shared (Jaccard 0.66); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
-- Thesis: `any` centralizes 241 files; Antithesis: `either` pulls 184 files with 179 shared (Jaccard 0.73); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
-- Thesis: `any` centralizes 241 files; Antithesis: `even` pulls 178 files with 172 shared (Jaccard 0.70); Synthesis: should they merge, split by layer, or keep `depends_on` explicit?
-- Thesis: `any` centralizes 241 files; Antithesis: `fitness` pulls 170 files with 170 shared (Jaccard 0.71); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `any` centralizes 242 files; Antithesis: `but` pulls 186 files with 181 shared (Jaccard 0.73); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `any` centralizes 242 files; Antithesis: `can` pulls 222 files with 196 shared (Jaccard 0.73); Synthesis: should they merge, split by layer, or keep `depends_on` explicit?
+- Thesis: `any` centralizes 242 files; Antithesis: `copyright` pulls 170 files with 170 shared (Jaccard 0.70); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `any` centralizes 242 files; Antithesis: `description` pulls 159 files with 159 shared (Jaccard 0.66); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `any` centralizes 242 files; Antithesis: `details` pulls 170 files with 170 shared (Jaccard 0.70); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `any` centralizes 242 files; Antithesis: `distributed` pulls 170 files with 170 shared (Jaccard 0.70); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `any` centralizes 242 files; Antithesis: `doomgeneric` pulls 188 files with 170 shared (Jaccard 0.65); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `any` centralizes 242 files; Antithesis: `either` pulls 184 files with 179 shared (Jaccard 0.72); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `any` centralizes 242 files; Antithesis: `even` pulls 178 files with 172 shared (Jaccard 0.69); Synthesis: should they merge, split by layer, or keep `depends_on` explicit?
+- Thesis: `any` centralizes 242 files; Antithesis: `fitness` pulls 170 files with 170 shared (Jaccard 0.70); Synthesis: should they merge, split by layer, or keep `bridges` explicit?

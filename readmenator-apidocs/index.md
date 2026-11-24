@@ -1,10 +1,10 @@
 # miniOS API Reference
 
-> Generated offline by readmenator: 518 modules, 10559 documented entities, documentation coverage 30.1% (2890/9597 public items). Deterministic, zero tokens: signatures from source, docs parsed from Google, NumPy, reST, Javadoc/JSDoc/Doxygen, C# XML, and Rustdoc comments.
+> Generated offline by readmenator: 520 modules, 10678 documented entities, documentation coverage 30.0% (2912/9716 public items). Deterministic, zero tokens: signatures from source, docs parsed from Google, NumPy, reST, Javadoc/JSDoc/Doxygen, C# XML, and Rustdoc comments.
 
 Navigate: [Interactive architecture and flows](flows.html) | [Architecture and flows (Mermaid)](architecture.md) | [Class hierarchy](classes.md) | [General index](genindex.md) | [Coverage and warnings](COVERAGE.md) | [`api/index.json`](api/index.json) | [HTML browser](index.html)
 
-Languages: S (7), c (239), h (199), py (50), s (13), sh (10)
+Languages: S (7), c (240), h (200), py (50), s (13), sh (10)
 
 ## Modules
 
@@ -45,6 +45,7 @@ Languages: S (7), c (239), h (199), py (50), s (13), sh (10)
 
 | Module | Summary | Types | Callables | Coverage |
 |---|---|---|---|---|
+| [`drivers/ahci.c`](modules/drivers.ahci.c.md) | Docstring: drivers/ahci.c -- Polled AHCI (SATA) disk driver. | 0 | 107 | 10.2% |
 | [`drivers/block.c`](modules/drivers.block.c.md) | Block device layer for MiniFS. | 0 | 14 | 60.0% |
 | [`drivers/driver.c`](modules/drivers.driver.c.md) | driver.c -- Device registry for the Strategy-pattern driver layer. | 0 | 5 | 16.7% |
 | [`drivers/ide.c`](modules/drivers.ide.c.md) | IDE/ATA PIO driver for MiniOS. | 0 | 8 | 77.8% |
@@ -170,11 +171,12 @@ Languages: S (7), c (239), h (199), py (50), s (13), sh (10)
 
 | Module | Summary | Types | Callables | Coverage |
 |---|---|---|---|---|
+| [`headers/drivers/ahci.h`](modules/headers.drivers.ahci.h.md) | Docstring: drivers/ahci.h -- AHCI (SATA) host controller, polled. | 0 | 10 | 100.0% |
 | [`headers/drivers/kbd.h`](modules/headers.drivers.kbd.h.md) |  | 0 | 23 | 25.0% |
 | [`headers/drivers/modifiers.h`](modules/headers.drivers.modifiers.h.md) |  | 2 | 8 | 45.5% |
 | [`headers/drivers/mouse.h`](modules/headers.drivers.mouse.h.md) | Docstring: mouse.h -- boundary of the PS/2 mouse device driver | 0 | 3 | 100.0% |
 | [`headers/drivers/nvme.h`](modules/headers.drivers.nvme.h.md) |  | 0 | 6 | 0.0% |
-| [`headers/drivers/pci.h`](modules/headers.drivers.pci.h.md) | Docstring: drivers/pci.h -- PCI configuration-space access. | 1 | 52 | 48.1% |
+| [`headers/drivers/pci.h`](modules/headers.drivers.pci.h.md) | Docstring: drivers/pci.h -- PCI configuration-space access. | 1 | 52 | 46.3% |
 | [`headers/drivers/usbblk.h`](modules/headers.drivers.usbblk.h.md) | Docstring: drivers/usbblk.h -- boundary of the USB mass-storage driver. | 1 | 11 | 76.9% |
 | [`headers/drivers/usbhid.h`](modules/headers.drivers.usbhid.h.md) | Docstring: drivers/usbhid.h -- boundary of the USB HID boot-protocol driver. | 1 | 31 | 60.6% |
 | [`headers/drivers/virtio_blk.h`](modules/headers.drivers.virtio_blk.h.md) | Docstring: drivers/virtio_blk.h -- virtio-blk boundary. | 0 | 6 | 28.6% |
@@ -242,7 +244,7 @@ Languages: S (7), c (239), h (199), py (50), s (13), sh (10)
 | Module | Summary | Types | Callables | Coverage |
 |---|---|---|---|---|
 | [`kernel/mm/cow.c`](modules/kernel.mm.cow.c.md) | Docstring: kernel/mm/cow.c -- Copy-on-write fork support. | 1 | 17 | 36.8% |
-| [`kernel/mm/paging.c`](modules/kernel.mm.paging.c.md) | paging.c - Page table management for the user window and per-process KPTI. | 0 | 25 | 57.7% |
+| [`kernel/mm/paging.c`](modules/kernel.mm.paging.c.md) | paging.c - Page table management for the user window and per-process KPTI. | 0 | 25 | 61.5% |
 | [`kernel/mm/swap.c`](modules/kernel.mm.swap.c.md) | swap.c - Swap-out/swap-in for the user window (LZ4-compressed disk swap). | 0 | 9 | 20.0% |
 | [`kernel/mm/tlb.c`](modules/kernel.mm.tlb.c.md) | tlb.c - cross-CPU TLB shootdown (docs/spec/smp-sched.md, "TLB shootdown"). | 0 | 4 | 60.0% |
 

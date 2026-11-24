@@ -87,7 +87,7 @@
   - `HAL_MOUSE_PACKET_LEN` (macro, line 95) `#define HAL_MOUSE_PACKET_LEN`
   - `HAL_MOUSE_SCALE` (macro, line 97) `#define HAL_MOUSE_SCALE`
   - `HAL_LAPIC_EOI_ADDR` (macro, line 100) `#define HAL_LAPIC_EOI_ADDR`
-- Imported by: `drivers/kbd.c`, `drivers/mouse.c`, `drivers/nvme.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `kernel/sched.c`, `kernel/syscalls.c`, `tests/test_hal_io.c`
+- Imported by: `drivers/ahci.c`, `drivers/kbd.c`, `drivers/mouse.c`, `drivers/nvme.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `kernel/sched.c`, `kernel/syscalls.c`, `tests/test_hal_io.c`
 
 ## headers/arch/x86/msr.h
 - Doc: Model-Specific Register access for x86-64.

@@ -23,6 +23,7 @@ flowchart LR
     n_headers_arch_x86_msr_h__wrmsr["msr.wrmsr"]
     n_headers_abi_h__abi_check_manifest["abi.abi_check_manifest"]
     n_headers_block_h__block_init["block.block_init"]
+    n_headers_drivers_ahci_h__ahci_present["ahci.ahci_present"]
     n_headers_drivers_usbblk_h__ubk_present["usbblk.ubk_present"]
     n_headers_drivers_virtio_blk_h__vblk_present["virtio_blk.vblk_present"]
     n_headers_ide_h__ide_present["ide.ide_present"]
@@ -41,13 +42,13 @@ flowchart LR
     n_tools_update_sources_py__GitResult_ok["update_sources.GitResult.ok"]
     n_kernel_c__tables(["tables"])
     n_headers_drivers_usbhid_h__usbhid_init["usbhid.usbhid_init"]
-    n_headers_drivers_usbhid_h__usbhid_keyboard_present["usbhid.usbhid_keyboard_present"]
     n_kernel_c____attribute__ --> n_kernel_c__bootlog_mark
     n_kernel_c____attribute__ --> n_kernel_c__syscall_init
     n_kernel_c__syscall_init -.-> n_headers_arch_x86_msr_h__rdmsr
     n_kernel_c__syscall_init -.-> n_headers_arch_x86_msr_h__wrmsr
     n_kernel_c____attribute__ -.-> n_headers_abi_h__abi_check_manifest
     n_kernel_c____attribute__ -.-> n_headers_block_h__block_init
+    n_kernel_c____attribute__ -.-> n_headers_drivers_ahci_h__ahci_present
     n_kernel_c____attribute__ -.-> n_headers_drivers_usbblk_h__ubk_present
     n_kernel_c____attribute__ -.-> n_headers_drivers_virtio_blk_h__vblk_present
     n_kernel_c____attribute__ -.-> n_headers_ide_h__ide_present
@@ -65,7 +66,6 @@ flowchart LR
     n_kernel_c____attribute__ -.-> n_progs_doomgeneric_p_local_h__d
     n_kernel_c____attribute__ -.-> n_tools_update_sources_py__GitResult_ok
     n_kernel_c__tables -.-> n_headers_drivers_usbhid_h__usbhid_init
-    n_kernel_c__tables -.-> n_headers_drivers_usbhid_h__usbhid_keyboard_present
 ```
 
 ## Functions
@@ -74,7 +74,7 @@ flowchart LR
 
 ### `table`
 
-`function` | [kernel.c:104](../../kernel.c#L104)
+`function` | [kernel.c:105](../../kernel.c#L105)
 
 ```c
 * Symbol table (for resolving program references) * ================================================================ */ #define KSYM_MAX 256 /* ---- SYSCALL/SYSRET setup ------------------------------
@@ -94,7 +94,7 @@ flowchart LR
 
 ### `syscall_init`
 
-`function` | [kernel.c:117](../../kernel.c#L117)
+`function` | [kernel.c:118](../../kernel.c#L118)
 
 ```c
 void syscall_init(void)
@@ -114,7 +114,7 @@ void syscall_init(void)
 
 ### `ksyscall`
 
-`function` `extern` | [kernel.c:130](../../kernel.c#L130)
+`function` `extern` | [kernel.c:131](../../kernel.c#L131)
 
 ```c
 extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);
@@ -140,7 +140,7 @@ extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a
 
 ### `kstack`
 
-`function` | [kernel.c:146](../../kernel.c#L146)
+`function` | [kernel.c:147](../../kernel.c#L147)
 
 ```c
 * Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single process runs, fatal as * soon as two threads syscall concurrently. */ _Static_asser
@@ -161,7 +161,7 @@ extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a
 
 ### `ms`
 
-`function` | [kernel.c:185](../../kernel.c#L185)
+`function` | [kernel.c:186](../../kernel.c#L186)
 
 ```c
 * 0 ms (TSC ticks since power-on divided down, still monotonic);
@@ -182,7 +182,7 @@ extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a
 
 ### `bootlog_mark`
 
-`function` | [kernel.c:192](../../kernel.c#L192)
+`function` | [kernel.c:193](../../kernel.c#L193)
 
 ```c
 void bootlog_mark(const char *name)
@@ -206,7 +206,7 @@ void bootlog_mark(const char *name)
 
 ### `bootlog_report`
 
-`function` | [kernel.c:199](../../kernel.c#L199)
+`function` | [kernel.c:200](../../kernel.c#L200)
 
 ```c
 void bootlog_report(void)
@@ -218,7 +218,7 @@ void bootlog_report(void)
 
 ### `__attribute__`
 
-`function` | [kernel.c:207](../../kernel.c#L207)
+`function` | [kernel.c:208](../../kernel.c#L208)
 
 ```c
 __attribute__((section(".init.text"))) void kmain(void)
@@ -234,7 +234,7 @@ Exported IDTR for APs to load during SMP bring-up.
 
 > **Inherited:** Documentation from [`__attribute__`](#__attribute__) (headers/sched.h:375).
 
-*Calls:* [`abi_check_manifest`](headers.abi.h.md#abi_check_manifest), [`block_init`](headers.block.h.md#block_init), [`ubk_present`](headers.drivers.usbblk.h.md#ubk_present), [`vblk_present`](headers.drivers.virtio_blk.h.md#vblk_present), [`ide_present`](headers.ide.h.md#ide_present), [`outb`](headers.kernel.h.md#outb), [`minifs_init`](headers.minifs.h.md#minifs_init), [`minifs_mount`](headers.minifs.h.md#minifs_mount), [`pcache_init`](headers.pcache.h.md#pcache_init), [`sb16_init`](headers.sb16.h.md#sb16_init), [`sched_init`](headers.sched.h.md#sched_init), [`smp_init`](headers.smp.h.md#smp_init) and 8 more
+*Calls:* [`abi_check_manifest`](headers.abi.h.md#abi_check_manifest), [`block_init`](headers.block.h.md#block_init), [`ahci_present`](headers.drivers.ahci.h.md#ahci_present), [`ubk_present`](headers.drivers.usbblk.h.md#ubk_present), [`vblk_present`](headers.drivers.virtio_blk.h.md#vblk_present), [`ide_present`](headers.ide.h.md#ide_present), [`outb`](headers.kernel.h.md#outb), [`minifs_init`](headers.minifs.h.md#minifs_init), [`minifs_mount`](headers.minifs.h.md#minifs_mount), [`pcache_init`](headers.pcache.h.md#pcache_init), [`sb16_init`](headers.sb16.h.md#sb16_init), [`sched_init`](headers.sched.h.md#sched_init) and 9 more
 
 ---
 
@@ -242,7 +242,7 @@ Exported IDTR for APs to load during SMP bring-up.
 
 ### `size`
 
-`function` | [kernel.c:257](../../kernel.c#L257)
+`function` | [kernel.c:258](../../kernel.c#L258)
 
 ```c
 * image size (see kernel.ld);
@@ -262,7 +262,7 @@ Exported IDTR for APs to load during SMP bring-up.
 
 ### `tables`
 
-`function` | [kernel.c:279](../../kernel.c#L279)
+`function` | [kernel.c:280](../../kernel.c#L280)
 
 ```c
 * tables (already built above) for its uncached register window and the * heap for its rings...
@@ -286,7 +286,7 @@ Exported IDTR for APs to load during SMP bring-up.
 
 ### `KSYM_MAX`
 
-`macro` | [kernel.c:107](../../kernel.c#L107)
+`macro` | [kernel.c:108](../../kernel.c#L108)
 
 ```c
 #define KSYM_MAX
@@ -298,7 +298,7 @@ Exported IDTR for APs to load during SMP bring-up.
 
 ### `BOOTLOG_MAX`
 
-`macro` | [kernel.c:188](../../kernel.c#L188)
+`macro` | [kernel.c:189](../../kernel.c#L189)
 
 ```c
 #define BOOTLOG_MAX
@@ -316,7 +316,7 @@ Fixed table, no heap, no locks: marks are appended before the shell runs (single
 
 ### `syscall_kstack`
 
-`variable` `extern` | [kernel.c:115](../../kernel.c#L115)
+`variable` `extern` | [kernel.c:116](../../kernel.c#L116)
 
 ```c
 extern unsigned long syscall_kstack;
@@ -328,7 +328,7 @@ extern unsigned long syscall_kstack;
 
 ### `ramdisk_start`
 
-`variable` `extern` | [kernel.c:179](../../kernel.c#L179)
+`variable` `extern` | [kernel.c:180](../../kernel.c#L180)
 
 ```c
 extern char ramdisk_start[];
@@ -340,7 +340,7 @@ extern char ramdisk_start[];
 
 ### `ramdisk_end`
 
-`variable` `extern` | [kernel.c:180](../../kernel.c#L180)
+`variable` `extern` | [kernel.c:181](../../kernel.c#L181)
 
 ```c
 extern char ramdisk_end[];
